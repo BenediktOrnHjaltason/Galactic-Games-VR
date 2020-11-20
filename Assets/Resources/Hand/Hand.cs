@@ -32,6 +32,10 @@ public class Hand : MonoBehaviour
     static Hand leftHand;
     static Hand rightHand;
 
+    //Gravity controll (Only used by right hand)
+    GravityController gravityController;
+    bool usingGravityController = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +43,12 @@ public class Hand : MonoBehaviour
         playerController = rootParent.GetComponent<OVRPlayerController>();
 
         if (eHandSide == EHandSide.LEFT) leftHand = this;
-        else rightHand = this;
+
+        else if (eHandSide == EHandSide.RIGHT)
+        {
+            rightHand = this;
+            gravityController = GetComponentInChildren<GravityController>();
+        }
     }
 
     // Update is called once per frame
@@ -49,6 +58,8 @@ public class Hand : MonoBehaviour
         if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
 
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
+
+        if (eHandSide == EHandSide.RIGHT) usingGravityController = gravityController.Operating();
     }
 
     private void OnTriggerStay(Collider other)
@@ -65,6 +76,8 @@ public class Hand : MonoBehaviour
 
                 if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger))
                 {
+                    Debug.Log("LEFT trigger pressed");
+
                     grab(other.gameObject);
                     rightHand.release();
                 }
@@ -76,13 +89,16 @@ public class Hand : MonoBehaviour
 
             case EHandSide.RIGHT:
 
+                if (usingGravityController) return;
+
                 if (OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger))
                 {
+                    Debug.Log("RIGHT trigger pressed");
+
                     grab(other.gameObject);
                     leftHand.release();
                 }
                     
-
                 else if (OVRInput.GetUp(OVRInput.Button.SecondaryHandTrigger))
                     release();
                     
