@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3503423222874263516}
   - component: {fileID: 8836168592485977414}
   - component: {fileID: 1696379040416999997}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8339970605312860494}
   - component: {fileID: 8924188367565734086}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PF_SpinningWheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

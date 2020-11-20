@@ -164,49 +164,34 @@ public class OVRPlayerController : MonoBehaviour
 	[SerializeField]
 	GameObject CameraRigAnchor;
 
-
-	Vector3 LeftAnchorLocalPosAtGripTime;
-	Vector3 RightAnchorLocalPosAtGripTime;
-
-	
+	Vector3 LeftAnchorLocalPosOnGrab;
+	Vector3 RightAnchorLocalPosOnGrab;
 
 	Transform HandleWorldTransform;
 	Vector3 PlayerControllerOffsettToHandle;
 
-	Vector3 PlayerControllerPosAtGrabTime;
-
-	float time = 0;
-
-
-	bool isHanging = false;
+	bool isGrabbing = false;
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
-	Vector3 handPoint;
-
-	float defaultGravityModifier;
 	
-	public void RegisterHandGrabEvent(bool grabbing, int hand, Transform handleTransform = null)
+	public void RegisterGrabEvent(bool grabbing, int hand, Transform handleTransform = null)
     {
-
 		if (handleTransform)
 		{
 			HandleWorldTransform = handleTransform;
 			PlayerControllerOffsettToHandle = transform.position - HandleWorldTransform.position;
-
 		}
 
 		if (hand == 0)
 		{
 			grabbing_LeftHand = (grabbing) ? true : false;
-			LeftAnchorLocalPosAtGripTime = LeftHandAnchor.transform.localPosition;
-			PlayerControllerPosAtGrabTime = transform.position;
+			LeftAnchorLocalPosOnGrab = LeftHandAnchor.transform.localPosition;
 		}
 
 		else if (hand == 1)
 		{
 			grabbing_RightHand = (grabbing) ? true : false;
-			RightAnchorLocalPosAtGripTime = RightHandAnchor.transform.localPosition;
-			PlayerControllerPosAtGrabTime = transform.position;
+			RightAnchorLocalPosOnGrab = RightHandAnchor.transform.localPosition;
 		}
 
 		if (!grabbing_LeftHand && !grabbing_RightHand) SetHangingState(false);
@@ -217,15 +202,13 @@ public class OVRPlayerController : MonoBehaviour
     {
 		if (state == true)
 		{
-			GravityModifier = 0.0f;
-			isHanging = true;
 			Controller.enabled = false;
+			isGrabbing = true;
 		}
 		else
 		{
-			GravityModifier = defaultGravityModifier;
 			Controller.enabled = true;
-			isHanging = false;
+			isGrabbing = false;
 		}
     }
 	
@@ -236,8 +219,6 @@ public class OVRPlayerController : MonoBehaviour
 		var p = CameraRig.transform.localPosition;
 		p.z = OVRManager.profile.eyeDepth;
 		CameraRig.transform.localPosition = p;
-
-		defaultGravityModifier = GravityModifier;
 	}
 
 	void Awake()
@@ -281,8 +262,6 @@ public class OVRPlayerController : MonoBehaviour
 		}
 	}
 
-	int count = 0;
-
 	void Update()
 	{
 		if (!playerControllerEnabled)
@@ -308,41 +287,26 @@ public class OVRPlayerController : MonoBehaviour
 			buttonRotation += RotationRatchet;
 
 		//Handle jumping
-		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1 &&
-			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1 && !isHanging) Jump();
+		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !isGrabbing) Jump();
 
-		
-		if(isHanging)
+		//Handle grabbing and climbing
+		if(isGrabbing)
         {
-			//Set player position to offsett to hands //Test left grabbing first
-
 			Vector3 HandAnchorLocalDeltaPosition;
 
 			if (grabbing_LeftHand && !grabbing_RightHand)
-				HandAnchorLocalDeltaPosition = LeftAnchorLocalPosAtGripTime - LeftHandAnchor.transform.localPosition;
-
+				HandAnchorLocalDeltaPosition = LeftAnchorLocalPosOnGrab - LeftHandAnchor.transform.localPosition;
 
 			else if (!grabbing_LeftHand && grabbing_RightHand)
-				HandAnchorLocalDeltaPosition = RightAnchorLocalPosAtGripTime - RightHandAnchor.transform.localPosition;
+				HandAnchorLocalDeltaPosition = RightAnchorLocalPosOnGrab - RightHandAnchor.transform.localPosition;
 
 			else HandAnchorLocalDeltaPosition = new Vector3(0, 0, 0);
 
 
-			Vector3 NewCameraRigPosition = HandleWorldTransform.position + PlayerControllerOffsettToHandle +
-													 (HandAnchorLocalDeltaPosition);
-
-			//PlayerControllerPosAtGrabTime = transform.position;
-
-			transform.position = NewCameraRigPosition;
-
-
-
-			//Debug.Log("Is hanging. Gravity Modifier: " + GravityModifier + " New position for cameraRig: " + NewCameraRigPosition);
-			Debug.Log("OVRPlayerController Position = " + transform.position + " CameraRig Position = " + CameraRigAnchor.transform.position + "IsHaning = " + isHanging);
+			transform.position = HandleWorldTransform.position + PlayerControllerOffsettToHandle +
+													 (HandAnchorLocalDeltaPosition); ;
 		}
-
-
-		
 	}
 
 	protected virtual void UpdateController()
@@ -468,8 +432,8 @@ public class OVRPlayerController : MonoBehaviour
 				MoveScale = 0.70710678f;
 
 			// No positional movement if we are in the air
-			if (!Controller.isGrounded)
-				MoveScale = 0.0f;
+			//if (!Controller.isGrounded)
+				//MoveScale = 0.0f;
 
 			MoveScale *= SimulationRate * Time.deltaTime;
 

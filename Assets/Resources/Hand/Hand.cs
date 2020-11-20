@@ -2,21 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EHandSide
-{
-    LEFT = 0,
-    RIGHT = 1
-}
+
+public enum EHandSide{ LEFT = 0, RIGHT = 1 }
+
 
 public class Hand : MonoBehaviour
 {
-
-    enum EHandsGrabbing
-    {
-        ONE,
-        BOTH,
-        NONE
-    } static EHandsGrabbing eHandsGrabbing = EHandsGrabbing.NONE;
 
     [SerializeField]
     EHandSide eHandSide;
@@ -27,9 +18,7 @@ public class Hand : MonoBehaviour
     [SerializeField]
     GameObject controllerAnchor;
 
-    OVRPlayerController playerController;
-
-    static int numHandsGrabbing = 0;
+    OVRPlayerController playerController; //Handles movement of Avatar when grabbing
 
     int layer_GrabHandle = 8;
 
@@ -39,39 +28,33 @@ public class Hand : MonoBehaviour
     GameObject handle;
     Vector3 offsettToHandleOnGrab;
 
-    float handleRadius;
-    float leeWay = 0.1f;
+
+    static Hand leftHand;
+    static Hand rightHand;
 
 
     // Start is called before the first frame update
     void Start()
     {
         playerController = rootParent.GetComponent<OVRPlayerController>();
+
+        if (eHandSide == EHandSide.LEFT) leftHand = this;
+        else rightHand = this;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Keeping hand meshes attached to handle
-        if (handle /*&& (controllerAnchor.transform.position - handle.transform.position).magnitude < handleRadius + leeWay*/)
-        {
-            transform.position = handle.transform.position + offsettToHandleOnGrab;
-        }
-        else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
+        //Keeping hand mesh attached to handle while grabbing
+        if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
 
-        //If hands 
+        else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.layer.Equals(layer_GrabHandle))    
             detectGrab(other);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer.Equals(layer_GrabHandle) && handle)
-            release();
     }
 
     void detectGrab(Collider other)
@@ -83,6 +66,7 @@ public class Hand : MonoBehaviour
                 if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger))
                 {
                     grab(other.gameObject);
+                    rightHand.release();
                 }
 
                 else if (OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger))
@@ -93,7 +77,11 @@ public class Hand : MonoBehaviour
             case EHandSide.RIGHT:
 
                 if (OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger))
+                {
                     grab(other.gameObject);
+                    leftHand.release();
+                }
+                    
 
                 else if (OVRInput.GetUp(OVRInput.Button.SecondaryHandTrigger))
                     release();
@@ -107,16 +95,14 @@ public class Hand : MonoBehaviour
         handle = handleRef;
         offsettToHandleOnGrab = transform.position - handle.transform.position;
 
-        //NOTE! Radius will only be correct if transform has uniform scaling in x,y,z
-        handleRadius = handleRef.gameObject.GetComponent<SphereCollider>().radius * handle.transform.localScale.x;
-
-        playerController.RegisterHandGrabEvent(true, (int)eHandSide, handle.transform);
+        playerController.RegisterGrabEvent(true, (int)eHandSide, handle.transform);
+        playerController.RegisterGrabEvent(false, (eHandSide == EHandSide.LEFT) ? (int)EHandSide.RIGHT : (int)EHandSide.LEFT);
     }
 
     void release()
     {
         handle = null;
 
-        playerController.RegisterHandGrabEvent(false, (int)eHandSide);
+        playerController.RegisterGrabEvent(false, (int)eHandSide);
     }
 }
