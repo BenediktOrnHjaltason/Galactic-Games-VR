@@ -64,8 +64,6 @@ public class GravityController : MonoBehaviour
 
         else if (mode == EMode.CONTROLLING)
         {
-            Debug.Log("GravityController: IN CONTROLLING MODE");
-
             structureRB.AddForce(new Vector3(0, 0.2f, 0));
         }
 
@@ -88,7 +86,7 @@ public class GravityController : MonoBehaviour
                 case EMode.CONTROLLING:
                     line.SetPosition(0, transform.position);
                     line.SetPosition(1, transform.position);
-                    line.SetPosition(2, transform.position + transform.forward * 1000);
+                    line.SetPosition(2, structure.transform.position);
                     break;
             }
         }
