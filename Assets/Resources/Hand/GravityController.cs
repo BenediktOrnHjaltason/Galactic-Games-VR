@@ -6,7 +6,7 @@ public class GravityController : MonoBehaviour
 {
 
     [SerializeField]
-    GameObject cameraRig;
+    GameObject playerRoot;
 
     LineRenderer line;
 
@@ -15,6 +15,9 @@ public class GravityController : MonoBehaviour
     Rigidbody structureRB;
 
     float distanceToStructure;
+
+    bool pushingForward;
+    bool pushingBackward;
 
     Vector3 controlForceVector;
 
@@ -41,6 +44,17 @@ public class GravityController : MonoBehaviour
             mode = EMode.NONE;
 
 
+        if (OVRInput.GetDown(OVRInput.Button.One))
+            pushingBackward = true;
+        else if (OVRInput.GetUp(OVRInput.Button.One))
+            pushingBackward = false;
+
+        if (OVRInput.GetDown(OVRInput.Button.Two))
+            pushingForward = true;
+        else if (OVRInput.GetUp(OVRInput.Button.Two))
+            pushingForward = false;
+
+
 
         //************ Operation logic **************//
 
@@ -59,8 +73,6 @@ public class GravityController : MonoBehaviour
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
                 structure = structureHit.collider.gameObject;
-
-                distanceToStructure = (transform.position - structure.transform.position).magnitude;
 
                 structureRB = structure.GetComponent<Rigidbody>();
 
@@ -88,12 +100,19 @@ public class GravityController : MonoBehaviour
 
             case EMode.CONTROLLING:
 
+                distanceToStructure = (transform.position - structure.transform.position).magnitude;
+
                 Vector3 adjustedForward = transform.forward * distanceToStructure;
 
                 Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structure.transform.position;
 
+                float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
+                forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
+
                 //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
-                controlForceVector = structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, cameraRig.transform.forward)) * cameraRig.transform.forward);
+                controlForceVector = (structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward))
+                                        + transform.forward * forwardMultiplyer;
+
 
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, structure.transform.position + controlForceVector);
