@@ -4,13 +4,19 @@ using UnityEngine;
 
 public class GravityController : MonoBehaviour
 {
-    LineRenderer line;
 
-    bool currentlyUsing = false;
+    [SerializeField]
+    GameObject cameraRig;
+
+    LineRenderer line;
 
     RaycastHit structureHit;
     GameObject structure;
     Rigidbody structureRB;
+
+    float distanceToStructure;
+
+    Vector3 controlForceVector;
 
 
     enum EMode
@@ -29,32 +35,32 @@ public class GravityController : MonoBehaviour
     public bool Operating()
     {
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
-        {
-            currentlyUsing = true;
             mode = EMode.SCANNING;
-        }
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
-        {
-            currentlyUsing = false;
             mode = EMode.NONE;
-        }
 
-        SetLineRenderer(mode);
 
 
         //************ Operation logic **************//
 
-        if (mode == EMode.NONE) return false;
+        if (mode == EMode.NONE)
+        {
+            SetLineRendererInactive();
+            return false;
+        }
+
+        else SetLineRendererActive(mode);
+
 
         if (mode == EMode.SCANNING )
         {
-         
+            
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                Debug.Log("GravityController: LOCKED ON FREEFLOATING STRUCTURE");
-
                 structure = structureHit.collider.gameObject;
+
+                distanceToStructure = (transform.position - structure.transform.position).magnitude;
 
                 structureRB = structure.GetComponent<Rigidbody>();
 
@@ -64,36 +70,42 @@ public class GravityController : MonoBehaviour
 
         else if (mode == EMode.CONTROLLING)
         {
-            structureRB.AddForce(new Vector3(0, 0.2f, 0));
+            structureRB.AddForce(controlForceVector);
         }
 
-        void SetLineRenderer(EMode mode)
+        return true;
+    }
+
+    void SetLineRendererActive(EMode mode)
+    {
+        switch (mode)
         {
-            switch (mode)
-            {
-                case EMode.NONE:
-                    line.SetPosition(0, transform.position);
-                    line.SetPosition(1, transform.position);
-                    line.SetPosition(2, transform.position);
-                    break;
+            case EMode.SCANNING:
+                line.SetPosition(0, transform.position);
+                line.SetPosition(1, transform.position);
+                line.SetPosition(2, transform.position + transform.forward * 1000);
+                break;
 
-                case EMode.SCANNING:
-                    line.SetPosition(0, transform.position);
-                    line.SetPosition(1, transform.position);
-                    line.SetPosition(2, transform.position + transform.forward * 1000);
-                    break;
+            case EMode.CONTROLLING:
 
-                case EMode.CONTROLLING:
-                    line.SetPosition(0, transform.position);
-                    line.SetPosition(1, transform.position);
-                    line.SetPosition(2, structure.transform.position);
-                    break;
-            }
+                Vector3 adjustedForward = transform.forward * distanceToStructure;
+
+                Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structure.transform.position;
+
+                //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
+                controlForceVector = structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, cameraRig.transform.forward)) * cameraRig.transform.forward);
+
+                line.SetPosition(0, transform.position);
+                line.SetPosition(1, structure.transform.position + controlForceVector);
+                line.SetPosition(2, structure.transform.position);
+                break;
         }
+    }
 
-
-
-
-        return currentlyUsing;
+    void SetLineRendererInactive()
+    {
+        line.SetPosition(0, transform.position);
+        line.SetPosition(1, transform.position);
+        line.SetPosition(2, transform.position);
     }
 }
