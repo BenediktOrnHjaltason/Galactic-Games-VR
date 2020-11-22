@@ -14,12 +14,15 @@ public class GravityController : MonoBehaviour
     GameObject structure;
     Rigidbody structureRB;
 
-    float distanceToStructure;
-
     bool pushingForward;
     bool pushingBackward;
 
-    Vector3 controlForceVector;
+    bool rotating_Pitch; //Relative to player right
+    bool rotating_Roll; //Relative to player forward
+
+    Vector2 stickInput;
+
+    Vector3 controlForce;
 
 
     enum EMode
@@ -37,11 +40,21 @@ public class GravityController : MonoBehaviour
 
     public bool Operating()
     {
+        //************ Manage input **************//
+
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
             mode = EMode.SCANNING;
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
             mode = EMode.NONE;
+
+
+        if (mode == EMode.NONE)
+        {
+            SetLineRenderer(mode);
+
+            return false;
+        }
 
 
         if (OVRInput.GetDown(OVRInput.Button.One))
@@ -55,21 +68,21 @@ public class GravityController : MonoBehaviour
             pushingForward = false;
 
 
+        stickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+
+        if (stickInput.x > 0.1 || stickInput.x < -0.1) rotating_Roll = true;
+        else rotating_Roll = false;
+
+        if (stickInput.y > 0.1 || stickInput.y < -0.1) rotating_Pitch = true;
+        else rotating_Pitch = false;
+
 
         //************ Operation logic **************//
 
-        if (mode == EMode.NONE)
-        {
-            SetLineRendererInactive();
-            return false;
-        }
-
-        else SetLineRendererActive(mode);
-
-
         if (mode == EMode.SCANNING )
         {
-            
+            SetLineRenderer(mode);
+
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
                 structure = structureHit.collider.gameObject;
@@ -82,17 +95,52 @@ public class GravityController : MonoBehaviour
 
         else if (mode == EMode.CONTROLLING)
         {
-            structureRB.AddForce(controlForceVector);
+            controlForce = CalculateControlForce();
+
+            SetLineRenderer(mode);
+
+            //Movement
+            structureRB.AddForce(controlForce);
+
+            //Rotation
+            if (rotating_Roll) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.x, playerRoot.transform.forward);
+
+            else if (rotating_Pitch) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.y, playerRoot.transform.right);
+
         }
 
         return true;
     }
 
-    void SetLineRendererActive(EMode mode)
+    Vector3 CalculateControlForce()
     {
-        switch (mode)
+        float distanceToStructure = (transform.position - structure.transform.position).magnitude;
+
+        Vector3 adjustedForward = transform.forward * distanceToStructure;
+
+        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structure.transform.position;
+
+        float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
+        forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
+
+        //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
+        return (structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward))
+                                + transform.forward * forwardMultiplyer;
+    }
+
+    void SetLineRenderer(EMode mode)
+    {
+        switch (mode) 
         {
+            case EMode.NONE:
+
+                line.SetPosition(0, transform.position);
+                line.SetPosition(1, transform.position);
+                line.SetPosition(2, transform.position);
+                break;
+
             case EMode.SCANNING:
+
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, transform.position);
                 line.SetPosition(2, transform.position + transform.forward * 1000);
@@ -100,31 +148,10 @@ public class GravityController : MonoBehaviour
 
             case EMode.CONTROLLING:
 
-                distanceToStructure = (transform.position - structure.transform.position).magnitude;
-
-                Vector3 adjustedForward = transform.forward * distanceToStructure;
-
-                Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structure.transform.position;
-
-                float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
-                forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
-
-                //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
-                controlForceVector = (structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward))
-                                        + transform.forward * forwardMultiplyer;
-
-
                 line.SetPosition(0, transform.position);
-                line.SetPosition(1, structure.transform.position + controlForceVector);
+                line.SetPosition(1, structure.transform.position + controlForce);
                 line.SetPosition(2, structure.transform.position);
                 break;
         }
-    }
-
-    void SetLineRendererInactive()
-    {
-        line.SetPosition(0, transform.position);
-        line.SetPosition(1, transform.position);
-        line.SetPosition(2, transform.position);
     }
 }
