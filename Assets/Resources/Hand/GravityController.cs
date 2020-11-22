@@ -14,10 +14,13 @@ public class GravityController : MonoBehaviour
     GameObject structure;
     Rigidbody structureRB;
 
-    float distanceToStructure;
-
     bool pushingForward;
     bool pushingBackward;
+
+    bool rotating_Pitch; //Relative to player right
+    bool rotating_Roll; //Relative to player forward
+
+    Vector2 stickInput;
 
     Vector3 controlForce;
 
@@ -37,13 +40,21 @@ public class GravityController : MonoBehaviour
 
     public bool Operating()
     {
-        //************ Detect input **************//
+        //************ Manage input **************//
 
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
             mode = EMode.SCANNING;
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
             mode = EMode.NONE;
+
+
+        if (mode == EMode.NONE)
+        {
+            SetLineRenderer(mode);
+
+            return false;
+        }
 
 
         if (OVRInput.GetDown(OVRInput.Button.One))
@@ -57,14 +68,16 @@ public class GravityController : MonoBehaviour
             pushingForward = false;
 
 
+        stickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+
+        if (stickInput.x > 0.1 || stickInput.x < -0.1) rotating_Roll = true;
+        else rotating_Roll = false;
+
+        if (stickInput.y > 0.1 || stickInput.y < -0.1) rotating_Pitch = true;
+        else rotating_Pitch = false;
+
+
         //************ Operation logic **************//
-
-        if (mode == EMode.NONE)
-        {
-            SetLineRenderer(mode);
-
-            return false;
-        }
 
         if (mode == EMode.SCANNING )
         {
@@ -86,7 +99,14 @@ public class GravityController : MonoBehaviour
 
             SetLineRenderer(mode);
 
+            //Movement
             structureRB.AddForce(controlForce);
+
+            //Rotation
+            if (rotating_Roll) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.x, playerRoot.transform.forward);
+
+            else if (rotating_Pitch) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.y, playerRoot.transform.right);
+
         }
 
         return true;
@@ -94,7 +114,7 @@ public class GravityController : MonoBehaviour
 
     Vector3 CalculateControlForce()
     {
-        distanceToStructure = (transform.position - structure.transform.position).magnitude;
+        float distanceToStructure = (transform.position - structure.transform.position).magnitude;
 
         Vector3 adjustedForward = transform.forward * distanceToStructure;
 
