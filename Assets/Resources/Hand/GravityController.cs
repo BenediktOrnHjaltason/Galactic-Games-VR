@@ -19,7 +19,7 @@ public class GravityController : MonoBehaviour
     bool pushingForward;
     bool pushingBackward;
 
-    Vector3 controlForceVector;
+    Vector3 controlForce;
 
 
     enum EMode
@@ -37,6 +37,8 @@ public class GravityController : MonoBehaviour
 
     public bool Operating()
     {
+        //************ Detect input **************//
+
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
             mode = EMode.SCANNING;
 
@@ -55,21 +57,19 @@ public class GravityController : MonoBehaviour
             pushingForward = false;
 
 
-
         //************ Operation logic **************//
 
         if (mode == EMode.NONE)
         {
-            SetLineRendererInactive();
+            SetLineRenderer(mode);
+
             return false;
         }
 
-        else SetLineRendererActive(mode);
-
-
         if (mode == EMode.SCANNING )
         {
-            
+            SetLineRenderer(mode);
+
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
                 structure = structureHit.collider.gameObject;
@@ -82,17 +82,45 @@ public class GravityController : MonoBehaviour
 
         else if (mode == EMode.CONTROLLING)
         {
-            structureRB.AddForce(controlForceVector);
+            controlForce = CalculateControlForce();
+
+            SetLineRenderer(mode);
+
+            structureRB.AddForce(controlForce);
         }
 
         return true;
     }
 
-    void SetLineRendererActive(EMode mode)
+    Vector3 CalculateControlForce()
     {
-        switch (mode)
+        distanceToStructure = (transform.position - structure.transform.position).magnitude;
+
+        Vector3 adjustedForward = transform.forward * distanceToStructure;
+
+        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structure.transform.position;
+
+        float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
+        forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
+
+        //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
+        return (structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward))
+                                + transform.forward * forwardMultiplyer;
+    }
+
+    void SetLineRenderer(EMode mode)
+    {
+        switch (mode) 
         {
+            case EMode.NONE:
+
+                line.SetPosition(0, transform.position);
+                line.SetPosition(1, transform.position);
+                line.SetPosition(2, transform.position);
+                break;
+
             case EMode.SCANNING:
+
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, transform.position);
                 line.SetPosition(2, transform.position + transform.forward * 1000);
@@ -100,31 +128,10 @@ public class GravityController : MonoBehaviour
 
             case EMode.CONTROLLING:
 
-                distanceToStructure = (transform.position - structure.transform.position).magnitude;
-
-                Vector3 adjustedForward = transform.forward * distanceToStructure;
-
-                Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structure.transform.position;
-
-                float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
-                forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
-
-                //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
-                controlForceVector = (structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward))
-                                        + transform.forward * forwardMultiplyer;
-
-
                 line.SetPosition(0, transform.position);
-                line.SetPosition(1, structure.transform.position + controlForceVector);
+                line.SetPosition(1, structure.transform.position + controlForce);
                 line.SetPosition(2, structure.transform.position);
                 break;
         }
-    }
-
-    void SetLineRendererInactive()
-    {
-        line.SetPosition(0, transform.position);
-        line.SetPosition(1, transform.position);
-        line.SetPosition(2, transform.position);
     }
 }
