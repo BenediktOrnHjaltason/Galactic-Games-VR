@@ -304,8 +304,10 @@ public class OVRPlayerController : MonoBehaviour
 			else HandAnchorLocalDeltaPosition = new Vector3(0, 0, 0);
 
 
-			transform.position = HandleWorldTransform.position + PlayerControllerOffsettToHandle +
-													 (HandAnchorLocalDeltaPosition); ;
+			transform.position = (HandleWorldTransform.position + PlayerControllerOffsettToHandle +
+													 (transform.right * HandAnchorLocalDeltaPosition.x + 
+													  transform.up * HandAnchorLocalDeltaPosition.y + 
+													  transform.forward * HandAnchorLocalDeltaPosition.z));
 		}
 	}
 
