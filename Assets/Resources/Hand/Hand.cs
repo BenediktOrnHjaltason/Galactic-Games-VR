@@ -59,7 +59,11 @@ public class Hand : MonoBehaviour
 
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
 
-        if (eHandSide == EHandSide.RIGHT) usingGravityController = gravityController.Operating();
+        if (eHandSide == EHandSide.RIGHT)
+        {
+            usingGravityController = gravityController.Operating();
+            playerController.EnableRotation = !usingGravityController;
+        }
     }
 
     private void OnTriggerStay(Collider other)

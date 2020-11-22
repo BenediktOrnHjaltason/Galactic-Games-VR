@@ -103,9 +103,9 @@ public class GravityController : MonoBehaviour
             structureRB.AddForce(controlForce);
 
             //Rotation
-            if (rotating_Roll) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.x, playerRoot.transform.forward);
+            if (rotating_Roll) structure.transform.rotation *= Quaternion.AngleAxis((stickInput.x * -1) / 2, playerRoot.transform.forward);
 
-            else if (rotating_Pitch) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.y, playerRoot.transform.right);
+            if (rotating_Pitch) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.y / 2, playerRoot.transform.right);
 
         }
 
