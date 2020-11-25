@@ -19,10 +19,13 @@ public class GravityController : MonoBehaviour
 
     bool rotating_Pitch; //Relative to player right
     bool rotating_Roll; //Relative to player forward
+    bool rotating_Yaw = false;
 
     Vector2 stickInput;
 
     Vector3 controlForce;
+
+    Vector3 Up = new Vector3(0, 1, 0);
 
 
     enum EMode
@@ -43,7 +46,11 @@ public class GravityController : MonoBehaviour
         //************ Manage input **************//
 
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
+        {
             mode = EMode.SCANNING;
+            rotating_Yaw = false;
+        }
+            
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
             mode = EMode.NONE;
@@ -76,10 +83,13 @@ public class GravityController : MonoBehaviour
         if (stickInput.y > 0.1 || stickInput.y < -0.1) rotating_Pitch = true;
         else rotating_Pitch = false;
 
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
+            rotating_Yaw = !rotating_Yaw;
 
-        //************ Operation logic **************//
 
-        if (mode == EMode.SCANNING )
+            //************ Operation logic **************//
+
+            if (mode == EMode.SCANNING )
         {
             SetLineRenderer(mode);
 
@@ -99,14 +109,22 @@ public class GravityController : MonoBehaviour
 
             SetLineRenderer(mode);
 
+            
+
             //Movement
             structureRB.AddForce(controlForce);
 
             //Rotation
-            if (rotating_Roll) structure.transform.rotation *= Quaternion.AngleAxis((stickInput.x * -1) / 2, playerRoot.transform.forward);
 
-            if (rotating_Pitch) structure.transform.rotation *= Quaternion.AngleAxis(stickInput.y / 2, playerRoot.transform.right);
+            if (rotating_Yaw) structure.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
 
+
+            else
+            {
+                if (rotating_Roll) structure.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
+
+                if (rotating_Pitch) structure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
+            }
         }
 
         return true;
@@ -124,8 +142,8 @@ public class GravityController : MonoBehaviour
         forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
 
         //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
-        return (structureToAdjustedForward - ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward))
-                                + transform.forward * forwardMultiplyer;
+        return (structureToAdjustedForward /*- ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward));*/
+                                + transform.forward * forwardMultiplyer);
     }
 
     void SetLineRenderer(EMode mode)
