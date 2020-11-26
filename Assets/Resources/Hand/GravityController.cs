@@ -8,7 +8,15 @@ public class GravityController : MonoBehaviour
     [SerializeField]
     GameObject playerRoot;
 
+    [SerializeField]
+    Material InactiveMaterial;
+
+    [SerializeField]
+    Material ActiveMaterial;
+
     LineRenderer line;
+
+    MeshRenderer mesh;
 
     RaycastHit structureHit;
     GameObject structure;
@@ -27,6 +35,10 @@ public class GravityController : MonoBehaviour
 
     Vector3 Up = new Vector3(0, 1, 0);
 
+    float distanceToStructure;
+
+
+
 
     enum EMode
     {
@@ -39,6 +51,7 @@ public class GravityController : MonoBehaviour
     void Start()
     {
         line = GetComponent<LineRenderer>();
+        mesh = GetComponent<MeshRenderer>();
     }
 
     public bool Using()
@@ -49,6 +62,7 @@ public class GravityController : MonoBehaviour
         {
             mode = EMode.SCANNING;
             rotating_Yaw = false;
+            SetVisuals(mode);
         }
             
 
@@ -58,7 +72,7 @@ public class GravityController : MonoBehaviour
 
         if (mode == EMode.NONE)
         {
-            SetLineRenderer(mode);
+            SetLinePositions(mode);
 
             return false;
         }
@@ -89,9 +103,9 @@ public class GravityController : MonoBehaviour
 
             //************ Operation logic **************//
 
-            if (mode == EMode.SCANNING )
+        if (mode == EMode.SCANNING )
         {
-            SetLineRenderer(mode);
+            SetLinePositions(mode);
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
@@ -100,6 +114,7 @@ public class GravityController : MonoBehaviour
                 structureRB = structure.GetComponent<Rigidbody>();
 
                 mode = EMode.CONTROLLING;
+                SetVisuals(mode);
             }
         }
 
@@ -107,7 +122,7 @@ public class GravityController : MonoBehaviour
         {
             controlForce = CalculateControlForce();
 
-            SetLineRenderer(mode);
+            SetLinePositions(mode);
 
             
 
@@ -132,7 +147,7 @@ public class GravityController : MonoBehaviour
 
     Vector3 CalculateControlForce()
     {
-        float distanceToStructure = (transform.position - structure.transform.position).magnitude;
+        distanceToStructure = (transform.position - structure.transform.position).magnitude;
 
         Vector3 adjustedForward = transform.forward * distanceToStructure;
 
@@ -146,11 +161,14 @@ public class GravityController : MonoBehaviour
                                 + transform.forward * forwardMultiplyer);
     }
 
-    void SetLineRenderer(EMode mode)
+    void SetLinePositions(EMode mode)
     {
         switch (mode) 
         {
             case EMode.NONE:
+
+                line.startWidth = line.endWidth = 0.0f;
+                mesh.material = InactiveMaterial;
 
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, transform.position);
@@ -159,6 +177,8 @@ public class GravityController : MonoBehaviour
 
             case EMode.SCANNING:
 
+                line.startWidth = line.endWidth = 0.01f;
+
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, transform.position);
                 line.SetPosition(2, transform.position + transform.forward * 1000);
@@ -166,9 +186,33 @@ public class GravityController : MonoBehaviour
 
             case EMode.CONTROLLING:
 
+                line.startWidth = line.endWidth = 0.024f;
+                
+
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, structure.transform.position + controlForce);
                 line.SetPosition(2, structure.transform.position);
+
+
+                break;
+        }
+    }
+
+    void SetVisuals(EMode mode)
+    {
+        switch (mode)
+        {
+            case EMode.SCANNING:
+
+                line.material = InactiveMaterial;
+                mesh.material = InactiveMaterial;
+                break;
+
+
+            case EMode.CONTROLLING:
+
+                line.material = ActiveMaterial;
+                mesh.material = ActiveMaterial;
                 break;
         }
     }

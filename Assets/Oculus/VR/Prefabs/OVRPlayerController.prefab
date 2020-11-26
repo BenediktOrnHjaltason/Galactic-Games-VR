@@ -764,7 +764,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e148de6cdf2d164aa3e3f90ce8c852c, type: 2}
+  - {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -848,8 +848,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.07353075
-        value: 0.008619835
+        time: 0.064389184
+        value: 0.01413528
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -888,7 +888,7 @@ LineRenderer:
       m_Mode: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
-    numCornerVertices: 0
+    numCornerVertices: 3
     numCapVertices: 3
     alignment: 0
     textureMode: 0
@@ -909,6 +909,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerRoot: {fileID: 100006}
+  InactiveMaterial: {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
+  ActiveMaterial: {fileID: 2100000, guid: 3a9d7c162f10dd7478e8e0b339648db4, type: 2}
 --- !u!1001 &3501979467721873250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1012,6 +1014,21 @@ PrefabInstance:
       propertyPath: eHandSide
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8866063358448769701, guid: bc4d847e8eb6880499f8ae1671174c29,
+        type: 3}
+      propertyPath: DefaultColor
+      value: 
+      objectReference: {fileID: 2100000, guid: bd0bb729cb6159b4ab21c5f62cad24ee, type: 3}
+    - target: {fileID: 8866063358448769701, guid: bc4d847e8eb6880499f8ae1671174c29,
+        type: 3}
+      propertyPath: grabbingColor
+      value: 
+      objectReference: {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
+    - target: {fileID: 8866063358448769701, guid: bc4d847e8eb6880499f8ae1671174c29,
+        type: 3}
+      propertyPath: defaultColor
+      value: 
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc4d847e8eb6880499f8ae1671174c29, type: 3}
 --- !u!4 &1686984119977723300 stripped
@@ -1112,6 +1129,16 @@ PrefabInstance:
       propertyPath: controllerAnchor
       value: 
       objectReference: {fileID: 168962}
+    - target: {fileID: 8866063358448769701, guid: bc4d847e8eb6880499f8ae1671174c29,
+        type: 3}
+      propertyPath: grabbingColor
+      value: 
+      objectReference: {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
+    - target: {fileID: 8866063358448769701, guid: bc4d847e8eb6880499f8ae1671174c29,
+        type: 3}
+      propertyPath: defaultColor
+      value: 
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc4d847e8eb6880499f8ae1671174c29, type: 3}
 --- !u!4 &7369824085676220758 stripped

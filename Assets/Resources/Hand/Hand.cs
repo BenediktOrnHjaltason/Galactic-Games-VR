@@ -18,6 +18,14 @@ public class Hand : MonoBehaviour
     [SerializeField]
     GameObject controllerAnchor;
 
+    [SerializeField]
+    Material defaultColor;
+
+    [SerializeField]
+    Material grabbingColor;
+
+    MeshRenderer mesh;
+
     OVRPlayerController playerController; //Handles movement of Avatar when grabbing
 
     int layer_GrabHandle = 8;
@@ -49,6 +57,7 @@ public class Hand : MonoBehaviour
     void Awake()
     {
         playerController = rootParent.GetComponent<OVRPlayerController>();
+        mesh = GetComponent<MeshRenderer>();
 
         if (eHandSide == EHandSide.LEFT)
         {
@@ -83,7 +92,11 @@ public class Hand : MonoBehaviour
             playerController.EnableRotation = !usingGravityController;
         }
 
-        if (OVRInput.GetDown(grabButton)) shouldGrab = true;
+        if (OVRInput.GetDown(grabButton))
+        {
+            shouldGrab = true;
+            
+        }
         else if (OVRInput.GetUp(grabButton)) shouldRelease = true;
     }
 
@@ -95,7 +108,6 @@ public class Hand : MonoBehaviour
             if (shouldRelease) 
             {
                 shouldRelease = false;
-
                 release(); 
             }
 
@@ -115,6 +127,7 @@ public class Hand : MonoBehaviour
     {
         handle = handleRef;
         offsettToHandleOnGrab = transform.position - handle.transform.position;
+        mesh.material = grabbingColor;
 
         playerController.RegisterGrabEvent(true, (int)eHandSide, handle.transform);
         playerController.RegisterGrabEvent(false, (eHandSide == EHandSide.LEFT) ? (int)EHandSide.RIGHT : (int)EHandSide.LEFT);
@@ -123,7 +136,7 @@ public class Hand : MonoBehaviour
     void release()
     {
         handle = null;
-
+        mesh.material = defaultColor;
         playerController.RegisterGrabEvent(false, (int)eHandSide);
     }
 }
