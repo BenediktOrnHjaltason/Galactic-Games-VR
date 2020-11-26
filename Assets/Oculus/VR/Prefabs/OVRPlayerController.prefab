@@ -717,7 +717,7 @@ GameObject:
   - component: {fileID: 4980025948891784388}
   - component: {fileID: 1472372429824503787}
   - component: {fileID: 1126851701686655868}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GravityController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -921,6 +921,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hand_Right
       objectReference: {fileID: 0}
+    - target: {fileID: 2878038601104970437, guid: bc4d847e8eb6880499f8ae1671174c29,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 2878038601104970438, guid: bc4d847e8eb6880499f8ae1671174c29,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1026,6 +1031,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hand_Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878038601104970437, guid: bc4d847e8eb6880499f8ae1671174c29,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2878038601104970438, guid: bc4d847e8eb6880499f8ae1671174c29,
         type: 3}

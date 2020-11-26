@@ -41,7 +41,7 @@ public class GravityController : MonoBehaviour
         line = GetComponent<LineRenderer>();
     }
 
-    public bool Operating()
+    public bool Using()
     {
         //************ Manage input **************//
 

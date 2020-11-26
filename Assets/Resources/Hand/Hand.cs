@@ -32,23 +32,41 @@ public class Hand : MonoBehaviour
     static Hand leftHand;
     static Hand rightHand;
 
+    Hand otherHand;
+
+    OVRInput.Button grabButton;
+
+    bool shouldGrab = false;
+    bool shouldRelease = false;
+
     //Gravity controll (Only used by right hand)
     GravityController gravityController;
     bool usingGravityController = false;
 
 
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         playerController = rootParent.GetComponent<OVRPlayerController>();
 
-        if (eHandSide == EHandSide.LEFT) leftHand = this;
+        if (eHandSide == EHandSide.LEFT)
+        {
+            leftHand = this;
+            grabButton = OVRInput.Button.PrimaryHandTrigger;
+        }
 
-        else if (eHandSide == EHandSide.RIGHT)
+        if (eHandSide == EHandSide.RIGHT)
         {
             rightHand = this;
             gravityController = GetComponentInChildren<GravityController>();
+            grabButton = OVRInput.Button.SecondaryHandTrigger;
         }
+    }
+
+    private void Start()
+    {
+        otherHand = (eHandSide == EHandSide.LEFT) ? rightHand : leftHand;
     }
 
     // Update is called once per frame
@@ -61,52 +79,35 @@ public class Hand : MonoBehaviour
 
         if (eHandSide == EHandSide.RIGHT)
         {
-            usingGravityController = gravityController.Operating();
+            usingGravityController = gravityController.Using();
             playerController.EnableRotation = !usingGravityController;
         }
+
+        if (OVRInput.GetDown(grabButton)) shouldGrab = true;
+        else if (OVRInput.GetUp(grabButton)) shouldRelease = true;
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer.Equals(layer_GrabHandle))    
-            detectGrab(other);
-    }
-
-    void detectGrab(Collider other)
-    {
-        switch (eHandSide)
+        if (other.gameObject.layer.Equals(layer_GrabHandle))
         {
-            case EHandSide.LEFT:
 
-                if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger))
-                {
-                    Debug.Log("LEFT trigger pressed");
+            if (shouldRelease) 
+            {
+                shouldRelease = false;
 
-                    grab(other.gameObject);
-                    rightHand.release();
-                }
+                release(); 
+            }
 
-                else if (OVRInput.GetUp(OVRInput.Button.PrimaryHandTrigger))
-                    release();
+            if (shouldGrab)
+            {
+                shouldGrab = false;
 
-                break;
+                if (eHandSide == EHandSide.RIGHT && usingGravityController) return;
 
-            case EHandSide.RIGHT:
-
-                if (usingGravityController) return;
-
-                if (OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger))
-                {
-                    Debug.Log("RIGHT trigger pressed");
-
-                    grab(other.gameObject);
-                    leftHand.release();
-                }
-                    
-                else if (OVRInput.GetUp(OVRInput.Button.SecondaryHandTrigger))
-                    release();
-                    
-                break;
+                grab(other.gameObject);
+                otherHand.release();
+            }
         }
     }
 
