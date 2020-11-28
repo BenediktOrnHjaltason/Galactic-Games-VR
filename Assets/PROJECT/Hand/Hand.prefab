@@ -106,3 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4af8b84b070b6438f120b3d9ac5dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eHandSide: 0
+  rootParent: {fileID: 0}
+  controllerAnchor: {fileID: 0}
+  defaultColor: {fileID: 0}
+  grabbingColor: {fileID: 0}

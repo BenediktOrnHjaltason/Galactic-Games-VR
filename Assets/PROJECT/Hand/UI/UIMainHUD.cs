@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class UIWrist : MonoBehaviour
+public class UIMainHUD : MonoBehaviour
 {
 
     TextMeshPro UITime;
@@ -18,9 +18,9 @@ public class UIWrist : MonoBehaviour
 
     bool playerWatching = false;
 
-    Vector3 scale_Active = new Vector3(0.1579223f, 0.4397724f, 0.07973082f);
+    Vector3 fullScale = new Vector3(0.1579223f, 0.4397724f, 0.07973082f);
 
-    float activationScalar = 0;
+    float scaleMultiplier = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -38,24 +38,15 @@ public class UIWrist : MonoBehaviour
             UITime.text = getTimeText();
         }
 
-        // Dot (-Hand.Right, Eye.Forward),
-        // Dot (Hand.Forward, -Eye.Right
+        playerWatching = (Vector3.Dot(-leftHandAnchor.transform.right, eyeAnchor.transform.forward) < -0.96 &&
+                          Vector3.Dot(leftHandAnchor.transform.forward, -eyeAnchor.transform.right) < -0.96);
 
 
+        if (playerWatching && scaleMultiplier < 1) scaleMultiplier += 0.1f;
 
-        if (Vector3.Dot(-leftHandAnchor.transform.right, eyeAnchor.transform.forward) < -0.8 &&
-            Vector3.Dot(leftHandAnchor.transform.forward, -eyeAnchor.transform.right) < -0.8) playerWatching = true;
+        else if (!playerWatching && scaleMultiplier > 0) scaleMultiplier -= 0.1f;
 
-        else playerWatching = false;
-
-
-        if (playerWatching && activationScalar < 1) activationScalar += 0.1f;
-
-        else if (!playerWatching && activationScalar > 0) activationScalar -= 0.1f;
-
-        transform.localScale = scale_Active * activationScalar;
-            
-            //Debug.Log("Dot(-Hand.Right, Eye.Forward) = " + Vector3.Dot(-leftHandAnchor.transform.right, eyeAnchor.transform.forward));
+        transform.localScale = fullScale * scaleMultiplier;
     }
 
     string getTimeText()

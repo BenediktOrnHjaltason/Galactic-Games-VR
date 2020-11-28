@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Types;
 
 
 public enum EHandSide{ LEFT = 0, RIGHT = 1 }
@@ -51,6 +52,9 @@ public class Hand : MonoBehaviour
     GravityController gravityController;
     bool usingGravityController = false;
 
+    //UI screen for use of handheld devices
+    UIDeviceInfo deviceUI;
+    bool holdingDevice = false;
 
 
     // Start is called before the first frame update
@@ -58,6 +62,7 @@ public class Hand : MonoBehaviour
     {
         playerController = rootParent.GetComponent<OVRPlayerController>();
         mesh = GetComponent<MeshRenderer>();
+        deviceUI = GetComponentInChildren<UIDeviceInfo>();
 
         if (eHandSide == EHandSide.LEFT)
         {
@@ -70,6 +75,11 @@ public class Hand : MonoBehaviour
             rightHand = this;
             gravityController = GetComponentInChildren<GravityController>();
             grabButton = OVRInput.Button.SecondaryHandTrigger;
+
+            holdingDevice = true;
+
+            deviceUI.material = gravityController.UIMaterial;
+            deviceUI.fullScale = gravityController.UIFullScale;
         }
     }
 
@@ -85,6 +95,9 @@ public class Hand : MonoBehaviour
         if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
 
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
+
+        //Operate info screen for handheld device
+        if (holdingDevice) deviceUI.Operate(eHandSide);
 
         if (eHandSide == EHandSide.RIGHT)
         {

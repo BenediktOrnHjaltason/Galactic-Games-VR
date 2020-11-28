@@ -14,6 +14,11 @@ public class GravityController : MonoBehaviour
     [SerializeField]
     Material ActiveMaterial;
 
+    //UIScreen on wrist
+    public Material UIMaterial;
+    public Vector3 UIFullScale;
+
+
     LineRenderer line;
 
     MeshRenderer mesh;
