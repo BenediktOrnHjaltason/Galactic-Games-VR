@@ -10,4 +10,18 @@ namespace Types
         ONE,
         TWO
     }
+
+    enum PlatformMoveGlobal
+    {
+        X_Positive,
+        X_Negative,
+        Z_Positive,
+        Z_Negative
+    }
+
+    enum SpinDirection
+    {
+        CLOCKWISE,
+        COUNTERCLOCKWISE
+    }
 }
