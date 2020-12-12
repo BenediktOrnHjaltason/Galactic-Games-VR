@@ -108,9 +108,14 @@ public class Hand : MonoBehaviour
         if (OVRInput.GetDown(grabButton))
         {
             shouldGrab = true;
-            
+            shouldRelease = false;
+
         }
-        else if (OVRInput.GetUp(grabButton)) shouldRelease = true;
+        else if (OVRInput.GetUp(grabButton))
+        {
+            shouldGrab = false;
+            shouldRelease = true;
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -142,8 +147,8 @@ public class Hand : MonoBehaviour
         offsettToHandleOnGrab = transform.position - handle.transform.position;
         mesh.material = grabbingColor;
 
+        playerController.RegisterGrabEvent(false, (int)otherHand.eHandSide);
         playerController.RegisterGrabEvent(true, (int)eHandSide, handle.transform);
-        playerController.RegisterGrabEvent(false, (eHandSide == EHandSide.LEFT) ? (int)EHandSide.RIGHT : (int)EHandSide.LEFT);
     }
 
     void release()

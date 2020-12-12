@@ -168,7 +168,9 @@ public class OVRPlayerController : MonoBehaviour
 	Vector3 RightAnchorLocalPosOnGrab;
 
 	Transform HandleWorldTransform;
-	Vector3 PlayerControllerOffsettToHandle;
+	Vector3 PlayerControllerPosOnGrab;
+
+	Vector3 Up = new Vector3(0, 1, 0);
 
 	bool isGrabbing = false;
 	bool grabbing_LeftHand = false;
@@ -177,27 +179,29 @@ public class OVRPlayerController : MonoBehaviour
 	public void RegisterGrabEvent(bool grabbing, int hand, Transform handleTransform = null)
     {
 
-		if (handleTransform)
+		if (grabbing && handleTransform)
 		{
 			HandleWorldTransform = handleTransform;
-			PlayerControllerOffsettToHandle = transform.position - HandleWorldTransform.position;
+			PlayerControllerPosOnGrab = transform.position;
+
+			InitialYRotation = CameraRigAnchor.transform.rotation.eulerAngles.y;
 		}
-
-		if (!grabbing)
-			transform.rotation = Quaternion.Euler(new Vector3(transform.rotation.eulerAngles.x, 
-															  CameraRigAnchor.transform.rotation.eulerAngles.y, 
-															  transform.rotation.eulerAngles.z));
-
 
 		if (hand == 0)
 		{
 			grabbing_LeftHand = (grabbing) ? true : false;
+
+			if (grabbing_LeftHand) grabbing_RightHand = false;
+
 			LeftAnchorLocalPosOnGrab = LeftHandAnchor.transform.localPosition;
 		}
 
 		else if (hand == 1)
 		{
 			grabbing_RightHand = (grabbing) ? true : false;
+
+			if (grabbing_RightHand) grabbing_LeftHand = false;
+
 			RightAnchorLocalPosOnGrab = RightHandAnchor.transform.localPosition;
 		}
 
@@ -207,14 +211,21 @@ public class OVRPlayerController : MonoBehaviour
 
 	public void SetGrabbing(bool state)
     {
+		transform.rotation = Quaternion.Euler(new Vector3(CameraRigAnchor.transform.rotation.eulerAngles.x,
+														  CameraRigAnchor.transform.rotation.eulerAngles.y,
+														  CameraRigAnchor.transform.rotation.eulerAngles.z));
+
 		if (state == true)
 		{
 			Controller.enabled = false;
+			HmdRotatesY = false;
+
 			isGrabbing = true;
 		}
 		else
 		{
 			Controller.enabled = true;
+			HmdRotatesY = true;
 			isGrabbing = false;
 		}
     }
@@ -300,26 +311,36 @@ public class OVRPlayerController : MonoBehaviour
 		//Handle grabbing and climbing
 		if (isGrabbing)
 		{
-			HmdRotatesY = false;
 
-			Vector3 HandAnchorLocalDeltaPosition;
+			Vector3 HeadToHand = new Vector3(0, 0, 0);
 
-			if (grabbing_LeftHand && !grabbing_RightHand)
+			Vector3 HandAnchorLocalDeltaPosition = new Vector3(0, 0, 0);
+
+			if (grabbing_LeftHand)
+			{
 				HandAnchorLocalDeltaPosition = LeftAnchorLocalPosOnGrab - LeftHandAnchor.transform.localPosition;
 
-			else if (!grabbing_LeftHand && grabbing_RightHand)
+				HeadToHand = LeftHandAnchor.transform.position - CameraRigAnchor.transform.position;
+			}
+
+			else if (grabbing_RightHand)
+            {
 				HandAnchorLocalDeltaPosition = RightAnchorLocalPosOnGrab - RightHandAnchor.transform.localPosition;
 
-			else HandAnchorLocalDeltaPosition = new Vector3(0, 0, 0);
+				HeadToHand = RightHandAnchor.transform.position - CameraRigAnchor.transform.position;
+			}
+
+			//Projected on horizontal plane
+			HeadToHand -= ((Vector3.Dot(HeadToHand, Up) * Up)).normalized;
 
 
-			transform.position = (HandleWorldTransform.position + PlayerControllerOffsettToHandle +
-													 (transform.right * HandAnchorLocalDeltaPosition.x +
-													  transform.up * HandAnchorLocalDeltaPosition.y +
-													  transform.forward * HandAnchorLocalDeltaPosition.z));
+
+
+			transform.position = (PlayerControllerPosOnGrab +
+								 (CameraRigAnchor.transform.right * HandAnchorLocalDeltaPosition.x +
+								  CameraRigAnchor.transform.up * HandAnchorLocalDeltaPosition.y +
+								  CameraRigAnchor.transform.forward * HandAnchorLocalDeltaPosition.z));
 		}
-
-		else HmdRotatesY = true;
 	}
 
 	protected virtual void UpdateController()
