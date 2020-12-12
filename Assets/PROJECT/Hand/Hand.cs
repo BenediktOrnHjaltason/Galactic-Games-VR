@@ -37,7 +37,6 @@ public class Hand : MonoBehaviour
     GameObject handle;
     Vector3 offsettToHandleOnGrab;
 
-
     static Hand leftHand;
     static Hand rightHand;
 
@@ -96,7 +95,8 @@ public class Hand : MonoBehaviour
 
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
 
-        //Operate info screen for handheld device
+        //Operate info screen for handheld device 
+        //(GravityController is allways active for right hand when not holding something else)
         if (holdingDevice) deviceUI.Operate(eHandSide);
 
         if (eHandSide == EHandSide.RIGHT)
@@ -105,11 +105,12 @@ public class Hand : MonoBehaviour
             playerController.EnableRotation = !usingGravityController;
         }
 
+        //(NOTE! Tried detecting input directly in OnTriggerStay, but allways resulted in missed input detecetion. 
+        //Bool system at least stable)
         if (OVRInput.GetDown(grabButton))
         {
             shouldGrab = true;
             shouldRelease = false;
-
         }
         else if (OVRInput.GetUp(grabButton))
         {

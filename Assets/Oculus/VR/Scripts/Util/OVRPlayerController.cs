@@ -164,11 +164,12 @@ public class OVRPlayerController : MonoBehaviour
 	[SerializeField]
 	GameObject CameraRigAnchor;
 
+	Transform HandleWorldTransform;
+
 	Vector3 LeftAnchorLocalPosOnGrab;
 	Vector3 RightAnchorLocalPosOnGrab;
 
-	Transform HandleWorldTransform;
-	Vector3 PlayerControllerPosOnGrab;
+	Vector3 PlayerControllerOffsetToHandle;
 
 	Vector3 Up = new Vector3(0, 1, 0);
 
@@ -182,9 +183,8 @@ public class OVRPlayerController : MonoBehaviour
 		if (grabbing && handleTransform)
 		{
 			HandleWorldTransform = handleTransform;
-			PlayerControllerPosOnGrab = transform.position;
 
-			InitialYRotation = CameraRigAnchor.transform.rotation.eulerAngles.y;
+			PlayerControllerOffsetToHandle = transform.position - HandleWorldTransform.position;
 		}
 
 		if (hand == 0)
@@ -311,32 +311,19 @@ public class OVRPlayerController : MonoBehaviour
 		//Handle grabbing and climbing
 		if (isGrabbing)
 		{
-
-			Vector3 HeadToHand = new Vector3(0, 0, 0);
-
 			Vector3 HandAnchorLocalDeltaPosition = new Vector3(0, 0, 0);
 
 			if (grabbing_LeftHand)
 			{
 				HandAnchorLocalDeltaPosition = LeftAnchorLocalPosOnGrab - LeftHandAnchor.transform.localPosition;
-
-				HeadToHand = LeftHandAnchor.transform.position - CameraRigAnchor.transform.position;
 			}
 
 			else if (grabbing_RightHand)
             {
 				HandAnchorLocalDeltaPosition = RightAnchorLocalPosOnGrab - RightHandAnchor.transform.localPosition;
-
-				HeadToHand = RightHandAnchor.transform.position - CameraRigAnchor.transform.position;
 			}
 
-			//Projected on horizontal plane
-			HeadToHand -= ((Vector3.Dot(HeadToHand, Up) * Up)).normalized;
-
-
-
-
-			transform.position = (PlayerControllerPosOnGrab +
+			transform.position = (HandleWorldTransform.position + PlayerControllerOffsetToHandle +
 								 (CameraRigAnchor.transform.right * HandAnchorLocalDeltaPosition.x +
 								  CameraRigAnchor.transform.up * HandAnchorLocalDeltaPosition.y +
 								  CameraRigAnchor.transform.forward * HandAnchorLocalDeltaPosition.z));

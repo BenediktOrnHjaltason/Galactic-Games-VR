@@ -18,7 +18,6 @@ public class GravityController : MonoBehaviour
     public Material UIMaterial;
     public Vector3 UIFullScale;
 
-
     LineRenderer line;
 
     MeshRenderer mesh;
@@ -129,15 +128,11 @@ public class GravityController : MonoBehaviour
 
             SetLinePositions(mode);
 
-            
-
             //Movement
             structureRB.AddForce(controlForce);
 
             //Rotation
-
             if (rotating_Yaw) structure.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
-
 
             else
             {
@@ -161,9 +156,7 @@ public class GravityController : MonoBehaviour
         float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
         forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
 
-        //structureToAdjustedForward projected on plane made up of avatar right and up vectors, represented by avatar forward vector
-        return (structureToAdjustedForward /*- ((Vector3.Dot(structureToAdjustedForward, playerRoot.transform.forward)) * playerRoot.transform.forward));*/
-                                + transform.forward * forwardMultiplyer);
+        return (structureToAdjustedForward + transform.forward * forwardMultiplyer);
     }
 
     void SetLinePositions(EMode mode)

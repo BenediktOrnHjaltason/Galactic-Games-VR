@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Types;
 
-public class Structure_Platform : MonoBehaviour
+public class LinearMoveCycle : MonoBehaviour
 {
+
+    /// <summary>
+    /// Moves an object between start and end-points in an endless cycle.
+    /// Brings it back to startpoint when end is reached.
+    /// NOTE! Needs implementation for directions other than negative Z
+    /// </summary>
 
     [SerializeField]
     bool moving = false;
@@ -18,7 +24,8 @@ public class Structure_Platform : MonoBehaviour
     [SerializeField]
     PlatformMoveGlobal globalMoveDirection;
 
-    float moveIncrement = 1.0f;
+    [SerializeField]
+    float speed = 1.0f;
 
 
     // Start is called before the first frame update
@@ -36,7 +43,7 @@ public class Structure_Platform : MonoBehaviour
         {
             case PlatformMoveGlobal.Z_Negative:
 
-                if (transform.position.z > endPoint) transform.position -= new Vector3(0, 0, moveIncrement * Time.deltaTime);
+                if (transform.position.z > endPoint) transform.position -= new Vector3(0, 0, speed * Time.deltaTime);
                 else transform.position = new Vector3(transform.position.x, transform.position.y, respawnPoint);
 
                 break;
