@@ -33,7 +33,8 @@ public class Hand : MonoBehaviour
 
     Vector3 DefaultLocalPosition = new Vector3( 0, 0, 0 );
 
-    //We need reference to handle because we need handle position every update to place hand correctly on moving handle
+    //We need reference to handle because we need handle position
+    //every update to place hand correctly on moving handle
     GameObject handle;
     Vector3 offsettToHandleOnGrab;
 
@@ -51,8 +52,10 @@ public class Hand : MonoBehaviour
     GravityController gravityController;
     bool usingGravityController = false;
 
-    //UI screen for use of handheld devices
-    UIDeviceInfo deviceUI;
+    /// <summary>
+    /// UI screen that shows detalis about the held device
+    /// </summary>
+    UIHandheldDevice deviceUI;
     bool holdingDevice = false;
 
 
@@ -61,7 +64,7 @@ public class Hand : MonoBehaviour
     {
         playerController = rootParent.GetComponent<OVRPlayerController>();
         mesh = GetComponent<MeshRenderer>();
-        deviceUI = GetComponentInChildren<UIDeviceInfo>();
+        deviceUI = GetComponentInChildren<UIHandheldDevice>();
 
         if (eHandSide == EHandSide.LEFT)
         {
@@ -77,8 +80,7 @@ public class Hand : MonoBehaviour
 
             holdingDevice = true;
 
-            deviceUI.material = gravityController.UIMaterial;
-            deviceUI.fullScale = gravityController.UIFullScale;
+            deviceUI.Set(gravityController.UIMaterial, gravityController.UIFullScale);
         }
     }
 

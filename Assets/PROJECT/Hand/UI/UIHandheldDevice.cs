@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class UIDeviceInfo : MonoBehaviour
+public class UIHandheldDevice : MonoBehaviour
 {
 
     [SerializeField]
@@ -13,8 +13,8 @@ public class UIDeviceInfo : MonoBehaviour
     [SerializeField]
     GameObject eyeAnchor;
 
-    public Material material;
-    public Vector3 fullScale;
+    Material material;
+    Vector3 fullScale;
 
     //Scale up/down
     bool playerWatching = false;
@@ -46,6 +46,12 @@ public class UIDeviceInfo : MonoBehaviour
 
         //Set scale of UI
         transform.localScale = fullScale * scaleMultiplier;
+    }
+
+    public void Set(Material material, Vector3 fullScale)
+    {
+        this.material = material;
+        this.fullScale = fullScale;
     }
 
     void deactivate()

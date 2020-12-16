@@ -5,16 +5,19 @@ using UnityEngine;
 
 namespace Types
 {
-    enum TESTEnum
+    public enum EControlBeamMode
     {
-        ONE,
-        TWO
+        IDLE,
+        SCANNING,
+        CONTROLLING
     }
 
     enum PlatformMoveGlobal
     {
         X_Positive,
         X_Negative,
+        Y_Positive,
+        Y_Negative,
         Z_Positive,
         Z_Negative
     }

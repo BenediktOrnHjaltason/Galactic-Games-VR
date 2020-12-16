@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Types;
 
 public class GravityController : MonoBehaviour
 {
@@ -18,9 +19,9 @@ public class GravityController : MonoBehaviour
     public Material UIMaterial;
     public Vector3 UIFullScale;
 
-    LineRenderer line;
-
     MeshRenderer mesh;
+
+    ControllingBeam beam;
 
     RaycastHit structureHit;
     GameObject structure;
@@ -42,20 +43,14 @@ public class GravityController : MonoBehaviour
     float distanceToStructure;
 
 
-
-
-    enum EMode
-    {
-        NONE,
-        SCANNING,
-        CONTROLLING
-    } EMode mode = EMode.NONE;
+    EControlBeamMode mode = EControlBeamMode.IDLE;
 
     // Start is called before the first frame update
     void Start()
     {
-        line = GetComponent<LineRenderer>();
         mesh = GetComponent<MeshRenderer>();
+        beam = GetComponentInChildren<ControllingBeam>();
+        beam.SetMaterialReferences(ActiveMaterial, InactiveMaterial);
     }
 
     public bool Using()
@@ -64,19 +59,24 @@ public class GravityController : MonoBehaviour
 
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
-            mode = EMode.SCANNING;
+            mode = EControlBeamMode.SCANNING;
             rotating_Yaw = false;
+
             SetVisuals(mode);
+            beam.SetVisuals(mode);
         }
-            
+
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
-            mode = EMode.NONE;
-
-
-        if (mode == EMode.NONE)
         {
-            SetLinePositions(mode);
+            mode = EControlBeamMode.IDLE;
+            SetVisuals(mode);
+        }
+
+
+        if (mode == EControlBeamMode.IDLE)
+        {
+            beam.SetLines(mode);
 
             return false;
         }
@@ -105,28 +105,34 @@ public class GravityController : MonoBehaviour
             rotating_Yaw = !rotating_Yaw;
 
 
-            //************ Operation logic **************//
+        //************ Operation logic **************//
 
-        if (mode == EMode.SCANNING )
+        
+
+        if (mode == EControlBeamMode.SCANNING )
         {
-            SetLinePositions(mode);
+            beam.SetLines(mode);
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                structure = structureHit.collider.gameObject;
+                structure  = structureHit.collider.gameObject;
+                beam.SetStructureTransform(structure.transform);
 
                 structureRB = structure.GetComponent<Rigidbody>();
 
-                mode = EMode.CONTROLLING;
+                mode = EControlBeamMode.CONTROLLING;
                 SetVisuals(mode);
+                beam.SetVisuals(mode);
             }
         }
 
-        else if (mode == EMode.CONTROLLING)
+        else if (mode == EControlBeamMode.CONTROLLING)
         {
             controlForce = CalculateControlForce();
+            beam.SetControlForce(controlForce);
+            beam.SetLines(mode);
 
-            SetLinePositions(mode);
+            
 
             //Movement
             structureRB.AddForce(controlForce);
@@ -159,57 +165,20 @@ public class GravityController : MonoBehaviour
         return (structureToAdjustedForward + transform.forward * forwardMultiplyer);
     }
 
-    void SetLinePositions(EMode mode)
-    {
-        switch (mode) 
-        {
-            case EMode.NONE:
-
-                line.startWidth = line.endWidth = 0.0f;
-                mesh.material = InactiveMaterial;
-
-                line.SetPosition(0, transform.position);
-                line.SetPosition(1, transform.position);
-                line.SetPosition(2, transform.position);
-                break;
-
-            case EMode.SCANNING:
-
-                line.startWidth = line.endWidth = 0.01f;
-
-                line.SetPosition(0, transform.position);
-                line.SetPosition(1, transform.position);
-                line.SetPosition(2, transform.position + transform.forward * 1000);
-                break;
-
-            case EMode.CONTROLLING:
-
-                line.startWidth = line.endWidth = 0.024f;
-                
-
-                line.SetPosition(0, transform.position);
-                line.SetPosition(1, structure.transform.position + controlForce);
-                line.SetPosition(2, structure.transform.position);
-
-
-                break;
-        }
-    }
-
-    void SetVisuals(EMode mode)
+    void SetVisuals(EControlBeamMode mode)
     {
         switch (mode)
         {
-            case EMode.SCANNING:
+            case EControlBeamMode.IDLE:
 
-                line.material = InactiveMaterial;
                 mesh.material = InactiveMaterial;
                 break;
 
+            case EControlBeamMode.SCANNING:
+                mesh.material = InactiveMaterial;
+                break;
 
-            case EMode.CONTROLLING:
-
-                line.material = ActiveMaterial;
+            case EControlBeamMode.CONTROLLING:
                 mesh.material = ActiveMaterial;
                 break;
         }
