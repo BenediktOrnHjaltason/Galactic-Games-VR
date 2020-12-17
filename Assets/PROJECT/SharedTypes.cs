@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 
@@ -27,4 +28,12 @@ namespace Types
         CLOCKWISE,
         COUNTERCLOCKWISE
     }
+
+    [Serializable]
+    public struct UIData
+    {
+        public Material material;
+        public Vector3 fullScale;
+    }
+
 }

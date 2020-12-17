@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Types;
 
 
 
-public class UIHandheldDevice : MonoBehaviour
+public class UIHandDevice : MonoBehaviour
 {
 
     [SerializeField]
@@ -48,10 +49,10 @@ public class UIHandheldDevice : MonoBehaviour
         transform.localScale = fullScale * scaleMultiplier;
     }
 
-    public void Set(Material material, Vector3 fullScale)
+    public void Set(UIData data)
     {
-        this.material = material;
-        this.fullScale = fullScale;
+        this.material = data.material;
+        this.fullScale = data.fullScale;
     }
 
     void deactivate()

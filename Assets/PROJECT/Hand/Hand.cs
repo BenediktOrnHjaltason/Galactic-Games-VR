@@ -4,7 +4,7 @@ using UnityEngine;
 using Types;
 
 
-public enum EHandSide{ LEFT = 0, RIGHT = 1 }
+public enum EHandSide{LEFT, RIGHT}
 
 
 public class Hand : MonoBehaviour
@@ -34,7 +34,7 @@ public class Hand : MonoBehaviour
     Vector3 DefaultLocalPosition = new Vector3( 0, 0, 0 );
 
     //We need reference to handle because we need handle position
-    //every update to place hand correctly on moving handle
+    //every update to place hand correctly on moving handles
     GameObject handle;
     Vector3 offsettToHandleOnGrab;
 
@@ -48,15 +48,14 @@ public class Hand : MonoBehaviour
     bool shouldGrab = false;
     bool shouldRelease = false;
 
-    //Gravity controll (Only used by right hand)
-    GravityController gravityController;
-    bool usingGravityController = false;
+    //(Gravity controller default for right arm when not holding other device)
+    HandDevice handDevice = null;
+    bool usingHandDevice = false;
 
     /// <summary>
-    /// UI screen that shows detalis about the held device
+    /// UI screen that shows details about the held device
     /// </summary>
-    UIHandheldDevice deviceUI;
-    bool holdingDevice = false;
+    UIHandDevice deviceUI;
 
 
     // Start is called before the first frame update
@@ -64,7 +63,7 @@ public class Hand : MonoBehaviour
     {
         playerController = rootParent.GetComponent<OVRPlayerController>();
         mesh = GetComponent<MeshRenderer>();
-        deviceUI = GetComponentInChildren<UIHandheldDevice>();
+        deviceUI = GetComponentInChildren<UIHandDevice>();
 
         if (eHandSide == EHandSide.LEFT)
         {
@@ -75,12 +74,10 @@ public class Hand : MonoBehaviour
         if (eHandSide == EHandSide.RIGHT)
         {
             rightHand = this;
-            gravityController = GetComponentInChildren<GravityController>();
+            handDevice = GetComponentInChildren<GravityController>();
             grabButton = OVRInput.Button.SecondaryHandTrigger;
 
-            holdingDevice = true;
-
-            deviceUI.Set(gravityController.UIMaterial, gravityController.UIFullScale);
+            deviceUI.Set(handDevice.GetUIData());
         }
     }
 
@@ -98,17 +95,14 @@ public class Hand : MonoBehaviour
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
 
         //Operate info screen for handheld device 
-        //(GravityController is allways active for right hand when not holding something else)
-        if (holdingDevice) deviceUI.Operate(eHandSide);
-
-        if (eHandSide == EHandSide.RIGHT)
+        if (handDevice)
         {
-            usingGravityController = gravityController.Using();
-            playerController.EnableRotation = !usingGravityController;
+            deviceUI.Operate(eHandSide);
+
+            usingHandDevice = handDevice.Using();
+            playerController.EnableRotation = !usingHandDevice;
         }
 
-        //(NOTE! Tried detecting input directly in OnTriggerStay, but allways resulted in missed input detecetion. 
-        //Bool system at least stable)
         if (OVRInput.GetDown(grabButton))
         {
             shouldGrab = true;
@@ -136,7 +130,7 @@ public class Hand : MonoBehaviour
             {
                 shouldGrab = false;
 
-                if (eHandSide == EHandSide.RIGHT && usingGravityController) return;
+                if (eHandSide == EHandSide.RIGHT && usingHandDevice) return;
 
                 grab(other.gameObject);
                 otherHand.release();

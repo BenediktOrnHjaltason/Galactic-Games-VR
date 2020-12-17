@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Types;
 
-public class GravityController : MonoBehaviour
+public class GravityController : HandDevice
 {
 
     [SerializeField]
@@ -16,8 +16,8 @@ public class GravityController : MonoBehaviour
     Material ActiveMaterial;
 
     //UIScreen on wrist
-    public Material UIMaterial;
-    public Vector3 UIFullScale;
+    //public Material UIMaterial;
+    //public Vector3 UIFullScale;
 
     MeshRenderer mesh;
 
@@ -53,7 +53,7 @@ public class GravityController : MonoBehaviour
         beam.SetMaterialReferences(ActiveMaterial, InactiveMaterial);
     }
 
-    public bool Using()
+    public override bool Using() 
     {
         //************ Manage input **************//
 
