@@ -11,7 +11,7 @@ public class Hand : MonoBehaviour
 {
 
     [SerializeField]
-    EHandSide eHandSide;
+    EHandSide handSide;
 
     [SerializeField]
     GameObject rootParent;
@@ -30,6 +30,7 @@ public class Hand : MonoBehaviour
     OVRPlayerController playerController; //Handles movement of Avatar when grabbing
 
     int layer_GrabHandle = 8;
+    int layer_HandDevice = 12;
 
     Vector3 DefaultLocalPosition = new Vector3( 0, 0, 0 );
 
@@ -49,8 +50,16 @@ public class Hand : MonoBehaviour
     bool shouldRelease = false;
 
     //(Gravity controller default for right arm when not holding other device)
+    HandDevice gravityController;
     HandDevice handDevice = null;
+
+    /// <summary>
+    /// Holding non-gravity-controller-device (Only those need manually syncing with hand when holding)
+    /// </summary>
+    bool holdingNonGCHandDevice = false;
+
     bool usingHandDevice = false;
+    
 
     /// <summary>
     /// UI screen that shows details about the held device
@@ -65,16 +74,16 @@ public class Hand : MonoBehaviour
         mesh = GetComponent<MeshRenderer>();
         deviceUI = GetComponentInChildren<UIHandDevice>();
 
-        if (eHandSide == EHandSide.LEFT)
+        if (handSide == EHandSide.LEFT)
         {
             leftHand = this;
             grabButton = OVRInput.Button.PrimaryHandTrigger;
         }
 
-        if (eHandSide == EHandSide.RIGHT)
+        if (handSide == EHandSide.RIGHT)
         {
             rightHand = this;
-            handDevice = GetComponentInChildren<GravityController>();
+            handDevice = gravityController = GetComponentInChildren<GravityController>();
             grabButton = OVRInput.Button.SecondaryHandTrigger;
 
             deviceUI.Set(handDevice.GetUIData());
@@ -83,7 +92,7 @@ public class Hand : MonoBehaviour
 
     private void Start()
     {
-        otherHand = (eHandSide == EHandSide.LEFT) ? rightHand : leftHand;
+        otherHand = (handSide == EHandSide.LEFT) ? rightHand : leftHand;
     }
 
     // Update is called once per frame
@@ -91,14 +100,17 @@ public class Hand : MonoBehaviour
     {
         //Keeping hand mesh attached to handle while grabbing
         if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
-
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
 
-        //Operate info screen for handheld device 
+        //Keeping device object attached to hand while holding
+        if (holdingNonGCHandDevice) handDevice.transform.SetPositionAndRotation(transform.position, transform.rotation);
+
+        //Operate handheld device 
         if (handDevice)
         {
-            deviceUI.Operate(eHandSide);
+            deviceUI.Operate(handSide);
 
+            //(NOTE!) handDevice.Using() actually operates the device
             usingHandDevice = handDevice.Using();
             playerController.EnableRotation = !usingHandDevice;
         }
@@ -110,48 +122,86 @@ public class Hand : MonoBehaviour
         }
         else if (OVRInput.GetUp(grabButton))
         {
-            shouldGrab = false;
             shouldRelease = true;
+            shouldGrab = false;
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
+        if (usingHandDevice) return;
+
         if (other.gameObject.layer.Equals(layer_GrabHandle))
         {
 
             if (shouldRelease) 
             {
                 shouldRelease = false;
-                release(); 
+
+                ReleaseHandle(); 
             }
 
-            if (shouldGrab)
+            else if (shouldGrab)
             {
                 shouldGrab = false;
 
-                if (eHandSide == EHandSide.RIGHT && usingHandDevice) return;
+                GrabHandle(other.gameObject);
+                otherHand.ReleaseHandle();
+            }
+        }
 
-                grab(other.gameObject);
-                otherHand.release();
+        else if (other.gameObject.layer.Equals(layer_HandDevice))
+        {
+            if (shouldGrab)
+            {
+                shouldGrab = false;
+                GrabDevice(other.gameObject);
+            }
+            else if (shouldRelease)
+            {
+                shouldRelease = false;
+                DropDevice();
             }
         }
     }
 
-    void grab(GameObject handleRef)
+    void GrabHandle(GameObject handleRef)
     {
         handle = handleRef;
         offsettToHandleOnGrab = transform.position - handle.transform.position;
         mesh.material = grabbingColor;
 
-        playerController.RegisterGrabEvent(false, (int)otherHand.eHandSide);
-        playerController.RegisterGrabEvent(true, (int)eHandSide, handle.transform);
+        playerController.RegisterGrabEvent(false, (int)otherHand.handSide);
+        playerController.RegisterGrabEvent(true, (int)handSide, handle.transform);
     }
 
-    void release()
+    void ReleaseHandle()
     {
         handle = null;
         mesh.material = defaultColor;
-        playerController.RegisterGrabEvent(false, (int)eHandSide);
+        playerController.RegisterGrabEvent(false, (int)handSide);
+    }
+
+    void GrabDevice(GameObject device)
+    {
+        holdingNonGCHandDevice = true;
+
+        handDevice = device.GetComponent<HandDevice>();
+
+        deviceUI.Set(handDevice.GetUIData());
+
+    }
+
+    void DropDevice()
+    {
+        holdingNonGCHandDevice = false;
+
+        handDevice = null;
+
+        if (handSide == EHandSide.RIGHT)
+        {
+            handDevice = gravityController;
+            deviceUI.Set(gravityController.GetUIData());
+        }
     }
 }

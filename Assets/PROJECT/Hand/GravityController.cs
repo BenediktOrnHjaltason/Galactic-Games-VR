@@ -15,9 +15,6 @@ public class GravityController : HandDevice
     [SerializeField]
     Material ActiveMaterial;
 
-    //UIScreen on wrist
-    //public Material UIMaterial;
-    //public Vector3 UIFullScale;
 
     MeshRenderer mesh;
 
