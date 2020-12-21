@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
+using TMPro;
 
 public class Replicator : HandDevice
 {
@@ -11,6 +12,12 @@ public class Replicator : HandDevice
 
     [SerializeField]
     Material ActiveMaterial;
+
+    [SerializeField]
+    int allowedReplicates;
+
+    [SerializeField]
+    TextMeshPro UICounter;
 
     ControllingBeam beam;
 
@@ -36,6 +43,9 @@ public class Replicator : HandDevice
         beam.SetLines(mode);
 
         RB = GetComponent<Rigidbody>();
+
+        UICounter = GetComponentInChildren<TextMeshPro>();
+        UICounter.text = allowedReplicates.ToString();
     }
 
 
@@ -43,7 +53,7 @@ public class Replicator : HandDevice
     {
         //************ Manage input **************//
 
-        if (OVRInput.GetDown(grabbingControllerIndexTrigger))
+        if (allowedReplicates > 0 && OVRInput.GetDown(grabbingControllerIndexTrigger))
         {
             mode = EControlBeamMode.SCANNING;
 
@@ -54,7 +64,15 @@ public class Replicator : HandDevice
         else if (OVRInput.GetUp(grabbingControllerIndexTrigger))
         {
             mode = EControlBeamMode.IDLE;
-            if (structureDuplicate) structureDuplicate.GetComponent<BoxCollider>().enabled = true;
+
+            if (structureDuplicate)
+            {
+                structureDuplicate.GetComponent<BoxCollider>().enabled = true;
+                structureDuplicate = null;
+
+                allowedReplicates--;
+                UICounter.text = allowedReplicates.ToString();
+            }
         }
 
 
@@ -67,8 +85,6 @@ public class Replicator : HandDevice
 
 
         //************ Operation logic **************//
-
-
 
         if (mode == EControlBeamMode.SCANNING)
         {
