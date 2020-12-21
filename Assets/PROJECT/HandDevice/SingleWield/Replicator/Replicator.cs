@@ -99,7 +99,7 @@ public class Replicator : HandDevice
             beam.SetLines(mode);
 
             //Movement
-            structureDuplicateRB.AddForce(controlForce.normalized * 0.02f);
+            structureDuplicateRB.AddForce(controlForce.normalized * 2);
 
         }
 
