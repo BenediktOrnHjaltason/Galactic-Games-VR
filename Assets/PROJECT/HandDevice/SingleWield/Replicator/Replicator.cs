@@ -17,11 +17,15 @@ public class Replicator : HandDevice
     RaycastHit structureHit;
     GameObject structureDuplicate;
 
+    Rigidbody structureDuplicateRB;
+
     float distanceToStructure;
 
     EControlBeamMode mode = EControlBeamMode.IDLE;
 
     Vector3 controlForce;
+
+    OVRInput.Button grabbingControllerIndexTrigger;
 
 
     // Start is called before the first frame update
@@ -29,6 +33,9 @@ public class Replicator : HandDevice
     {
         beam = GetComponentInChildren<ControllingBeam>();
         beam.SetMaterialReferences(ActiveMaterial, InactiveMaterial);
+        beam.SetLines(mode);
+
+        RB = GetComponent<Rigidbody>();
     }
 
 
@@ -36,7 +43,7 @@ public class Replicator : HandDevice
     {
         //************ Manage input **************//
 
-        if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
+        if (OVRInput.GetDown(grabbingControllerIndexTrigger))
         {
             mode = EControlBeamMode.SCANNING;
 
@@ -44,7 +51,7 @@ public class Replicator : HandDevice
         }
 
 
-        else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
+        else if (OVRInput.GetUp(grabbingControllerIndexTrigger))
         {
             mode = EControlBeamMode.IDLE;
             if (structureDuplicate) structureDuplicate.GetComponent<BoxCollider>().enabled = true;
@@ -73,6 +80,8 @@ public class Replicator : HandDevice
                                                              structureHit.collider.gameObject.transform.position,
                                                              structureHit.collider.gameObject.transform.rotation);
 
+                structureDuplicateRB = structureDuplicate.GetComponent<Rigidbody>();
+
                 structureDuplicate.GetComponent<BoxCollider>().enabled = false;
                 beam.SetStructureTransform(structureDuplicate.transform);
 
@@ -90,7 +99,7 @@ public class Replicator : HandDevice
             beam.SetLines(mode);
 
             //Movement
-            structureDuplicate.transform.position += controlForce.normalized * 0.02f;
+            structureDuplicateRB.AddForce(controlForce.normalized * 0.02f);
 
         }
 
@@ -106,5 +115,20 @@ public class Replicator : HandDevice
         Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureDuplicate.transform.position;
 
         return (structureToAdjustedForward);
+    }
+
+    public override void Equip(EHandSide hand)
+    {
+        switch(hand)
+        {
+            case EHandSide.LEFT:
+
+                grabbingControllerIndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+                break;
+
+            case EHandSide.RIGHT:
+                grabbingControllerIndexTrigger = OVRInput.Button.SecondaryIndexTrigger;
+                break;
+        }
     }
 }

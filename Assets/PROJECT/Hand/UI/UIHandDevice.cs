@@ -17,9 +17,16 @@ public class UIHandDevice : MonoBehaviour
     Material material;
     Vector3 fullScale;
 
+    MeshRenderer mesh;
+
     //Scale up/down
     bool playerWatching = false;
     float scaleMultiplier = 0;
+
+    private void Awake()
+    {
+        mesh = GetComponent<MeshRenderer>();
+    }
 
 
     public void Operate(EHandSide hand)
@@ -47,11 +54,13 @@ public class UIHandDevice : MonoBehaviour
 
         //Set scale of UI
         transform.localScale = fullScale * scaleMultiplier;
+
+        if (hand == EHandSide.RIGHT) Debug.Log("DeviceUI size = " + transform.localScale);
     }
 
-    public void Set(UIData data)
+    public void Set(HandDeviceUIData data)
     {
-        this.material = data.material;
+        mesh.material = this.material = data.material;
         this.fullScale = data.fullScale;
     }
 

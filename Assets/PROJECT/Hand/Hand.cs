@@ -83,8 +83,9 @@ public class Hand : MonoBehaviour
         if (handSide == EHandSide.RIGHT)
         {
             rightHand = this;
-            handDevice = gravityController = GetComponentInChildren<GravityController>();
             grabButton = OVRInput.Button.SecondaryHandTrigger;
+
+            handDevice = gravityController = GetComponentInChildren<GravityController>();
 
             deviceUI.Set(handDevice.GetUIData());
         }
@@ -187,14 +188,18 @@ public class Hand : MonoBehaviour
         holdingNonGCHandDevice = true;
 
         handDevice = device.GetComponent<HandDevice>();
+        handDevice.Equip(handSide);
+
+        if (handDevice.GetRB()) handDevice.GetRB().useGravity = false;
 
         deviceUI.Set(handDevice.GetUIData());
-
     }
 
     void DropDevice()
     {
         holdingNonGCHandDevice = false;
+
+        if (handDevice.GetRB()) handDevice.GetRB().useGravity = true;
 
         handDevice = null;
 

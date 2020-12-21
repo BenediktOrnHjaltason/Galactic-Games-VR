@@ -30,7 +30,7 @@ namespace Types
     }
 
     [Serializable]
-    public struct UIData
+    public struct HandDeviceUIData
     {
         public Material material;
         public Vector3 fullScale;

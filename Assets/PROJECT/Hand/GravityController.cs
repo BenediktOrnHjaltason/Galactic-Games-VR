@@ -180,4 +180,9 @@ public class GravityController : HandDevice
                 break;
         }
     }
+
+    public override void Equip(EHandSide hand)
+    {
+        //Nothing necessary here for this class
+    }
 }

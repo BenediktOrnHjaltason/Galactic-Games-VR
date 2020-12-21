@@ -8,16 +8,21 @@ public abstract class HandDevice : MonoBehaviour
 {
 
     [SerializeField]
-    protected UIData UIData;
+    protected HandDeviceUIData UIData;
 
-    
+    public HandDeviceUIData GetUIData() { return UIData; }
+
+    protected Rigidbody RB;
+
+    public Rigidbody GetRB() { return RB; }
+
+
 
     public abstract bool Using();
 
-    public UIData GetUIData()
-    {
-        return UIData;
-    }
+    public abstract void Equip(EHandSide hand);
+
+    
 
 
 }
