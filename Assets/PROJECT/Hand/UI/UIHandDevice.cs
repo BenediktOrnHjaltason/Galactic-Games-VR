@@ -54,8 +54,6 @@ public class UIHandDevice : MonoBehaviour
 
         //Set scale of UI
         transform.localScale = fullScale * scaleMultiplier;
-
-        if (hand == EHandSide.RIGHT) Debug.Log("DeviceUI size = " + transform.localScale);
     }
 
     public void Set(HandDeviceUIData data)

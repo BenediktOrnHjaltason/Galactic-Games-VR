@@ -29,6 +29,12 @@ namespace Types
         COUNTERCLOCKWISE
     }
 
+    enum EZipLine
+    {
+        START,
+        END
+    }
+
     [Serializable]
     public struct HandDeviceUIData
     {
