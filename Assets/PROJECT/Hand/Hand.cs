@@ -170,15 +170,15 @@ public class Hand : MonoBehaviour
         offsettToHandleOnGrab = transform.position - handle.transform.position;
         mesh.material = grabbingColor;
 
-        playerController.RegisterGrabEvent(false, (int)otherHand.handSide);
-        playerController.RegisterGrabEvent(true, (int)handSide, handle.transform);
+        playerController.RegisterGrabHandleEvent(false, (int)otherHand.handSide);
+        playerController.RegisterGrabHandleEvent(true, (int)handSide, handle.transform);
     }
 
     void ReleaseHandle()
     {
         handle = null;
         mesh.material = defaultColor;
-        playerController.RegisterGrabEvent(false, (int)handSide);
+        playerController.RegisterGrabHandleEvent(false, (int)handSide);
     }
 
     void GrabDevice(GameObject device)

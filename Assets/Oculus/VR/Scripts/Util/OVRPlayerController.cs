@@ -177,7 +177,7 @@ public class OVRPlayerController : MonoBehaviour
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
 	
-	public void RegisterGrabEvent(bool grabbing, int hand, Transform handleTransform = null)
+	public void RegisterGrabHandleEvent(bool grabbing, int hand, Transform handleTransform = null)
     {
 
 		if (grabbing && handleTransform)
@@ -333,6 +333,8 @@ public class OVRPlayerController : MonoBehaviour
 
 	protected virtual void UpdateController()
 	{
+		if (Controller.enabled == false) return;
+
 		if (useProfileData)
 		{
 			if (InitialPose == null)

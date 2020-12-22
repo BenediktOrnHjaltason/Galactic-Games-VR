@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Types;
 
-public class ZipLine : MonoBehaviour
+public class ZipLinePoint : MonoBehaviour
 {
     [SerializeField]
     EZipLine point;
