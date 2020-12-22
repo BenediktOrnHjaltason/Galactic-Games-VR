@@ -67,7 +67,7 @@ public class Replicator : HandDevice
 
             if (structureDuplicate)
             {
-                structureDuplicate.GetComponent<BoxCollider>().enabled = true;
+                structureDuplicate.GetComponent<Collider>().enabled = true;
                 structureDuplicate = null;
 
                 allowedReplicates--;
@@ -98,7 +98,7 @@ public class Replicator : HandDevice
 
                 structureDuplicateRB = structureDuplicate.GetComponent<Rigidbody>();
 
-                structureDuplicate.GetComponent<BoxCollider>().enabled = false;
+                structureDuplicate.GetComponent<Collider>().enabled = false;
                 beam.SetStructureTransform(structureDuplicate.transform);
 
 

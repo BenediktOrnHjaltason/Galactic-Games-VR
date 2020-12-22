@@ -66,7 +66,6 @@ public class Hand : MonoBehaviour
     /// </summary>
     UIHandDevice deviceUI;
 
-
     // Start is called before the first frame update
     void Awake()
     {

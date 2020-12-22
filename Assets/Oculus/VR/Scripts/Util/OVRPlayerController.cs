@@ -328,6 +328,7 @@ public class OVRPlayerController : MonoBehaviour
 								  CameraRigAnchor.transform.up * HandAnchorLocalDeltaPosition.y +
 								  CameraRigAnchor.transform.forward * HandAnchorLocalDeltaPosition.z));
 		}
+
 	}
 
 	protected virtual void UpdateController()
