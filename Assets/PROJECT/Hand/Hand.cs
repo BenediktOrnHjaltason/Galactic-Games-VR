@@ -31,6 +31,7 @@ public class Hand : MonoBehaviour
 
     int layer_GrabHandle = 8;
     int layer_HandDevice = 12;
+    int layer_ZipLineHandle = 13;
 
     Vector3 DefaultLocalPosition = new Vector3( 0, 0, 0 );
 
@@ -131,42 +132,41 @@ public class Hand : MonoBehaviour
     {
         if (usingHandDevice) return;
 
-        if (other.gameObject.layer.Equals(layer_GrabHandle))
+        else if (shouldGrab)
         {
-            if (shouldRelease) 
+            shouldGrab = false;
+
+            if (other.gameObject.layer.Equals(layer_GrabHandle))
             {
-                shouldRelease = false;
-
-                ReleaseHandle(); 
-            }
-
-            else if (shouldGrab)
-            {
-                shouldGrab = false;
-
                 GrabHandle(other.gameObject);
                 otherHand.ReleaseHandle();
             }
+
+            else if (other.gameObject.layer.Equals(layer_HandDevice))
+                GrabDevice(other.gameObject);
+
+            else if (other.gameObject.layer.Equals(layer_ZipLineHandle))
+                GrabZipLine(other.gameObject.GetComponent<ZipLineTransport>().TransportDirection);
         }
 
-        else if (other.gameObject.layer.Equals(layer_HandDevice))
+        else if (shouldRelease) 
         {
-            if (shouldGrab)
-            {
-                shouldGrab = false;
-                GrabDevice(other.gameObject);
-            }
-            else if (shouldRelease)
-            {
-                shouldRelease = false;
+            shouldRelease = false;
+
+            if (other.gameObject.layer.Equals(layer_GrabHandle))
+                ReleaseHandle();
+
+            else if (other.gameObject.layer.Equals(layer_HandDevice))
                 DropDevice();
-            }
+
+            else if (other.gameObject.layer.Equals(layer_ZipLineHandle))
+                ReleaseZipLine();
         }
     }
 
-    void GrabHandle(GameObject handleRef)
+    void GrabHandle(GameObject handle)
     {
-        handle = handleRef;
+        this.handle = handle;
         offsettToHandleOnGrab = transform.position - handle.transform.position;
         mesh.material = grabbingColor;
 
@@ -179,6 +179,16 @@ public class Hand : MonoBehaviour
         handle = null;
         mesh.material = defaultColor;
         playerController.RegisterGrabHandleEvent(false, (int)handSide);
+    }
+
+    void GrabZipLine(Vector3 moveDirection)
+    {
+        playerController.SetGrabbingZipLine(true, moveDirection);
+    }
+
+    void ReleaseZipLine()
+    {
+        playerController.SetGrabbingZipLine(false, new Vector3(0, 0, 0));
     }
 
     void GrabDevice(GameObject device)

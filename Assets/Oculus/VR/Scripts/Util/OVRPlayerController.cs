@@ -173,7 +173,11 @@ public class OVRPlayerController : MonoBehaviour
 
 	Vector3 Up = new Vector3(0, 1, 0);
 
-	bool isGrabbing = false;
+	bool isGrabbingHandle = false;
+	bool isGrabbingZipLine = false;
+	Vector3 zipLineDirection;
+	float zipLineSpeed = 2;
+
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
 	
@@ -220,15 +224,36 @@ public class OVRPlayerController : MonoBehaviour
 			Controller.enabled = false;
 			HmdRotatesY = false;
 
-			isGrabbing = true;
+			isGrabbingHandle = true;
 		}
 		else
 		{
 			Controller.enabled = true;
 			HmdRotatesY = true;
-			isGrabbing = false;
+			isGrabbingHandle = false;
 		}
     }
+
+	public void SetGrabbingZipLine(bool state, Vector3 moveDirection)
+    {
+		zipLineDirection = moveDirection;
+
+		if (state == true)
+		{
+			Controller.enabled = false;
+			HmdRotatesY = false;
+
+			isGrabbingZipLine = true;
+			
+		}
+		else
+		{
+			Controller.enabled = true;
+			HmdRotatesY = true;
+
+			isGrabbingZipLine = false;
+		}
+	}
 	
 
 	void Start()
@@ -306,10 +331,10 @@ public class OVRPlayerController : MonoBehaviour
 
 		//Handle jumping
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
-			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !isGrabbing) Jump();
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !isGrabbingHandle) Jump();
 
 		//Handle grabbing and climbing
-		if (isGrabbing)
+		if (isGrabbingHandle)
 		{
 			Vector3 HandAnchorLocalDeltaPosition = new Vector3(0, 0, 0);
 
@@ -328,6 +353,12 @@ public class OVRPlayerController : MonoBehaviour
 								  CameraRigAnchor.transform.up * HandAnchorLocalDeltaPosition.y +
 								  CameraRigAnchor.transform.forward * HandAnchorLocalDeltaPosition.z));
 		}
+
+		//Handle ZipLine transportation
+		if (isGrabbingZipLine)
+        {
+			transform.position += zipLineDirection * zipLineSpeed * Time.deltaTime;
+        }
 
 	}
 

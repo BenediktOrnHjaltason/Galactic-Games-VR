@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 1863821779100106065}
   - component: {fileID: 1937985580857373403}
   - component: {fileID: 6093205794958366076}
-  m_Layer: 8
+  - component: {fileID: 488874049465144367}
+  m_Layer: 13
   m_Name: PF_TransportLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,3 +111,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &488874049465144367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205585418577007493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d268fd71f4a7a745a9a370c13c55da9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

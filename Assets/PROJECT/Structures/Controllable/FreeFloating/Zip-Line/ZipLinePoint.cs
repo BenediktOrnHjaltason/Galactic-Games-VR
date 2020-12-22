@@ -15,6 +15,7 @@ public class ZipLinePoint : MonoBehaviour
     GameObject otherPoint;
 
     GameObject transportLine;
+    ZipLineTransport zipLineTransport;
 
     Vector3 startToEnd;
 
@@ -25,7 +26,11 @@ public class ZipLinePoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (point == EZipLine.START) transportLine = Instantiate<GameObject>(PF_TransportLine, transform.position, transform.rotation);   
+        if (point == EZipLine.START)
+        {
+            transportLine = Instantiate<GameObject>(PF_TransportLine, transform.position, transform.rotation);
+            zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
+        }
     }
 
     void Update()
@@ -33,6 +38,7 @@ public class ZipLinePoint : MonoBehaviour
         if (point == EZipLine.START)
         {
             startToEnd = otherPoint.transform.position - transform.position;
+            zipLineTransport.TransportDirection = transform.forward;
 
             if (Vector3.Dot(startToEnd.normalized, transform.forward) > 0.96f && Vector3.Dot(-startToEnd.normalized, otherPoint.transform.forward) > 0.96f)
             {
