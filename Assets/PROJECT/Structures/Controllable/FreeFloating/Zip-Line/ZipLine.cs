@@ -18,6 +18,8 @@ public class ZipLine : MonoBehaviour
 
     Vector3 startToEnd;
 
+    RaycastHit structureHit;
+
 
 
     // Start is called before the first frame update
@@ -26,15 +28,23 @@ public class ZipLine : MonoBehaviour
         if (point == EZipLine.START) transportLine = Instantiate<GameObject>(PF_TransportLine, transform.position, transform.rotation);   
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (point == EZipLine.START)
         {
             startToEnd = otherPoint.transform.position - transform.position;
 
-            transportLine.transform.SetPositionAndRotation(transform.position + (startToEnd / 2), Quaternion.LookRotation(startToEnd));
-            transportLine.transform.localScale = new Vector3(0.25f, 0.25f, startToEnd.magnitude); 
+            if (Vector3.Dot(startToEnd.normalized, transform.forward) > 0.96f && Vector3.Dot(-startToEnd.normalized, otherPoint.transform.forward) > 0.96f)
+            {
+                transportLine.transform.SetPositionAndRotation(transform.position + (startToEnd / 2), Quaternion.LookRotation(startToEnd));
+                transportLine.transform.localScale = new Vector3(0.25f, 0.25f, startToEnd.magnitude);
+            }
+
+            else
+            {
+                transportLine.transform.position = transform.position;
+                transportLine.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+            }
         }
     }
 }

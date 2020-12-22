@@ -133,7 +133,6 @@ public class Hand : MonoBehaviour
 
         if (other.gameObject.layer.Equals(layer_GrabHandle))
         {
-
             if (shouldRelease) 
             {
                 shouldRelease = false;

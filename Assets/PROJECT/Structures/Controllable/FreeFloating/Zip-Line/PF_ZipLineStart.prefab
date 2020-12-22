@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 2942585765770432601}
   - component: {fileID: 3522413166857965533}
   m_Layer: 10
-  m_Name: Cube
+  m_Name: StartCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -396,7 +396,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   point: 0
-  PF_TransportLine: {fileID: 0}
+  PF_TransportLine: {fileID: 205585418577007493, guid: 13cbd56b0803a7b4182ce09c6b53f5b1,
+    type: 3}
   otherPoint: {fileID: 0}
 --- !u!1 &8698317144365214579
 GameObject:
