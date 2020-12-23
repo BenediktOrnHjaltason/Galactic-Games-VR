@@ -176,7 +176,7 @@ public class OVRPlayerController : MonoBehaviour
 	bool isGrabbingHandle = false;
 	bool isGrabbingZipLine = false;
 	Vector3 zipLineDirection;
-	float zipLineSpeed = 2;
+	float zipLineSpeed = 0.1f;
 
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;

@@ -38,7 +38,7 @@ public class ZipLinePoint : MonoBehaviour
         if (point == EZipLine.START)
         {
             startToEnd = otherPoint.transform.position - transform.position;
-            zipLineTransport.TransportDirection = transform.forward;
+            zipLineTransport.TransportDirection = startToEnd;
 
             if (Vector3.Dot(startToEnd.normalized, transform.forward) > 0.96f && Vector3.Dot(-startToEnd.normalized, otherPoint.transform.forward) > 0.96f)
             {

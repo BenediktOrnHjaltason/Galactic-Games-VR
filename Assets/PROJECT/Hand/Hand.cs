@@ -40,6 +40,8 @@ public class Hand : MonoBehaviour
     GameObject handle;
     Vector3 offsettToHandleOnGrab;
 
+    Vector3 handOffsettToPlayerControllerOnZipLineGrab;
+
     static Hand leftHand;
     static Hand rightHand;
 
@@ -57,9 +59,11 @@ public class Hand : MonoBehaviour
     /// <summary>
     /// Holding non-gravity-controller-device (Only those need manually syncing with hand when holding)
     /// </summary>
-    bool holdingNonGCHandDevice = false;
+    bool grabbingHandDevice = false;
 
     bool usingHandDevice = false;
+
+    bool grabbingZipLine = false;
     
 
     /// <summary>
@@ -103,8 +107,11 @@ public class Hand : MonoBehaviour
         if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
 
+        //Keeping hand inside ZipLine collider while moving
+        if (grabbingZipLine) transform.position = playerController.transform.position + handOffsettToPlayerControllerOnZipLineGrab;
+
         //Keeping device object attached to hand while holding
-        if (holdingNonGCHandDevice) handDevice.transform.SetPositionAndRotation(transform.position, transform.rotation);
+        if (grabbingHandDevice) handDevice.transform.SetPositionAndRotation(transform.position, transform.rotation);
 
         //Operate handheld device 
         if (handDevice)
@@ -184,6 +191,9 @@ public class Hand : MonoBehaviour
     void GrabZipLine(Vector3 moveDirection)
     {
         playerController.SetGrabbingZipLine(true, moveDirection);
+
+        handOffsettToPlayerControllerOnZipLineGrab = playerController.transform.position - transform.position;
+
     }
 
     void ReleaseZipLine()
@@ -193,7 +203,7 @@ public class Hand : MonoBehaviour
 
     void GrabDevice(GameObject device)
     {
-        holdingNonGCHandDevice = true;
+        grabbingHandDevice = true;
 
         handDevice = device.GetComponent<HandDevice>();
         handDevice.Equip(handSide);
@@ -205,7 +215,7 @@ public class Hand : MonoBehaviour
 
     void DropDevice()
     {
-        holdingNonGCHandDevice = false;
+        grabbingHandDevice = false;
 
         if (handDevice.GetRB()) handDevice.GetRB().useGravity = true;
 
