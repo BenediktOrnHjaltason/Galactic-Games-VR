@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour
     GameObject handle;
     Vector3 offsettToHandleOnGrab;
 
-    Vector3 handOffsettToPlayerControllerOnZipLineGrab;
+    Vector3 handOffsetToPlayerControllerOnZipLineGrab;
 
     static Hand leftHand;
     static Hand rightHand;
@@ -108,7 +108,7 @@ public class Hand : MonoBehaviour
         else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
 
         //Keeping hand inside ZipLine collider while moving
-        if (grabbingZipLine) transform.position = playerController.transform.position + handOffsettToPlayerControllerOnZipLineGrab;
+        if (grabbingZipLine) transform.position = playerController.transform.position + handOffsetToPlayerControllerOnZipLineGrab;
 
         //Keeping device object attached to hand while holding
         if (grabbingHandDevice) handDevice.transform.SetPositionAndRotation(transform.position, transform.rotation);
@@ -192,13 +192,16 @@ public class Hand : MonoBehaviour
     {
         playerController.SetGrabbingZipLine(true, moveDirection);
 
-        handOffsettToPlayerControllerOnZipLineGrab = playerController.transform.position - transform.position;
+        handOffsetToPlayerControllerOnZipLineGrab = transform.position - playerController.transform.position;
 
+        grabbingZipLine = true;
     }
 
     void ReleaseZipLine()
     {
         playerController.SetGrabbingZipLine(false, new Vector3(0, 0, 0));
+
+        grabbingZipLine = false;
     }
 
     void GrabDevice(GameObject device)
