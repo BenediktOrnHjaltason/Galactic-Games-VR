@@ -174,9 +174,7 @@ public class Hand : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (grabbingZipLine && other.gameObject.layer.Equals(layer_ZipLineHandle))
-        {
             ReleaseZipLine();
-        }
     }
 
     void GrabHandle(GameObject handle)
