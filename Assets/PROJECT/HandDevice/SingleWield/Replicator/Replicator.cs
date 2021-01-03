@@ -68,6 +68,13 @@ public class Replicator : HandDevice
             if (structureDuplicate)
             {
                 structureDuplicate.GetComponent<Collider>().enabled = true;
+
+                //Networking, making structures available again
+                structureDuplicate.GetComponent<Availability>().Available = true;
+                structureHit.collider.gameObject.GetComponent<Availability>().Available = true;
+
+
+
                 structureDuplicate = null;
 
                 allowedReplicates--;
@@ -90,11 +97,16 @@ public class Replicator : HandDevice
         {
             beam.SetLines(mode);
 
-            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
+            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10) &&
+                structureHit.collider.gameObject.GetComponent<Availability>().Available)
             {
                 structureDuplicate = Instantiate<GameObject>(structureHit.collider.gameObject, 
                                                              structureHit.collider.gameObject.transform.position,
                                                              structureHit.collider.gameObject.transform.rotation);
+
+                structureHit.collider.gameObject.GetComponent<Availability>().Available = false;
+                structureDuplicate.GetComponent<Availability>().Available = false;
+
 
                 structureDuplicateRB = structureDuplicate.GetComponent<Rigidbody>();
 

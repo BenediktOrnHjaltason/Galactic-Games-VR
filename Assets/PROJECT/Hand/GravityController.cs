@@ -68,6 +68,10 @@ public class GravityController : HandDevice
         {
             mode = EControlBeamMode.IDLE;
             SetVisuals(mode);
+
+            if (structure) structure.GetComponent<Availability>().Available = true;
+
+            structure = null;
         }
 
 
@@ -110,9 +114,14 @@ public class GravityController : HandDevice
         {
             beam.SetLines(mode);
 
-            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
+            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10) && 
+                structureHit.collider.gameObject.GetComponent<Availability>().Available)
             {
                 structure  = structureHit.collider.gameObject;
+
+                //Networking (Making sure no-one else can manipulate structure at the same time)
+                structure.GetComponent<Availability>().Available = false;
+
                 beam.SetStructureTransform(structure.transform);
 
                 structureRB = structure.GetComponent<Rigidbody>();

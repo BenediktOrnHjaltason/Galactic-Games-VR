@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 2051751053131769992}
   - component: {fileID: 8180766655789077863}
   - component: {fileID: 4082380582137257927}
+  - component: {fileID: 7378535293471794675}
+  - component: {fileID: 6327185613154228526}
   m_Layer: 10
   m_Name: structure
   m_TagString: Untagged
@@ -123,6 +125,40 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &7378535293471794675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242280488001141065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _realtime: {fileID: 0}
+  _sceneViewUUID: 
+  _viewUUID: 
+  _sceneViewPreventOwnershipTakeover: 0
+  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
+  _isRootPrefabView: 1
+  _components:
+  - componentID: 1
+    component: {fileID: 6327185613154228526}
+  _childViews: []
+--- !u!114 &6327185613154228526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242280488001141065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25de0a70819bd4942a669a65ad6b5721, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2716689633023306382
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,7 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2794407669518083}
   m_Layer: 9
-  m_Name: PF_Structure_FreeFloating
+  m_Name: PF_Platform_FreeFloating
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
