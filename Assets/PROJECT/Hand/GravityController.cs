@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
+using Normal.Realtime;
 
 public class GravityController : HandDevice
 {
@@ -69,7 +70,13 @@ public class GravityController : HandDevice
             mode = EControlBeamMode.IDLE;
             SetVisuals(mode);
 
-            if (structure) structure.GetComponent<Availability>().Available = true;
+            if (structure)
+            {
+                structure.GetComponent<Availability>().Available = true;
+                structure.GetComponent<RealtimeTransform>().ClearOwnership();
+                Debug.Log("GravityController: Released structure. OwnershipID is now " + structure.GetComponent<RealtimeView>().ownerIDSelf);
+
+            }
 
             structure = null;
         }
@@ -115,12 +122,18 @@ public class GravityController : HandDevice
             beam.SetLines(mode);
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10) && 
-                structureHit.collider.gameObject.GetComponent<Availability>().Available)
+                structureHit.collider.gameObject.GetComponent<RealtimeView>().ownerIDSelf == -1)
             {
                 structure  = structureHit.collider.gameObject;
 
                 //Networking (Making sure no-one else can manipulate structure at the same time)
                 structure.GetComponent<Availability>().Available = false;
+
+
+                RealtimeTransform rtt = structure.GetComponent<RealtimeTransform>();
+                rtt.RequestOwnership();
+
+                Debug.Log("GravityController: Locked onto structure. OwnerID is now " + rtt.ownerIDSelf);
 
                 beam.SetStructureTransform(structure.transform);
 
