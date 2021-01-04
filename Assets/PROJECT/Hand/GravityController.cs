@@ -69,16 +69,6 @@ public class GravityController : HandDevice
         {
             mode = EControlBeamMode.IDLE;
             SetVisuals(mode);
-
-            if (structure)
-            {
-                structure.GetComponent<Availability>().Available = true;
-                structure.GetComponent<RealtimeTransform>().ClearOwnership();
-                Debug.Log("GravityController: Released structure. OwnershipID is now " + structure.GetComponent<RealtimeView>().ownerIDSelf);
-
-            }
-
-            structure = null;
         }
 
 
@@ -168,6 +158,17 @@ public class GravityController : HandDevice
         }
 
         return true;
+    }
+
+    private void FixedUpdate()
+    {
+        if (mode == EControlBeamMode.IDLE && structureRB && structureRB.velocity == new Vector3(0,0,0))
+        {
+            structure.GetComponent<RealtimeTransform>().ClearOwnership();
+
+            structure = null;
+            structureRB = null;
+        }
     }
 
     Vector3 CalculateControlForce()
