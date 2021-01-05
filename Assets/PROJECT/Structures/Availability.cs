@@ -43,6 +43,10 @@ public class Availability : RealtimeComponent<Availability_Model>
         available = model.available;
     }
 
+    /// <summary>
+    /// Available to being moved (Depends on someone is standing on it or not)
+    /// </summary>
+
     public bool Available
     {
         set

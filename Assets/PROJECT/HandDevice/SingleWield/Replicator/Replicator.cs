@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Types;
 using TMPro;
+using Normal.Realtime;
 
 public class Replicator : HandDevice
 {
@@ -18,6 +19,8 @@ public class Replicator : HandDevice
 
     [SerializeField]
     TextMeshPro UICounter;
+
+    Realtime realtime;
 
     ControllingBeam beam;
 
@@ -46,6 +49,8 @@ public class Replicator : HandDevice
 
         UICounter = GetComponentInChildren<TextMeshPro>();
         UICounter.text = allowedReplicates.ToString();
+
+        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
 
 
@@ -97,25 +102,35 @@ public class Replicator : HandDevice
         {
             beam.SetLines(mode);
 
-            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10) &&
-                structureHit.collider.gameObject.GetComponent<Availability>().Available)
+            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                structureDuplicate = Instantiate<GameObject>(structureHit.collider.gameObject, 
-                                                             structureHit.collider.gameObject.transform.position,
-                                                             structureHit.collider.gameObject.transform.rotation);
+                //structureDuplicate = Instantiate<GameObject>(structureHit.collider.gameObject, 
+                //structureHit.collider.gameObject.transform.position,
+                //structureHit.collider.gameObject.transform.rotation);
 
-                structureHit.collider.gameObject.GetComponent<Availability>().Available = false;
-                structureDuplicate.GetComponent<Availability>().Available = false;
+                structureDuplicate = Realtime.Instantiate("PF_Platform_Square_Freefloating",
+                                                          ownedByClient: true,
+                                                          preventOwnershipTakeover: false,
+                                                          destroyWhenOwnerOrLastClientLeaves: true,
+                                                          useInstance: realtime);
 
+                structureDuplicate.GetComponentInChildren<RealtimeTransform>().RequestOwnership();
+                structureDuplicate.GetComponent<Collider>().enabled = false;
+
+
+                structureDuplicate.transform.position = structureHit.collider.gameObject.transform.position;
+                structureDuplicate.transform.rotation = structureHit.collider.gameObject.transform.rotation;
+                
 
                 structureDuplicateRB = structureDuplicate.GetComponent<Rigidbody>();
 
-                structureDuplicate.GetComponent<Collider>().enabled = false;
+                
                 beam.SetStructureTransform(structureDuplicate.transform);
 
 
                 mode = EControlBeamMode.CONTROLLING;
                 beam.SetVisuals(mode);
+                
             }
         }
 
