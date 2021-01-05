@@ -24,6 +24,7 @@ public class GravityController : HandDevice
     RaycastHit structureHit;
     GameObject structure;
     Rigidbody structureRB;
+    Availability structureAvailability;
 
     bool pushingForward;
     bool pushingBackward;
@@ -68,6 +69,11 @@ public class GravityController : HandDevice
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
             mode = EControlBeamMode.IDLE;
+
+            structure = null;
+            structureRB = null;
+            structureAvailability = null;
+
             SetVisuals(mode);
         }
 
@@ -105,25 +111,22 @@ public class GravityController : HandDevice
 
         //************ Operation logic **************//
 
-        
-
         if (mode == EControlBeamMode.SCANNING )
         {
             beam.SetLines(mode);
 
-            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10) && 
-                structureHit.collider.gameObject.GetComponent<RealtimeView>().ownerIDSelf == -1)
+            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                structure  = structureHit.collider.gameObject;
+                structure = structureHit.collider.gameObject;
 
                 //Networking (Making sure no-one else can manipulate structure at the same time)
-                structure.GetComponent<Availability>().Available = false;
+                structureAvailability = structure.GetComponent<Availability>();
 
 
                 RealtimeTransform rtt = structure.GetComponent<RealtimeTransform>();
                 rtt.RequestOwnership();
 
-                Debug.Log("GravityController: Locked onto structure. OwnerID is now " + rtt.ownerIDSelf);
+                //Debug.Log("GravityController: Locked onto structure. OwnerID is now " + rtt.ownerIDSelf);
 
                 beam.SetStructureTransform(structure.transform);
 
@@ -141,34 +144,24 @@ public class GravityController : HandDevice
             beam.SetControlForce(controlForce);
             beam.SetLines(mode);
 
-            
-
-            //Movement
-            structureRB.AddForce(controlForce);
-
-            //Rotation
-            if (rotating_Yaw) structure.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
-
-            else
+            if (structureAvailability.Available)
             {
-                if (rotating_Roll) structure.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
+                //Movement
+                structureRB.AddForce(controlForce);
 
-                if (rotating_Pitch) structure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
+                //Rotation
+                if (rotating_Yaw) structure.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
+
+                else
+                {
+                    if (rotating_Roll) structure.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
+
+                    if (rotating_Pitch) structure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
+                }
             }
         }
 
         return true;
-    }
-
-    private void FixedUpdate()
-    {
-        if (mode == EControlBeamMode.IDLE && structureRB && structureRB.velocity == new Vector3(0,0,0))
-        {
-            structure.GetComponent<RealtimeTransform>().ClearOwnership();
-
-            structure = null;
-            structureRB = null;
-        }
     }
 
     Vector3 CalculateControlForce()
