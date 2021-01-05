@@ -23,11 +23,6 @@ public class UIHandDevice : MonoBehaviour
     bool playerWatching = false;
     float scaleMultiplier = 0;
 
-    private void Awake()
-    {
-        mesh = GetComponent<MeshRenderer>();
-    }
-
 
     public void Operate(EHandSide hand)
     {
@@ -54,6 +49,11 @@ public class UIHandDevice : MonoBehaviour
 
         //Set scale of UI
         transform.localScale = fullScale * scaleMultiplier;
+    }
+
+    public void Initialize()
+    {
+        mesh = GetComponent<MeshRenderer>();
     }
 
     public void Set(HandDeviceUIData data)

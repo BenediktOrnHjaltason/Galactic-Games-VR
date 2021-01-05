@@ -71,12 +71,13 @@ public class Hand : MonoBehaviour
     /// </summary>
     UIHandDevice deviceUI;
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update (1. Awake -> 2. Start)
     void Awake()
     {
         playerController = rootParent.GetComponent<OVRPlayerController>();
         mesh = GetComponent<MeshRenderer>();
         deviceUI = GetComponentInChildren<UIHandDevice>();
+        deviceUI.Initialize();
 
         if (handSide == EHandSide.LEFT)
         {
