@@ -22,7 +22,7 @@ public class GravityController : HandDevice
     ControllingBeam beam;
 
     RaycastHit structureHit;
-    GameObject structure;
+    GameObject structureRoot;
     Rigidbody structureRB;
     Availability structureAvailability;
 
@@ -70,7 +70,7 @@ public class GravityController : HandDevice
         {
             mode = EControlBeamMode.IDLE;
 
-            structure = null;
+            structureRoot = null;
             structureRB = null;
             structureAvailability = null;
 
@@ -117,23 +117,17 @@ public class GravityController : HandDevice
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                structure = structureHit.collider.gameObject;
+                structureRoot = structureHit.collider.gameObject.transform.root.gameObject;
 
                 //Networking (Making sure no-one else can manipulate structure at the same time)
-                structureAvailability = structure.GetComponent<Availability>();
-                RealtimeTransform rtt = structure.GetComponent<RealtimeTransform>();
-
-                if (!structureAvailability && !rtt)
-                {
-                    structureAvailability = structure.GetComponentInParent<Availability>();
-                    rtt = structure.GetComponentInParent<RealtimeTransform>();
-                }
+                structureAvailability = structureRoot.GetComponent<Availability>();
+                RealtimeTransform rtt = structureRoot.GetComponent<RealtimeTransform>();
 
                 rtt.RequestOwnership();
 
-                beam.SetStructureTransform(structure.transform);
+                beam.SetStructureTransform(structureRoot.transform);
 
-                structureRB = structure.GetComponent<Rigidbody>();
+                structureRB = structureRoot.GetComponent<Rigidbody>();
 
                 mode = EControlBeamMode.CONTROLLING;
                 SetVisuals(mode);
@@ -153,13 +147,13 @@ public class GravityController : HandDevice
                 structureRB.AddForce(controlForce);
 
                 //Rotation
-                if (rotating_Yaw) structure.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
+                if (rotating_Yaw) structureRoot.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
 
                 else
                 {
-                    if (rotating_Roll) structure.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
+                    if (rotating_Roll) structureRoot.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
 
-                    if (rotating_Pitch) structure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
+                    if (rotating_Pitch) structureRoot.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
                 }
             }
         }
@@ -169,11 +163,11 @@ public class GravityController : HandDevice
 
     Vector3 CalculateControlForce()
     {
-        distanceToStructure = (transform.position - structure.transform.position).magnitude;
+        distanceToStructure = (transform.position - structureRoot.transform.position).magnitude;
 
         Vector3 adjustedForward = transform.forward * distanceToStructure;
 
-        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structure.transform.position;
+        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureRoot.transform.position;
 
         float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
         forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;

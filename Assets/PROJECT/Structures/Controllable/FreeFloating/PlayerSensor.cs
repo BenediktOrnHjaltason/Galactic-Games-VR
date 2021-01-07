@@ -24,13 +24,14 @@ public class PlayerSensor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        av = GetComponentInParent<Availability>();
-        parentTransform = GetComponentInParent<Transform>();
+        av = transform.root.gameObject.GetComponent<Availability>();
+        parentTransform = transform.root;
     }
 
 
     private void FixedUpdate()
     {
+        /*
         if (playerStandingOnThis != 0)
             av.Available = false;
 
@@ -38,6 +39,7 @@ public class PlayerSensor : MonoBehaviour
 
 
         transform.localScale = CalculateLocalScale();
+        */
 
     }
 
