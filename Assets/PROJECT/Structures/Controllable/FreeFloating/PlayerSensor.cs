@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
 
-public class Structure_FreeFloating : MonoBehaviour
+public class PlayerSensor : MonoBehaviour
 {
     Availability av;
     Transform parentTransform;
