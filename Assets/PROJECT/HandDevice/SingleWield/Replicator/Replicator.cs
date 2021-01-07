@@ -29,7 +29,7 @@ public class Replicator : HandDevice
 
     Rigidbody structureDuplicateRB;
 
-    Collider structureCollider;
+    Collider structureDuplicateCollider;
 
     float distanceToStructure;
 
@@ -77,14 +77,16 @@ public class Replicator : HandDevice
 
             if (structureDuplicate)
             {
-                structureCollider.enabled = true;
-                structureCollider = null;
+                structureDuplicateCollider.enabled = true;
+                structureDuplicateCollider = null;
+
+                structureHit.collider.enabled = true;
 
                 //Networking, making structures available again
                 structureDuplicate.GetComponent<Availability>().Available = true;
-                structureHit.collider.gameObject.GetComponent<Availability>().Available = true;
 
                 structureDuplicate = null;
+                structureDuplicateRB = null;
 
                 allowedReplicates--;
                 UICounter.text = allowedReplicates.ToString();
@@ -108,50 +110,40 @@ public class Replicator : HandDevice
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                //structureDuplicate = Instantiate<GameObject>(structureHit.collider.gameObject, 
-                //structureHit.collider.gameObject.transform.position,
-                //structureHit.collider.gameObject.transform.rotation);
-
-
                 string structureSceneName = structureHit.collider.gameObject.transform.root.name;
 
                 Debug.Log("Replicator: Raw gameObject name: " + structureSceneName);
 
                 for (int i = 0; i < structureSceneName.Length; ++i)
                 {
-                    if (structureSceneName[i] != ' ') structurePrefabName += structureSceneName[i];
+                    if (structureSceneName[i] > 47 ) structurePrefabName += structureSceneName[i];
                     else break;
                 }
 
-                    structureDuplicate = Realtime.Instantiate(structurePrefabName,
-                                                          ownedByClient: true,
-                                                          preventOwnershipTakeover: false,
-                                                          destroyWhenOwnerOrLastClientLeaves: true,
-                                                          useInstance: realtime);
+                structureHit.collider.enabled = false;
+
+                structureDuplicate = Realtime.Instantiate(structurePrefabName,
+                                                      ownedByClient: true,
+                                                      preventOwnershipTakeover: false,
+                                                      destroyWhenOwnerOrLastClientLeaves: true,
+                                                      useInstance: realtime);
 
                 structureSceneName = structurePrefabName = "";
 
-                structureDuplicate.GetComponent<RealtimeTransform>().RequestOwnership();
-
-                structureCollider = structureDuplicate.GetComponent<Collider>();
-
-                if (structureCollider) structureCollider.enabled = false;
-
-                else
-                {
-                    structureCollider = structureDuplicate.GetComponentInChildren<Collider>();
-
-                    if (structureCollider) structureCollider.enabled = false;
-                }
 
 
-                structureDuplicate.transform.position = structureHit.collider.gameObject.transform.position;
-                structureDuplicate.transform.rotation = structureHit.collider.gameObject.transform.rotation;
+                structureDuplicateCollider = structureDuplicate.GetComponentInChildren<Collider>();
+
+                structureDuplicateCollider.enabled = false;
+
+                structureDuplicate.transform.position = structureHit.collider.gameObject.transform.root.position;
+                structureDuplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;
                 
-
                 structureDuplicateRB = structureDuplicate.GetComponent<Rigidbody>();
 
-                
+                structureDuplicate.GetComponent<RealtimeTransform>().RequestOwnership();
+
+
                 beam.SetStructureTransform(structureDuplicate.transform);
 
 
