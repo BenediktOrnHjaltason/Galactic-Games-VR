@@ -121,12 +121,15 @@ public class GravityController : HandDevice
 
                 //Networking (Making sure no-one else can manipulate structure at the same time)
                 structureAvailability = structure.GetComponent<Availability>();
-
-
                 RealtimeTransform rtt = structure.GetComponent<RealtimeTransform>();
-                rtt.RequestOwnership();
 
-                //Debug.Log("GravityController: Locked onto structure. OwnerID is now " + rtt.ownerIDSelf);
+                if (!structureAvailability && !rtt)
+                {
+                    structureAvailability = structure.GetComponentInParent<Availability>();
+                    rtt = structure.GetComponentInParent<RealtimeTransform>();
+                }
+
+                rtt.RequestOwnership();
 
                 beam.SetStructureTransform(structure.transform);
 

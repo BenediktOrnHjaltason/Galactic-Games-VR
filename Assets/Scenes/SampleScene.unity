@@ -667,7 +667,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -797,7 +797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 400006, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1550,7 +1550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2794407669518083, guid: 7971d18729f88e048b4ea13e5a06ccb7, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 2794407669518083, guid: 7971d18729f88e048b4ea13e5a06ccb7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1567,7 +1567,37 @@ PrefabInstance:
     - target: {fileID: 2716689633023306382, guid: 7971d18729f88e048b4ea13e5a06ccb7,
         type: 3}
       propertyPath: m_Name
-      value: PF_Structure_ClimbingWall1
+      value: PF_ClimbingWall1_FreeFloating (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169855130037284998, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 81636496}
+    - target: {fileID: 8169855130037284998, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 7c199585-e2bc-4040-a7c2-d51099b04259
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169855130037284998, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9093809345535170108, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 81636496}
+    - target: {fileID: 9093809345535170108, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 77c5b82e-ed9a-4e60-9ba2-a2037a62f72d
+      objectReference: {fileID: 0}
+    - target: {fileID: 9093809345535170108, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8180766655789077863, guid: 7971d18729f88e048b4ea13e5a06ccb7, type: 3}
@@ -1907,7 +1937,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -2494,7 +2524,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -2686,7 +2716,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -3040,7 +3070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2794407669518083, guid: 7971d18729f88e048b4ea13e5a06ccb7, type: 3}
       propertyPath: m_RootOrder
-      value: 17
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2794407669518083, guid: 7971d18729f88e048b4ea13e5a06ccb7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3057,7 +3087,37 @@ PrefabInstance:
     - target: {fileID: 2716689633023306382, guid: 7971d18729f88e048b4ea13e5a06ccb7,
         type: 3}
       propertyPath: m_Name
-      value: PF_Structure_ClimbingWall1 (1)
+      value: PF_ClimbingWall1_FreeFloating (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169855130037284998, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 81636496}
+    - target: {fileID: 8169855130037284998, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _viewUUID
+      value: a509d6c5-1991-488e-b286-9635178aeb6a
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169855130037284998, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9093809345535170108, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 81636496}
+    - target: {fileID: 9093809345535170108, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _viewUUID
+      value: e284844b-c0b2-4952-8355-5122f20bd7f9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9093809345535170108, guid: 7971d18729f88e048b4ea13e5a06ccb7,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8180766655789077863, guid: 7971d18729f88e048b4ea13e5a06ccb7, type: 3}
@@ -3597,7 +3657,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 15
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -3987,7 +4047,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -4378,7 +4438,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -4655,7 +4715,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -5884,7 +5944,7 @@ PrefabInstance:
     - target: {fileID: 8339970605312860494, guid: 2b5f45bfaa8cf44438a1069665216225,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8339970605312860494, guid: 2b5f45bfaa8cf44438a1069665216225,
         type: 3}
@@ -6254,7 +6314,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
@@ -6873,7 +6933,7 @@ PrefabInstance:
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
         type: 3}

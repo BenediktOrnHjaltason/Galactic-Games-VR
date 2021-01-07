@@ -29,6 +29,8 @@ public class Replicator : HandDevice
 
     Rigidbody structureDuplicateRB;
 
+    Collider structureCollider;
+
     float distanceToStructure;
 
     EControlBeamMode mode = EControlBeamMode.IDLE;
@@ -36,6 +38,9 @@ public class Replicator : HandDevice
     Vector3 controlForce;
 
     OVRInput.Button grabbingControllerIndexTrigger;
+
+    string structureSceneName = "";
+    string structurePrefabName = "";
 
 
     // Start is called before the first frame update
@@ -72,13 +77,12 @@ public class Replicator : HandDevice
 
             if (structureDuplicate)
             {
-                structureDuplicate.GetComponent<Collider>().enabled = true;
+                structureCollider.enabled = true;
+                structureCollider = null;
 
                 //Networking, making structures available again
                 structureDuplicate.GetComponent<Availability>().Available = true;
                 structureHit.collider.gameObject.GetComponent<Availability>().Available = true;
-
-
 
                 structureDuplicate = null;
 
@@ -108,14 +112,37 @@ public class Replicator : HandDevice
                 //structureHit.collider.gameObject.transform.position,
                 //structureHit.collider.gameObject.transform.rotation);
 
-                structureDuplicate = Realtime.Instantiate("PF_Platform_Square_Freefloating",
+
+                string structureSceneName = structureHit.collider.gameObject.transform.root.name;
+
+                Debug.Log("Replicator: Raw gameObject name: " + structureSceneName);
+
+                for (int i = 0; i < structureSceneName.Length; ++i)
+                {
+                    if (structureSceneName[i] != ' ') structurePrefabName += structureSceneName[i];
+                    else break;
+                }
+
+                    structureDuplicate = Realtime.Instantiate(structurePrefabName,
                                                           ownedByClient: true,
                                                           preventOwnershipTakeover: false,
                                                           destroyWhenOwnerOrLastClientLeaves: true,
                                                           useInstance: realtime);
 
-                structureDuplicate.GetComponentInChildren<RealtimeTransform>().RequestOwnership();
-                structureDuplicate.GetComponent<Collider>().enabled = false;
+                structureSceneName = structurePrefabName = "";
+
+                structureDuplicate.GetComponent<RealtimeTransform>().RequestOwnership();
+
+                structureCollider = structureDuplicate.GetComponent<Collider>();
+
+                if (structureCollider) structureCollider.enabled = false;
+
+                else
+                {
+                    structureCollider = structureDuplicate.GetComponentInChildren<Collider>();
+
+                    if (structureCollider) structureCollider.enabled = false;
+                }
 
 
                 structureDuplicate.transform.position = structureHit.collider.gameObject.transform.position;
