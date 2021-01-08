@@ -125,6 +125,12 @@ public class GravityController : HandDevice
 
                 rtt.RequestOwnership();
 
+                //Take ownership of subobjects, if any
+                LocalState ls = structureRoot.GetComponent<LocalState>();
+
+                if (ls) for (int i = 0; i < ls.GetSubObjects().Count; i++) ls.GetSubObjects()[i].GetComponent<RealtimeTransform>().RequestOwnership();
+
+
                 beam.SetStructureTransform(structureRoot.transform);
 
                 structureRB = structureRoot.GetComponent<Rigidbody>();

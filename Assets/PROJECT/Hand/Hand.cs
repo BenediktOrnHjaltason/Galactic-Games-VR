@@ -218,7 +218,7 @@ public class Hand : MonoBehaviour
         handDevice = device.GetComponent<HandDevice>();
         handDevice.Equip(handSide);
 
-        if (handDevice.GetRB()) handDevice.GetRB().useGravity = false;
+        if (handDevice && handDevice.GetRB()) handDevice.GetRB().useGravity = false;
 
         deviceUI.Set(handDevice.GetUIData());
     }
@@ -227,7 +227,7 @@ public class Hand : MonoBehaviour
     {
         grabbingHandDevice = false;
 
-        if (handDevice.GetRB()) handDevice.GetRB().useGravity = true;
+        if (handDevice && handDevice.GetRB()) handDevice.GetRB().useGravity = true;
 
         handDevice = null;
 

@@ -5,7 +5,7 @@ using Normal.Realtime;
 
 public class Availability : RealtimeComponent<Availability_Model>
 {
-    //To make sure only one player can manipulate this object at any given time
+    //To make sure only one player can move this object at any given time
     bool available = true;
 
 
@@ -34,8 +34,6 @@ public class Availability : RealtimeComponent<Availability_Model>
     private void AvailableDidChange(Availability_Model model, bool available)
     {
         UpdateAvailability();
-
-        Debug.Log("Availability on server changed to " + model.available.ToString());
     }
 
     private void UpdateAvailability()
@@ -44,7 +42,7 @@ public class Availability : RealtimeComponent<Availability_Model>
     }
 
     /// <summary>
-    /// Available to being moved (Depends on someone is standing on it or not)
+    /// Available to being moved (Depends if someone is standing on it or not)
     /// </summary>
 
     public bool Available

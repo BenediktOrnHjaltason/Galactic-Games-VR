@@ -110,10 +110,13 @@ public class Replicator : HandDevice
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
+                LocalState ls = structureHit.collider.transform.root.gameObject.GetComponent<LocalState>();
+
+                if (ls && !ls.allowReplicationByGun) return true;
+
                 string structureSceneName = structureHit.collider.gameObject.transform.root.name;
 
-                Debug.Log("Replicator: Raw gameObject name: " + structureSceneName);
-
+                //Extract prefab name 
                 for (int i = 0; i < structureSceneName.Length; ++i)
                 {
                     if (structureSceneName[i] > 47 ) structurePrefabName += structureSceneName[i];
@@ -135,6 +138,8 @@ public class Replicator : HandDevice
                 structureDuplicateCollider = structureDuplicate.GetComponentInChildren<Collider>();
 
                 structureDuplicateCollider.enabled = false;
+
+                //Is the situation that the colliders on this client now is turned off but still turned on for others?
 
                 structureDuplicate.transform.position = structureHit.collider.gameObject.transform.root.position;
                 structureDuplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;

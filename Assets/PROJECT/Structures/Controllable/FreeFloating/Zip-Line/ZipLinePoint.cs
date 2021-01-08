@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
+using Normal.Realtime;
 
 public class ZipLinePoint : MonoBehaviour
 {
@@ -21,21 +22,22 @@ public class ZipLinePoint : MonoBehaviour
 
     RaycastHit structureHit;
 
-
+    Realtime realtime;
 
     // Start is called before the first frame update
     void Start()
     {
         if (point == EZipLine.START)
         {
-            transportLine = Instantiate<GameObject>(PF_TransportLine, transform.position, transform.rotation);
-            zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
+            realtime  = GameObject.Find("Realtime").GetComponent<Realtime>();
+
+            realtime.didConnectToRoom += DidConnectToRoom;
         }
     }
 
     void Update()
     {
-        if (point == EZipLine.START)
+        if (transportLine)
         {
             startToEnd = otherPoint.transform.position - transform.position;
             zipLineTransport.TransportDirection = startToEnd;
@@ -52,5 +54,23 @@ public class ZipLinePoint : MonoBehaviour
                 transportLine.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
             }
         }
+    }
+
+    private void DidConnectToRoom(Realtime realtime)
+    {
+        transportLine = Realtime.Instantiate("PF_TransportLine",
+                                                  ownedByClient: false,
+                                                  preventOwnershipTakeover: false,
+                                                  destroyWhenOwnerOrLastClientLeaves: true,
+                                                  useInstance: GameObject.Find("Realtime").GetComponent<Realtime>());
+
+        GetComponentInParent<LocalState>().AddSubObject(transportLine);
+
+
+
+        transportLine.transform.position = transform.position;
+        transportLine.transform.rotation = transform.rotation;
+
+        zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
     }
 }
