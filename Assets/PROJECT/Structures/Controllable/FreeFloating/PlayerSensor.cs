@@ -25,13 +25,12 @@ public class PlayerSensor : MonoBehaviour
     void Start()
     {
         av = transform.root.gameObject.GetComponent<Availability>();
-        parentTransform = transform.root;
+        parentTransform = transform.GetComponentInParent<Transform>();
     }
 
 
     private void FixedUpdate()
     {
-        /*
         if (playerStandingOnThis != 0)
             av.Available = false;
 
@@ -39,8 +38,6 @@ public class PlayerSensor : MonoBehaviour
 
 
         transform.localScale = CalculateLocalScale();
-        */
-
     }
 
     private void OnTriggerEnter(Collider other)

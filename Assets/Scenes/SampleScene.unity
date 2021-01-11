@@ -3026,6 +3026,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_SquarePlatform1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5218367812891198757, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6812533898452271611, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
       propertyPath: _realtime
@@ -3039,6 +3044,16 @@ PrefabInstance:
     - target: {fileID: 6812533898452271611, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
       propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8292397132476426010, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8292397132476426010, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
+        type: 3}
+      propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
