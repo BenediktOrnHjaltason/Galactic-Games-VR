@@ -64,7 +64,7 @@ public class ZipLinePoint : MonoBehaviour
                                                   destroyWhenOwnerOrLastClientLeaves: true,
                                                   useInstance: GameObject.Find("Realtime").GetComponent<Realtime>());
 
-        GetComponentInParent<LocalState>().AddSubObject(transportLine);
+        GetComponentInParent<StructureLocal>().AddSubObject(transportLine);
 
 
 

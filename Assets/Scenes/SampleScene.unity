@@ -5166,6 +5166,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2471847643091112689, guid: 1f61f675aae964d49998a24682196f4b,
+        type: 3}
+      propertyPath: _components.Array.data[1].componentID
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3522413166857965533, guid: 1f61f675aae964d49998a24682196f4b,
         type: 3}
       propertyPath: otherPoint
@@ -6840,6 +6845,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _isRootPrefabView
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2692776365960223991, guid: 886cf32802b616844a1759ef202a930c,
+        type: 3}
+      propertyPath: _components.Array.data[1].componentID
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6101328909073455630, guid: 886cf32802b616844a1759ef202a930c,
         type: 3}

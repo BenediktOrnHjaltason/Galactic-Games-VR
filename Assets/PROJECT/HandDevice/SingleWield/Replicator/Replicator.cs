@@ -24,12 +24,12 @@ public class Replicator : HandDevice
 
     ControllingBeam beam;
 
-    RaycastHit structureHit;
+    //References specific for Replicator (Common references are in base class)
     GameObject structureDuplicate;
-
     Rigidbody structureDuplicateRB;
-
     Collider structureDuplicateCollider;
+
+
 
     float distanceToStructure;
 
@@ -58,7 +58,7 @@ public class Replicator : HandDevice
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
 
-
+    ///Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
     public override bool Using()
     {
         //************ Manage input **************//
@@ -74,6 +74,7 @@ public class Replicator : HandDevice
         else if (OVRInput.GetUp(grabbingControllerIndexTrigger))
         {
             mode = EControlBeamMode.IDLE;
+            beam.SetLines(mode);
 
             if (structureDuplicate)
             {
@@ -83,20 +84,18 @@ public class Replicator : HandDevice
                 structureHit.collider.enabled = true;
 
                 //Networking, making structures available again
-                structureDuplicate.GetComponent<Availability>().Available = true;
+                structureDuplicate.GetComponent<StructureSync>().AvailableToManipulate = true;
 
                 structureDuplicate = null;
                 structureDuplicateRB = null;
 
+                
+
                 allowedReplicates--;
                 UICounter.text = allowedReplicates.ToString();
+
+                //MakeTargetReferencesNull();
             }
-        }
-
-
-        if (mode == EControlBeamMode.IDLE)
-        {
-            beam.SetLines(mode);
 
             return false;
         }
@@ -110,11 +109,13 @@ public class Replicator : HandDevice
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                LocalState ls = structureHit.collider.transform.root.gameObject.GetComponent<LocalState>();
 
-                if (ls && !ls.allowReplicationByGun) return true;
+                if (!ValidateRelevantState(structureHit.collider.transform.root.gameObject)) return true;
+                
 
-                string structureSceneName = structureHit.collider.gameObject.transform.root.name;
+                structureSync.AvailableToManipulate = false;
+
+                structureSceneName = structureHit.collider.gameObject.transform.root.name;
 
                 //Extract prefab name 
                 for (int i = 0; i < structureSceneName.Length; ++i)
@@ -140,6 +141,7 @@ public class Replicator : HandDevice
                 structureDuplicateCollider.enabled = false;
 
                 //Is the situation that the colliders on this client now is turned off but still turned on for others?
+                //Possibly since only this client has ownership, they will not move at all on the other clients while separating clone.
 
                 structureDuplicate.transform.position = structureHit.collider.gameObject.transform.root.position;
                 structureDuplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;
@@ -156,6 +158,8 @@ public class Replicator : HandDevice
                 beam.SetVisuals(mode);
                 
             }
+
+            return true;
         }
 
         else if (mode == EControlBeamMode.CONTROLLING)
@@ -168,7 +172,20 @@ public class Replicator : HandDevice
             //Movement
             structureDuplicateRB.AddForce(controlForce.normalized * 2);
 
+            return true;
         }
+
+        return false;
+    }
+
+    //Validate state relevant to Replicator
+    protected override bool ValidateRelevantState(GameObject target)
+    {
+        GetStateReferencesFromTarget(target);
+
+        if (structureLocal && !structureLocal.AllowReplicationByRGun) return false;
+
+        if (structureSync && !structureSync.AvailableToManipulate) return false;
 
         return true;
     }

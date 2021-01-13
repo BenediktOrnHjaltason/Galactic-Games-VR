@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocalState : MonoBehaviour
+public class StructureLocal : MonoBehaviour
 {
-
     /*
     The purpose of this script is to hold variables that will never be neccessary to sync to other clients
     */
+
+
+    [SerializeField]
+    bool allowReplicationByRGun;
+
+    public bool AllowReplicationByRGun { get => allowReplicationByRGun; }
+
 
     /// <summary>
     /// referenses to networked objects that belong to a parent,
@@ -26,11 +32,5 @@ public class LocalState : MonoBehaviour
     {
         subObjects.Add(objectToAdd);
     }
-
-    /// <summary>
-    /// Determines if object is allowed to be duplicated by Replicator gun
-    /// </summary>
-
-    public bool allowReplicationByGun;
 
 }

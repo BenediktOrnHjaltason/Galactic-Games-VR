@@ -21,10 +21,7 @@ public class GravityController : HandDevice
 
     ControllingBeam beam;
 
-    RaycastHit structureHit;
-    GameObject structureRoot;
-    Rigidbody structureRB;
-    Availability structureAvailability;
+    Rigidbody targetStructureRB;
 
     bool pushingForward;
     bool pushingBackward;
@@ -52,6 +49,8 @@ public class GravityController : HandDevice
         beam.SetMaterialReferences(ActiveMaterial, InactiveMaterial);
     }
 
+
+    //Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
     public override bool Using() 
     {
         //************ Manage input **************//
@@ -68,18 +67,11 @@ public class GravityController : HandDevice
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
+            if (structureSync && mode == EControlBeamMode.CONTROLLING) structureSync.AvailableToManipulate = true;
+
             mode = EControlBeamMode.IDLE;
 
-            structureRoot = null;
-            structureRB = null;
-            structureAvailability = null;
-
             SetVisuals(mode);
-        }
-
-
-        if (mode == EControlBeamMode.IDLE)
-        {
             beam.SetLines(mode);
 
             return false;
@@ -117,28 +109,32 @@ public class GravityController : HandDevice
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                structureRoot = structureHit.collider.gameObject.transform.root.gameObject;
 
-                //Networking (Making sure no-one else can manipulate structure at the same time)
-                structureAvailability = structureRoot.GetComponent<Availability>();
-                RealtimeTransform rtt = structureRoot.GetComponent<RealtimeTransform>();
+                if (!ValidateRelevantState(structureHit.collider.transform.root.gameObject)) return true;
+                
+                structureSync.AvailableToManipulate = false;
+
+                targetStructureRB = targetStructure.GetComponent<Rigidbody>();
+
+                //---- Networking
+                RealtimeTransform rtt = targetStructure.GetComponent<RealtimeTransform>();
 
                 rtt.RequestOwnership();
 
-                //Take ownership of subobjects, if any
-                LocalState ls = structureRoot.GetComponent<LocalState>();
+                if (structureLocal) for (int i = 0; i < structureLocal.GetSubObjects().Count; i++) 
+                                        structureLocal.GetSubObjects()[i].GetComponent<RealtimeTransform>().RequestOwnership();
+                //----//
 
-                if (ls) for (int i = 0; i < ls.GetSubObjects().Count; i++) ls.GetSubObjects()[i].GetComponent<RealtimeTransform>().RequestOwnership();
-
-
-                beam.SetStructureTransform(structureRoot.transform);
-
-                structureRB = structureRoot.GetComponent<Rigidbody>();
+                beam.SetStructureTransform(targetStructure.transform);
 
                 mode = EControlBeamMode.CONTROLLING;
                 SetVisuals(mode);
                 beam.SetVisuals(mode);
+
+                return true;
             }
+
+            return true;
         }
 
         else if (mode == EControlBeamMode.CONTROLLING)
@@ -147,33 +143,48 @@ public class GravityController : HandDevice
             beam.SetControlForce(controlForce);
             beam.SetLines(mode);
 
-            if (structureAvailability.Available)
+            //Movement
+            targetStructureRB.AddForce(controlForce);
+            
+            //Rotation
+            if (rotating_Yaw) targetStructure.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
+            
+            else
             {
-                //Movement
-                structureRB.AddForce(controlForce);
-
-                //Rotation
-                if (rotating_Yaw) structureRoot.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
-
-                else
-                {
-                    if (rotating_Roll) structureRoot.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
-
-                    if (rotating_Pitch) structureRoot.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
-                }
+                if (rotating_Roll) targetStructure.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
+            
+                if (rotating_Pitch) targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
             }
+
+            return true;
         }
+
+        return false;
+    }
+
+    //Validate state relevant to GravityController
+    protected override bool ValidateRelevantState(GameObject target)
+    {
+        GetStateReferencesFromTarget(target);
+
+        if (!structureSync)
+        {
+            Debug.LogWarning(targetStructure.name + " does not have a structureSync component, and you're trying to use the GravityController on it");
+            return false;
+        }
+
+        if (structureSync && structureSync.PlayersOccupying > 0) return false;
 
         return true;
     }
 
     Vector3 CalculateControlForce()
     {
-        distanceToStructure = (transform.position - structureRoot.transform.position).magnitude;
+        distanceToStructure = (transform.position - targetStructure.transform.position).magnitude;
 
         Vector3 adjustedForward = transform.forward * distanceToStructure;
 
-        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureRoot.transform.position;
+        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - targetStructure.transform.position;
 
         float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
         forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;

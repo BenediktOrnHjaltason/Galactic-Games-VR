@@ -5,10 +5,9 @@ using Normal.Realtime;
 
 public class PlayerSensor : MonoBehaviour
 {
-    Availability av;
+    StructureSync structureSync;
     Transform parentTransform;
 
-    int playerStandingOnThis = 0;
     int layer_Player = 14;
     Vector3 up = new Vector3(0,1,0);
 
@@ -24,19 +23,13 @@ public class PlayerSensor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        av = transform.root.gameObject.GetComponent<Availability>();
+        structureSync = transform.root.gameObject.GetComponent<StructureSync>();
         parentTransform = transform.GetComponentInParent<Transform>();
     }
 
 
     private void FixedUpdate()
     {
-        if (playerStandingOnThis != 0)
-            av.Available = false;
-
-        else av.Available = true;
-
-
         transform.localScale = CalculateLocalScale();
     }
 
@@ -44,7 +37,7 @@ public class PlayerSensor : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(layer_Player))
         {
-            ++playerStandingOnThis;
+            structureSync.PlayersOccupying = structureSync.PlayersOccupying + 1;
         }
     }
 
@@ -52,9 +45,7 @@ public class PlayerSensor : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(layer_Player))
         {
-            --playerStandingOnThis;
-
-            if (playerStandingOnThis < 0) playerStandingOnThis = 0;
+            structureSync.PlayersOccupying = structureSync.PlayersOccupying - 1;
         }
     }
 
