@@ -32,8 +32,8 @@ public abstract class HandDevice : MonoBehaviour
 
     protected void GetStateReferencesFromTarget(GameObject target)
     {
-        //If this object is not the last one we aimed at, get it's state references, if any
-        //(Keeping down use of GetComponent<> for objects that will be disregarded anyway, when contiunally beaming them)
+        //If it's the same as last time, we still have the references
+
         if (targetStructure != target)
         {
             targetStructure = target;

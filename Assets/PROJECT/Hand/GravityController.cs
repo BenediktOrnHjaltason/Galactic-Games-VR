@@ -77,6 +77,8 @@ public class GravityController : HandDevice
             return false;
         }
 
+        else if (mode == EControlBeamMode.IDLE) return false;
+
 
         if (OVRInput.GetDown(OVRInput.Button.One))
             pushingBackward = true;

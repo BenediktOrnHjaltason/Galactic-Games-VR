@@ -27,9 +27,8 @@ public class Replicator : HandDevice
     //References specific for Replicator (Common references are in base class)
     GameObject structureDuplicate;
     Rigidbody structureDuplicateRB;
-    Collider structureDuplicateCollider;
 
-
+    StructureSync duplicateStructureSync;
 
     float distanceToStructure;
 
@@ -78,28 +77,26 @@ public class Replicator : HandDevice
 
             if (structureDuplicate)
             {
-                structureDuplicateCollider.enabled = true;
-                structureDuplicateCollider = null;
-
-                structureHit.collider.enabled = true;
-
                 //Networking, making structures available again
-                structureDuplicate.GetComponent<StructureSync>().AvailableToManipulate = true;
+                structureSync.CollisionEnabled = true;
+                structureSync.AvailableToManipulate = true;
+
+                duplicateStructureSync.CollisionEnabled = true;
+                duplicateStructureSync.AvailableToManipulate = true;
+
+                //duplicateStructureSync.CollisionEnabled = true;
 
                 structureDuplicate = null;
                 structureDuplicateRB = null;
 
-                
-
                 allowedReplicates--;
                 UICounter.text = allowedReplicates.ToString();
-
-                //MakeTargetReferencesNull();
             }
 
             return false;
         }
 
+        else if (mode == EControlBeamMode.IDLE) return false;
 
         //************ Operation logic **************//
 
@@ -109,11 +106,9 @@ public class Replicator : HandDevice
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-
                 if (!ValidateRelevantState(structureHit.collider.transform.root.gameObject)) return true;
-                
 
-                structureSync.AvailableToManipulate = false;
+                
 
                 structureSceneName = structureHit.collider.gameObject.transform.root.name;
 
@@ -124,7 +119,10 @@ public class Replicator : HandDevice
                     else break;
                 }
 
-                structureHit.collider.enabled = false;
+                targetStructure.GetComponent<RealtimeTransform>().RequestOwnership();
+
+                structureSync.AvailableToManipulate = false;
+                structureSync.CollisionEnabled = false;
 
                 structureDuplicate = Realtime.Instantiate(structurePrefabName,
                                                       ownedByClient: true,
@@ -132,16 +130,11 @@ public class Replicator : HandDevice
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: realtime);
 
-                structureSceneName = structurePrefabName = "";
 
+                duplicateStructureSync = structureDuplicate.GetComponent<StructureSync>();
 
-
-                structureDuplicateCollider = structureDuplicate.GetComponentInChildren<Collider>();
-
-                structureDuplicateCollider.enabled = false;
-
-                //Is the situation that the colliders on this client now is turned off but still turned on for others?
-                //Possibly since only this client has ownership, they will not move at all on the other clients while separating clone.
+                duplicateStructureSync.AvailableToManipulate = false;
+                duplicateStructureSync.CollisionEnabled = false;
 
                 structureDuplicate.transform.position = structureHit.collider.gameObject.transform.root.position;
                 structureDuplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;
@@ -150,13 +143,12 @@ public class Replicator : HandDevice
 
                 structureDuplicate.GetComponent<RealtimeTransform>().RequestOwnership();
 
-
                 beam.SetStructureTransform(structureDuplicate.transform);
-
 
                 mode = EControlBeamMode.CONTROLLING;
                 beam.SetVisuals(mode);
-                
+
+                structureSceneName = structurePrefabName = "";
             }
 
             return true;
@@ -183,9 +175,10 @@ public class Replicator : HandDevice
     {
         GetStateReferencesFromTarget(target);
 
-        if (structureLocal && !structureLocal.AllowReplicationByRGun) return false;
+        if (!structureLocal || (structureLocal && !structureLocal.AllowReplicationByRGun)) return false;
 
-        if (structureSync && !structureSync.AvailableToManipulate) return false;
+        if (!structureSync || (structureSync && !structureSync.AvailableToManipulate) ||
+            structureSync && structureSync.PlayersOccupying > 0) return false;
 
         return true;
     }

@@ -3064,6 +3064,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_SquarePlatform1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5167297052297541492, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5218367812891198757, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
       propertyPath: m_Enabled
@@ -6855,6 +6860,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_ClimbingWall1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6936411560017119097, guid: 886cf32802b616844a1759ef202a930c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8186177601933765882, guid: 886cf32802b616844a1759ef202a930c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 886cf32802b616844a1759ef202a930c, type: 3}

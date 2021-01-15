@@ -6,41 +6,15 @@ using Normal.Realtime;
 public class StructureSync : RealtimeComponent<StructureSync_Model>
 {
 
-    /// <summary>
-    /// Players standing on or climbing on this structre (Platform, climbing wall etc) 
-    /// </summary>
-    int playersOccupying = 0;
-
-    public int PlayersOccupying 
-    { 
-        get => playersOccupying;
-
-        set
-        {
-            if (value < 0) model.playersOccupying = 0;
-            else model.playersOccupying = value;
-        }
-    }
-
-    /// <summary>
-    /// Is structure available for being moved/rotated/replicated with gun etc? Used to guarantee that only one player
-    /// at a time can manipulate this structure
-    /// </summary>
-    bool availableToManipulate = true;
-
-    public bool AvailableToManipulate { get => availableToManipulate; set => model.availableToManipulate = value; }
+    Collider collision;
 
 
-    private void PlayersOccupyingDidChange(StructureSync_Model model, int playersUsingStructure)
+    private void Awake()
     {
-        UpdatePlayersOccupying();
+        collision = GetComponentInChildren<Collider>();
     }
 
-    private void AvailableToManipulateDidChange(StructureSync_Model model, bool available)
-    {
-        UpdateAvailableToManipulate();
-    }
-
+   
     protected override void OnRealtimeModelReplaced(StructureSync_Model previousModel, StructureSync_Model currentModel)
     {
         if (previousModel != null)
@@ -48,6 +22,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
             // Unregister from events
             previousModel.playersOccupyingDidChange -= PlayersOccupyingDidChange;
             previousModel.availableToManipulateDidChange -= AvailableToManipulateDidChange;
+            previousModel.collisionEnabledDidChange -= CollisionEnabledDidChange;
         }
 
         if (currentModel != null)
@@ -57,25 +32,82 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
             {
                 currentModel.playersOccupying = playersOccupying;
                 currentModel.availableToManipulate = availableToManipulate;
+                currentModel.collisionEnabled = true;
             }
 
             // Update data to match the new model
             UpdatePlayersOccupying();
             UpdateAvailableToManipulate();
+            UpdateCollisionEnabled();
 
             // Register for events so we'll know if data changes later
             currentModel.playersOccupyingDidChange += PlayersOccupyingDidChange;
             currentModel.availableToManipulateDidChange += AvailableToManipulateDidChange;
+            currentModel.collisionEnabledDidChange += CollisionEnabledDidChange;
         }
     }
 
+    /// <summary>
+    /// Players standing on or climbing on this structre (Platform, climbing wall etc) 
+    /// </summary>
+    int playersOccupying = 0;
+
+    public int PlayersOccupying
+    {
+        get => playersOccupying;
+
+        set
+        {
+            if (value < 0) model.playersOccupying = 0;
+            else model.playersOccupying = value;
+        }
+    }
+
+    private void PlayersOccupyingDidChange(StructureSync_Model model, int playersUsingStructure)
+    {
+        UpdatePlayersOccupying();
+    }
     private void UpdatePlayersOccupying()
     {
         playersOccupying = model.playersOccupying;
     }
+    //-----------------
 
+    /// <summary>
+    /// Is structure available for being moved/rotated/replicated with gun etc? Used to guarantee that only one player
+    /// at a time can manipulate this structure
+    /// </summary>
+    bool availableToManipulate = true;
+
+    public bool AvailableToManipulate { get => availableToManipulate; set => model.availableToManipulate = value; }
+
+    private void AvailableToManipulateDidChange(StructureSync_Model model, bool available)
+    {
+        UpdateAvailableToManipulate();
+    }
     private void UpdateAvailableToManipulate()
     {
         availableToManipulate = model.availableToManipulate;
     }
+    //------------------
+
+    public bool CollisionEnabled 
+    { 
+        get => collision.enabled;
+
+        set 
+        { 
+            model.collisionEnabled = value;
+        }
+    }
+
+    private void CollisionEnabledDidChange(StructureSync_Model model, bool enabled)
+    {
+        UpdateCollisionEnabled();
+    }
+    private void UpdateCollisionEnabled()
+    {
+        collision.gameObject.layer = (model.collisionEnabled) ? 10 : 9;
+    }
+    //-------------------
 }
