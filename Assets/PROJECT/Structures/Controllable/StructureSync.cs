@@ -5,13 +5,11 @@ using Normal.Realtime;
 
 public class StructureSync : RealtimeComponent<StructureSync_Model>
 {
-
-    Collider collision;
-
+    GameObject mainStructure;
 
     private void Awake()
     {
-        collision = GetComponentInChildren<Collider>();
+        mainStructure = transform.GetChild(0).gameObject;
     }
 
    
@@ -93,7 +91,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     public bool CollisionEnabled 
     { 
-        get => collision.enabled;
+        get => mainStructure.layer == 10;
 
         set 
         { 
@@ -107,7 +105,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     }
     private void UpdateCollisionEnabled()
     {
-        collision.gameObject.layer = (model.collisionEnabled) ? 10 : 9;
+        mainStructure.layer = (model.collisionEnabled) ? 10 : 9;
     }
     //-------------------
 }
