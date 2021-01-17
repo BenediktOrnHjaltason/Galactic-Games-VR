@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1730248385187369550}
   - component: {fileID: 6794120199372436031}
   - component: {fileID: 275407476846754807}
+  - component: {fileID: 7030524950131357251}
   m_Layer: 8
   m_Name: PF_GrabHandle
   m_TagString: Untagged
@@ -110,3 +111,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &7030524950131357251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012231199776833198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e778f31d336df44a01627c43a91c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

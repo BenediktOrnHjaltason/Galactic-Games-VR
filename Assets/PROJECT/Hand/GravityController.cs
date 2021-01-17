@@ -67,12 +67,7 @@ public class GravityController : HandDevice
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
-            if (structureSync && mode == EControlBeamMode.CONTROLLING) structureSync.AvailableToManipulate = true;
-
-            mode = EControlBeamMode.IDLE;
-
-            SetVisuals(mode);
-            beam.SetLines(mode);
+            ReleaseStructureFromControl();
 
             return false;
         }
@@ -211,6 +206,21 @@ public class GravityController : HandDevice
                 mesh.material = ActiveMaterial;
                 break;
         }
+    }
+
+    void ReleaseStructureFromControl()
+    {
+        if (structureSync && mode == EControlBeamMode.CONTROLLING) structureSync.AvailableToManipulate = true;
+
+        mode = EControlBeamMode.IDLE;
+
+        SetVisuals(mode);
+        beam.SetLines(mode);
+    }
+
+    private void FixedUpdate()
+    {
+        if (mode == EControlBeamMode.CONTROLLING && structureSync.PlayersOccupying > 0) ReleaseStructureFromControl();
     }
 
     public override void Equip(EHandSide hand)
