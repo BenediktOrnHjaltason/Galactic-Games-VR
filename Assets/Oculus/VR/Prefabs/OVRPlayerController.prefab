@@ -236,7 +236,7 @@ MonoBehaviour:
   RotationEitherThumbstick: 0
   LeftHandAnchor: {fileID: 168962}
   RightHandAnchor: {fileID: 134650}
-  CameraRigAnchor: {fileID: 100004}
+  TrackingSpaceAnchor: {fileID: 162066}
 --- !u!114 &11462408
 MonoBehaviour:
   m_ObjectHideFlags: 0

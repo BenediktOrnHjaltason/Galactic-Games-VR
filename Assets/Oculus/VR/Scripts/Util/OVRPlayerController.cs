@@ -162,9 +162,16 @@ public class OVRPlayerController : MonoBehaviour
 	GameObject RightHandAnchor;
 
 	[SerializeField]
-	GameObject CameraRigAnchor;
+	GameObject TrackingSpaceAnchor;
 
 	Transform HandleWorldTransform;
+
+	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
+	GameObject externalAvatarBase;
+	Transform externalLeftHand;
+	Transform externalRightHand;
+	Vector3 externalLeftHandPositionOnGrab;
+	Vector3 externalRightHandPositionOnGrab;
 
 	Vector3 LeftAnchorLocalPosOnGrab;
 	Vector3 RightAnchorLocalPosOnGrab;
@@ -180,6 +187,14 @@ public class OVRPlayerController : MonoBehaviour
 
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
+
+	public void SetExternalHands(bool leftHand, Transform transform, GameObject baseGameObject)
+    {
+		if (leftHand) externalLeftHand = transform;
+		else externalRightHand = transform;
+
+		externalAvatarBase = baseGameObject;
+    }
 	
 	public void RegisterGrabHandleEvent(bool grabbing, int hand, Transform handleTransform = null)
     {
@@ -193,11 +208,17 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (hand == 0)
 		{
+
+			
+
 			grabbing_LeftHand = (grabbing) ? true : false;
 
 			if (grabbing_LeftHand) grabbing_RightHand = false;
 
 			LeftAnchorLocalPosOnGrab = LeftHandAnchor.transform.localPosition;
+			externalLeftHandPositionOnGrab = externalLeftHand.position;
+
+			
 		}
 
 		else if (hand == 1)
@@ -207,6 +228,9 @@ public class OVRPlayerController : MonoBehaviour
 			if (grabbing_RightHand) grabbing_LeftHand = false;
 
 			RightAnchorLocalPosOnGrab = RightHandAnchor.transform.localPosition;
+			externalRightHandPositionOnGrab = externalRightHand.position;
+
+			
 		}
 
 		if (!grabbing_LeftHand && !grabbing_RightHand) SetGrabbing(false);
@@ -215,9 +239,9 @@ public class OVRPlayerController : MonoBehaviour
 
 	public void SetGrabbing(bool state)
     {
-		transform.rotation = Quaternion.Euler(new Vector3(CameraRigAnchor.transform.rotation.eulerAngles.x,
-														  CameraRigAnchor.transform.rotation.eulerAngles.y,
-														  CameraRigAnchor.transform.rotation.eulerAngles.z));
+		//transform.rotation = Quaternion.Euler(new Vector3(CameraRigAnchor.transform.rotation.eulerAngles.x,
+														  //CameraRigAnchor.transform.rotation.eulerAngles.y,
+														  //CameraRigAnchor.transform.rotation.eulerAngles.z));
 
 		if (state == true)
 		{
@@ -333,25 +357,29 @@ public class OVRPlayerController : MonoBehaviour
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
 			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !grabbingHandle && !grabbingZipLine) Jump();
 
+
+		if (externalAvatarBase) externalAvatarBase.transform.rotation = TrackingSpaceAnchor.transform.rotation;
+
 		//Handle grabbing and climbing
 		if (grabbingHandle)
 		{
-			Vector3 HandAnchorLocalDeltaPosition = new Vector3(0, 0, 0);
+
+			
+			Vector3 externalHandWorldPositionDelta = new Vector3(0, 0, 0);
 
 			if (grabbing_LeftHand)
 			{
-				HandAnchorLocalDeltaPosition = LeftAnchorLocalPosOnGrab - LeftHandAnchor.transform.localPosition;
+				externalHandWorldPositionDelta = externalLeftHandPositionOnGrab - externalLeftHand.position;
+
 			}
 
 			else if (grabbing_RightHand)
             {
-				HandAnchorLocalDeltaPosition = RightAnchorLocalPosOnGrab - RightHandAnchor.transform.localPosition;
+				externalHandWorldPositionDelta = externalRightHandPositionOnGrab - externalRightHand.position;
 			}
 
 			transform.position = (HandleWorldTransform.position + PlayerControllerOffsetToHandle +
-								 (CameraRigAnchor.transform.right * HandAnchorLocalDeltaPosition.x +
-								  CameraRigAnchor.transform.up * HandAnchorLocalDeltaPosition.y +
-								  CameraRigAnchor.transform.forward * HandAnchorLocalDeltaPosition.z));
+								 externalHandWorldPositionDelta);
 		}
 
 		//Handle ZipLine transportation

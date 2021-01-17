@@ -28,7 +28,7 @@ public class OvrAvatarHand : OvrAvatarComponent
 
         if (hasComponent)
         {
-            UpdateAvatar(component.renderComponent);
+            //UpdateAvatar(component.renderComponent);
         }
         else
         {

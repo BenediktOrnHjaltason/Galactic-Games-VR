@@ -67,6 +67,8 @@ public class OvrAvatar : MonoBehaviour
     public bool ShowThirdPerson;
     internal ovrAvatarCapabilities Capabilities = ovrAvatarCapabilities.Body;
 
+    OVRPlayerController mainPlayerController;
+
     [Header("Performance")]
 #if UNITY_ANDROID
     [Tooltip(
@@ -425,6 +427,9 @@ public class OvrAvatar : MonoBehaviour
         root = componentObject.AddComponent<T>();
         root.SetOvrAvatarOwner(this);
         AddRenderParts(root, nativeComponent, componentObject.transform);
+
+        if (componentObject.name == "controller_left") mainPlayerController.SetExternalHands(true, componentObject.transform, this.gameObject);
+        else if (componentObject.name == "controller_right") mainPlayerController.SetExternalHands(false, componentObject.transform, this.gameObject);
     }
 
     void UpdateCustomPoses()
@@ -548,6 +553,8 @@ public class OvrAvatar : MonoBehaviour
 
     void Start()
     {
+        mainPlayerController = GameObject.Find("OVRPlayerController").GetComponent<OVRPlayerController>();
+
         if (OvrAvatarSDKManager.Instance == null)
         {
             return;
