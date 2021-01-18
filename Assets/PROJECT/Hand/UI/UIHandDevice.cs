@@ -7,12 +7,9 @@ using Types;
 
 public class UIHandDevice : MonoBehaviour
 {
+    public GameObject handAnchor;
 
-    [SerializeField]
-    GameObject handAnchor;
-
-    [SerializeField]
-    GameObject eyeAnchor;
+    public GameObject eyeAnchor;
 
     Material material;
     Vector3 fullScale;

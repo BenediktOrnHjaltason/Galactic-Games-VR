@@ -10,15 +10,16 @@ public class UIMainHUD : MonoBehaviour
 
     int nextSecond = 1;
 
-    [SerializeField]
-    GameObject leftHandAnchor;
+    
+    public GameObject leftHandAnchor;
 
-    [SerializeField]
-    GameObject eyeAnchor;
+    
+    public GameObject eyeAnchor;
 
     bool playerWatching = false;
 
-    Vector3 fullScale = new Vector3(0.1579223f, 0.4397724f, 0.07973082f);
+    [SerializeField]
+    Vector3 fullScale;
 
     float scaleMultiplier = 0;
 

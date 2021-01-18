@@ -74,8 +74,11 @@ public class Hand : MonoBehaviour
     // Start is called before the first frame update (1. Awake -> 2. Start)
     void Awake()
     {
-        playerController = rootParent.GetComponent<OVRPlayerController>();
-        mesh = GetComponent<MeshRenderer>();
+        playerController = transform.root.GetComponent<OVRPlayerController>();
+
+        if (handSide == EHandSide.LEFT) mesh = transform.GetChild(1).GetComponent<MeshRenderer>();
+        else mesh = GetComponent<MeshRenderer>();
+
         deviceUI = GetComponentInChildren<UIHandDevice>();
         deviceUI.Initialize();
 
@@ -99,6 +102,32 @@ public class Hand : MonoBehaviour
     private void Start()
     {
         otherHand = (handSide == EHandSide.LEFT) ? rightHand : leftHand;
+
+        //Temp
+        if (handSide == EHandSide.RIGHT) rightHand.otherHand = this;
+        
+    }
+
+    public void Initialize(GameObject rootParent, GameObject controllerAnchor, Material defaultColor, Material grabbingColor, OVRPlayerController playerController)
+    {
+        this.playerController = playerController;
+
+        this.rootParent = rootParent;
+        this.controllerAnchor = controllerAnchor;
+        this.defaultColor = defaultColor;
+        this.grabbingColor = grabbingColor;
+
+        if (handSide == EHandSide.LEFT)
+        {
+            UIMainHUD uiMain = this.transform.GetChild(0).GetComponent<UIMainHUD>();
+            uiMain.leftHandAnchor = this.controllerAnchor;
+            uiMain.eyeAnchor = this.transform.root.GetComponent<OVRPlayerController>().EyeAnchor;
+
+            UIHandDevice uiHandDevice = this.transform.GetChild(2).GetComponent<UIHandDevice>();
+
+            uiHandDevice.handAnchor = this.controllerAnchor;
+            uiHandDevice.eyeAnchor = this.transform.root.GetComponent<OVRPlayerController>().EyeAnchor;
+        }
     }
 
     // Update is called once per frame

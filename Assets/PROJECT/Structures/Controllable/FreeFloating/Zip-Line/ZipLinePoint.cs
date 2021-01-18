@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
-using Normal.Realtime;
+using UnityEditor;
 
 public class ZipLinePoint : MonoBehaviour
 {
     [SerializeField]
     EZipLine point;
 
-    [SerializeField]
     GameObject PF_TransportLine;
 
     [SerializeField]
@@ -24,7 +23,9 @@ public class ZipLinePoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PF_TransportLine = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/PROJECT/Structures/Controllable/FreeFloating/Zip-Line/Resources/PF_TransportLine.prefab", typeof(GameObject));
         transportLine = Instantiate<GameObject>(PF_TransportLine, transform);
+       
 
         GetComponentInParent<StructureLocal>().AddSubObject(transportLine);
 

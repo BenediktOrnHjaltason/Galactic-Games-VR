@@ -15,6 +15,7 @@ permissions and limitations under the License.
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Normal.Realtime;
 
 
 /// <summary>
@@ -164,7 +165,14 @@ public class OVRPlayerController : MonoBehaviour
 	[SerializeField]
 	GameObject TrackingSpaceAnchor;
 
+	[SerializeField]
+	GameObject eyeAnchor;
+
+	public GameObject EyeAnchor {get => eyeAnchor;}
+
 	Transform HandleWorldTransform;
+
+	Realtime realtime;
 
 	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
 	GameObject externalAvatarBase;
@@ -172,9 +180,6 @@ public class OVRPlayerController : MonoBehaviour
 	Transform externalRightHand;
 	Vector3 externalLeftHandPositionOnGrab;
 	Vector3 externalRightHandPositionOnGrab;
-
-	Vector3 LeftAnchorLocalPosOnGrab;
-	Vector3 RightAnchorLocalPosOnGrab;
 
 	Vector3 PlayerControllerOffsetToHandle;
 
@@ -187,6 +192,27 @@ public class OVRPlayerController : MonoBehaviour
 
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
+
+
+	public List<GameObject> SpawnAvatar()
+    {
+		List<GameObject> parts = new List<GameObject>();
+
+
+		//Left hand
+		GameObject leftHand = Realtime.Instantiate("PF_Hand_Left", ownedByClient: true,
+													  preventOwnershipTakeover: true,
+													  destroyWhenOwnerOrLastClientLeaves: true,
+													  useInstance: realtime);
+
+		leftHand.transform.SetPositionAndRotation(LeftHandAnchor.transform.position, LeftHandAnchor.transform.rotation);
+		leftHand.transform.parent = LeftHandAnchor.transform;
+		parts.Add(leftHand);
+
+		//Right hand
+
+		return parts;
+    }
 
 	public void SetExternalHands(bool leftHand, Transform transform, GameObject baseGameObject)
     {
@@ -215,7 +241,6 @@ public class OVRPlayerController : MonoBehaviour
 
 			if (grabbing_LeftHand) grabbing_RightHand = false;
 
-			LeftAnchorLocalPosOnGrab = LeftHandAnchor.transform.localPosition;
 			externalLeftHandPositionOnGrab = externalLeftHand.position;
 
 			
@@ -227,10 +252,8 @@ public class OVRPlayerController : MonoBehaviour
 
 			if (grabbing_RightHand) grabbing_LeftHand = false;
 
-			RightAnchorLocalPosOnGrab = RightHandAnchor.transform.localPosition;
 			externalRightHandPositionOnGrab = externalRightHand.position;
 
-			
 		}
 
 		if (!grabbing_LeftHand && !grabbing_RightHand) SetGrabbing(false);
@@ -239,10 +262,6 @@ public class OVRPlayerController : MonoBehaviour
 
 	public void SetGrabbing(bool state)
     {
-		//transform.rotation = Quaternion.Euler(new Vector3(CameraRigAnchor.transform.rotation.eulerAngles.x,
-														  //CameraRigAnchor.transform.rotation.eulerAngles.y,
-														  //CameraRigAnchor.transform.rotation.eulerAngles.z));
-
 		if (state == true)
 		{
 			Controller.enabled = false;
@@ -291,6 +310,7 @@ public class OVRPlayerController : MonoBehaviour
 	void Awake()
 	{
 		Controller = gameObject.GetComponent<CharacterController>();
+		realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
 		if (Controller == null)
 			Debug.LogWarning("OVRPlayerController: No CharacterController attached.");
