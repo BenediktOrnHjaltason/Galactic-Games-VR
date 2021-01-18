@@ -20,22 +20,18 @@ public class ZipLinePoint : MonoBehaviour
 
     Vector3 startToEnd;
 
-    RaycastHit structureHit;
-
-    Realtime realtime;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (point == EZipLine.START)
-        {
-            realtime  = GameObject.Find("Realtime").GetComponent<Realtime>();
+        transportLine = Instantiate<GameObject>(PF_TransportLine, transform);
 
-            realtime.didConnectToRoom += DidConnectToRoom;
-        }
+        GetComponentInParent<StructureLocal>().AddSubObject(transportLine);
+
+        zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (transportLine)
         {
@@ -54,23 +50,5 @@ public class ZipLinePoint : MonoBehaviour
                 transportLine.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
             }
         }
-    }
-
-    private void DidConnectToRoom(Realtime realtime)
-    {
-        transportLine = Realtime.Instantiate("PF_TransportLine",
-                                                  ownedByClient: false,
-                                                  preventOwnershipTakeover: false,
-                                                  destroyWhenOwnerOrLastClientLeaves: true,
-                                                  useInstance: GameObject.Find("Realtime").GetComponent<Realtime>());
-
-        GetComponentInParent<StructureLocal>().AddSubObject(transportLine);
-
-
-
-        transportLine.transform.position = transform.position;
-        transportLine.transform.rotation = transform.rotation;
-
-        zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
     }
 }
