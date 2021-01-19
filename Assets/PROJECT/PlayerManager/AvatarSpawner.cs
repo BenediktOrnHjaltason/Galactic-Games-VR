@@ -39,6 +39,7 @@ public class AvatarSpawner : MonoBehaviour
     {
         playerController = GetComponent<OVRPlayerController>();
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+        torso = new GameObject();
 
         realtime.didConnectToRoom += DidConnectToRoom;
     }
@@ -56,6 +57,8 @@ public class AvatarSpawner : MonoBehaviour
         //2 - Head
 
         //3 - Torso
+
+        GameObject.Destroy(torso);
         torso = parts[3];
         foreach (GameObject go in parts) go.GetComponent<RealtimeTransform>().RequestOwnership();
     }
@@ -64,10 +67,7 @@ public class AvatarSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (torso)
-        {
             torso.transform.rotation = trackingSpaceAnchor.transform.rotation;
             torso.transform.position = eyeAnchor.transform.position + (-eyeAnchor.transform.up * 0.2f);
-        }
     }
 }
