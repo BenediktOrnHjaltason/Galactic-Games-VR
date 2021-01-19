@@ -118,8 +118,12 @@ public class GravityController : HandDevice
 
                 rtt.RequestOwnership();
 
-                if (structureLocal) for (int i = 0; i < structureLocal.GetSubObjects().Count; i++) 
-                                        structureLocal.GetSubObjects()[i].GetComponent<RealtimeTransform>().RequestOwnership();
+                if (structureLocal) for (int i = 0; i < structureLocal.GetSubObjects().Count; i++)
+                {
+                    RealtimeTransform subRtt = structureLocal.GetSubObjects()[i].GetComponent<RealtimeTransform>();
+                    if (subRtt) subRtt.RequestOwnership();
+                }
+                                        
                 //----//
 
                 beam.SetStructureTransform(targetStructure.transform);

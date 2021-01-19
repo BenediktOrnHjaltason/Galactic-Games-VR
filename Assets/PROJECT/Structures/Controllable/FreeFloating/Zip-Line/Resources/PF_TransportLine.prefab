@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 1937985580857373403}
   - component: {fileID: 6093205794958366076}
   - component: {fileID: 488874049465144367}
-  - component: {fileID: 8104312787928296420}
-  - component: {fileID: 4411885352558232004}
   m_Layer: 13
   m_Name: PF_TransportLine
   m_TagString: Untagged
@@ -125,43 +123,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d268fd71f4a7a745a9a370c13c55da9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8104312787928296420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205585418577007493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _realtime: {fileID: 0}
-  _sceneViewUUID: 
-  _viewUUID: 
-  _sceneViewPreventOwnershipTakeover: 0
-  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
-  _isRootPrefabView: 1
-  _components:
-  - componentID: 1
-    component: {fileID: 4411885352558232004}
-  _childViews: []
---- !u!114 &4411885352558232004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205585418577007493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1029778088, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolate: 1
-  _syncPosition: 1
-  _syncRotation: 1
-  _syncScale: 1
-  _syncVelocity: 0
-  _maintainOwnershipWhileSleeping: 1
