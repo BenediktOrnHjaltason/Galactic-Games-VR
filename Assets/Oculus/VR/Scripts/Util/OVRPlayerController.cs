@@ -165,6 +165,9 @@ public class OVRPlayerController : MonoBehaviour
 	[SerializeField]
 	GameObject TrackingSpaceAnchor;
 
+	[SerializeField]
+	GameObject HeadAnchor;
+
 
 	Transform HandleWorldTransform;
 
@@ -179,7 +182,7 @@ public class OVRPlayerController : MonoBehaviour
 
 	Vector3 PlayerControllerOffsetToHandle;
 
-	Vector3 Up = new Vector3(0, 1, 0);
+	Vector3 Up = new Vector3(0, 0.7f, 0);
 
 	bool grabbingHandle = false;
 	bool grabbingZipLine = false;
@@ -195,7 +198,7 @@ public class OVRPlayerController : MonoBehaviour
 		List<GameObject> parts = new List<GameObject>();
 
 
-		//Left hand
+		// 0 - Left hand
 		GameObject leftHand = Realtime.Instantiate("PF_Hand_Left", ownedByClient: true,
 													  preventOwnershipTakeover: true,
 													  destroyWhenOwnerOrLastClientLeaves: true,
@@ -205,7 +208,7 @@ public class OVRPlayerController : MonoBehaviour
 		leftHand.transform.SetParent(LeftHandAnchor.transform);
 		parts.Add(leftHand);
 
-		//Right hand
+		//1 - Right hand
 
 		GameObject rightHand = Realtime.Instantiate("PF_Hand_Right", ownedByClient: true,
 													  preventOwnershipTakeover: true,
@@ -215,6 +218,26 @@ public class OVRPlayerController : MonoBehaviour
 		rightHand.transform.SetPositionAndRotation(RightHandAnchor.transform.position, RightHandAnchor.transform.rotation);
 		rightHand.transform.SetParent(RightHandAnchor.transform);
 		parts.Add(rightHand);
+
+		//2 - Head
+		GameObject head = Realtime.Instantiate("PF_Head", ownedByClient: true,
+													  preventOwnershipTakeover: true,
+													  destroyWhenOwnerOrLastClientLeaves: true,
+													  useInstance: realtime);
+
+		head.transform.SetPositionAndRotation(HeadAnchor.transform.position, HeadAnchor.transform.rotation);
+		head.transform.SetParent(HeadAnchor.transform);
+		parts.Add(head);
+
+		//3 - Torso
+
+		GameObject torso = Realtime.Instantiate("PF_Torso", ownedByClient: true,
+													  preventOwnershipTakeover: true,
+													  destroyWhenOwnerOrLastClientLeaves: true,
+													  useInstance: realtime);
+
+		parts.Add(torso);
+
 
 		return parts;
     }

@@ -238,6 +238,7 @@ MonoBehaviour:
   LeftHandAnchor: {fileID: 1660603843503870}
   RightHandAnchor: {fileID: 1125068011842588}
   TrackingSpaceAnchor: {fileID: 162066}
+  HeadAnchor: {fileID: 100012}
 --- !u!114 &11462408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +285,7 @@ MonoBehaviour:
   leftControllerAnchor: {fileID: 1660603843503870}
   rightControllerAnchor: {fileID: 1125068011842588}
   eyeAnchor: {fileID: 100012}
+  trackingSpaceAnchor: {fileID: 100006}
 --- !u!1 &100010
 GameObject:
   m_ObjectHideFlags: 0

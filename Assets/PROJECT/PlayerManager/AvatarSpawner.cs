@@ -29,7 +29,11 @@ public class AvatarSpawner : MonoBehaviour
     [SerializeField]
     GameObject eyeAnchor;
 
+    [SerializeField]
+    GameObject trackingSpaceAnchor;
 
+    List<GameObject> parts;
+    GameObject torso;
 
     void Start()
     {
@@ -41,15 +45,18 @@ public class AvatarSpawner : MonoBehaviour
 
     void DidConnectToRoom(Realtime realtime)
     {
-        List<GameObject> parts = playerController.SpawnAvatarParts();
+        parts = playerController.SpawnAvatarParts();
 
-        //Left hand
+        //0 - Left hand
         parts[0].GetComponent<Hand>().Initialize(avatarRoot, leftControllerAnchor, eyeAnchor, defaultMaterial, grabbingMaterial, playerController);
 
-        //Right hand
+        //1 - Right hand
         parts[1].GetComponent<Hand>().Initialize(avatarRoot, rightControllerAnchor, eyeAnchor, defaultMaterial, grabbingMaterial, playerController);
 
+        //2 - Head
 
+        //3 - Torso
+        torso = parts[3];
         foreach (GameObject go in parts) go.GetComponent<RealtimeTransform>().RequestOwnership();
     }
 
@@ -57,6 +64,10 @@ public class AvatarSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (torso)
+        {
+            torso.transform.rotation = trackingSpaceAnchor.transform.rotation;
+            torso.transform.position = eyeAnchor.transform.position + (-eyeAnchor.transform.up * 0.2f);
+        }
     }
 }
