@@ -165,10 +165,6 @@ public class OVRPlayerController : MonoBehaviour
 	[SerializeField]
 	GameObject TrackingSpaceAnchor;
 
-	[SerializeField]
-	GameObject eyeAnchor;
-
-	public GameObject EyeAnchor {get => eyeAnchor;}
 
 	Transform HandleWorldTransform;
 
@@ -194,7 +190,7 @@ public class OVRPlayerController : MonoBehaviour
 	bool grabbing_RightHand = false;
 
 
-	public List<GameObject> SpawnAvatar()
+	public List<GameObject> SpawnAvatarParts()
     {
 		List<GameObject> parts = new List<GameObject>();
 
@@ -207,10 +203,18 @@ public class OVRPlayerController : MonoBehaviour
 
 		leftHand.transform.SetPositionAndRotation(LeftHandAnchor.transform.position, LeftHandAnchor.transform.rotation);
 		leftHand.transform.SetParent(LeftHandAnchor.transform);
-		
 		parts.Add(leftHand);
 
 		//Right hand
+
+		GameObject rightHand = Realtime.Instantiate("PF_Hand_Right", ownedByClient: true,
+													  preventOwnershipTakeover: true,
+													  destroyWhenOwnerOrLastClientLeaves: true,
+													  useInstance: realtime);
+
+		rightHand.transform.SetPositionAndRotation(RightHandAnchor.transform.position, RightHandAnchor.transform.rotation);
+		rightHand.transform.SetParent(RightHandAnchor.transform);
+		parts.Add(rightHand);
 
 		return parts;
     }

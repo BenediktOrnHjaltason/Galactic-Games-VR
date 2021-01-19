@@ -76,8 +76,8 @@ public class Hand : MonoBehaviour
     {
         playerController = transform.root.GetComponent<OVRPlayerController>();
 
-        if (handSide == EHandSide.LEFT) mesh = transform.GetChild(1).GetComponent<MeshRenderer>();
-        else mesh = GetComponent<MeshRenderer>();
+        mesh = transform.GetChild(0).GetComponent<MeshRenderer>();
+
 
         deviceUI = GetComponentInChildren<UIHandDevice>();
         deviceUI.Initialize();
@@ -108,7 +108,12 @@ public class Hand : MonoBehaviour
         
     }
 
-    public void Initialize(GameObject rootParent, GameObject controllerAnchor, Material defaultColor, Material grabbingColor, OVRPlayerController playerController)
+    public void Initialize(GameObject rootParent, 
+                           GameObject controllerAnchor, 
+                           GameObject eyeAnchor, 
+                           Material defaultColor, 
+                           Material grabbingColor, 
+                           OVRPlayerController playerController)
     {
         this.playerController = playerController;
 
@@ -117,17 +122,23 @@ public class Hand : MonoBehaviour
         this.defaultColor = defaultColor;
         this.grabbingColor = grabbingColor;
 
+        UIHandDevice uiHandDevice = this.transform.GetChild(1).GetComponent<UIHandDevice>();
+
+        uiHandDevice.handAnchor = this.controllerAnchor;
+        uiHandDevice.eyeAnchor = eyeAnchor;
+
         if (handSide == EHandSide.LEFT)
         {
-            UIMainHUD uiMain = this.transform.GetChild(0).GetComponent<UIMainHUD>();
-            uiMain.leftHandAnchor = this.controllerAnchor;
-            uiMain.eyeAnchor = this.transform.root.GetComponent<OVRPlayerController>().EyeAnchor;
-
-            UIHandDevice uiHandDevice = this.transform.GetChild(2).GetComponent<UIHandDevice>();
-
-            uiHandDevice.handAnchor = this.controllerAnchor;
-            uiHandDevice.eyeAnchor = this.transform.root.GetComponent<OVRPlayerController>().EyeAnchor;
+            UIMainHUD uiMain = GetComponentInChildren<UIMainHUD>();
+            uiMain.leftHandAnchor = controllerAnchor;
+            uiMain.eyeAnchor = eyeAnchor;
         }
+        
+        if (handSide == EHandSide.RIGHT)
+        {
+            GetComponentInChildren<GravityController>().playerRoot = rootParent;
+        }
+
     }
 
     // Update is called once per frame

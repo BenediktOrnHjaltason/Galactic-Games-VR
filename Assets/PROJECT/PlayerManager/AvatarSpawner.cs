@@ -26,6 +26,9 @@ public class AvatarSpawner : MonoBehaviour
     [SerializeField]
     GameObject rightControllerAnchor;
 
+    [SerializeField]
+    GameObject eyeAnchor;
+
 
 
     void Start()
@@ -38,10 +41,16 @@ public class AvatarSpawner : MonoBehaviour
 
     void DidConnectToRoom(Realtime realtime)
     {
-        List<GameObject> parts = playerController.SpawnAvatar();
+        List<GameObject> parts = playerController.SpawnAvatarParts();
 
-        parts[0].GetComponent<Hand>().Initialize(avatarRoot, leftControllerAnchor, defaultMaterial, grabbingMaterial, playerController);
-        parts[0].GetComponent<RealtimeTransform>().RequestOwnership();
+        //Left hand
+        parts[0].GetComponent<Hand>().Initialize(avatarRoot, leftControllerAnchor, eyeAnchor, defaultMaterial, grabbingMaterial, playerController);
+
+        //Right hand
+        parts[1].GetComponent<Hand>().Initialize(avatarRoot, rightControllerAnchor, eyeAnchor, defaultMaterial, grabbingMaterial, playerController);
+
+
+        foreach (GameObject go in parts) go.GetComponent<RealtimeTransform>().RequestOwnership();
     }
 
 

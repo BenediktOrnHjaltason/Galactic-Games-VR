@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3399406341235352297}
   - component: {fileID: 2223736692383818470}
   - component: {fileID: 1268625019104266731}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HandMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6481810510441262548}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 86.315, y: 0.003, z: -89.997}
 --- !u!33 &2223736692383818470
 MeshFilter:
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 8595447436543243855}
   - component: {fileID: 3004277126123843208}
   - component: {fileID: 8469656872660085091}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: UI_HandDevice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ Transform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 6481810510441262548}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!33 &8595447436543243855
 MeshFilter:
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 3049604604027869698}
   - component: {fileID: 7246535335443510615}
   - component: {fileID: 5908191438039725816}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: UILookatTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ Transform:
   m_LocalScale: {x: 0.026162881, y: 0.0031290806, z: 0.026162881}
   m_Children: []
   m_Father: {fileID: 6481810510441262548}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
 --- !u!33 &7246535335443510615
 MeshFilter:
@@ -231,7 +231,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 785ec065119a00f4bb9edc0173f2f842, type: 2}
+  - {fileID: 2100000, guid: 79f64ed6f5d6d374d91c3a0af4070258, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 7905117766361267589}
   - component: {fileID: 499185880884372137}
   - component: {fileID: 3499223974591415992}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: UI_MainHUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ Transform:
   m_Children:
   - {fileID: 7871759094590188940}
   m_Father: {fileID: 6481810510441262548}
-  m_RootOrder: 0
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
 --- !u!33 &7905117766361267589
 MeshFilter:
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 7715735596744430444}
   - component: {fileID: 6715896041506566713}
   - component: {fileID: 8930886236997689111}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Clock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -555,10 +555,10 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7700014673533080705}
   - {fileID: 3399406341235352297}
   - {fileID: 1320675723330814247}
   - {fileID: 3049604604027869698}
+  - {fileID: 7700014673533080705}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

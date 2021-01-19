@@ -7,8 +7,8 @@ using Normal.Realtime;
 public class GravityController : HandDevice
 {
 
-    [SerializeField]
-    GameObject playerRoot;
+    
+    public GameObject playerRoot;
 
     [SerializeField]
     Material InactiveMaterial;

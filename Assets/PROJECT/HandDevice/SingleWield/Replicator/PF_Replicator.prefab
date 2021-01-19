@@ -603,7 +603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIData:
     material: {fileID: 2100000, guid: b01db34e9aeaa3442b71ead7a0b4cc86, type: 2}
-    fullScale: {x: 0.2, y: 0.2, z: 0.2}
+    fullScale: {x: 0.01039482, y: 0.025421, z: 0.006939755}
   InactiveMaterial: {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
   ActiveMaterial: {fileID: 2100000, guid: 3a9d7c162f10dd7478e8e0b339648db4, type: 2}
   allowedReplicates: 0
