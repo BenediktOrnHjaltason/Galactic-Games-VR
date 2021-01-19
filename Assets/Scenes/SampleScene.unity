@@ -359,7 +359,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81636495}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5b6ae53fe1e66d429cc41bbf5b29cb3, type: 3}
   m_Name: 
@@ -859,6 +859,10 @@ PrefabInstance:
       propertyPath: _reorientHMDOnControllerRecenter
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400002, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: useRecommendedMSAALevel
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: JumpForce
       value: 1
@@ -923,6 +927,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 4522869733168897683, guid: ce816f2e6abb0504092c23ed9b970dfd,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 81636496}
+    - target: {fileID: 4522869733168897683, guid: ce816f2e6abb0504092c23ed9b970dfd,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 222674fd-4795-46d5-926c-94cb33c10dfe
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522869733168897683, guid: ce816f2e6abb0504092c23ed9b970dfd,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4726483903688347589, guid: ce816f2e6abb0504092c23ed9b970dfd,
         type: 3}
       propertyPath: m_Layer
@@ -946,6 +965,21 @@ PrefabInstance:
     - target: {fileID: 7640390538711215624, guid: ce816f2e6abb0504092c23ed9b970dfd,
         type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716073065334998149, guid: ce816f2e6abb0504092c23ed9b970dfd,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 81636496}
+    - target: {fileID: 8716073065334998149, guid: ce816f2e6abb0504092c23ed9b970dfd,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 9fa2db3c-40dd-4574-b512-9fd6c5ef713f
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716073065334998149, guid: ce816f2e6abb0504092c23ed9b970dfd,
+        type: 3}
+      propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8833839285179190128, guid: ce816f2e6abb0504092c23ed9b970dfd,
@@ -1822,6 +1856,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11437430, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 3}
       propertyPath: EnableExpressive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11437430, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 3}
+      propertyPath: RecordPackets
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11437430, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 3}
+      propertyPath: UseSDKPackets
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11437430, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 3}
+      propertyPath: CanOwnMicrophone
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11437430, guid: 84c8b8609f9bb434eaf5248f17ff1293, type: 3}
+      propertyPath: EnableLaughter
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

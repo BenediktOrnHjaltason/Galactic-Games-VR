@@ -104,7 +104,7 @@ public class Hand : MonoBehaviour
         otherHand = (handSide == EHandSide.LEFT) ? rightHand : leftHand;
 
         //Temp
-        if (handSide == EHandSide.RIGHT) rightHand.otherHand = this;
+        if (handSide == EHandSide.LEFT) rightHand.otherHand = this;
         
     }
 
@@ -134,8 +134,8 @@ public class Hand : MonoBehaviour
     void Update()
     {
         //Keeping hand mesh attached to handle while grabbing
-        if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
-        else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
+        //if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
+        //else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
 
         //Keeping hand inside ZipLine collider while moving
         if (grabbingZipLine) transform.position = playerController.transform.position + handOffsetToPlayerControllerOnZipLineGrab;
@@ -168,6 +168,8 @@ public class Hand : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (usingHandDevice) return;
+
+        
 
         else if (shouldGrab)
         {

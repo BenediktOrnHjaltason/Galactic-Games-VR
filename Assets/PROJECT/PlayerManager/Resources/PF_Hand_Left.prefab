@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3399406341235352297}
-  - component: {fileID: 1389454346355602845}
   - component: {fileID: 2223736692383818470}
   - component: {fileID: 1268625019104266731}
   m_Layer: 0
@@ -33,20 +32,6 @@ Transform:
   m_Father: {fileID: 6481810510441262548}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 86.315, y: 0.003, z: -89.997}
---- !u!114 &1389454346355602845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535823877593912955}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a09ee9dfad09bc84e877a0a8fd131559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RenderParts: []
-  isLeftHand: 1
 --- !u!33 &2223736692383818470
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -645,8 +630,8 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -662,4 +647,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.08, y: 0.15, z: 0.19}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.01, y: 0, z: 0}

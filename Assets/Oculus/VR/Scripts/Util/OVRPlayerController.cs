@@ -206,7 +206,8 @@ public class OVRPlayerController : MonoBehaviour
 													  useInstance: realtime);
 
 		leftHand.transform.SetPositionAndRotation(LeftHandAnchor.transform.position, LeftHandAnchor.transform.rotation);
-		leftHand.transform.parent = LeftHandAnchor.transform;
+		leftHand.transform.SetParent(LeftHandAnchor.transform);
+		
 		parts.Add(leftHand);
 
 		//Right hand
