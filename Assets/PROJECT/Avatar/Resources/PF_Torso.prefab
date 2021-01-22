@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1681790950153937382}
   - component: {fileID: 4152388654448608390}
   - component: {fileID: 5145999236518757107}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PF_Torso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 1459432851435687503}
   - component: {fileID: 979876894816614746}
   - component: {fileID: 930146910127116811}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TorsoMesh (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 979253566789796587}
   - component: {fileID: 7798989091563653376}
   - component: {fileID: 4456202647994861848}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TorsoMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
