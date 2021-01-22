@@ -224,22 +224,19 @@ MonoBehaviour:
   Acceleration: 0.1
   Damping: 0.3
   BackAndSideDampen: 0.5
-  JumpForce: 0.3
+  JumpForce: 0.6
   RotationAmount: 1.5
   RotationRatchet: 45
   SnapRotation: 1
   FixedSpeedSteps: 0
   HmdResetsY: 1
   HmdRotatesY: 1
-  GravityModifier: 1
+  GravityModifier: 0.04
   useProfileData: 1
   EnableLinearMovement: 1
   EnableRotation: 1
   RotationEitherThumbstick: 0
-  LeftHandAnchor: {fileID: 1660603843503870}
-  RightHandAnchor: {fileID: 1125068011842588}
   TrackingSpaceAnchor: {fileID: 162066}
-  HeadAnchor: {fileID: 100012}
 --- !u!114 &11462408
 MonoBehaviour:
   m_ObjectHideFlags: 0
