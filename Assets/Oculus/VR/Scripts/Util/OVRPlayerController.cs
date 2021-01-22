@@ -157,21 +157,10 @@ public class OVRPlayerController : MonoBehaviour
 	//Grabbing & Hanging
 
 	[SerializeField]
-	GameObject LeftHandAnchor;
-
-	[SerializeField]
-	GameObject RightHandAnchor;
-
-	[SerializeField]
 	GameObject TrackingSpaceAnchor;
 
-	[SerializeField]
-	GameObject HeadAnchor;
+	Transform GrabHandleWorldTransform;
 
-
-	Transform HandleWorldTransform;
-
-	Realtime realtime;
 
 	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
 	GameObject externalAvatarBase;
@@ -181,8 +170,6 @@ public class OVRPlayerController : MonoBehaviour
 	Vector3 externalRightHandPositionOnGrab;
 
 	Vector3 PlayerControllerOffsetToHandle;
-
-	Vector3 Up = new Vector3(0, 0.7f, 0);
 
 	bool grabbingHandle = false;
 	bool grabbingZipLine = false;
@@ -206,9 +193,9 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (grabbing && handleTransform)
 		{
-			HandleWorldTransform = handleTransform;
+			GrabHandleWorldTransform = handleTransform;
 
-			PlayerControllerOffsetToHandle = transform.position - HandleWorldTransform.position;
+			PlayerControllerOffsetToHandle = transform.position - GrabHandleWorldTransform.position;
 		}
 
 		if (hand == 0)
@@ -289,7 +276,6 @@ public class OVRPlayerController : MonoBehaviour
 	void Awake()
 	{
 		Controller = gameObject.GetComponent<CharacterController>();
-		realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
 		if (Controller == null)
 			Debug.LogWarning("OVRPlayerController: No CharacterController attached.");
@@ -306,8 +292,6 @@ public class OVRPlayerController : MonoBehaviour
 			CameraRig = CameraRigs[0];
 
 		InitialYRotation = transform.rotation.eulerAngles.y;
-
-
 	}
 
 	void OnEnable()
@@ -359,6 +343,7 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (externalAvatarBase) externalAvatarBase.transform.rotation = TrackingSpaceAnchor.transform.rotation;
 
+		
 		//Handle grabbing and climbing
 		if (grabbingHandle)
 		{
@@ -377,7 +362,7 @@ public class OVRPlayerController : MonoBehaviour
 				externalHandWorldPositionDelta = externalRightHandPositionOnGrab - externalRightHand.position;
 			}
 
-			transform.position = (HandleWorldTransform.position + PlayerControllerOffsetToHandle +
+			transform.position = (GrabHandleWorldTransform.position + PlayerControllerOffsetToHandle +
 								 externalHandWorldPositionDelta);
 		}
 
@@ -386,7 +371,7 @@ public class OVRPlayerController : MonoBehaviour
         {
 			transform.position += zipLineDirection * zipLineSpeed * Time.deltaTime;
         }
-
+		
 	}
 
 	protected virtual void UpdateController()
