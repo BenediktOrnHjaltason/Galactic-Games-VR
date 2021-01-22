@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 6481810510441262548}
   - component: {fileID: 1691369151160629029}
   - component: {fileID: 1015552977297184926}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: PF_Hand_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}

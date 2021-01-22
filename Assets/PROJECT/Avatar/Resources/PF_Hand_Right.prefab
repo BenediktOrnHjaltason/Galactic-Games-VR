@@ -9,11 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6278023195210233604}
-  - component: {fileID: 6225092977941335852}
-  - component: {fileID: 722803101705494585}
   - component: {fileID: 4348848541248562349}
   - component: {fileID: 6935436812251657796}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: PF_Hand_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,35 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &6225092977941335852
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866260849930368633}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &722803101705494585
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1866260849930368633}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.10058451, y: 0.122036874, z: 0.22238815}
-  m_Center: {x: 0.011007473, y: 0.02885881, z: -0.00033465028}
 --- !u!114 &4348848541248562349
 MonoBehaviour:
   m_ObjectHideFlags: 0
