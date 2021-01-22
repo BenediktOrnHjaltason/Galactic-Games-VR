@@ -6,12 +6,25 @@ using UnityEngine;
 
 namespace Types
 {
-    public enum EControlBeamMode
+    /// <summary>
+    /// The operational stages of using a HandDevice (IDLE, SCANNING, CONTROLLING)
+    /// </summary>
+    public enum EHandDeviceState
     {
         IDLE,
         SCANNING,
         CONTROLLING
     }
+
+    /// <summary>
+    /// The differents modes of the OmniDevice (GRAVITYFORCE, REPLICATOR etc)
+    /// </summary>
+    public enum EOmniDeviceMode
+    {
+        GRAVITYFORCE,
+        DUPLICATOR
+    }
+    //The different modes of the OmniDevice
 
     enum PlatformMoveGlobal
     {

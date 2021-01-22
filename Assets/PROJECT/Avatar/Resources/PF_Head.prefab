@@ -170,7 +170,6 @@ GameObject:
   - component: {fileID: 5783689088907870465}
   - component: {fileID: 2199121156496762841}
   - component: {fileID: 3068550901317080399}
-  - component: {fileID: 8970040676833162405}
   m_Layer: 0
   m_Name: PF_Head
   m_TagString: Untagged
@@ -214,8 +213,6 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 3068550901317080399}
-  - componentID: 2
-    component: {fileID: 8970040676833162405}
   _childViews: []
 --- !u!114 &3068550901317080399
 MonoBehaviour:
@@ -235,15 +232,3 @@ MonoBehaviour:
   _syncScale: 0
   _syncVelocity: 1
   _maintainOwnershipWhileSleeping: 0
---- !u!114 &8970040676833162405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7595184808047310833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd4ff7916cbc1db4dae0b06d829ff79f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -10,11 +10,8 @@ public class UIMainHUD : MonoBehaviour
 
     int nextSecond = 1;
 
-    
-    public GameObject leftHandAnchor;
-
-    
-    public GameObject eyeAnchor;
+    [SerializeField]
+    GameObject eyeAnchor;
 
     bool playerWatching = false;
 
@@ -39,8 +36,8 @@ public class UIMainHUD : MonoBehaviour
             UITime.text = getTimeText();
         }
 
-        playerWatching = (Vector3.Dot(-leftHandAnchor.transform.right, eyeAnchor.transform.forward) < -0.96 &&
-                          Vector3.Dot(leftHandAnchor.transform.forward, -eyeAnchor.transform.right) < -0.96);
+        playerWatching = (Vector3.Dot(-transform.right, eyeAnchor.transform.forward) < -0.96 &&
+                          Vector3.Dot(transform.forward, -eyeAnchor.transform.right) < -0.96);
 
 
         if (playerWatching && scaleMultiplier < 1) scaleMultiplier += 0.1f;

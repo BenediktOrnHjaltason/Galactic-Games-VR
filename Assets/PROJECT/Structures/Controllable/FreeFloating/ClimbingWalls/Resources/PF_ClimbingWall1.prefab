@@ -109,7 +109,6 @@ GameObject:
   - component: {fileID: 2692776365960223991}
   - component: {fileID: 1289348309565903904}
   - component: {fileID: 9026346096653139384}
-  - component: {fileID: 4059208135196171185}
   m_Layer: 9
   m_Name: PF_ClimbingWall1
   m_TagString: Untagged
@@ -267,19 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4700ee10cfd94794ea66316149f1dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4059208135196171185
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6101328909073455630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7e0c126943ac6743b9f0e260b77c0ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allowReplicationByRGun: 1
+  allowDuplicationByDevice: 0
 --- !u!1001 &613789956743532237
 PrefabInstance:
   m_ObjectHideFlags: 0

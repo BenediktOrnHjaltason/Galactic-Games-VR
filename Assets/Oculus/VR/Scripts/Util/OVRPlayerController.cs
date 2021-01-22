@@ -193,55 +193,6 @@ public class OVRPlayerController : MonoBehaviour
 	bool grabbing_RightHand = false;
 
 
-	public List<GameObject> SpawnAvatarParts()
-    {
-		List<GameObject> parts = new List<GameObject>();
-
-
-		// 0 - Left hand
-		GameObject leftHand = Realtime.Instantiate("PF_Hand_Left", ownedByClient: true,
-													  preventOwnershipTakeover: true,
-													  destroyWhenOwnerOrLastClientLeaves: true,
-													  useInstance: realtime);
-
-		leftHand.transform.SetPositionAndRotation(LeftHandAnchor.transform.position, LeftHandAnchor.transform.rotation);
-		leftHand.transform.SetParent(LeftHandAnchor.transform);
-		parts.Add(leftHand);
-
-		//1 - Right hand
-
-		GameObject rightHand = Realtime.Instantiate("PF_Hand_Right", ownedByClient: true,
-													  preventOwnershipTakeover: true,
-													  destroyWhenOwnerOrLastClientLeaves: true,
-													  useInstance: realtime);
-
-		rightHand.transform.SetPositionAndRotation(RightHandAnchor.transform.position, RightHandAnchor.transform.rotation);
-		rightHand.transform.SetParent(RightHandAnchor.transform);
-		parts.Add(rightHand);
-
-		//2 - Head
-		GameObject head = Realtime.Instantiate("PF_Head", ownedByClient: true,
-													  preventOwnershipTakeover: true,
-													  destroyWhenOwnerOrLastClientLeaves: true,
-													  useInstance: realtime);
-
-		head.transform.SetPositionAndRotation(HeadAnchor.transform.position, HeadAnchor.transform.rotation);
-		head.transform.SetParent(HeadAnchor.transform);
-		parts.Add(head);
-
-		//3 - Torso
-
-		GameObject torso = Realtime.Instantiate("PF_Torso", ownedByClient: true,
-													  preventOwnershipTakeover: true,
-													  destroyWhenOwnerOrLastClientLeaves: true,
-													  useInstance: realtime);
-
-		parts.Add(torso);
-
-
-		return parts;
-    }
-
 	public void SetExternalHands(bool leftHand, Transform transform, GameObject baseGameObject)
     {
 		if (leftHand) externalLeftHand = transform;

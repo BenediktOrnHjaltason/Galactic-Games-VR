@@ -14,12 +14,6 @@ public class Hand : MonoBehaviour
     EHandSide handSide;
 
     [SerializeField]
-    GameObject rootParent;
-
-    [SerializeField]
-    GameObject controllerAnchor;
-
-    [SerializeField]
     Material defaultColor;
 
     [SerializeField]
@@ -33,7 +27,7 @@ public class Hand : MonoBehaviour
     int layer_HandDevice = 12;
     int layer_ZipLineHandle = 13;
 
-    Vector3 DefaultLocalPosition = new Vector3( 0, 0, 0 );
+    Vector3 DefaultLocalPosition = new Vector3(0, 0, 0);
 
     //We need reference to handle because we need handle position
     //every update to place hand correctly on moving handles
@@ -52,9 +46,13 @@ public class Hand : MonoBehaviour
     bool shouldGrab = false;
     bool shouldRelease = false;
 
-    //(Gravity controller default for right arm when not holding other device)
-    HandDevice gravityController;
-    HandDevice handDevice = null;
+    //(OmniDevice controller default for right arm when not holding other device)
+
+    HandDevice handDevice;
+
+    HandDevice omniDevice;
+
+    public HandDevice OmniDevice { set => omniDevice = value; get => omniDevice; }
 
     /// <summary>
     /// Holding non-gravity-controller-device (Only those need manually syncing with hand when holding)
@@ -76,9 +74,6 @@ public class Hand : MonoBehaviour
     {
         playerController = transform.root.GetComponent<OVRPlayerController>();
 
-        mesh = transform.GetChild(0).GetComponent<MeshRenderer>();
-
-
         deviceUI = GetComponentInChildren<UIHandDevice>();
         deviceUI.Initialize();
 
@@ -93,10 +88,15 @@ public class Hand : MonoBehaviour
             rightHand = this;
             grabButton = OVRInput.Button.SecondaryHandTrigger;
 
-            handDevice = gravityController = GetComponentInChildren<GravityController>();
+            handDevice = omniDevice = GetComponent<OmniDevice>();
 
             deviceUI.Set(handDevice.GetUIData());
         }
+    }
+
+    public void InitializeOmniDevice(GameObject spawnedRightHand)
+    {
+        ((OmniDevice)omniDevice).DeviceSync = spawnedRightHand.GetComponentInChildren<OmniDeviceSync>();
     }
 
     private void Start()
@@ -106,39 +106,6 @@ public class Hand : MonoBehaviour
         //Temp
         if (handSide == EHandSide.LEFT) rightHand.otherHand = this;
         
-    }
-
-    public void Initialize(GameObject rootParent, 
-                           GameObject controllerAnchor, 
-                           GameObject eyeAnchor, 
-                           Material defaultColor, 
-                           Material grabbingColor, 
-                           OVRPlayerController playerController)
-    {
-        this.playerController = playerController;
-
-        this.rootParent = rootParent;
-        this.controllerAnchor = controllerAnchor;
-        this.defaultColor = defaultColor;
-        this.grabbingColor = grabbingColor;
-
-        UIHandDevice uiHandDevice = this.transform.GetChild(1).GetComponent<UIHandDevice>();
-
-        uiHandDevice.handAnchor = this.controllerAnchor;
-        uiHandDevice.eyeAnchor = eyeAnchor;
-
-        if (handSide == EHandSide.LEFT)
-        {
-            UIMainHUD uiMain = GetComponentInChildren<UIMainHUD>();
-            uiMain.leftHandAnchor = controllerAnchor;
-            uiMain.eyeAnchor = eyeAnchor;
-        }
-        
-        if (handSide == EHandSide.RIGHT)
-        {
-            GetComponentInChildren<GravityController>().playerRoot = rootParent;
-        }
-
     }
 
     // Update is called once per frame
@@ -159,7 +126,7 @@ public class Hand : MonoBehaviour
         {
             deviceUI.Operate(handSide);
 
-            //(NOTE!) handDevice.Using() actually operates the device
+            //(NOTE!) handDevice.Using() actually operates the device with input detection and all
             usingHandDevice = handDevice.Using();
             playerController.EnableRotation = !usingHandDevice;
         }
@@ -179,8 +146,6 @@ public class Hand : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (usingHandDevice) return;
-
-        
 
         else if (shouldGrab)
         {
@@ -275,8 +240,8 @@ public class Hand : MonoBehaviour
 
         if (handSide == EHandSide.RIGHT)
         {
-            handDevice = gravityController;
-            deviceUI.Set(gravityController.GetUIData());
+            handDevice = omniDevice;
+            deviceUI.Set(omniDevice.GetUIData());
         }
     }
 }

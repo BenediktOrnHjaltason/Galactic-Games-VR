@@ -14,7 +14,6 @@ public abstract class HandDevice : MonoBehaviour
     protected RaycastHit structureHit;
     protected GameObject targetStructure;
     protected StructureSync structureSync;
-    protected StructureLocal structureLocal;
 
     public HandDeviceUIData GetUIData() { return UIData; }
 
@@ -39,7 +38,6 @@ public abstract class HandDevice : MonoBehaviour
             targetStructure = target;
 
             structureSync = target.GetComponent<StructureSync>();
-            structureLocal = target.GetComponent<StructureLocal>();
         }
     }
 }
