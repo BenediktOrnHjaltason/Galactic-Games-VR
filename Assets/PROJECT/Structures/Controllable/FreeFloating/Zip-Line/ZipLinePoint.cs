@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
-using Normal.Realtime;
+using UnityEditor;
 
 public class ZipLinePoint : MonoBehaviour
 {
+    //TODO?: Split up into two scripts inheriting from base?
+
+
     [SerializeField]
     EZipLine point;
 
+
+    /// <summary>
+    /// Prefab to spawn
+    /// </summary>
     [SerializeField]
     GameObject PF_TransportLine;
 
@@ -16,6 +23,7 @@ public class ZipLinePoint : MonoBehaviour
     GameObject otherPoint;
 
     GameObject transportLine;
+
     ZipLineTransport zipLineTransport;
 
     Vector3 startToEnd;
@@ -24,11 +32,12 @@ public class ZipLinePoint : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        transportLine = Instantiate<GameObject>(PF_TransportLine, transform);
+        if (point == EZipLine.START)
+        {
+            transportLine = Instantiate<GameObject>(PF_TransportLine, transform);
 
-        GetComponentInParent<StructureLocal>().AddSubObject(transportLine);
-
-        zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
+            zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
+        }
     }
 
     void FixedUpdate()

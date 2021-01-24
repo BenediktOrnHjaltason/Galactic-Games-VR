@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
+using Normal.Realtime;
 
 
 
 public class UIHandDevice : MonoBehaviour
 {
-
-    [SerializeField]
-    GameObject handAnchor;
-
     [SerializeField]
     GameObject eyeAnchor;
+
 
     Material material;
     Vector3 fullScale;
@@ -23,6 +21,13 @@ public class UIHandDevice : MonoBehaviour
     bool playerWatching = false;
     float scaleMultiplier = 0;
 
+    Realtime realtime;
+
+
+    private void Awake()
+    {
+        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+    }
 
     public void Operate(EHandSide hand)
     {
@@ -32,14 +37,14 @@ public class UIHandDevice : MonoBehaviour
         {
             case EHandSide.LEFT:
 
-                    playerWatching = (Vector3.Dot(handAnchor.transform.right, eyeAnchor.transform.forward) < -0.96f &&
-                                      Vector3.Dot(handAnchor.transform.forward, -eyeAnchor.transform.up) < -0.96f);
+                    playerWatching = Vector3.Dot(transform.right, eyeAnchor.transform.forward) < -0.96f &&
+                                      Vector3.Dot(transform.forward, -eyeAnchor.transform.up) < -0.96f;
                 break;
 
             case EHandSide.RIGHT:
-                
-                    playerWatching = (Vector3.Dot(-handAnchor.transform.right, eyeAnchor.transform.forward) < -0.96f &&
-                                      Vector3.Dot(handAnchor.transform.forward, -eyeAnchor.transform.up) < -0.96f);
+
+                playerWatching = (Vector3.Dot(-transform.right, eyeAnchor.transform.forward) < -0.96f &&
+                                      Vector3.Dot(transform.forward, -eyeAnchor.transform.up) < -0.96f);
                 break;
         }
 

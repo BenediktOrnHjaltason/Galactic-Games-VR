@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4807099064653827041}
   - component: {fileID: -8130113392035649144}
   m_Layer: 0
-  m_Name: PF_ControllingBeam
+  m_Name: PF_ControlBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,3 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b125c8cbbb11a458e585d359802c66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  searchingMaterial: {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
+  controllingMaterial: {fileID: 2100000, guid: 79f64ed6f5d6d374d91c3a0af4070258, type: 2}

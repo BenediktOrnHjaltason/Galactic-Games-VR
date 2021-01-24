@@ -5,6 +5,13 @@ using Normal.Realtime;
 
 public class StructureSync : RealtimeComponent<StructureSync_Model>
 {
+    //----Variables that are replicated on network clients but never change
+    [SerializeField]
+    bool allowDuplicationByDevice;
+
+    public bool AllowDuplicationByDevice { get => allowDuplicationByDevice; }
+    //----
+    
     GameObject mainStructure;
 
     private void Awake()

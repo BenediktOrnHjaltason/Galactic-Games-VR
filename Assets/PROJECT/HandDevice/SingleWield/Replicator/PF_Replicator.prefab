@@ -503,8 +503,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8606143198428343163}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.056028, z: 0}
-  m_LocalScale: {x: 0.1087994, y: 0.1087994, z: 0.31238484}
+  m_LocalPosition: {x: 0, y: 0.038411, z: 0}
+  m_LocalScale: {x: 0.07458875, y: 0.07458875, z: 0.21415924}
   m_Children:
   - {fileID: 6400548052376147631}
   - {fileID: 1042767347257664968}
@@ -603,7 +603,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIData:
     material: {fileID: 2100000, guid: b01db34e9aeaa3442b71ead7a0b4cc86, type: 2}
-    fullScale: {x: 0.2, y: 0.2, z: 0.2}
+    fullScale: {x: 0.01566616, y: 0.03487761, z: 0.02512292}
   InactiveMaterial: {fileID: 2100000, guid: c852af001dae0064e9acaa832f1dadb7, type: 2}
   ActiveMaterial: {fileID: 2100000, guid: 3a9d7c162f10dd7478e8e0b339648db4, type: 2}
   allowedReplicates: 0

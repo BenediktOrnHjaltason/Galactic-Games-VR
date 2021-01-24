@@ -32,7 +32,7 @@ public class Replicator : HandDevice
 
     float distanceToStructure;
 
-    EControlBeamMode mode = EControlBeamMode.IDLE;
+    EHandDeviceState mode = EHandDeviceState.IDLE;
 
     Vector3 controlForce;
 
@@ -46,8 +46,7 @@ public class Replicator : HandDevice
     void Start()
     {
         beam = GetComponentInChildren<ControllingBeam>();
-        beam.SetMaterialReferences(ActiveMaterial, InactiveMaterial);
-        beam.SetLines(mode);
+        //beam.SetLines(mode);
 
         RB = GetComponent<Rigidbody>();
 
@@ -64,7 +63,7 @@ public class Replicator : HandDevice
 
         if (allowedReplicates > 0 && OVRInput.GetDown(grabbingControllerIndexTrigger))
         {
-            mode = EControlBeamMode.SCANNING;
+            mode = EHandDeviceState.SCANNING;
 
             beam.SetVisuals(mode);
         }
@@ -72,8 +71,8 @@ public class Replicator : HandDevice
 
         else if (OVRInput.GetUp(grabbingControllerIndexTrigger))
         {
-            mode = EControlBeamMode.IDLE;
-            beam.SetLines(mode);
+            mode = EHandDeviceState.IDLE;
+            //beam.SetLines(mode);
 
             if (structureDuplicate)
             {
@@ -96,13 +95,13 @@ public class Replicator : HandDevice
             return false;
         }
 
-        else if (mode == EControlBeamMode.IDLE) return false;
+        else if (mode == EHandDeviceState.IDLE) return false;
 
         //************ Operation logic **************//
 
-        if (mode == EControlBeamMode.SCANNING)
+        if (mode == EHandDeviceState.SCANNING)
         {
-            beam.SetLines(mode);
+            //beam.SetLines(mode);
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
@@ -143,9 +142,9 @@ public class Replicator : HandDevice
 
                 structureDuplicate.GetComponent<RealtimeTransform>().RequestOwnership();
 
-                beam.SetStructureTransform(structureDuplicate.transform);
+                //beam.SetStructureTransform(structureDuplicate.transform);
 
-                mode = EControlBeamMode.CONTROLLING;
+                mode = EHandDeviceState.CONTROLLING;
                 beam.SetVisuals(mode);
 
                 structureSceneName = structurePrefabName = "";
@@ -154,12 +153,12 @@ public class Replicator : HandDevice
             return true;
         }
 
-        else if (mode == EControlBeamMode.CONTROLLING)
+        else if (mode == EHandDeviceState.CONTROLLING)
         {
             controlForce = CalculateControlForce();
 
             beam.SetControlForce(controlForce);
-            beam.SetLines(mode);
+            //beam.SetLines(mode);
 
             //Movement
             structureDuplicateRB.AddForce(controlForce.normalized * 2);
@@ -175,12 +174,11 @@ public class Replicator : HandDevice
     {
         GetStateReferencesFromTarget(target);
 
-        if (!structureLocal || (structureLocal && !structureLocal.AllowReplicationByRGun)) return false;
+        if (!structureSync || 
+            (structureSync && (!structureSync.AllowDuplicationByDevice || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0))) 
+            return false;
 
-        if (!structureSync || (structureSync && !structureSync.AvailableToManipulate) ||
-            structureSync && structureSync.PlayersOccupying > 0) return false;
-
-        return true;
+        else return true;
     }
 
     Vector3 CalculateControlForce()

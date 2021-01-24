@@ -15,6 +15,7 @@ permissions and limitations under the License.
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Normal.Realtime;
 
 
 /// <summary>
@@ -156,15 +157,10 @@ public class OVRPlayerController : MonoBehaviour
 	//Grabbing & Hanging
 
 	[SerializeField]
-	GameObject LeftHandAnchor;
-
-	[SerializeField]
-	GameObject RightHandAnchor;
-
-	[SerializeField]
 	GameObject TrackingSpaceAnchor;
 
-	Transform HandleWorldTransform;
+	Transform GrabHandleWorldTransform;
+
 
 	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
 	GameObject externalAvatarBase;
@@ -173,12 +169,7 @@ public class OVRPlayerController : MonoBehaviour
 	Vector3 externalLeftHandPositionOnGrab;
 	Vector3 externalRightHandPositionOnGrab;
 
-	Vector3 LeftAnchorLocalPosOnGrab;
-	Vector3 RightAnchorLocalPosOnGrab;
-
 	Vector3 PlayerControllerOffsetToHandle;
-
-	Vector3 Up = new Vector3(0, 1, 0);
 
 	bool grabbingHandle = false;
 	bool grabbingZipLine = false;
@@ -187,6 +178,7 @@ public class OVRPlayerController : MonoBehaviour
 
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
+
 
 	public void SetExternalHands(bool leftHand, Transform transform, GameObject baseGameObject)
     {
@@ -201,9 +193,9 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (grabbing && handleTransform)
 		{
-			HandleWorldTransform = handleTransform;
+			GrabHandleWorldTransform = handleTransform;
 
-			PlayerControllerOffsetToHandle = transform.position - HandleWorldTransform.position;
+			PlayerControllerOffsetToHandle = transform.position - GrabHandleWorldTransform.position;
 		}
 
 		if (hand == 0)
@@ -215,7 +207,6 @@ public class OVRPlayerController : MonoBehaviour
 
 			if (grabbing_LeftHand) grabbing_RightHand = false;
 
-			LeftAnchorLocalPosOnGrab = LeftHandAnchor.transform.localPosition;
 			externalLeftHandPositionOnGrab = externalLeftHand.position;
 
 			
@@ -227,10 +218,8 @@ public class OVRPlayerController : MonoBehaviour
 
 			if (grabbing_RightHand) grabbing_LeftHand = false;
 
-			RightAnchorLocalPosOnGrab = RightHandAnchor.transform.localPosition;
 			externalRightHandPositionOnGrab = externalRightHand.position;
 
-			
 		}
 
 		if (!grabbing_LeftHand && !grabbing_RightHand) SetGrabbing(false);
@@ -239,10 +228,6 @@ public class OVRPlayerController : MonoBehaviour
 
 	public void SetGrabbing(bool state)
     {
-		//transform.rotation = Quaternion.Euler(new Vector3(CameraRigAnchor.transform.rotation.eulerAngles.x,
-														  //CameraRigAnchor.transform.rotation.eulerAngles.y,
-														  //CameraRigAnchor.transform.rotation.eulerAngles.z));
-
 		if (state == true)
 		{
 			Controller.enabled = false;
@@ -307,8 +292,6 @@ public class OVRPlayerController : MonoBehaviour
 			CameraRig = CameraRigs[0];
 
 		InitialYRotation = transform.rotation.eulerAngles.y;
-
-
 	}
 
 	void OnEnable()
@@ -360,6 +343,7 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (externalAvatarBase) externalAvatarBase.transform.rotation = TrackingSpaceAnchor.transform.rotation;
 
+		
 		//Handle grabbing and climbing
 		if (grabbingHandle)
 		{
@@ -378,7 +362,7 @@ public class OVRPlayerController : MonoBehaviour
 				externalHandWorldPositionDelta = externalRightHandPositionOnGrab - externalRightHand.position;
 			}
 
-			transform.position = (HandleWorldTransform.position + PlayerControllerOffsetToHandle +
+			transform.position = (GrabHandleWorldTransform.position + PlayerControllerOffsetToHandle +
 								 externalHandWorldPositionDelta);
 		}
 
@@ -387,7 +371,7 @@ public class OVRPlayerController : MonoBehaviour
         {
 			transform.position += zipLineDirection * zipLineSpeed * Time.deltaTime;
         }
-
+		
 	}
 
 	protected virtual void UpdateController()

@@ -8,12 +8,18 @@ public class ControllingBeam : MonoBehaviour
 
     LineRenderer line;
 
-    Transform structureTransform;
+    Vector3 structurePosition;
 
-    Material inactiveMaterial;
-    Material activeMaterial;
+    public Vector3 StructurePosition { set => structurePosition = value; }
+
+    [SerializeField]
+    Material searchingMaterial;
+
+    [SerializeField]
+    Material controllingMaterial;
 
     Vector3 controlForce;
+    public Vector3 ControlForce { set => controlForce = value; }
 
     // Start is called before the first frame update
     void Awake()
@@ -21,11 +27,11 @@ public class ControllingBeam : MonoBehaviour
         line = GetComponent<LineRenderer>();
     }
 
-    public void SetLines(EControlBeamMode mode)
+    public void UpdateLines(EHandDeviceState mode)
     {
         switch (mode)
         {
-            case EControlBeamMode.IDLE:
+            case EHandDeviceState.IDLE:
 
                 line.startWidth = line.endWidth = 0.0f;
 
@@ -34,7 +40,7 @@ public class ControllingBeam : MonoBehaviour
                 line.SetPosition(2, transform.position);
                 break;
 
-            case EControlBeamMode.SCANNING:
+            case EHandDeviceState.SCANNING:
 
                 line.startWidth = line.endWidth = 0.01f;
 
@@ -43,20 +49,15 @@ public class ControllingBeam : MonoBehaviour
                 line.SetPosition(2, transform.position + transform.forward * 1000);
                 break;
 
-            case EControlBeamMode.CONTROLLING:
+            case EHandDeviceState.CONTROLLING:
 
                 line.startWidth = line.endWidth = 0.024f;
 
                 line.SetPosition(0, transform.position);
-                line.SetPosition(1, structureTransform.position + controlForce);
-                line.SetPosition(2, structureTransform.position);
+                line.SetPosition(1, structurePosition + controlForce);
+                line.SetPosition(2, structurePosition);
                 break;
         }
-    }
-
-    public void SetStructureTransform(Transform transform)
-    {
-        this.structureTransform = transform;
     }
 
     public void SetControlForce(Vector3 force)
@@ -64,22 +65,16 @@ public class ControllingBeam : MonoBehaviour
         controlForce = force;
     }
 
-    public void SetMaterialReferences(Material activeMaterial, Material inactiveMaterial)
-    {
-        this.activeMaterial = activeMaterial;
-        this.inactiveMaterial = inactiveMaterial;
-    }
-
-    public void SetVisuals(EControlBeamMode mode)
+    public void SetVisuals(EHandDeviceState mode)
     {
         switch(mode)
         {
-            case EControlBeamMode.SCANNING:
-                line.material = inactiveMaterial;
+            case EHandDeviceState.SCANNING:
+                line.material = searchingMaterial;
                 break;
 
-            case EControlBeamMode.CONTROLLING:
-                line.material = activeMaterial;
+            case EHandDeviceState.CONTROLLING:
+                line.material = controllingMaterial;
                 break;
         }
     }

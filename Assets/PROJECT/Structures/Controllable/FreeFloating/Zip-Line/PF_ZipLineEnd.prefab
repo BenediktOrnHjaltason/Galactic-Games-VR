@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 5628884527957510104}
   - component: {fileID: 3766711793532295909}
   - component: {fileID: 6866907831758392377}
-  - component: {fileID: 2672388572790387470}
   m_Layer: 9
   m_Name: PF_ZipLineEnd
   m_TagString: Untagged
@@ -169,19 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4700ee10cfd94794ea66316149f1dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2672388572790387470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 878307240987444276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7e0c126943ac6743b9f0e260b77c0ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allowReplicationByRGun: 0
+  allowDuplicationByDevice: 0
 --- !u!1 &6676359407496071876
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,5 +356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   point: 1
-  PF_TransportLine: {fileID: 0}
+  PF_TransportLine: {fileID: 205585418577007493, guid: 13cbd56b0803a7b4182ce09c6b53f5b1,
+    type: 3}
   otherPoint: {fileID: 0}

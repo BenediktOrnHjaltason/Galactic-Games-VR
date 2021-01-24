@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Types;
 using Normal.Realtime;
+using System;
 
-public class GravityController : HandDevice
+public class OmniDevice : HandDevice
 {
-
-    [SerializeField]
-    GameObject playerRoot;
+    /*
+    NOTE: Will be fleshed out to multi-mode device for gameplay. 
+    Only GravityController at the moment
+    */
+    
+    public GameObject playerRoot;
 
     [SerializeField]
     Material InactiveMaterial;
@@ -17,11 +21,13 @@ public class GravityController : HandDevice
     Material ActiveMaterial;
 
 
-    MeshRenderer mesh;
 
-    ControllingBeam beam;
+    OmniDeviceSync deviceSync;
+    public OmniDeviceSync DeviceSync { get => deviceSync;  set => deviceSync = value; }
+
 
     Rigidbody targetStructureRB;
+    Transform targetStructureTransform;
 
     bool pushingForward;
     bool pushingBackward;
@@ -38,16 +44,7 @@ public class GravityController : HandDevice
 
     float distanceToStructure;
 
-
-    EControlBeamMode mode = EControlBeamMode.IDLE;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        mesh = GetComponent<MeshRenderer>();
-        beam = GetComponentInChildren<ControllingBeam>();
-        beam.SetMaterialReferences(ActiveMaterial, InactiveMaterial);
-    }
+    EHandDeviceState state = EHandDeviceState.IDLE;
 
 
     //Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
@@ -57,11 +54,9 @@ public class GravityController : HandDevice
 
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
-            mode = EControlBeamMode.SCANNING;
+            //Update state locally and on networked deviceSync
+            deviceSync.OperationState = state = EHandDeviceState.SCANNING;
             rotating_Yaw = false;
-
-            SetVisuals(mode);
-            beam.SetVisuals(mode);
         }
 
 
@@ -69,10 +64,12 @@ public class GravityController : HandDevice
         {
             ReleaseStructureFromControl();
 
+            deviceSync.OperationState = state = EHandDeviceState.IDLE;
+
             return false;
         }
 
-        else if (mode == EControlBeamMode.IDLE) return false;
+        else if (state == EHandDeviceState.IDLE) return false;
 
 
         if (OVRInput.GetDown(OVRInput.Button.One))
@@ -100,9 +97,9 @@ public class GravityController : HandDevice
 
         //************ Operation logic **************//
 
-        if (mode == EControlBeamMode.SCANNING )
+        if (state == EHandDeviceState.SCANNING )
         {
-            beam.SetLines(mode);
+            //Network: update state on clients. OmniSyncDevice manages its own beam based on its on transform on client
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
@@ -112,21 +109,18 @@ public class GravityController : HandDevice
                 structureSync.AvailableToManipulate = false;
 
                 targetStructureRB = targetStructure.GetComponent<Rigidbody>();
+                targetStructureTransform = targetStructure.transform;
 
                 //---- Networking
                 RealtimeTransform rtt = targetStructure.GetComponent<RealtimeTransform>();
 
                 rtt.RequestOwnership();
 
-                if (structureLocal) for (int i = 0; i < structureLocal.GetSubObjects().Count; i++) 
-                                        structureLocal.GetSubObjects()[i].GetComponent<RealtimeTransform>().RequestOwnership();
+                //Update state locally and on deviceSync
+                deviceSync.OperationState = state = EHandDeviceState.CONTROLLING;
+
                 //----//
 
-                beam.SetStructureTransform(targetStructure.transform);
-
-                mode = EControlBeamMode.CONTROLLING;
-                SetVisuals(mode);
-                beam.SetVisuals(mode);
 
                 return true;
             }
@@ -134,11 +128,14 @@ public class GravityController : HandDevice
             return true;
         }
 
-        else if (mode == EControlBeamMode.CONTROLLING)
+        else if (state == EHandDeviceState.CONTROLLING)
         {
             controlForce = CalculateControlForce();
-            beam.SetControlForce(controlForce);
-            beam.SetLines(mode);
+
+            //Network: Update controlForce and structurePosition in deviceSync, so all clients can update their own visual beam
+            deviceSync.ControlForce = controlForce;
+            deviceSync.StructurePosition = targetStructureTransform.position;
+
 
             //Movement
             targetStructureRB.AddForce(controlForce);
@@ -189,38 +186,14 @@ public class GravityController : HandDevice
         return (structureToAdjustedForward + transform.forward * forwardMultiplyer);
     }
 
-    void SetVisuals(EControlBeamMode mode)
-    {
-        switch (mode)
-        {
-            case EControlBeamMode.IDLE:
-
-                mesh.material = InactiveMaterial;
-                break;
-
-            case EControlBeamMode.SCANNING:
-                mesh.material = InactiveMaterial;
-                break;
-
-            case EControlBeamMode.CONTROLLING:
-                mesh.material = ActiveMaterial;
-                break;
-        }
-    }
-
     void ReleaseStructureFromControl()
     {
-        if (structureSync && mode == EControlBeamMode.CONTROLLING) structureSync.AvailableToManipulate = true;
-
-        mode = EControlBeamMode.IDLE;
-
-        SetVisuals(mode);
-        beam.SetLines(mode);
+        if (structureSync && state == EHandDeviceState.CONTROLLING) structureSync.AvailableToManipulate = true;
     }
 
     private void FixedUpdate()
     {
-        if (mode == EControlBeamMode.CONTROLLING && structureSync.PlayersOccupying > 0) ReleaseStructureFromControl();
+        if (state == EHandDeviceState.CONTROLLING && structureSync.PlayersOccupying > 0) ReleaseStructureFromControl();
     }
 
     public override void Equip(EHandSide hand)
