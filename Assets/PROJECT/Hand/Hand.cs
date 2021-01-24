@@ -94,9 +94,18 @@ public class Hand : MonoBehaviour
         }
     }
 
-    public void InitializeOmniDevice(GameObject spawnedRightHand)
+    public void Initialize(GameObject spawnedRightHand = null)
     {
-        ((OmniDevice)omniDevice).DeviceSync = spawnedRightHand.GetComponentInChildren<OmniDeviceSync>();
+        if (handSide == EHandSide.RIGHT && spawnedRightHand)
+        {
+            ((OmniDevice)omniDevice).DeviceSync = spawnedRightHand.GetComponentInChildren<OmniDeviceSync>();
+            mesh = transform.GetChild(1).GetChild(0).GetComponent<MeshRenderer>();
+        }
+
+        else if (handSide == EHandSide.LEFT)
+        {
+            mesh = transform.GetChild(2).GetChild(0).GetComponent<MeshRenderer>();
+        }
     }
 
     private void Start()
