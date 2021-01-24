@@ -43,7 +43,7 @@ public class AvatarManager : MonoBehaviour
         GameObject leftHand = Realtime.Instantiate("PF_Hand_Left", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
-                                                      useInstance: realtime);
+                                                      useInstance: this.realtime);
 
         leftHand.transform.SetPositionAndRotation(leftControllerAnchor.transform.position, leftControllerAnchor.transform.rotation);
         leftHand.transform.SetParent(leftControllerAnchor.transform);
@@ -55,7 +55,7 @@ public class AvatarManager : MonoBehaviour
         GameObject rightHand = Realtime.Instantiate("PF_Hand_Right", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
-                                                      useInstance: realtime);
+                                                      useInstance: this.realtime);
 
         rightHand.transform.SetPositionAndRotation(rightControllerAnchor.transform.position, rightControllerAnchor.transform.rotation);
         rightHand.transform.SetParent(rightControllerAnchor.transform);
@@ -72,7 +72,7 @@ public class AvatarManager : MonoBehaviour
         GameObject head = Realtime.Instantiate("PF_Head", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
-                                                      useInstance: realtime);
+                                                      useInstance: this.realtime);
 
         head.transform.SetPositionAndRotation(eyeAnchor.transform.position, eyeAnchor.transform.rotation);
         head.transform.SetParent(eyeAnchor.transform);
@@ -84,7 +84,7 @@ public class AvatarManager : MonoBehaviour
         torso = Realtime.Instantiate("PF_Torso", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
-                                                      useInstance: realtime);
+                                                      useInstance: this.realtime);
 
         torso.GetComponent<RealtimeTransform>().RequestOwnership();
     }
