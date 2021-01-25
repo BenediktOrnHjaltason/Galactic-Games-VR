@@ -18,9 +18,7 @@ public class Hand : MonoBehaviour
 
     [SerializeField]
     Material grabbingColor;
-
-    MeshRenderer mesh;
-
+    
     OVRPlayerController playerController; //Handles movement of Avatar when grabbing
 
     int layer_GrabHandle = 8;
@@ -53,6 +51,12 @@ public class Hand : MonoBehaviour
     HandDevice omniDevice;
 
     public HandDevice OmniDevice { set => omniDevice = value; get => omniDevice; }
+
+
+    HandSync handSync;
+
+    public HandSync HandSync { get => handSync; }
+
 
     /// <summary>
     /// Holding non-gravity-controller-device (Only those need manually syncing with hand when holding)
@@ -94,39 +98,26 @@ public class Hand : MonoBehaviour
         }
     }
 
-    public void Initialize(GameObject spawnedRightHand = null)
-    {
-        if (handSide == EHandSide.RIGHT && spawnedRightHand)
-        {
-            ((OmniDevice)omniDevice).DeviceSync = spawnedRightHand.GetComponentInChildren<OmniDeviceSync>();
-            mesh = transform.GetChild(1).GetChild(0).GetComponent<MeshRenderer>();
-        }
-
-        else if (handSide == EHandSide.LEFT)
-        {
-            mesh = transform.GetChild(2).GetChild(0).GetComponent<MeshRenderer>();
-        }
-    }
-
     private void Start()
     {
         otherHand = (handSide == EHandSide.LEFT) ? rightHand : leftHand;
 
         //Temp
         if (handSide == EHandSide.LEFT) rightHand.otherHand = this;
-        
+
+    }
+
+    //Called after hand prefabs are instantiated on network
+    public void Initialize(GameObject spawnedHand)
+    {
+        if (handSide == EHandSide.RIGHT)   ((OmniDevice)omniDevice).DeviceSync = spawnedHand.GetComponentInChildren<OmniDeviceSync>();
+
+        handSync = spawnedHand.GetComponent<HandSync>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Keeping hand mesh attached to handle while grabbing
-        //if (handle) transform.position = handle.transform.position + offsettToHandleOnGrab;
-        //else if (transform.position != DefaultLocalPosition) transform.localPosition = DefaultLocalPosition;
-
-        //Keeping hand inside ZipLine collider while moving
-        if (grabbingZipLine) transform.position = playerController.transform.position + handOffsetToPlayerControllerOnZipLineGrab;
-
         //Keeping device object attached to hand while holding
         if (grabbingHandDevice) handDevice.transform.SetPositionAndRotation(transform.position, transform.rotation);
 
@@ -198,7 +189,9 @@ public class Hand : MonoBehaviour
     {
         this.handle = handle;
         offsettToHandleOnGrab = transform.position - handle.transform.position;
-        mesh.material = grabbingColor;
+
+        handSync.GrabbingGrabHandle = true;
+        if (otherHand.handSync.GrabbingGrabHandle) otherHand.handSync.GrabbingGrabHandle = false;
 
         playerController.RegisterGrabHandleEvent(false, (int)otherHand.handSide);
         playerController.RegisterGrabHandleEvent(true, (int)handSide, handle.transform);
@@ -207,7 +200,7 @@ public class Hand : MonoBehaviour
     void ReleaseHandle()
     {
         handle = null;
-        mesh.material = defaultColor;
+        handSync.GrabbingGrabHandle = false;
         playerController.RegisterGrabHandleEvent(false, (int)handSide);
     }
 

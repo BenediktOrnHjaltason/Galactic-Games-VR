@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4348848541248562349}
   - component: {fileID: 6935436812251657796}
   - component: {fileID: 5628763963144685006}
+  - component: {fileID: 8740508317128750516}
   m_Layer: 9
   m_Name: PF_Hand_Right
   m_TagString: Untagged
@@ -57,6 +58,8 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 6935436812251657796}
+  - componentID: 2
+    component: {fileID: 8740508317128750516}
   _childViews:
   - viewID: 1
     view: {fileID: 5471371444475645158}
@@ -94,6 +97,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8740508317128750516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866260849930368633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15d7972ccd0e48a498ed2393f5303d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: 2100000, guid: 454ce27cafae2ec4ca487ed8b65ee4fc, type: 2}
+  grabbingGrabHandleMaterial: {fileID: 2100000, guid: 01642051d9aea1e49a0051f74fb238cf,
+    type: 2}
 --- !u!1 &6281839373683487286
 GameObject:
   m_ObjectHideFlags: 0

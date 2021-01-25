@@ -49,7 +49,7 @@ public class AvatarManager : MonoBehaviour
         leftHand.transform.SetParent(leftControllerAnchor.transform);
         leftHand.GetComponent<RealtimeTransform>().RequestOwnership();
 
-        leftControllerAnchor.GetComponent<Hand>().Initialize();
+        leftControllerAnchor.GetComponent<Hand>().Initialize(leftHand);
 
 
         //1 - Right hand
@@ -65,7 +65,7 @@ public class AvatarManager : MonoBehaviour
 
         //---- Initialize OmniDevice for right hand
 
-        rightControllerAnchor.GetComponent<Hand>().Initialize(rightControllerAnchor);
+        rightControllerAnchor.GetComponent<Hand>().Initialize(rightHand);
 
 
 
