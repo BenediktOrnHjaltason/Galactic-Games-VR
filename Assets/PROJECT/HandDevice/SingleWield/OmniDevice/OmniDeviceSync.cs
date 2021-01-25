@@ -17,7 +17,8 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
     MeshRenderer mesh;
     ControllingBeam beam;
 
-    EHandDeviceState state;
+    EHandDeviceState operationState;
+    public EHandDeviceState OperationState { set => model.operationState = value; get => operationState; }
 
     private void Awake()
     {
@@ -71,11 +72,6 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
     }
     //-----------------
 
-    public EHandDeviceState OperationState
-    {
-        set =>  model.operationState = value;
-    }
-
     void OperationStateDidChange(OmniDeviceSync_Model model, EHandDeviceState state)
     {
         UpdateOperationState();
@@ -83,10 +79,10 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
 
     void UpdateOperationState()
     {
-        state = model.operationState;
+        operationState = model.operationState;
 
-        SetMeshState(model.operationState);
-        beam.SetVisuals(model.operationState);
+        SetMeshState(operationState);
+        beam.SetVisuals(operationState);
     }
     //-----------------
 
@@ -135,9 +131,8 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
         }
     }
 
-
     private void Update()
     {
-        beam.UpdateLines(state);
+        beam.UpdateLines(operationState);
     }
 }

@@ -110,7 +110,10 @@ public class Hand : MonoBehaviour
     //Called after hand prefabs are instantiated on network
     public void Initialize(GameObject spawnedHand)
     {
-        if (handSide == EHandSide.RIGHT)   ((OmniDevice)omniDevice).DeviceSync = spawnedHand.GetComponentInChildren<OmniDeviceSync>();
+        if (handSide == EHandSide.RIGHT)
+        {
+            ((OmniDevice)omniDevice).Initialize(spawnedHand.GetComponentInChildren<OmniDeviceSync>());
+        }
 
         handSync = spawnedHand.GetComponent<HandSync>();
     }

@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4700ee10cfd94794ea66316149f1dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 0
+  allowDuplicationByDevice: 1
 --- !u!1001 &613789956743532237
 PrefabInstance:
   m_ObjectHideFlags: 0

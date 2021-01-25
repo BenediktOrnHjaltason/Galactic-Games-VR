@@ -41,6 +41,11 @@ public class Replicator : HandDevice
     string structureSceneName = "";
     string structurePrefabName = "";
 
+    /// <summary>
+    /// All the devices in the GravityController
+    /// </summary>
+    List<HandDevice> devices;
+
 
     // Start is called before the first frame update
     void Start()
@@ -101,11 +106,10 @@ public class Replicator : HandDevice
 
         if (mode == EHandDeviceState.SCANNING)
         {
-            //beam.SetLines(mode);
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                if (!ValidateRelevantState(structureHit.collider.transform.root.gameObject)) return true;
+                if (!ValidateStructureState(structureHit.collider.transform.root.gameObject)) return true;
 
                 
 
@@ -170,7 +174,7 @@ public class Replicator : HandDevice
     }
 
     //Validate state relevant to Replicator
-    protected override bool ValidateRelevantState(GameObject target)
+    protected override bool ValidateStructureState(GameObject target)
     {
         GetStateReferencesFromTarget(target);
 
@@ -194,16 +198,6 @@ public class Replicator : HandDevice
 
     public override void Equip(EHandSide hand)
     {
-        switch(hand)
-        {
-            case EHandSide.LEFT:
-
-                grabbingControllerIndexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-                break;
-
-            case EHandSide.RIGHT:
-                grabbingControllerIndexTrigger = OVRInput.Button.SecondaryIndexTrigger;
-                break;
-        }
+        //Nothing necessary for this class since part of OmniDevice
     }
 }

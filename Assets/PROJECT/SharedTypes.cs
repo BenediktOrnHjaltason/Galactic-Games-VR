@@ -21,8 +21,9 @@ namespace Types
     /// </summary>
     public enum EOmniDeviceMode
     {
+        NONE,
         GRAVITYFORCE,
-        DUPLICATOR
+        REPLICATOR
     }
     //The different modes of the OmniDevice
 

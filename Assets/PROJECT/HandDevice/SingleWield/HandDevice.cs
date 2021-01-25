@@ -10,10 +10,18 @@ public abstract class HandDevice : MonoBehaviour
     [SerializeField]
     protected HandDeviceUIData UIData;
 
+    /// <summary>
+    /// The component that holds operation state (SEARCHING, CONTROLLING, etc), and handles network syncing of beam for this device
+    /// </summary>
+    protected OmniDeviceSync deviceSync;
+    public OmniDeviceSync DeviceSync { get => deviceSync; set => deviceSync = value; }
+
+
     //Variables related to structure that is the target for this device
     protected RaycastHit structureHit;
     protected GameObject targetStructure;
     protected StructureSync structureSync;
+    public StructureSync StructureSync { get => structureSync; }
 
     public HandDeviceUIData GetUIData() { return UIData; }
 
@@ -27,7 +35,11 @@ public abstract class HandDevice : MonoBehaviour
 
     public abstract void Equip(EHandSide hand);
 
-    protected abstract bool ValidateRelevantState(GameObject target);
+    /// <summary>
+    /// Validate if allowed to manupulate structure
+    /// </summary>
+
+    protected abstract bool ValidateStructureState(GameObject target);
 
     protected void GetStateReferencesFromTarget(GameObject target)
     {

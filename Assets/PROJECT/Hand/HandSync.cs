@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using System;
 
 public class HandSync : RealtimeComponent<HandSync_Model>
 {
@@ -17,7 +18,6 @@ public class HandSync : RealtimeComponent<HandSync_Model>
     {
         mesh = transform.Find("HandMesh").GetComponent<MeshRenderer>();
     }
-
 
     protected override void OnRealtimeModelReplaced(HandSync_Model previousModel, HandSync_Model currentModel)
     {

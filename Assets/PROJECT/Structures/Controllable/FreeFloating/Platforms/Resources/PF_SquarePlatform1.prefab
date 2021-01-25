@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4700ee10cfd94794ea66316149f1dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 0
+  allowDuplicationByDevice: 1
 --- !u!1 &5456900083476435942
 GameObject:
   m_ObjectHideFlags: 0
