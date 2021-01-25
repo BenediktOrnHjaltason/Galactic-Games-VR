@@ -784,6 +784,7 @@ GameObject:
   - component: {fileID: 2281407604528636418}
   - component: {fileID: 6121966961281909590}
   - component: {fileID: 1285790543930651551}
+  - component: {fileID: 404479593289068802}
   m_Layer: 11
   m_Name: RightControllerAnchor
   m_TagString: Untagged
@@ -866,6 +867,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: bea67461f9d2a104dab762da5f1e4c40, type: 2}
     fullScale: {x: 0.01343012, y: 0.019342, z: 0.019342}
   playerRoot: {fileID: 100008}
+  gravityForce: {fileID: 0}
 --- !u!114 &1285790543930651551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -881,6 +883,25 @@ MonoBehaviour:
   UIData:
     material: {fileID: 0}
     fullScale: {x: 0, y: 0, z: 0}
+--- !u!114 &404479593289068802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125068011842588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f914a7ff7651ade4a9f767483190c342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UIData:
+    material: {fileID: 0}
+    fullScale: {x: 0, y: 0, z: 0}
+  InactiveMaterial: {fileID: 0}
+  ActiveMaterial: {fileID: 0}
+  allowedReplicates: 0
+  UICounter: {fileID: 0}
 --- !u!1 &1660603843503870
 GameObject:
   m_ObjectHideFlags: 0

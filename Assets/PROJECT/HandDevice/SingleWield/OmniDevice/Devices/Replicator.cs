@@ -7,22 +7,13 @@ using Normal.Realtime;
 
 public class Replicator : HandDevice
 {
+    //[SerializeField]
+    //int allowedDuplicates;
 
-    [SerializeField]
-    Material InactiveMaterial;
-
-    [SerializeField]
-    Material ActiveMaterial;
-
-    [SerializeField]
-    int allowedReplicates;
-
-    [SerializeField]
-    TextMeshPro UICounter;
+    //[SerializeField]
+    //TextMeshPro UICounter;
 
     Realtime realtime;
-
-    ControllingBeam beam;
 
     //References specific for Replicator (Common references are in base class)
     GameObject structureDuplicate;
@@ -32,31 +23,22 @@ public class Replicator : HandDevice
 
     float distanceToStructure;
 
-    EHandDeviceState mode = EHandDeviceState.IDLE;
-
     Vector3 controlForce;
-
-    OVRInput.Button grabbingControllerIndexTrigger;
 
     string structureSceneName = "";
     string structurePrefabName = "";
 
-    /// <summary>
-    /// All the devices in the GravityController
-    /// </summary>
-    List<HandDevice> devices;
+    OmniDevice owner;
+    public OmniDevice Owner { set => owner = value; }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        beam = GetComponentInChildren<ControllingBeam>();
-        //beam.SetLines(mode);
-
         RB = GetComponent<Rigidbody>();
 
-        UICounter = GetComponentInChildren<TextMeshPro>();
-        UICounter.text = allowedReplicates.ToString();
+        //UICounter = GetComponentInChildren<TextMeshPro>();
+        //UICounter.text = allowedDuplicates.ToString();
 
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
@@ -66,18 +48,15 @@ public class Replicator : HandDevice
     {
         //************ Manage input **************//
 
-        if (allowedReplicates > 0 && OVRInput.GetDown(grabbingControllerIndexTrigger))
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
-            mode = EHandDeviceState.SCANNING;
-
-            beam.SetVisuals(mode);
+            owner.OperationState = EHandDeviceState.SCANNING;
         }
 
 
-        else if (OVRInput.GetUp(grabbingControllerIndexTrigger))
+        else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
-            mode = EHandDeviceState.IDLE;
-            //beam.SetLines(mode);
+            owner.OperationState = EHandDeviceState.IDLE;
 
             if (structureDuplicate)
             {
@@ -92,19 +71,17 @@ public class Replicator : HandDevice
 
                 structureDuplicate = null;
                 structureDuplicateRB = null;
-
-                allowedReplicates--;
-                UICounter.text = allowedReplicates.ToString();
+                //UICounter.text = allowedDuplicates.ToString();
             }
 
             return false;
         }
 
-        else if (mode == EHandDeviceState.IDLE) return false;
+        else if (owner.OperationState == EHandDeviceState.IDLE) return false;
 
         //************ Operation logic **************//
 
-        if (mode == EHandDeviceState.SCANNING)
+        if (owner.OperationState == EHandDeviceState.SCANNING)
         {
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
@@ -146,10 +123,7 @@ public class Replicator : HandDevice
 
                 structureDuplicate.GetComponent<RealtimeTransform>().RequestOwnership();
 
-                //beam.SetStructureTransform(structureDuplicate.transform);
-
-                mode = EHandDeviceState.CONTROLLING;
-                beam.SetVisuals(mode);
+                owner.OperationState = EHandDeviceState.CONTROLLING;
 
                 structureSceneName = structurePrefabName = "";
             }
@@ -157,15 +131,15 @@ public class Replicator : HandDevice
             return true;
         }
 
-        else if (mode == EHandDeviceState.CONTROLLING)
+        else if (owner.OperationState == EHandDeviceState.CONTROLLING)
         {
             controlForce = CalculateControlForce();
 
-            beam.SetControlForce(controlForce);
-            //beam.SetLines(mode);
+            owner.DeviceSync.ControlForce = controlForce;
+            owner.DeviceSync.StructurePosition = structureDuplicate.transform.position;
 
             //Movement
-            structureDuplicateRB.AddForce(controlForce.normalized * 2);
+            structureDuplicateRB.AddForce(controlForce.normalized * 3);
 
             return true;
         }

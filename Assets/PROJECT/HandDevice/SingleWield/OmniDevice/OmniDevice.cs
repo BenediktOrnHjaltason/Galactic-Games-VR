@@ -18,8 +18,8 @@ public class OmniDevice : HandDevice
     /// </summary>
     List<HandDevice> devices = new List<HandDevice>();
 
-    [SerializeField]
     GravityForce gravityForce;
+    Replicator replicator;
 
     int activeDeviceIndex;
 
@@ -39,6 +39,9 @@ public class OmniDevice : HandDevice
         gravityForce = GetComponent<GravityForce>();
         gravityForce.Owner = this;
 
+        replicator = GetComponent<Replicator>();
+        replicator.Owner = this;
+
         //Just so we don't get a nullreference in Using() before hands are spawned when client connects to server.
         //Allows for no if-testing in Using()
         devices.Add(new DummyDevice());
@@ -53,12 +56,15 @@ public class OmniDevice : HandDevice
         this.deviceSync = deviceSync; 
 
         devices.Add(gravityForce);
-        Mode = EOmniDeviceMode.GRAVITYFORCE;
+        devices.Add(replicator);
+
+        Mode = EOmniDeviceMode.REPLICATOR;
     }
 
     //Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
     public override bool Using()
     {
+        //Using operates the active device
         return devices[activeDeviceIndex].Using();
     }
 
