@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
+using System;
 
 public class OmniDevice : HandDevice
 {
@@ -18,6 +19,8 @@ public class OmniDevice : HandDevice
     /// </summary>
     List<HandDevice> devices = new List<HandDevice>();
 
+    public int NumberOfDevices { get => devices.Count; }
+
     GravityForce gravityForce;
     Replicator replicator;
 
@@ -33,6 +36,8 @@ public class OmniDevice : HandDevice
             activeDeviceIndex = (int)mode;
         }
     }
+
+    
 
     private void Awake()
     {
@@ -58,7 +63,14 @@ public class OmniDevice : HandDevice
         devices.Add(gravityForce);
         devices.Add(replicator);
 
-        Mode = EOmniDeviceMode.REPLICATOR;
+        Mode = EOmniDeviceMode.GRAVITYFORCE;
+    }
+
+    public void SetDeviceMode(int index)
+    {
+        Mode = (EOmniDeviceMode)index;
+
+        Debug.Log("OmniDevice: OmniDevice set to " + mode.ToString());
     }
 
     //Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
@@ -69,16 +81,12 @@ public class OmniDevice : HandDevice
     }
 
 
-    public void ReleaseStructureFromControl()
-    {
-        if (structureSync && OperationState == EHandDeviceState.CONTROLLING) structureSync.AvailableToManipulate = true;
-    }
+    
 
     private void FixedUpdate()
     {
-
         if (deviceSync && deviceSync.OperationState == EHandDeviceState.CONTROLLING && devices[activeDeviceIndex].StructureSync.PlayersOccupying > 0)
-            ReleaseStructureFromControl();
+            devices[activeDeviceIndex].ReleaseStructureFromControl(devices[activeDeviceIndex].Owner);
     }
 
     public override void Equip(EHandSide hand)

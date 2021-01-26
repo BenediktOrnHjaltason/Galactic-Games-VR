@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Types;
-using Normal.Realtime;
+
 
 
 
@@ -13,23 +13,18 @@ public class UIHandDevice : MonoBehaviour
 
 
     Material material;
-    Vector3 fullScale;
+    protected Vector3 fullScale;
 
     MeshRenderer mesh;
 
+    [SerializeField]
+    GameObject parent;
+
     //Scale up/down
-    bool playerWatching = false;
-    float scaleMultiplier = 0;
+    protected bool playerWatching = false;
+    protected float scaleMultiplier = 0;
 
-    Realtime realtime;
-
-
-    private void Awake()
-    {
-        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
-    }
-
-    public void Operate(EHandSide hand)
+    public virtual void Operate(EHandSide hand)
     {
         if (!material) return;
 
@@ -37,14 +32,12 @@ public class UIHandDevice : MonoBehaviour
         {
             case EHandSide.LEFT:
 
-                    playerWatching = Vector3.Dot(transform.right, eyeAnchor.transform.forward) < -0.96f &&
-                                      Vector3.Dot(transform.forward, -eyeAnchor.transform.up) < -0.96f;
+                playerWatching = PlayerWatchingLeftHand();
                 break;
 
             case EHandSide.RIGHT:
 
-                playerWatching = (Vector3.Dot(-transform.right, eyeAnchor.transform.forward) < -0.96f &&
-                                      Vector3.Dot(transform.forward, -eyeAnchor.transform.up) < -0.96f);
+                playerWatching = PlayerWatchingRightHand();
                 break;
         }
 
@@ -66,6 +59,20 @@ public class UIHandDevice : MonoBehaviour
         mesh.material = this.material = data.material;
         this.fullScale = data.fullScale;
     }
+
+    protected bool PlayerWatchingLeftHand()
+    {
+        return Vector3.Dot(parent.transform.right, eyeAnchor.transform.forward) < -0.96f &&
+                           Vector3.Dot(parent.transform.forward, -eyeAnchor.transform.up) < -0.96f;
+    }
+
+    protected bool PlayerWatchingRightHand()
+    {
+        return Vector3.Dot(-parent.transform.right, eyeAnchor.transform.forward) < -0.96f &&
+                           Vector3.Dot(parent.transform.forward, -eyeAnchor.transform.up) < -0.96f;
+    }
+
+
 
     void deactivate()
     {

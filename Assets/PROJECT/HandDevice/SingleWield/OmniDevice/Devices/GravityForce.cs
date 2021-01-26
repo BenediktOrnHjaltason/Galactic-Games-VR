@@ -26,8 +26,7 @@ public class GravityForce : HandDevice
     Vector3 Up = new Vector3(0, 1, 0);
 
 
-    OmniDevice owner;
-    public OmniDevice Owner { set => owner = value; }
+    
 
 
     public override bool Using()
@@ -44,7 +43,7 @@ public class GravityForce : HandDevice
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
-            owner.ReleaseStructureFromControl();
+            ReleaseStructureFromControl(owner);
 
             owner.OperationState = EHandDeviceState.IDLE;
 
@@ -163,7 +162,7 @@ public class GravityForce : HandDevice
             return false;
         }
 
-        if (structureSync && structureSync.PlayersOccupying > 0) return false;
+        if (structureSync && ( structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate)) return false;
 
         return true;
     }

@@ -56,22 +56,21 @@ public class Replicator : HandDevice
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
+            owner.ReleaseStructureFromControl(owner);
             owner.OperationState = EHandDeviceState.IDLE;
 
             if (structureDuplicate)
             {
-                //Networking, making structures available again
+
                 structureSync.CollisionEnabled = true;
                 structureSync.AvailableToManipulate = true;
 
                 duplicateStructureSync.CollisionEnabled = true;
                 duplicateStructureSync.AvailableToManipulate = true;
 
-                //duplicateStructureSync.CollisionEnabled = true;
 
                 structureDuplicate = null;
                 structureDuplicateRB = null;
-                //UICounter.text = allowedDuplicates.ToString();
             }
 
             return false;
@@ -153,8 +152,18 @@ public class Replicator : HandDevice
         GetStateReferencesFromTarget(target);
 
         if (!structureSync || 
-            (structureSync && (!structureSync.AllowDuplicationByDevice || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0))) 
+            (structureSync && (!structureSync.AllowDuplicationByDevice || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0)))
+        {
+            Debug.Log("Replicator: Not allowed to replicate structure! Reason: ");
+
+            if (!structureSync) Debug.Log("The is no StructureSync object");
+            if (structureSync && !structureSync.AllowDuplicationByDevice) Debug.Log("AllowDuplicationByDevice is false");
+            if (structureSync && !structureSync.AvailableToManipulate) Debug.Log("AvailableToManipulate is false");
+            if (structureSync && structureSync.PlayersOccupying > 0) Debug.Log("PlayersOccupying is more than 0");
+
             return false;
+        }
+            
 
         else return true;
     }

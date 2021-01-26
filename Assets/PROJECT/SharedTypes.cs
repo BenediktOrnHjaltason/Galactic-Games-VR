@@ -55,5 +55,4 @@ namespace Types
         public Material material;
         public Vector3 fullScale;
     }
-
 }

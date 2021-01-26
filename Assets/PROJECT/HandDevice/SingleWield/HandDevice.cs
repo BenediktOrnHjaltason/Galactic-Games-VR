@@ -30,6 +30,8 @@ public abstract class HandDevice : MonoBehaviour
     public Rigidbody GetRB() { return RB; }
 
 
+    protected OmniDevice owner;
+    public OmniDevice Owner { set => owner = value; get => owner; }
 
     public abstract bool Using();
 
@@ -51,5 +53,10 @@ public abstract class HandDevice : MonoBehaviour
 
             structureSync = target.GetComponent<StructureSync>();
         }
+    }
+
+    public void ReleaseStructureFromControl(OmniDevice owner)
+    {
+        if (structureSync && owner.OperationState == EHandDeviceState.CONTROLLING) structureSync.AvailableToManipulate = true;
     }
 }

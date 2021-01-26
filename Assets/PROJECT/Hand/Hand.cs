@@ -112,7 +112,13 @@ public class Hand : MonoBehaviour
     {
         if (handSide == EHandSide.RIGHT)
         {
-            ((OmniDevice)omniDevice).Initialize(spawnedHand.GetComponentInChildren<OmniDeviceSync>());
+            OmniDevice od = (OmniDevice)omniDevice;
+
+            od.Initialize(spawnedHand.GetComponentInChildren<OmniDeviceSync>());
+
+            //Initialize OmniDeviceMenu
+            ((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
+            ((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
         }
 
         handSync = spawnedHand.GetComponent<HandSync>();
