@@ -11,10 +11,10 @@ public abstract class HandDevice : MonoBehaviour
     protected HandDeviceUIData UIData;
 
     /// <summary>
-    /// The component that holds operation state (SEARCHING, CONTROLLING, etc), and handles network syncing of beam for this device
+    /// The component that  handles network syncing of visuals, and holds deviceoperation state (SEARCHING, CONTROLLING, etc) for this device
     /// </summary>
-    protected OmniDeviceSync deviceSync;
-    public OmniDeviceSync DeviceSync { get => deviceSync; set => deviceSync = value; }
+    protected HandDeviceSync deviceSync;
+    public HandDeviceSync DeviceSync { get => deviceSync; set => deviceSync = value; }
 
 
     //Variables related to structure that is the target for this device

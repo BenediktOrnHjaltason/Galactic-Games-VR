@@ -114,7 +114,7 @@ public class Hand : MonoBehaviour
         {
             OmniDevice od = (OmniDevice)omniDevice;
 
-            od.Initialize(spawnedHand.GetComponentInChildren<OmniDeviceSync>());
+            od.Initialize(spawnedHand.GetComponentInChildren<HandDeviceSync>());
 
             //Initialize OmniDeviceMenu
             ((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;

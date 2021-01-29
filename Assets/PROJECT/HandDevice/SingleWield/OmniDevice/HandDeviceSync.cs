@@ -5,7 +5,7 @@ using Normal.Realtime;
 using Types;
 using System;
 
-public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
+public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
 {
     [SerializeField]
     Material searchingMaterial;
@@ -27,7 +27,7 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
     }
 
 
-    protected override void OnRealtimeModelReplaced(OmniDeviceSync_Model previousModel, OmniDeviceSync_Model currentModel)
+    protected override void OnRealtimeModelReplaced(HandDeviceSync_Model previousModel, HandDeviceSync_Model currentModel)
     {
         if (previousModel != null)
         {
@@ -61,7 +61,7 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
         }
     }
 
-    void DeviceModeDidChange(OmniDeviceSync_Model model, EOmniDeviceMode mode)
+    void DeviceModeDidChange(HandDeviceSync_Model model, EOmniDeviceMode mode)
     {
         UpdateDeviceMode();
     }
@@ -69,10 +69,11 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
     void UpdateDeviceMode()
     {
         //Will be implemented when I bring Replicator into OmniDeviceSync
+        //Not necessary to sync since device operation happens locally anyway?
     }
     //-----------------
 
-    void OperationStateDidChange(OmniDeviceSync_Model model, EHandDeviceState state)
+    void OperationStateDidChange(HandDeviceSync_Model model, EHandDeviceState state)
     {
         UpdateOperationState();
     }
@@ -89,7 +90,7 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
 
     public Vector3 StructurePosition { set => model.controlledStructurePosition = value; }
 
-    void ControlledStructurePositionDidChange(OmniDeviceSync_Model model, Vector3 position)
+    void ControlledStructurePositionDidChange(HandDeviceSync_Model model, Vector3 position)
     {
         UpdateControlledStructurePosition();
     }
@@ -102,7 +103,7 @@ public class OmniDeviceSync : RealtimeComponent<OmniDeviceSync_Model>
 
     public Vector3 ControlForce { set => model.controlForce = value; }
 
-    void ControlForceDidChange(OmniDeviceSync_Model model, Vector3 force)
+    void ControlForceDidChange(HandDeviceSync_Model model, Vector3 force)
     {
         UpdateControlForce();
     }

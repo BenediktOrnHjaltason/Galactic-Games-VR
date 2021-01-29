@@ -56,7 +56,7 @@ public class OmniDevice : HandDevice
     //GravityForce and other OmniDevice device uses deviceSync in their operations.
     //deviceSync is located there so it can control it's own mesh and beam.
     //Maybe it could be located locally and reference mesh and beam from spawned hand. 
-    public void Initialize(OmniDeviceSync deviceSync)
+    public void Initialize(HandDeviceSync deviceSync)
     {
         this.deviceSync = deviceSync; 
 
