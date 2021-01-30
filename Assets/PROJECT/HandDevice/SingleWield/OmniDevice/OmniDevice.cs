@@ -11,7 +11,7 @@ public class OmniDevice : HandDevice
 
     public GameObject PlayerRoot { get => playerRoot; }
 
-    public EHandDeviceState OperationState { set => deviceSync.OperationState = value; get => deviceSync.OperationState; }
+    
 
 
     /// <summary>
@@ -23,6 +23,7 @@ public class OmniDevice : HandDevice
 
     GravityForce gravityForce;
     Replicator replicator;
+    HandDevice dummyDevice;
 
     int activeDeviceIndex;
 
@@ -43,13 +44,17 @@ public class OmniDevice : HandDevice
     {
         gravityForce = GetComponent<GravityForce>();
         gravityForce.Owner = this;
+        gravityForce.PlayerRoot = playerRoot;
 
         replicator = GetComponent<Replicator>();
         replicator.Owner = this;
 
+        dummyDevice = GetComponent<DummyDevice>();
+
+
         //Just so we don't get a nullreference in Using() before hands are spawned when client connects to server.
         //Allows for no if-testing in Using()
-        devices.Add(new DummyDevice());
+        devices.Add(dummyDevice);
     }
 
     //Must be initialized after spawning hands on network, because deviceSync is located there
@@ -85,8 +90,15 @@ public class OmniDevice : HandDevice
 
     private void FixedUpdate()
     {
-        if (deviceSync && deviceSync.OperationState == EHandDeviceState.CONTROLLING && devices[activeDeviceIndex].StructureSync.PlayersOccupying > 0)
-            devices[activeDeviceIndex].ReleaseStructureFromControl(devices[activeDeviceIndex].Owner);
+        //Release control of structure if player occupies it after control is taken
+        /*
+        if (devices[activeDeviceIndex].StructureSync &&
+            devices[activeDeviceIndex].StructureSync.PlayersOccupying > 0 &&
+            deviceSync.OperationState == EHandDeviceState.CONTROLLING)
+        {
+            devices[activeDeviceIndex].ReleaseStructureFromControl();
+        }
+        */
     }
 
     public override void Equip(EHandSide hand)

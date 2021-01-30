@@ -16,10 +16,13 @@ public class Replicator : HandDevice
     Realtime realtime;
 
     //References specific for Replicator (Common references are in base class)
-    GameObject structureDuplicate;
-    Rigidbody structureDuplicateRB;
+    GameObject duplicate;
+    Rigidbody duplicateRB;
 
     StructureSync duplicateStructureSync;
+
+    RealtimeTransform duplicateRealtimeTransform;
+    RealtimeView duplicateRealtimeView;
 
     float distanceToStructure;
 
@@ -27,9 +30,6 @@ public class Replicator : HandDevice
 
     string structureSceneName = "";
     string structurePrefabName = "";
-
-    OmniDevice owner;
-    public OmniDevice Owner { set => owner = value; }
 
 
     // Start is called before the first frame update
@@ -56,10 +56,10 @@ public class Replicator : HandDevice
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
-            owner.ReleaseStructureFromControl(owner);
+            ReleaseStructureFromControl();
             owner.OperationState = EHandDeviceState.IDLE;
 
-            if (structureDuplicate)
+            if (duplicate)
             {
 
                 structureSync.CollisionEnabled = true;
@@ -68,9 +68,17 @@ public class Replicator : HandDevice
                 duplicateStructureSync.CollisionEnabled = true;
                 duplicateStructureSync.AvailableToManipulate = true;
 
+                structureRtw.preventOwnershipTakeover = false;
+                structureRtw.ClearOwnership();
 
-                structureDuplicate = null;
-                structureDuplicateRB = null;
+                duplicateRealtimeTransform.maintainOwnershipWhileSleeping = false;
+                duplicateRealtimeView.preventOwnershipTakeover = false;
+                duplicateRealtimeView.ClearOwnership();
+
+                duplicate = null;
+                duplicateRB = null;
+                duplicateRealtimeTransform = null;
+                
             }
 
             return false;
@@ -98,29 +106,50 @@ public class Replicator : HandDevice
                     else break;
                 }
 
+                structureRtw = targetStructure.GetComponent<RealtimeView>();
+                structureRtw.RequestOwnership();
+                structureRtw.preventOwnershipTakeover = true;
+                
+
                 targetStructure.GetComponent<RealtimeTransform>().RequestOwnership();
 
                 structureSync.AvailableToManipulate = false;
                 structureSync.CollisionEnabled = false;
 
-                structureDuplicate = Realtime.Instantiate(structurePrefabName,
+                duplicate = Realtime.Instantiate(structurePrefabName,
                                                       ownedByClient: true,
                                                       preventOwnershipTakeover: false,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: realtime);
 
 
-                duplicateStructureSync = structureDuplicate.GetComponent<StructureSync>();
+                duplicateStructureSync = duplicate.GetComponent<StructureSync>();
 
                 duplicateStructureSync.AvailableToManipulate = false;
                 duplicateStructureSync.CollisionEnabled = false;
-
-                structureDuplicate.transform.position = structureHit.collider.gameObject.transform.root.position;
-                structureDuplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;
                 
-                structureDuplicateRB = structureDuplicate.GetComponent<Rigidbody>();
 
-                structureDuplicate.GetComponent<RealtimeTransform>().RequestOwnership();
+                duplicate.transform.position = structureHit.collider.gameObject.transform.root.position;
+                duplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;
+                
+                duplicateRB = duplicate.GetComponent<Rigidbody>();
+
+
+                duplicateRealtimeView = duplicate.GetComponent<RealtimeView>();
+                if (duplicateRealtimeView)
+                {
+                    duplicateRealtimeView.RequestOwnership();
+                    //duplicateRealtimeView.preventOwnershipTakeover = true;
+                }
+
+
+                duplicateRealtimeTransform = duplicate.GetComponent<RealtimeTransform>();
+                if (duplicateRealtimeTransform)
+                {
+                    duplicateRealtimeTransform.RequestOwnership();
+                    duplicateRealtimeTransform.maintainOwnershipWhileSleeping = true;
+                }
+                
 
                 owner.OperationState = EHandDeviceState.CONTROLLING;
 
@@ -135,10 +164,10 @@ public class Replicator : HandDevice
             controlForce = CalculateControlForce();
 
             owner.DeviceSync.ControlForce = controlForce;
-            owner.DeviceSync.StructurePosition = structureDuplicate.transform.position;
+            owner.DeviceSync.StructurePosition = duplicate.transform.position;
 
             //Movement
-            structureDuplicateRB.AddForce(controlForce.normalized * 3);
+            duplicateRB.AddForce(controlForce.normalized * 3);
 
             return true;
         }
@@ -170,11 +199,11 @@ public class Replicator : HandDevice
 
     Vector3 CalculateControlForce()
     {
-        distanceToStructure = (transform.position - structureDuplicate.transform.position).magnitude;
+        distanceToStructure = (transform.position - duplicate.transform.position).magnitude;
 
         Vector3 adjustedForward = transform.forward * distanceToStructure;
 
-        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureDuplicate.transform.position;
+        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - duplicate.transform.position;
 
         return (structureToAdjustedForward);
     }

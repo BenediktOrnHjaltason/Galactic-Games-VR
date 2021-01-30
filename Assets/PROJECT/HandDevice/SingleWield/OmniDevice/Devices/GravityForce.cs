@@ -7,6 +7,10 @@ using Normal.Realtime;
 public class GravityForce : HandDevice
 {
 
+    GameObject playerRoot;
+
+    public GameObject PlayerRoot { set => playerRoot = value; }
+
     bool rotating_Pitch; //Relative to player right
     bool rotating_Roll; //Relative to player forward
     bool rotating_Yaw = false;
@@ -43,7 +47,7 @@ public class GravityForce : HandDevice
 
         else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
         {
-            ReleaseStructureFromControl(owner);
+            ReleaseStructureFromControl();
 
             owner.OperationState = EHandDeviceState.IDLE;
 
@@ -93,15 +97,29 @@ public class GravityForce : HandDevice
                 targetStructureTransform = targetStructure.transform;
 
                 //---- Networking
-                RealtimeTransform rtt = targetStructure.GetComponent<RealtimeTransform>();
+                structureRtt = targetStructure.GetComponent<RealtimeTransform>();
+                if (structureRtt)
+                {
+                    Debug.Log("GravityForce: Structure ownership before request: " + structureRtt.ownerIDSelf);
 
-                rtt.RequestOwnership();
+                    //If player holds structure sufficiently still while controlling it, it may register as sleeping and we could loose ownership
+                    structureRtt.maintainOwnershipWhileSleeping = true;
+                    structureRtt.RequestOwnership();
 
-                //Update state locally and on deviceSync
+                    Debug.Log("GravityForce: Structure ownership after request: " + structureRtt.ownerIDSelf);
+                }
+
+                structureRtw = targetStructure.GetComponent<RealtimeView>();
+                if (structureRtw)
+                {
+                    structureRtw.preventOwnershipTakeover = true;
+                }
+                
+
+                //Update state on deviceSync
                 owner.OperationState = EHandDeviceState.CONTROLLING;
 
                 //----//
-
 
                 return true;
             }
@@ -117,6 +135,15 @@ public class GravityForce : HandDevice
             owner.DeviceSync.ControlForce = controlForce;
             owner.DeviceSync.StructurePosition = targetStructureTransform.position;
 
+            /*
+            Debug.Log("GravityForce: controlForce: " + controlForce + " Magnitude: " + controlForce.magnitude + " ownership of structure is " + structureRtt.ownerIDSelf);
+            if (structureRtt.ownerIDSelf == -1)
+            {
+                Debug.Log("GravityForce: Had to request ownership again ");
+                structureRtt.RequestOwnership();
+            }
+            */
+
 
             //Movement
             targetStructureRB.AddForce(controlForce);
@@ -126,9 +153,9 @@ public class GravityForce : HandDevice
 
             else
             {
-                if (rotating_Roll) targetStructure.transform.Rotate(owner.PlayerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
+                if (rotating_Roll) targetStructure.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
 
-                if (rotating_Pitch) targetStructure.transform.Rotate(owner.PlayerRoot.transform.right, stickInput.y / 2, Space.World);
+                if (rotating_Pitch) targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
             }
 
             return true;
@@ -162,7 +189,14 @@ public class GravityForce : HandDevice
             return false;
         }
 
-        if (structureSync && ( structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate)) return false;
+        if (structureSync && (structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate))
+        {
+            Debug.Log("GravityForce: Not allowed to control structure. Reason: ");
+            if (structureSync.PlayersOccupying > 0) Debug.Log("GravityForce: PlayersOccupying is more than 0 ");
+            if (!structureSync.AvailableToManipulate) Debug.Log("GravityForce: AvailableToManipulate is false");
+
+            return false;
+        }
 
         return true;
     }
