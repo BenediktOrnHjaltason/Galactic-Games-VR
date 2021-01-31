@@ -27,7 +27,7 @@ namespace Types
     }
     //The different modes of the OmniDevice
 
-    enum PlatformMoveGlobal
+    enum EPlatformMoveGlobal
     {
         X_Positive,
         X_Negative,

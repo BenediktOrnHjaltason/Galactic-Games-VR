@@ -22,7 +22,7 @@ public class LinearMoveCycle : MonoBehaviour
     float endPoint;
 
     [SerializeField]
-    PlatformMoveGlobal globalMoveDirection;
+    EPlatformMoveGlobal globalMoveDirection;
 
     [SerializeField]
     float speed = 1.0f;
@@ -41,7 +41,7 @@ public class LinearMoveCycle : MonoBehaviour
 
         switch(globalMoveDirection)
         {
-            case PlatformMoveGlobal.Z_Negative:
+            case EPlatformMoveGlobal.Z_Negative:
 
                 if (transform.position.z > endPoint) transform.position -= new Vector3(0, 0, speed * Time.deltaTime);
                 else transform.position = new Vector3(transform.position.x, transform.position.y, respawnPoint);
