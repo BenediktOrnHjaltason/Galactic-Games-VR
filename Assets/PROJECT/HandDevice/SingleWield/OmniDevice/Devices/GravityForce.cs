@@ -29,6 +29,9 @@ public class GravityForce : HandDevice
     Vector3 controlForce;
     Vector3 Up = new Vector3(0, 1, 0);
 
+    float joltForce = 150.0f;
+    Vector3 controllerVelocity;
+
 
     
 
@@ -135,15 +138,9 @@ public class GravityForce : HandDevice
             owner.DeviceSync.ControlForce = controlForce;
             owner.DeviceSync.StructurePosition = targetStructureTransform.position;
 
-            /*
-            Debug.Log("GravityForce: controlForce: " + controlForce + " Magnitude: " + controlForce.magnitude + " ownership of structure is " + structureRtt.ownerIDSelf);
-            if (structureRtt.ownerIDSelf == -1)
-            {
-                Debug.Log("GravityForce: Had to request ownership again ");
-                structureRtt.RequestOwnership();
-            }
-            */
-
+            controllerVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
+            if (controllerVelocity.z > 1.5) targetStructureRB.AddForce(transform.forward * joltForce);
+            else if (controllerVelocity.z < -1.5) targetStructureRB.AddForce(-transform.forward * joltForce);
 
             //Movement
             targetStructureRB.AddForce(controlForce);
