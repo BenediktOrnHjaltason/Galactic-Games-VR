@@ -33,9 +33,6 @@ public class GravityForce : HandDevice
     Vector3 controllerVelocity;
 
 
-    
-
-
     public override bool Using()
     {
         //************ Manage input **************//
@@ -111,14 +108,7 @@ public class GravityForce : HandDevice
 
                     Debug.Log("GravityForce: Structure ownership after request: " + structureRtt.ownerIDSelf);
                 }
-
-                structureRtw = targetStructure.GetComponent<RealtimeView>();
-                if (structureRtw)
-                {
-                    structureRtw.preventOwnershipTakeover = true;
-                }
                 
-
                 //Update state on deviceSync
                 owner.OperationState = EHandDeviceState.CONTROLLING;
 

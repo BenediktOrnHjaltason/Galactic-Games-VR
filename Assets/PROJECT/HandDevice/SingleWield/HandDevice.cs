@@ -77,7 +77,6 @@ public abstract class HandDevice : MonoBehaviour
             {
                 structureSync.AvailableToManipulate = true;
                 structureRtt.maintainOwnershipWhileSleeping = false;
-                structureRtw.preventOwnershipTakeover = false;
             }
         }
 
@@ -85,7 +84,6 @@ public abstract class HandDevice : MonoBehaviour
         {
             structureSync.AvailableToManipulate = true;
             structureRtt.maintainOwnershipWhileSleeping = false;
-            structureRtw.preventOwnershipTakeover = false;
         }
     }
 }

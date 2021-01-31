@@ -37,9 +37,6 @@ public class Replicator : HandDevice
     {
         RB = GetComponent<Rigidbody>();
 
-        //UICounter = GetComponentInChildren<TextMeshPro>();
-        //UICounter.text = allowedDuplicates.ToString();
-
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
 
@@ -61,24 +58,17 @@ public class Replicator : HandDevice
 
             if (duplicate)
             {
-
                 structureSync.CollisionEnabled = true;
                 structureSync.AvailableToManipulate = true;
 
                 duplicateStructureSync.CollisionEnabled = true;
                 duplicateStructureSync.AvailableToManipulate = true;
 
-                structureRtw.preventOwnershipTakeover = false;
-                structureRtw.ClearOwnership();
-
                 duplicateRealtimeTransform.maintainOwnershipWhileSleeping = false;
-                duplicateRealtimeView.preventOwnershipTakeover = false;
-                duplicateRealtimeView.ClearOwnership();
 
                 duplicate = null;
                 duplicateRB = null;
                 duplicateRealtimeTransform = null;
-                
             }
 
             return false;
@@ -105,19 +95,14 @@ public class Replicator : HandDevice
                     if (structureSceneName[i] > 47 ) structurePrefabName += structureSceneName[i];
                     else break;
                 }
-
-                structureRtw = targetStructure.GetComponent<RealtimeView>();
-                structureRtw.RequestOwnership();
-                structureRtw.preventOwnershipTakeover = true;
                 
-
                 targetStructure.GetComponent<RealtimeTransform>().RequestOwnership();
 
                 structureSync.AvailableToManipulate = false;
                 structureSync.CollisionEnabled = false;
 
                 duplicate = Realtime.Instantiate(structurePrefabName,
-                                                      ownedByClient: true,
+                                                      ownedByClient: false,
                                                       preventOwnershipTakeover: false,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: realtime);
@@ -133,15 +118,6 @@ public class Replicator : HandDevice
                 duplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;
                 
                 duplicateRB = duplicate.GetComponent<Rigidbody>();
-
-
-                duplicateRealtimeView = duplicate.GetComponent<RealtimeView>();
-                if (duplicateRealtimeView)
-                {
-                    duplicateRealtimeView.RequestOwnership();
-                    //duplicateRealtimeView.preventOwnershipTakeover = true;
-                }
-
 
                 duplicateRealtimeTransform = duplicate.GetComponent<RealtimeTransform>();
                 if (duplicateRealtimeTransform)
