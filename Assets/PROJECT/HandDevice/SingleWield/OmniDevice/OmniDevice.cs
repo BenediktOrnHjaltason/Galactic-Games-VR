@@ -21,11 +21,11 @@ public class OmniDevice : HandDevice
     List<Vector3> scalesLocalPositionsEnd;
 
     float operationEffectMultiplier;
-    float scaleOffsettToBase = 0.0139f;
     bool scalesReset = false;
     float timeWaveOffsett = (Mathf.PI * 2) / 6;
-    int rotationIncrement = 0;
-    
+
+    GameObject UIButtonPointedAtLast;
+     
 
 
     /// <summary>
@@ -187,4 +187,16 @@ public class OmniDevice : HandDevice
         return true;
     }
 
+    public void HandleUIButtons(GameObject button)
+    {
+        if (button != UIButtonPointedAtLast)
+        {
+            UIButtonPointedAtLast = button;
+
+            InteractiveScreen buttonOwner = button.transform.root.GetComponent<InteractiveScreen>();
+
+            if (buttonOwner)
+                button.transform.root.GetComponent<InteractiveScreen>().HandleButtonHighLights(button);
+        }
+    }
 }

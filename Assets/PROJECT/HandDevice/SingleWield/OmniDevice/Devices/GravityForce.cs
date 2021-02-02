@@ -33,6 +33,9 @@ public class GravityForce : HandDevice
 
     bool targetRestrictedRotation;
 
+    int layer_Structures = 10;
+    int layer_UI = 5;
+
 
     public override bool Using()
     {
@@ -75,39 +78,48 @@ public class GravityForce : HandDevice
         {
             //Network: update state on clients. OmniSyncDevice manages its own beam based on its on transform on client
 
-            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
+            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << layer_Structures | 1 << layer_UI))
             {
+                GameObject target = structureHit.collider.gameObject;
 
-                if (!ValidateStructureState(structureHit.collider.transform.root.gameObject)) return true;
 
-                structureSync.AvailableToManipulate = false;
 
-                targetRB = targetStructure.GetComponent<Rigidbody>();
-                targetTransform = targetStructure.transform;
-
-                //---- Networking
-                structureRtt = targetStructure.GetComponent<RealtimeTransform>();
-                if (structureRtt)
+                if (target.layer.Equals(layer_Structures))
                 {
-                    Debug.Log("GravityForce: Structure ownership before request: " + structureRtt.ownerIDSelf);
 
-                    //If player holds structure sufficiently still while controlling it, it may register as sleeping and we could loose ownership
-                    structureRtt.maintainOwnershipWhileSleeping = true;
-                    structureRtt.RequestOwnership();
+                    if (!ValidateStructureState(structureHit.collider.transform.root.gameObject)) return true;
 
-                    Debug.Log("GravityForce: Structure ownership after request: " + structureRtt.ownerIDSelf);
+                    structureSync.AvailableToManipulate = false;
+
+                    targetRB = targetStructure.GetComponent<Rigidbody>();
+                    targetTransform = targetStructure.transform;
+
+                    //---- Networking
+                    structureRtt = targetStructure.GetComponent<RealtimeTransform>();
+                    if (structureRtt)
+                    {
+                        Debug.Log("GravityForce: Structure ownership before request: " + structureRtt.ownerIDSelf);
+
+                        //If player holds structure sufficiently still while controlling it, it may register as sleeping and we could loose ownership
+                        structureRtt.maintainOwnershipWhileSleeping = true;
+                        structureRtt.RequestOwnership();
+
+                        Debug.Log("GravityForce: Structure ownership after request: " + structureRtt.ownerIDSelf);
+                    }
+
+                    targetRestrictedRotation = (targetStructure.GetComponent<StructureOnRails>());
+
+                    controllerRollOnControlling = transform.rotation.eulerAngles.z;
+
+                    //Update state on deviceSync
+                    owner.OperationState = EHandDeviceState.CONTROLLING;
+
+                    //----//
+
+                    return true;
                 }
 
-                targetRestrictedRotation = (targetStructure.GetComponent<StructureOnRails>());
-
-                controllerRollOnControlling = transform.rotation.eulerAngles.z;
-
-                //Update state on deviceSync
-                owner.OperationState = EHandDeviceState.CONTROLLING;
-
-                //----//
-
-                return true;
+                else ((OmniDevice)owner).HandleUIButtons(target);
             }
 
             return true;
