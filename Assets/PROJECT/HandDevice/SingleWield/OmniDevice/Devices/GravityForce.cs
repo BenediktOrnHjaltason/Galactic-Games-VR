@@ -11,17 +11,13 @@ public class GravityForce : HandDevice
 
     public GameObject PlayerRoot { set => playerRoot = value; }
 
-    bool rotating_Pitch; //Relative to player right
-    bool rotating_Roll; //Relative to player forward
-    bool rotating_Yaw = false;
-
     bool pushingForward;
     bool pushingBackward;
 
     Vector2 stickInput;
 
-    Rigidbody targetStructureRB;
-    Transform targetStructureTransform;
+    Rigidbody targetRB;
+    Transform targetTransform;
 
 
     float distanceToStructure;
@@ -32,16 +28,21 @@ public class GravityForce : HandDevice
     float joltForce = 150.0f;
     Vector3 controllerVelocity;
 
+    float controllerRollOnControlling;
+    float rollMultiplier;
+
+    bool targetRestrictedRotation;
+
 
     public override bool Using()
     {
+
         //************ Manage input **************//
 
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
             //Update state locally and on networked deviceSync
             owner.OperationState = EHandDeviceState.SCANNING;
-            rotating_Yaw = false;
         }
 
 
@@ -68,18 +69,6 @@ public class GravityForce : HandDevice
             pushingForward = false;
 
 
-        stickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
-
-        if (stickInput.x > 0.1 || stickInput.x < -0.1) rotating_Roll = true;
-        else rotating_Roll = false;
-
-        if (stickInput.y > 0.1 || stickInput.y < -0.1) rotating_Pitch = true;
-        else rotating_Pitch = false;
-
-        if (OVRInput.GetDown(OVRInput.Button.SecondaryThumbstick))
-            rotating_Yaw = !rotating_Yaw;
-
-
         //************ Operation logic **************//
 
         if (owner.OperationState == EHandDeviceState.SCANNING)
@@ -93,8 +82,8 @@ public class GravityForce : HandDevice
 
                 structureSync.AvailableToManipulate = false;
 
-                targetStructureRB = targetStructure.GetComponent<Rigidbody>();
-                targetStructureTransform = targetStructure.transform;
+                targetRB = targetStructure.GetComponent<Rigidbody>();
+                targetTransform = targetStructure.transform;
 
                 //---- Networking
                 structureRtt = targetStructure.GetComponent<RealtimeTransform>();
@@ -108,7 +97,11 @@ public class GravityForce : HandDevice
 
                     Debug.Log("GravityForce: Structure ownership after request: " + structureRtt.ownerIDSelf);
                 }
-                
+
+                targetRestrictedRotation = (targetStructure.GetComponent<StructureOnRails>());
+
+                controllerRollOnControlling = transform.rotation.eulerAngles.z;
+
                 //Update state on deviceSync
                 owner.OperationState = EHandDeviceState.CONTROLLING;
 
@@ -126,23 +119,30 @@ public class GravityForce : HandDevice
 
             //Network: Update controlForce and structurePosition in deviceSync, so all clients can update their own visual beam
             owner.DeviceSync.ControlForce = controlForce;
-            owner.DeviceSync.StructurePosition = targetStructureTransform.position;
+            owner.DeviceSync.StructurePosition = targetTransform.position;
 
             controllerVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
-            if (controllerVelocity.z > 1.5) targetStructureRB.AddForce(transform.forward * joltForce);
-            else if (controllerVelocity.z < -1.5) targetStructureRB.AddForce(-transform.forward * joltForce);
+            if (controllerVelocity.z > 1.5) targetRB.AddForce(transform.forward * joltForce);
+            else if (controllerVelocity.z < -1.5) targetRB.AddForce(-transform.forward * joltForce);
 
             //Movement
-            targetStructureRB.AddForce(controlForce);
+            targetRB.AddForce(controlForce);
 
             //Rotation
-            if (rotating_Yaw) targetStructure.transform.Rotate(Up, (stickInput.x * -1) / 2, Space.World);
+            stickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
 
-            else
+            if (transform.rotation.eulerAngles.z < 340 && transform.rotation.eulerAngles.z > 200) rollMultiplier = -0.5f;
+            else if (transform.rotation.eulerAngles.z > 30 && transform.rotation.eulerAngles.z < 140) rollMultiplier = 0.5f;
+            else rollMultiplier = 0;
+
+            if (!targetRestrictedRotation)
             {
-                if (rotating_Roll) targetStructure.transform.Rotate(playerRoot.transform.forward, ((stickInput.x * -1) / 2), Space.World);
-
-                if (rotating_Pitch) targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
+                //Roll
+                targetStructure.transform.Rotate(playerRoot.transform.forward, rollMultiplier, Space.World);
+                //Yaw
+                targetStructure.transform.Rotate(playerRoot.transform.up, ((stickInput.x * -1) / 2), Space.World);
+                //Pitch
+                targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
             }
 
             return true;
