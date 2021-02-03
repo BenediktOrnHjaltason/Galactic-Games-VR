@@ -5,6 +5,19 @@ using System;
 
 public class InteractiveScreen : MonoBehaviour
 {
+    enum EScreenState
+    {
+        OPEN,
+        CLOSED
+    }
+
+    enum ESlidesOperationPhase
+    {
+        NONE,
+        RETRACTING,
+        EXPANDING
+    }
+
 
     [SerializeField]
     AnimationCurve fastInEaseOut;
@@ -13,7 +26,10 @@ public class InteractiveScreen : MonoBehaviour
     //Frame
 
     [SerializeField]
-    Vector3 mainPivotFullScale;
+    GameObject mainFramePivotBase;
+
+    [SerializeField]
+    Vector3 mainFramePivotFullScale;
 
     //Buttons
 
@@ -33,9 +49,7 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     GameObject slidesPivotBase;
 
-
     List<GameObject> slides = new List<GameObject>();
-
 
     [SerializeField]
     Vector3 slidesScale;
@@ -43,9 +57,17 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     Vector3 slidesRotation;
 
-
+    //----**** Operation ****----//
 
     public event Action<GameObject> OnButtonHighlighted;
+
+    bool operatingAnything = false;
+
+    bool operatingMinMax = false;
+
+    EScreenState openOrClosed = EScreenState.OPEN;
+
+    float minMaxTransitionTime = 0;
 
 
     void Awake()
@@ -77,10 +99,34 @@ public class InteractiveScreen : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
+        if (operatingMinMax)
+        {
+            if (minMaxTransitionTime < 1) minMaxTransitionTime += 0.1f;
+
+            if (openOrClosed == EScreenState.OPEN)
+            {
+                mainFramePivotBase.transform.localScale = Vector3.Lerp(mainFramePivotFullScale, Vector3.zero, fastInEaseOut.Evaluate(minMaxTransitionTime));
+            }
+            else
+            {
+                mainFramePivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, mainFramePivotFullScale, fastInEaseOut.Evaluate(minMaxTransitionTime));
+            }
+
+            if (minMaxTransitionTime >= 1)
+            {
+
+                openOrClosed = (openOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
+
+                minMaxTransitionTime = 0.0f;
+
+                operatingMinMax = false;
+                operatingAnything = false;
+            }
+        }
         
+
     }
 
     public void HandleButtonHighLights(GameObject button)
@@ -98,5 +144,11 @@ public class InteractiveScreen : MonoBehaviour
 
     public void ToggleMinMax()
     {
+        if (!operatingAnything)
+        {
+            operatingAnything = true;
+
+            operatingMinMax = true;
+        }
     }
 }

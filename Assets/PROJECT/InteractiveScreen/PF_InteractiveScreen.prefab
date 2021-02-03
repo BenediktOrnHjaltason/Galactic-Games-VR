@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 5394805669760359195}
   - component: {fileID: 2135974552340357940}
   m_Layer: 0
-  m_Name: PF_InteractiveScreenTest
+  m_Name: PF_InteractiveScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,17 +159,17 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.49376392
-      value: -0.003359139
-      inSlope: 6.052062
-      outSlope: 6.052062
+      time: 0.000076800585
+      value: 0.0036035907
+      inSlope: 2.6448987
+      outSlope: 2.6448987
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.066171035
+      outWeight: 0.04119509
     - serializedVersion: 3
-      time: -0.004563093
-      value: 0.9805398
+      time: 1.0010521
+      value: 0.9991021
       inSlope: 0
       outSlope: 0
       tangentMode: 136
@@ -179,7 +179,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mainPivotFullScale: {x: 0.80871, y: 0.80871, z: 0.80871}
+  mainFramePivotBase: {fileID: 7532827252575539245}
+  mainFramePivotFullScale: {x: 0.80871, y: 0.80871, z: 0.80871}
   buttonMinMax: {fileID: 3531024553690797256}
   buttonForward: {fileID: 1665917298467787783}
   buttonBackwards: {fileID: 6094430389424387838}
@@ -191,7 +192,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 3f4c1ea0fb6cfef45bbc5807305678fc, type: 2}
   slidesPivotBase: {fileID: 7015310800342360332}
   slidesScale: {x: 0.7449172, y: 1, z: 0.35249}
-  slidesRotation: {x: 90.00001, y: 0, z: 180}
+  slidesRotation: {x: 90.00001, y: 0, z: 0}
 --- !u!114 &2135974552340357940
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,7 +645,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7015310800342360332}
   m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.933, z: 0.018}
+  m_LocalPosition: {x: 0, y: 2.817, z: 0.037}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4400197714804545480}
@@ -754,7 +755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4400197714804545480}
   m_Layer: 0
-  m_Name: MainPivotBase
+  m_Name: MainFramePivotBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
