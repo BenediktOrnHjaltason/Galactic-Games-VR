@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class InteractiveScreen : MonoBehaviour
 {
@@ -40,6 +41,9 @@ public class InteractiveScreen : MonoBehaviour
 
     [SerializeField]
     Button_InteractiveScreen buttonBackwards;
+
+    [SerializeField]
+    TextMeshPro MinMaxIcon;
 
     //Slides
     [SerializeField]
@@ -81,7 +85,7 @@ public class InteractiveScreen : MonoBehaviour
 
     bool operatingMinMax = false;
 
-    EScreenState openOrClosed = EScreenState.OPEN;
+    EScreenState openOrClosed = EScreenState.CLOSED;
 
     //-- ChangeSlide
 
@@ -130,6 +134,10 @@ public class InteractiveScreen : MonoBehaviour
         //ProgressBar
         progressBarIncrement = 1.0f / (float)slides.Count;
         progressBarPivot.transform.localScale = new Vector3(progressBarIncrement, 1, 1);
+
+        //Initialize
+        mainFramePivotBase.transform.localScale = Vector3.zero;
+        MinMaxIcon.text = "?";
     }
 
     private void FixedUpdate()
@@ -156,7 +164,11 @@ public class InteractiveScreen : MonoBehaviour
 
             if (transitionTime >= 1)
             {
+
+
                 openOrClosed = (openOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
+
+                MinMaxIcon.text = (openOrClosed == EScreenState.OPEN) ? "-" : "?";
 
                 transitionTime = 0.0f;
 
