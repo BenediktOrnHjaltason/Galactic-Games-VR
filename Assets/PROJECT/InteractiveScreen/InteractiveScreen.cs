@@ -77,32 +77,28 @@ public class InteractiveScreen : MonoBehaviour
 
     public event Action<GameObject> OnButtonHighlighted;
 
-    bool operatingAnything = false;
-
     float transitionTime = 0;
 
     //-- MinMax
 
-    bool operatingMinMax = false;
-
     EScreenState openOrClosed = EScreenState.CLOSED;
 
     //-- ChangeSlide
-
-    bool operatingSlideChange = false;
 
     int activeSlideIndex = 0;
     int previousSlideIndex = 0;
 
     ESlidesOperationPhase slideChangePhase;
 
-    
 
+    InteractiveScreenSync screenSync;
 
 
 
     void Awake()
     {
+        screenSync = GetComponent<InteractiveScreenSync>();
+
         //Setup buttons
 
         buttonForward.OnExecute += NextFrame;
@@ -145,7 +141,7 @@ public class InteractiveScreen : MonoBehaviour
 
         //Operate Buttons
 
-        if (operatingMinMax)
+        if (screenSync.ExecutingMinMax)
         {
             if (transitionTime < 1) transitionTime += 0.1f;
 
@@ -172,12 +168,12 @@ public class InteractiveScreen : MonoBehaviour
 
                 transitionTime = 0.0f;
 
-                operatingMinMax = false;
-                operatingAnything = false;
+                screenSync.ExecutingMinMax = false;
+                screenSync.ExecutingAnything = false;
             }
         }
 
-        if (operatingSlideChange)
+        if (screenSync.ExecutingSlideChange)
         {
             if (slideChangePhase == ESlidesOperationPhase.RETRACTING)
             {
@@ -208,8 +204,8 @@ public class InteractiveScreen : MonoBehaviour
                 if (transitionTime >= 1)
                 {
                     transitionTime = 0.0f;
-                    operatingSlideChange = false;
-                    operatingAnything = false;
+                    screenSync.ExecutingSlideChange = false;
+                    screenSync.ExecutingAnything = false;
                 }
             }
         }
@@ -222,9 +218,9 @@ public class InteractiveScreen : MonoBehaviour
 
     public void NextFrame()
     {
-        if (!operatingAnything)
+        if (!screenSync.ExecutingAnything)
         {
-            operatingAnything = true;
+            screenSync.ExecutingAnything = true;
 
 
             previousSlideIndex = activeSlideIndex;
@@ -237,15 +233,15 @@ public class InteractiveScreen : MonoBehaviour
 
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
-            operatingSlideChange = true;
+            screenSync.ExecutingSlideChange = true;
         }
     }
 
     public void PreviousFrame()
     {
-        if (!operatingAnything)
+        if (!screenSync.ExecutingAnything)
         {
-            operatingAnything = true;
+            screenSync.ExecutingAnything = true;
 
             
             previousSlideIndex = activeSlideIndex;
@@ -257,17 +253,17 @@ public class InteractiveScreen : MonoBehaviour
             progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (activeSlideIndex + 1), 1, 1);
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
-            operatingSlideChange = true;
+            screenSync.ExecutingSlideChange = true;
         }
     }
 
     public void ToggleMinMax()
     {
-        if (!operatingAnything)
+        if (!screenSync.ExecutingAnything)
         {
-            operatingAnything = true;
+            screenSync.ExecutingAnything = true;
 
-            operatingMinMax = true;
+            screenSync.ExecutingMinMax = true;
         }
     }
 }
