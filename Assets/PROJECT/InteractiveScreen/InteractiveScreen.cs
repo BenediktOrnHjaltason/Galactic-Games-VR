@@ -13,7 +13,6 @@ public class InteractiveScreen : MonoBehaviour
 
     enum ESlidesOperationPhase
     {
-        NONE,
         RETRACTING,
         EXPANDING
     }
@@ -49,7 +48,11 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     GameObject slidesPivotBase;
 
+    Vector3 slidesPivotBaseScale = new Vector3(1,1,1);
+
     List<GameObject> slides = new List<GameObject>();
+
+    List<MeshRenderer> slidesMeshRenderers = new List<MeshRenderer>();
 
     [SerializeField]
     Vector3 slidesScale;
@@ -63,11 +66,26 @@ public class InteractiveScreen : MonoBehaviour
 
     bool operatingAnything = false;
 
+    float transitionTime = 0;
+
+    //-- MinMax
+
     bool operatingMinMax = false;
 
     EScreenState openOrClosed = EScreenState.OPEN;
 
-    float minMaxTransitionTime = 0;
+    //-- ChangeSlide
+
+    bool operatingSlideChange = false;
+
+    int activeSlideIndex = 0;
+    int previousSlideIndex = 0;
+
+    ESlidesOperationPhase slideChangePhase;
+
+    
+
+
 
 
     void Awake()
@@ -96,6 +114,8 @@ public class InteractiveScreen : MonoBehaviour
             MeshRenderer mr = slides[i].GetComponent<MeshRenderer>();
             mr.material = slidesGraphics[i];
             if (i != 0) mr.enabled = false;
+
+            slidesMeshRenderers.Add(mr);
         }
     }
 
@@ -103,30 +123,68 @@ public class InteractiveScreen : MonoBehaviour
     {
         if (operatingMinMax)
         {
-            if (minMaxTransitionTime < 1) minMaxTransitionTime += 0.1f;
+            if (transitionTime < 1) transitionTime += 0.1f;
+
+            //-----
 
             if (openOrClosed == EScreenState.OPEN)
             {
-                mainFramePivotBase.transform.localScale = Vector3.Lerp(mainFramePivotFullScale, Vector3.zero, fastInEaseOut.Evaluate(minMaxTransitionTime));
+                mainFramePivotBase.transform.localScale = Vector3.Lerp(mainFramePivotFullScale, Vector3.zero, fastInEaseOut.Evaluate(transitionTime));
             }
             else
             {
-                mainFramePivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, mainFramePivotFullScale, fastInEaseOut.Evaluate(minMaxTransitionTime));
+                mainFramePivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, mainFramePivotFullScale, fastInEaseOut.Evaluate(transitionTime));
             }
 
-            if (minMaxTransitionTime >= 1)
-            {
+            //-----
 
+            if (transitionTime >= 1)
+            {
                 openOrClosed = (openOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
 
-                minMaxTransitionTime = 0.0f;
+                transitionTime = 0.0f;
 
                 operatingMinMax = false;
                 operatingAnything = false;
             }
         }
-        
 
+        if (operatingSlideChange)
+        {
+            if (slideChangePhase == ESlidesOperationPhase.RETRACTING)
+            {
+                if (transitionTime < 1) transitionTime += 0.2f;
+                //----
+
+                slidesPivotBase.transform.localScale = Vector3.Lerp(slidesPivotBaseScale, Vector3.zero, fastInEaseOut.Evaluate(transitionTime));
+
+                //----
+                if (transitionTime >= 1)
+                {
+                    transitionTime = 0.0f;
+                    slideChangePhase = ESlidesOperationPhase.EXPANDING;
+
+                    slidesMeshRenderers[previousSlideIndex].enabled = false;
+                    slidesMeshRenderers[activeSlideIndex].enabled = true;
+                }
+            }
+
+            if (slideChangePhase == ESlidesOperationPhase.EXPANDING)
+            {
+                if (transitionTime < 1) transitionTime += 0.2f;
+                //----
+
+                slidesPivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, slidesPivotBaseScale, fastInEaseOut.Evaluate(transitionTime));
+
+                //----
+                if (transitionTime >= 1)
+                {
+                    transitionTime = 0.0f;
+                    operatingSlideChange = false;
+                    operatingAnything = false;
+                }
+            }
+        }
     }
 
     public void HandleButtonHighLights(GameObject button)
@@ -136,10 +194,38 @@ public class InteractiveScreen : MonoBehaviour
 
     public void NextFrame()
     {
+        if (!operatingAnything)
+        {
+            operatingAnything = true;
+
+
+            previousSlideIndex = activeSlideIndex;
+
+            activeSlideIndex++;
+
+            if (activeSlideIndex > slides.Count - 1) activeSlideIndex = 0;
+
+            slideChangePhase = ESlidesOperationPhase.RETRACTING;
+            operatingSlideChange = true;
+        }
     }
 
     public void PreviousFrame()
     {
+        if (!operatingAnything)
+        {
+            operatingAnything = true;
+
+            
+            previousSlideIndex = activeSlideIndex;
+
+            activeSlideIndex--;
+
+            if (activeSlideIndex < 0) activeSlideIndex = slides.Count - 1;
+
+            slideChangePhase = ESlidesOperationPhase.RETRACTING;
+            operatingSlideChange = true;
+        }
     }
 
     public void ToggleMinMax()
