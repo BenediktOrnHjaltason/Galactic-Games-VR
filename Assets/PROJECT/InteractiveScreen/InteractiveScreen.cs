@@ -60,6 +60,15 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     Vector3 slidesRotation;
 
+    //----Progress Bar
+
+    [SerializeField]
+    GameObject progressBarPivot;
+
+    float progressBarIncrement;
+
+
+
     //----**** Operation ****----//
 
     public event Action<GameObject> OnButtonHighlighted;
@@ -117,10 +126,17 @@ public class InteractiveScreen : MonoBehaviour
 
             slidesMeshRenderers.Add(mr);
         }
+
+        //ProgressBar
+        progressBarIncrement = 1.0f / (float)slides.Count;
+        progressBarPivot.transform.localScale = new Vector3(progressBarIncrement, 1, 1);
     }
 
     private void FixedUpdate()
     {
+
+        //Operate Buttons
+
         if (operatingMinMax)
         {
             if (transitionTime < 1) transitionTime += 0.1f;
@@ -205,6 +221,9 @@ public class InteractiveScreen : MonoBehaviour
 
             if (activeSlideIndex > slides.Count - 1) activeSlideIndex = 0;
 
+            progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (activeSlideIndex + 1), 1, 1);
+
+
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
             operatingSlideChange = true;
         }
@@ -222,6 +241,8 @@ public class InteractiveScreen : MonoBehaviour
             activeSlideIndex--;
 
             if (activeSlideIndex < 0) activeSlideIndex = slides.Count - 1;
+
+            progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (activeSlideIndex + 1), 1, 1);
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
             operatingSlideChange = true;
