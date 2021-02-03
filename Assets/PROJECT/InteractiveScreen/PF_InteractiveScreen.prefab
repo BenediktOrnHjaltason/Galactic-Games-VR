@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2080952031891481273}
   - component: {fileID: 1665917298467787783}
   m_Layer: 5
-  m_Name: ButtonColliderForward
+  m_Name: ButtonForward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,8 +107,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866a421ff2888574594053cc372ef04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inactiveMaterial: {fileID: 0}
-  activeMaterial: {fileID: 0}
+  inactiveMaterial: {fileID: 2100000, guid: 54df2bd0fc8def44c88dc4fbf8e5d35c, type: 2}
+  activeMaterial: {fileID: 2100000, guid: 2e32495cadf5f5f43ba180264acea8de, type: 2}
 --- !u!1 &766643379974452850
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +179,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  mainPivotFullScale: {x: 0.80871, y: 0.80871, z: 0.80871}
+  buttonMinMax: {fileID: 3531024553690797256}
+  buttonForward: {fileID: 1665917298467787783}
+  buttonBackwards: {fileID: 6094430389424387838}
   slidesGraphics:
   - {fileID: 2100000, guid: 4bc081870719b3d42b76c8bb3008ba70, type: 2}
   - {fileID: 2100000, guid: 9f3ba45cfdd169d43a00d406fcb2770a, type: 2}
@@ -186,8 +190,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 27508219166b429469d52579ea6dc32b, type: 2}
   - {fileID: 2100000, guid: 3f4c1ea0fb6cfef45bbc5807305678fc, type: 2}
   slidesPivotBase: {fileID: 7015310800342360332}
-  slidesLocalPosition: {x: -3.321, y: 0, z: 0}
-  slidesScale: {x: 0.6631047, y: 0.4324996, z: 0.342198}
+  slidesScale: {x: 0.7449172, y: 1, z: 0.35249}
   slidesRotation: {x: 90.00001, y: 0, z: 180}
 --- !u!114 &2135974552340357940
 MonoBehaviour:
@@ -236,7 +239,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1226586784979665001}
   m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 3.859, y: -2.207, z: 0}
+  m_LocalPosition: {x: 0, y: 2.47, z: 0}
   m_LocalScale: {x: 0.77246064, y: 0.44128, z: 0.44128}
   m_Children:
   - {fileID: 88049598536884627}
@@ -319,7 +322,7 @@ GameObject:
   - component: {fileID: 5963314320906567708}
   - component: {fileID: 3531024553690797256}
   m_Layer: 5
-  m_Name: ButtonColliderMinMax
+  m_Name: ButtonMinMax
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -333,7 +336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3115901322000595113}
   m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0.34, y: -0.292, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 0.5027321, y: 0.061247114, z: 0.42518896}
   m_Children:
   - {fileID: 3473260442079833126}
@@ -412,8 +415,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866a421ff2888574594053cc372ef04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inactiveMaterial: {fileID: 0}
-  activeMaterial: {fileID: 0}
+  inactiveMaterial: {fileID: 2100000, guid: 54df2bd0fc8def44c88dc4fbf8e5d35c, type: 2}
+  activeMaterial: {fileID: 2100000, guid: 2e32495cadf5f5f43ba180264acea8de, type: 2}
 --- !u!1 &5550586105568947573
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +431,7 @@ GameObject:
   - component: {fileID: 6651445173167297317}
   - component: {fileID: 6094430389424387838}
   m_Layer: 5
-  m_Name: ButtonColliderBackward
+  m_Name: ButtonBackward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -521,8 +524,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866a421ff2888574594053cc372ef04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inactiveMaterial: {fileID: 0}
-  activeMaterial: {fileID: 0}
+  inactiveMaterial: {fileID: 2100000, guid: 54df2bd0fc8def44c88dc4fbf8e5d35c, type: 2}
+  activeMaterial: {fileID: 2100000, guid: 2e32495cadf5f5f43ba180264acea8de, type: 2}
 --- !u!1 &6199497958822544362
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,7 +539,7 @@ GameObject:
   - component: {fileID: 6095193485960154835}
   - component: {fileID: 5993798904600656229}
   m_Layer: 9
-  m_Name: Backward
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -640,13 +643,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7015310800342360332}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.476, y: -1.901, z: 0.006}
+  m_LocalRotation: {x: 0.70710677, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 2.933, z: 0.018}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4400197714804545480}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
 --- !u!1 &7192248569318036049
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,7 +663,7 @@ GameObject:
   - component: {fileID: 6152901290100006153}
   - component: {fileID: 3081397219430341858}
   m_Layer: 9
-  m_Name: MinMax
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -786,7 +789,7 @@ GameObject:
   - component: {fileID: 5047621287395009026}
   - component: {fileID: 1797774260610850673}
   m_Layer: 9
-  m_Name: Forward
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

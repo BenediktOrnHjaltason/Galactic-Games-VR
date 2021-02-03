@@ -24,7 +24,8 @@ public class OmniDevice : HandDevice
     bool scalesReset = false;
     float timeWaveOffsett = (Mathf.PI * 2) / 6;
 
-    GameObject UIButtonPointedAtLast;
+    GameObject UIButtonObjectPointedAtLast = null;
+    Button_InteractiveScreen pointedButtonScript;
      
 
 
@@ -189,14 +190,23 @@ public class OmniDevice : HandDevice
 
     public void HandleUIButtons(GameObject button)
     {
-        if (button != UIButtonPointedAtLast)
+        if (button != UIButtonObjectPointedAtLast)
         {
-            UIButtonPointedAtLast = button;
+            UIButtonObjectPointedAtLast = button;
+            pointedButtonScript = button.GetComponent<Button_InteractiveScreen>();
 
             InteractiveScreen buttonOwner = button.transform.root.GetComponent<InteractiveScreen>();
 
             if (buttonOwner)
-                button.transform.root.GetComponent<InteractiveScreen>().HandleButtonHighLights(button);
+            {
+                buttonOwner.HandleButtonHighLights(button);
+            }
+        }
+
+        //This will only execute while raytracing button
+        if (OVRInput.GetDown(OVRInput.Button.One))
+        {
+            if (pointedButtonScript) pointedButtonScript.Execute();
         }
     }
 }

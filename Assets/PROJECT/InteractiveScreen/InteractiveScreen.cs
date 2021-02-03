@@ -9,6 +9,24 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     AnimationCurve fastInEaseOut;
 
+
+    //Frame
+
+    [SerializeField]
+    Vector3 mainPivotFullScale;
+
+    //Buttons
+
+    [SerializeField]
+    Button_InteractiveScreen buttonMinMax;
+
+    [SerializeField]
+    Button_InteractiveScreen buttonForward;
+
+    [SerializeField]
+    Button_InteractiveScreen buttonBackwards;
+
+    //Slides
     [SerializeField]
     List<Material> slidesGraphics;
 
@@ -17,9 +35,6 @@ public class InteractiveScreen : MonoBehaviour
 
 
     List<GameObject> slides = new List<GameObject>();
-
-    [SerializeField]
-    Vector3 slidesLocalPosition;
 
 
     [SerializeField]
@@ -35,12 +50,24 @@ public class InteractiveScreen : MonoBehaviour
 
     void Awake()
     {
+        //Setup buttons
+
+        buttonForward.OnExecute += NextFrame;
+        OnButtonHighlighted += buttonForward.SetMaterial;
+
+        buttonBackwards.OnExecute += PreviousFrame;
+        OnButtonHighlighted += buttonBackwards.SetMaterial;
+
+        buttonMinMax.OnExecute += ToggleMinMax;
+        OnButtonHighlighted += buttonMinMax.SetMaterial;
+
+        //Make slides
         for (int i = 0; i < slidesGraphics.Count; i++)
         {
             slides.Add(GameObject.CreatePrimitive(PrimitiveType.Plane));
             slides[i].name = "slide " + i.ToString();
             slides[i].transform.SetParent(slidesPivotBase.transform);
-            slides[i].transform.localPosition = slidesLocalPosition;
+            slides[i].transform.localPosition = Vector3.zero;
             slides[i].transform.localScale = slidesScale;
             slides[i].transform.rotation = Quaternion.Euler(slidesRotation);
 
@@ -59,5 +86,17 @@ public class InteractiveScreen : MonoBehaviour
     public void HandleButtonHighLights(GameObject button)
     {
         OnButtonHighlighted?.Invoke(button);
+    }
+
+    public void NextFrame()
+    {
+    }
+
+    public void PreviousFrame()
+    {
+    }
+
+    public void ToggleMinMax()
+    {
     }
 }

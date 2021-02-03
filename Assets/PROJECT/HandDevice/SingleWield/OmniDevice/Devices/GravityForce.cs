@@ -119,7 +119,10 @@ public class GravityForce : HandDevice
                     return true;
                 }
 
-                else ((OmniDevice)owner).HandleUIButtons(target);
+                else
+                {
+                    ((OmniDevice)owner).HandleUIButtons(target);
+                }
             }
 
             return true;
