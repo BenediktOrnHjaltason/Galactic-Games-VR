@@ -61,6 +61,12 @@ namespace Types
         LEFT_LOWER,
     }
 
+    enum ERotationForceAxis
+    {
+        PLAYER,
+        WORLD
+    }
+
     [Serializable]
     public struct HandDeviceUIData
     {

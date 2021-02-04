@@ -2,6 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using Types;
+using System;
+
+/*
+ This class handles networking state for controllable structures (enforcing no-movement while players are on structure etc),
+ but also contains general non-synced variables that control behaviour in relation to physics manipulation,
+ allowed rotation forces etc. May want to factor non-synced stuff out to separate, but it's convenient to have
+ to add one script to create controllable structures.
+ */
+
+[System.Serializable]
+struct WorldAxisToRotation
+{
+    public Vector3 Roll;
+    public Vector3 Yaw;
+    public Vector3 Pitch;
+}
+[System.Serializable]
+struct WorldAxisConstraints
+{
+    public bool constrainRoll;
+    public bool constrainYaw;
+    public bool constrainPitch;
+}
 
 public class StructureSync : RealtimeComponent<StructureSync_Model>
 {
@@ -18,11 +42,31 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     
     GameObject mainStructure;
 
+    [SerializeField]
+    ERotationForceAxis rotationAxis = ERotationForceAxis.PLAYER;
+
+    /// <summary>
+    /// Settings for structures rotating in local space
+    /// </summary>
+    [Header("Define which world direction represent which rotation in this case, i.e. (0,0,1) represents Roll")]
+    [SerializeField]
+    WorldAxisToRotation worldAxisToRotation;
+
+    [Header("Define which rotations to constrain")]
+    [SerializeField]
+    WorldAxisConstraints worldAxisConstraints;
+
+    float compensationForConstrainedRBImpactRotation = 220;
+
     Rigidbody RB;
+
+    public event Action OnBreakControl;
+
 
     private void Awake()
     {
         mainStructure = transform.GetChild(0).gameObject;
+
         RB = GetComponent<Rigidbody>();
     }
 
@@ -122,4 +166,50 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
         mainStructure.layer = (model.collisionEnabled) ? 10 : 9;
     }
     //-------------------
+
+    //------**** General functionality ****------//
+
+    public void Rotate(Vector3 playerForward, float rollForce, float yawForce, Vector3 playerRight, float pitchForce)
+    {
+        switch (rotationAxis)
+        {
+            case ERotationForceAxis.PLAYER:
+                {
+                    //Roll
+                    RB.AddTorque(playerForward * rollForce, ForceMode.Acceleration);
+
+                    //Yaw
+                    RB.AddTorque(Vector3.up * yawForce, ForceMode.Acceleration);
+
+                    //Pitch
+                    RB.AddTorque(playerRight * pitchForce, ForceMode.Acceleration);
+                    break;
+                }
+
+            case ERotationForceAxis.WORLD:
+                {
+
+                    //Roll (Only use case for now)
+                    if (!worldAxisConstraints.constrainRoll)    RB.AddRelativeTorque(worldAxisToRotation.Roll * rollForce * compensationForConstrainedRBImpactRotation * Time.deltaTime, ForceMode.Acceleration);
+
+                    //Yaw
+                    //if (!localRotationConstraints.constrainYaw)     RB.AddRelativeTorque(transform.up * yawForce);
+
+                    //Pitch
+                    //if (!localRotationConstraints.constrainPitch)   RB.AddRelativeTorque(transform.right * pitchForce);
+
+                    break;
+                }           
+        }
+    }
+
+    public void BreakControl()
+    {
+        OnBreakControl?.Invoke();
+    }
+
+    private void FixedUpdate()
+    {
+        if (playersOccupying > 0) BreakControl(); 
+    }
 }

@@ -93,6 +93,7 @@ public class GravityForce : HandDevice
                     if (!ValidateStructureState(structureHit.collider.transform.root.gameObject)) return true;
 
                     structureSync.AvailableToManipulate = false;
+                    structureSync.OnBreakControl += ReleaseStructureFromControl;
 
                     targetRB = targetStructure.GetComponent<Rigidbody>();
                     targetTransform = targetStructure.transform;
@@ -153,16 +154,20 @@ public class GravityForce : HandDevice
             if (structureSync.AllowRotationForces)
             {
                 //Roll
-                targetRB.AddTorque(playerRoot.transform.forward * rollMultiplier * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
+                //targetRB.AddTorque(playerRoot.transform.forward * rollMultiplier * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
                 //targetStructure.transform.Rotate(playerRoot.transform.forward, rollMultiplier, Space.World);
 
                 //Yaw
-                targetRB.AddTorque(playerRoot.transform.up * ((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
+                //targetRB.AddTorque(Up * ((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
                 //targetStructure.transform.Rotate(playerRoot.transform.up, ((stickInput.x * -1) / 2), Space.World);
                 
                 //Pitch
-                targetRB.AddTorque(playerRoot.transform.right * (stickInput.y / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
+                //targetRB.AddTorque(playerRoot.transform.right * (stickInput.y / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
                 //targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
+
+                structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
+                                     /*Yaw*/((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
+                                     /*Pitch*/playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
             }
             
             return true;

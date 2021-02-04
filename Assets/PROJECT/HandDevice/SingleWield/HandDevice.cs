@@ -65,6 +65,7 @@ public abstract class HandDevice : MonoBehaviour
             targetStructure = target;
 
             structureSync = target.GetComponent<StructureSync>();
+
             structureRtt = targetStructure.GetComponent<RealtimeTransform>();
         }
     }
@@ -77,6 +78,10 @@ public abstract class HandDevice : MonoBehaviour
             {
                 structureSync.AvailableToManipulate = true;
                 structureRtt.maintainOwnershipWhileSleeping = false;
+
+                owner.OperationState = EHandDeviceState.IDLE;
+
+                structureSync.OnBreakControl -= ReleaseStructureFromControl;
             }
         }
 
@@ -84,6 +89,8 @@ public abstract class HandDevice : MonoBehaviour
         {
             structureSync.AvailableToManipulate = true;
             structureRtt.maintainOwnershipWhileSleeping = false;
+
+            OperationState = EHandDeviceState.IDLE;
         }
     }
 }
