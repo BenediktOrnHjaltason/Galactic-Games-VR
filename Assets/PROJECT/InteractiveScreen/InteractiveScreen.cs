@@ -3,7 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
-using Types;
+
+enum EPopUpDirection
+{
+    UP,
+    RIGHT_UPPER,
+    RIGHT_CENTER,
+    RIGHT_LOWER,
+    DOWN,
+    LEFT_UPPER,
+    LEFT_CENTER,
+    LEFT_LOWER,
+}
 
 [Serializable]
 public class FramePopUpPositions
@@ -34,6 +45,8 @@ public class InteractiveScreen : MonoBehaviour
         EXPANDING
     }
 
+    [SerializeField]
+    EPopUpDirection popUpDirection;
 
     [SerializeField]
     AnimationCurve fastInEaseOut;
@@ -42,10 +55,10 @@ public class InteractiveScreen : MonoBehaviour
     //Frame
 
     [SerializeField]
-    GameObject mainFramePivotBase;
+    GameObject framePivotBase;
 
     [SerializeField]
-    Vector3 mainFramePivotFullScale;
+    GameObject frame;
 
     //Buttons
 
@@ -68,7 +81,8 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     GameObject slidesPivotBase;
 
-    Vector3 slidesPivotBaseScale = new Vector3(1,1,1);
+    [SerializeField]
+    Vector3 slidesPivotBaseScale;
 
     List<GameObject> slides = new List<GameObject>();
 
@@ -81,10 +95,7 @@ public class InteractiveScreen : MonoBehaviour
     Vector3 slidesRotation;
 
     [SerializeField]
-    FramePopUpPositions popUpDirectionPositions;
-
-    [SerializeField]
-    EInteractiveScreenFramePopUpDirection popUpDirection;
+    FramePopUpPositions popUpFramePositions;
 
     //----Progress Bar
 
@@ -93,6 +104,8 @@ public class InteractiveScreen : MonoBehaviour
 
     float progressBarIncrement;
 
+    [SerializeField]
+    MeshRenderer sizesReference;
 
 
     //----**** Operation ****----//
@@ -154,8 +167,9 @@ public class InteractiveScreen : MonoBehaviour
         progressBarPivot.transform.localScale = new Vector3(progressBarIncrement, 1, 1);
 
         //Initialize
-        mainFramePivotBase.transform.localScale = Vector3.zero;
         MinMaxIcon.text = "?";
+        sizesReference.enabled = false;
+        SetFrameLocalPosition();
     }
 
     private void FixedUpdate()
@@ -171,11 +185,11 @@ public class InteractiveScreen : MonoBehaviour
 
             if (openOrClosed == EScreenState.OPEN)
             {
-                mainFramePivotBase.transform.localScale = Vector3.Lerp(mainFramePivotFullScale, Vector3.zero, fastInEaseOut.Evaluate(transitionTime));
+                framePivotBase.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, fastInEaseOut.Evaluate(transitionTime));
             }
             else
             {
-                mainFramePivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, mainFramePivotFullScale, fastInEaseOut.Evaluate(transitionTime));
+                framePivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, fastInEaseOut.Evaluate(transitionTime));
             }
 
             //-----
@@ -186,7 +200,7 @@ public class InteractiveScreen : MonoBehaviour
 
                 openOrClosed = (openOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
 
-                MinMaxIcon.text = (openOrClosed == EScreenState.OPEN) ? "-" : "?";
+                MinMaxIcon.text = (openOrClosed == EScreenState.OPEN) ? "--" : "?";
 
                 transitionTime = 0.0f;
 
@@ -286,6 +300,37 @@ public class InteractiveScreen : MonoBehaviour
             screenSync.ExecutingAnything = true;
 
             screenSync.ExecutingMinMax = true;
+        }
+    }
+
+    void SetFrameLocalPosition()
+    {
+        switch (popUpDirection)
+        {
+            case EPopUpDirection.UP:
+                frame.transform.localPosition = popUpFramePositions.up;
+                break;
+            case EPopUpDirection.RIGHT_UPPER:
+                frame.transform.localPosition = popUpFramePositions.rightUpper;
+                break;
+            case EPopUpDirection.RIGHT_CENTER:
+                frame.transform.localPosition = popUpFramePositions.rightCenter;
+                break;
+            case EPopUpDirection.RIGHT_LOWER:
+                frame.transform.localPosition = popUpFramePositions.rightLower;
+                break;
+            case EPopUpDirection.DOWN:
+                frame.transform.localPosition = popUpFramePositions.down;
+                break;
+            case EPopUpDirection.LEFT_LOWER:
+                frame.transform.localPosition = popUpFramePositions.leftLower;
+                break;
+            case EPopUpDirection.LEFT_CENTER:
+                frame.transform.localPosition = popUpFramePositions.leftCenter;
+                break;
+            case EPopUpDirection.LEFT_UPPER:
+                frame.transform.localPosition = popUpFramePositions.leftUpper;
+                break;
         }
     }
 }
