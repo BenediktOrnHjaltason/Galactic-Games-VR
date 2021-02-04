@@ -28,7 +28,6 @@ public class GravityForce : HandDevice
     float joltForce = 380.0f;
     Vector3 controllerVelocity;
 
-    float controllerRollOnControlling;
     float rollMultiplier;
 
     [SerializeField]
@@ -36,8 +35,6 @@ public class GravityForce : HandDevice
 
     [SerializeField]
     float rotationMultiplier = 2600;
-
-    bool targetRestrictedRotation;
 
     int layer_Structures = 10;
     int layer_UI = 5;
@@ -113,10 +110,6 @@ public class GravityForce : HandDevice
                         Debug.Log("GravityForce: Structure ownership after request: " + structureRtt.ownerIDSelf);
                     }
 
-                    targetRestrictedRotation = (targetStructure.GetComponent<StructureOnRails>());
-
-                    controllerRollOnControlling = transform.rotation.eulerAngles.z;
-
                     //Update state on deviceSync
                     owner.OperationState = EHandDeviceState.CONTROLLING;
 
@@ -157,7 +150,7 @@ public class GravityForce : HandDevice
             else if (transform.rotation.eulerAngles.z > 30 && transform.rotation.eulerAngles.z < 140) rollMultiplier = 0.5f;
             else rollMultiplier = 0;
 
-            if (!targetRestrictedRotation)
+            if (structureSync.AllowRotationForces)
             {
                 //Roll
                 targetRB.AddTorque(playerRoot.transform.forward * rollMultiplier * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
@@ -171,7 +164,7 @@ public class GravityForce : HandDevice
                 targetRB.AddTorque(playerRoot.transform.right * (stickInput.y / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
                 //targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
             }
-
+            
             return true;
         }
 

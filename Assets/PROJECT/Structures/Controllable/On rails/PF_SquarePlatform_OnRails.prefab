@@ -173,6 +173,11 @@ PrefabInstance:
       propertyPath: allowDuplicationByDevice
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 693625814642698382, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
+        type: 3}
+      propertyPath: allowRotationForces
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1157107514533469724, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
       propertyPath: _maintainOwnershipWhileSleeping
@@ -222,6 +227,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7932790742095654768, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 112
       objectReference: {fileID: 0}
     - target: {fileID: 8292397132476426010, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}

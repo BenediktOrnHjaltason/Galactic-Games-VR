@@ -7,6 +7,7 @@ using Normal.Realtime;
 
 public class StructureOnRails : MonoBehaviour
 {
+    [Header("NOTE: Script overrides Rigidbody constraints on Start")]
     [SerializeField]
     EPlatformMoveGlobal selfAttractDirection;
 
@@ -52,11 +53,9 @@ public class StructureOnRails : MonoBehaviour
             case EPlatformMoveGlobal.Y_Negative:
                 moveForce = new Vector3(0, -5, 0);
                 RB.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezePositionX |
-                    RigidbodyConstraints.FreezeRotation;
+                RigidbodyConstraints.FreezeRotation;
                 break;
         }
-
-
     }
 
     // Update is called once per frame

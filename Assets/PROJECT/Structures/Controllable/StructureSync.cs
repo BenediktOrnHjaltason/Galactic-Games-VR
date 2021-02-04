@@ -11,6 +11,10 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     public bool AllowDuplicationByDevice { get => allowDuplicationByDevice; }
     //----
+
+    [SerializeField]
+    bool allowRotationForces = true;
+    public bool AllowRotationForces { get => allowRotationForces; }
     
     GameObject mainStructure;
 

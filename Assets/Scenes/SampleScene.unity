@@ -3188,6 +3188,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 693625814642698382, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
+        type: 3}
+      propertyPath: allowRotationForces
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5094655642934820345, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
       propertyPath: m_Name
@@ -3212,11 +3217,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Constraints
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7932790742095654768, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
-        type: 3}
-      propertyPath: m_AngularDrag
-      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f406ff9c4ab3af4db7cafeb5a905006, type: 3}
@@ -3419,6 +3419,11 @@ PrefabInstance:
     - target: {fileID: 9026346096653139384, guid: 886cf32802b616844a1759ef202a930c,
         type: 3}
       propertyPath: allowDuplicationByDevice
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026346096653139384, guid: 886cf32802b616844a1759ef202a930c,
+        type: 3}
+      propertyPath: allowRotationForces
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
