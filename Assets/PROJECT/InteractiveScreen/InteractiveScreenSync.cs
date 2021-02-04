@@ -3,16 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
 
-[RealtimeModel]
 public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Model>
 {
-
-    
-
-    
-
-    
-
     protected override void OnRealtimeModelReplaced(InteractiveScreenSync_Model previousModel, InteractiveScreenSync_Model currentModel)
     {
         if (previousModel != null)
@@ -20,8 +12,7 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
             // Unregister from events
             previousModel.executingAnythingDidChange -= ExecutingAnythingDidChange;
             previousModel.executingMinMaxDidChange -= ExecutingMinMaxDidChange;
-
-
+            previousModel.executingSlideChangeDidChange -= ExecutingSlideChangeDidChange;
         }
 
         if (currentModel != null)
@@ -30,16 +21,21 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
             if (currentModel.isFreshModel)
             {
                 currentModel.executingAnything = false;
+                currentModel.executingMinMax = false;
+                currentModel.executingSlideChange = false;
 
             }
 
             // Update data to match the new model
             UpdateExecutingAnything();
             UpdateExecutingMinMax();
+            UpdateExecutingSlideChange();
+
 
             //Register for events so we'll know if data changes later
             currentModel.executingAnythingDidChange += ExecutingAnythingDidChange;
-            previousModel.executingMinMaxDidChange -= ExecutingMinMaxDidChange;
+            currentModel.executingMinMaxDidChange += ExecutingMinMaxDidChange;
+            currentModel.executingSlideChangeDidChange += ExecutingSlideChangeDidChange;
 
         }
     }
