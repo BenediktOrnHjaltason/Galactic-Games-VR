@@ -25,11 +25,17 @@ public class GravityForce : HandDevice
     Vector3 controlForce;
     Vector3 Up = new Vector3(0, 1, 0);
 
-    float joltForce = 150.0f;
+    float joltForce = 380.0f;
     Vector3 controllerVelocity;
 
     float controllerRollOnControlling;
     float rollMultiplier;
+
+    [SerializeField]
+    float movementMultiplier = 100;
+
+    [SerializeField]
+    float rotationMultiplier = 2600;
 
     bool targetRestrictedRotation;
 
@@ -140,24 +146,30 @@ public class GravityForce : HandDevice
             if (controllerVelocity.z > 1.5) targetRB.AddForce(transform.forward * joltForce);
             else if (controllerVelocity.z < -1.5) targetRB.AddForce(-transform.forward * joltForce);
 
+            
             //Movement
-            targetRB.AddForce(controlForce);
+            targetRB.AddForce(controlForce * Time.deltaTime * movementMultiplier);
 
             //Rotation
             stickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
 
-            if (transform.rotation.eulerAngles.z < 340 && transform.rotation.eulerAngles.z > 200) rollMultiplier = -0.5f;
+            if (transform.rotation.eulerAngles.z < 330 && transform.rotation.eulerAngles.z > 200) rollMultiplier = -0.5f;
             else if (transform.rotation.eulerAngles.z > 30 && transform.rotation.eulerAngles.z < 140) rollMultiplier = 0.5f;
             else rollMultiplier = 0;
 
             if (!targetRestrictedRotation)
             {
                 //Roll
-                targetStructure.transform.Rotate(playerRoot.transform.forward, rollMultiplier, Space.World);
+                targetRB.AddTorque(playerRoot.transform.forward * rollMultiplier * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
+                //targetStructure.transform.Rotate(playerRoot.transform.forward, rollMultiplier, Space.World);
+
                 //Yaw
-                targetStructure.transform.Rotate(playerRoot.transform.up, ((stickInput.x * -1) / 2), Space.World);
+                targetRB.AddTorque(playerRoot.transform.up * ((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
+                //targetStructure.transform.Rotate(playerRoot.transform.up, ((stickInput.x * -1) / 2), Space.World);
+                
                 //Pitch
-                targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
+                targetRB.AddTorque(playerRoot.transform.right * (stickInput.y / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
+                //targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
             }
 
             return true;

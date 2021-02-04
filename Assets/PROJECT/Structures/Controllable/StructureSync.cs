@@ -14,9 +14,12 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     
     GameObject mainStructure;
 
+    Rigidbody RB;
+
     private void Awake()
     {
         mainStructure = transform.GetChild(0).gameObject;
+        RB = GetComponent<Rigidbody>();
     }
 
    
