@@ -49,6 +49,18 @@ namespace Types
         END
     }
 
+    enum EInteractiveScreenFramePopUpDirection
+    {
+        UP,
+        RIGHT_UPPER,
+        RIGHT_CENTER,
+        RIGHT_LOWER,
+        DOWN,
+        LEFT_UPPER,
+        LEFT_CENTER,
+        LEFT_LOWER,
+    }
+
     [Serializable]
     public struct HandDeviceUIData
     {

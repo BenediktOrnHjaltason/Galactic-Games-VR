@@ -3,9 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using Types;
+
+[Serializable]
+public class FramePopUpPositions
+{
+    public Vector3 up;
+    public Vector3 rightUpper;
+    public Vector3 rightCenter;
+    public Vector3 rightLower;
+    public Vector3 down;
+    public Vector3 leftUpper;
+    public Vector3 leftCenter;
+    public Vector3 leftLower;
+}
 
 public class InteractiveScreen : MonoBehaviour
 {
+    
+
     enum EScreenState
     {
         OPEN,
@@ -63,6 +79,12 @@ public class InteractiveScreen : MonoBehaviour
 
     [SerializeField]
     Vector3 slidesRotation;
+
+    [SerializeField]
+    FramePopUpPositions popUpDirectionPositions;
+
+    [SerializeField]
+    EInteractiveScreenFramePopUpDirection popUpDirection;
 
     //----Progress Bar
 
