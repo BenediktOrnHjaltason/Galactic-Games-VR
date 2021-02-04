@@ -90,7 +90,7 @@ public class GravityForce : HandDevice
                 if (target.layer.Equals(layer_Structures))
                 {
 
-                    if (!ValidateStructureState(structureHit.collider.transform.root.gameObject)) return true;
+                    if (!ValidateStructureState(structureHit.collider.transform.parent.gameObject)) return true;
 
                     structureSync.AvailableToManipulate = false;
                     structureSync.OnBreakControl += ReleaseStructureFromControl;
