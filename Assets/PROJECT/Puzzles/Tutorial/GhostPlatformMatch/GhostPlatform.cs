@@ -75,6 +75,8 @@ public class GhostPlatform : MonoBehaviour
         //Someone needs to have ownership of the Ghost Platform if we want to see the idle scaling effect
         else if (platformRtt.ownerIDSelf == -1)
         {
+
+            //Will it break if client ID 0 leaves the room before anyone else?
             if (thisRtt.ownerIDSelf == 0) thisRtt.RequestOwnership();
         }
 

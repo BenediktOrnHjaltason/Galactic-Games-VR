@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class VerticalMaze : MonoBehaviour
+public class VerticalMazePlatform : MonoBehaviour
 {
 
     [SerializeField]
