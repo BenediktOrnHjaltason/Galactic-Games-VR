@@ -51,38 +51,42 @@ public class PlatformBarrier : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        RealtimeTransform rtt = other.gameObject.transform.parent.GetComponent<RealtimeTransform>();
-
-        if (rtt && rtt.ownerIDSelf == realtime.clientID)
+        if (other.gameObject.layer.Equals(10))
         {
-            Rigidbody RB = other.gameObject.transform.parent.GetComponent<Rigidbody>();
-            StructureSync ss = other.gameObject.transform.parent.GetComponent<StructureSync>();
 
+            RealtimeTransform rtt = other.gameObject.transform.parent.GetComponent<RealtimeTransform>();
 
-            if (RB && ss)
+            if (rtt && rtt.ownerIDSelf == realtime.clientID)
             {
-                thisToPlatform = other.transform.position - transform.position;
+                Rigidbody RB = other.gameObject.transform.parent.GetComponent<Rigidbody>();
+                StructureSync ss = other.gameObject.transform.parent.GetComponent<StructureSync>();
 
-                projectedOnUp = thisToPlatform - (Vector3.up * (Vector3.Dot(thisToPlatform, Vector3.up)));
 
-
-                Vector3 hitNormal = Vector3.zero; ;
-                Vector3 hitPoint = Vector3.zero;
-                if (Physics.Raycast(other.transform.position, -thisToPlatform, out hit, 20.0f, 1 << 15))
+                if (RB && ss)
                 {
-                    hitNormal = hit.normal;
-                    hitPoint = hit.point;
+                    thisToPlatform = other.transform.position - transform.position;
 
-                    RB.AddForce(hitNormal * pushForce);
+                    projectedOnUp = thisToPlatform - (Vector3.up * (Vector3.Dot(thisToPlatform, Vector3.up)));
+
+
+                    Vector3 hitNormal = Vector3.zero; ;
+                    Vector3 hitPoint = Vector3.zero;
+                    if (Physics.Raycast(other.transform.position, -thisToPlatform, out hit, 20.0f, 1 << 15))
+                    {
+                        hitNormal = hit.normal;
+                        hitPoint = hit.point;
+
+                        RB.AddForce(hitNormal * pushForce);
+                    }
+
+                    //ss.BreakControl();
+
+                    effectPlane.transform.position = hitPoint + hitNormal * 0.1f;
+                    effectPlane.transform.rotation = Quaternion.LookRotation(hitNormal) * Quaternion.Euler(90, 0, 0);
+
+                    effectPlane.enabled = true;
+                    showEffectPlane = true;
                 }
-
-                //ss.BreakControl();
-
-                effectPlane.transform.position = hitPoint + hitNormal * 0.1f;
-                effectPlane.transform.rotation = Quaternion.LookRotation(hitNormal) * Quaternion.Euler(90, 0,0);
-
-                effectPlane.enabled = true;
-                showEffectPlane = true;
             }
         }
     }
