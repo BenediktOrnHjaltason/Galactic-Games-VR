@@ -20,6 +20,8 @@ public class GhostPlatform : MonoBehaviour
     [SerializeField]
     RealtimeTransform platformRtt;
 
+    RealtimeTransform thisRtt;
+
     [SerializeField]
     AnimationCurve easeInFastOut;
 
@@ -54,6 +56,8 @@ public class GhostPlatform : MonoBehaviour
     {
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
+        thisRtt = GetComponent<RealtimeTransform>();
+
         leftHalfCenter = platformRtt.transform.localPosition;
         rightHalfCenter = transform.localPosition;
 
@@ -62,39 +66,55 @@ public class GhostPlatform : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (platformRtt.ownerIDSelf == -1 || platformRtt.ownerIDSelf == realtime.clientID)
+        
+        //If we are not connected to server we cannon request ownerships
+        if (!realtime.connected) return;
+
+
+        //If nobody has network ownership of platform, someone needs to have ownership of ghost platform, so why not the first one to enter the room
+        //Someone needs to have ownership of the Ghost Platform if we want to see the idle scaling effect
+        else if (platformRtt.ownerIDSelf == -1)
+        {
+            if (thisRtt.ownerIDSelf == 0) thisRtt.RequestOwnership();
+        }
+
+        //If someone DOES have ownership of platform, and we are still unowned
+        else if (thisRtt.ownerIDSelf != platformRtt.ownerIDSelf) thisRtt.SetOwnership(platformRtt.ownerIDSelf);
+
+
+        if (true)
         {
             switch (phase)
             {
                 case EOperationPhase.DETECTALLIGNMENT:
 
-                transform.localScale = baseLocalScale + (Vector3.one * Mathf.Abs(Mathf.Sin(Time.time * 5)) / 5);
+                    transform.localScale = baseLocalScale + (Vector3.one * Mathf.Abs(Mathf.Sin(Time.time * 5)) / 5);
 
-                platformToGhost = transform.position - platformRtt.transform.position;
+                    platformToGhost = transform.position - platformRtt.transform.position;
 
-                //Position match
-                if (platformToGhost.sqrMagnitude < 0.32f)
-                {
-                    //Rotation match
-                    forwardAllignment = Vector3.Dot(transform.forward, platformRtt.transform.forward);
-                    rightAllignment = Vector3.Dot(transform.right, platformRtt.transform.right);
-
-                    if ((forwardAllignment < -0.8f || forwardAllignment > 0.8f) && (rightAllignment < -0.8f || rightAllignment > 0.8f))
+                    //Position match
+                    if (platformToGhost.sqrMagnitude < 0.32f)
                     {
-                        phase = EOperationPhase.AKNOWLEDGE;
+                        //Rotation match
+                        forwardAllignment = Vector3.Dot(transform.forward, platformRtt.transform.forward);
+                        rightAllignment = Vector3.Dot(transform.right, platformRtt.transform.right);
+
+                        if ((forwardAllignment < -0.8f || forwardAllignment > 0.8f) && (rightAllignment < -0.8f || rightAllignment > 0.8f))
+                        {
+                            phase = EOperationPhase.AKNOWLEDGE;
+                        }
                     }
-                }
-                break;
+                    break;
 
                 case EOperationPhase.AKNOWLEDGE:
 
                     if (increment < 1)
                     {
-                    increment += 0.05f;
+                        increment += 0.05f;
 
-                    transform.localScale = baseLocalScale + (Vector3.one * detectionBump.Evaluate(increment));
+                        transform.localScale = baseLocalScale + (Vector3.one * detectionBump.Evaluate(increment));
                     }
-                    
+
                     else if (increment > 1)
                     {
                         increment = 0;
@@ -126,7 +146,7 @@ public class GhostPlatform : MonoBehaviour
                         leftOrRight = !leftOrRight;
                     }
 
-                break;
+                    break;
             }
         }
     }
