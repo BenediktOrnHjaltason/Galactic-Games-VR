@@ -8,19 +8,19 @@ using System;
 /*
  This class handles networking state for controllable structures (enforcing no-movement while players are on structure etc),
  but also contains general non-synced variables that control behaviour in relation to physics manipulation,
- allowed rotation forces etc. May want to factor non-synced stuff out to separate, but it's convenient to have
+ allowed rotation forces etc. May want to factor non-synced stuff out to separate, but it's convenient to only have
  to add one script to create controllable structures.
  */
 
 [System.Serializable]
-struct WorldAxisToRotation
+struct SelfAxisToRotation
 {
     public Vector3 Roll;
     public Vector3 Yaw;
     public Vector3 Pitch;
 }
 [System.Serializable]
-struct WorldAxisConstraints
+struct SelfAxisConstraints
 {
     public bool constrainRoll;
     public bool constrainYaw;
@@ -48,13 +48,13 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     /// <summary>
     /// Settings for structures rotating in local space
     /// </summary>
-    [Header("Define which world direction represent which rotation in this case, i.e. (0,0,1) represents Roll")]
+    [Header("Define which self direction represent which rotation")]
     [SerializeField]
-    WorldAxisToRotation worldAxisToRotation;
+    SelfAxisToRotation selfAxisToRotation;
 
     [Header("Define which rotations to constrain")]
     [SerializeField]
-    WorldAxisConstraints worldAxisConstraints;
+    SelfAxisConstraints selfAxisConstraints;
 
     float compensationForConstrainedRBImpactRotation = 220;
 
@@ -186,11 +186,11 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
                     break;
                 }
 
-            case ERotationForceAxis.WORLD:
+            case ERotationForceAxis.SELF:
                 {
 
                     //Roll (Only use case for now)
-                    if (!worldAxisConstraints.constrainRoll)    RB.AddRelativeTorque(worldAxisToRotation.Roll * rollForce * compensationForConstrainedRBImpactRotation * Time.deltaTime, ForceMode.Acceleration);
+                    if (!selfAxisConstraints.constrainRoll)    RB.AddRelativeTorque(selfAxisToRotation.Roll * rollForce * compensationForConstrainedRBImpactRotation * Time.deltaTime, ForceMode.Acceleration);
 
                     //Yaw
                     //if (!localRotationConstraints.constrainYaw)     RB.AddRelativeTorque(transform.up * yawForce);

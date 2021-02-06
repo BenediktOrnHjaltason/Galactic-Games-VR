@@ -52,7 +52,7 @@ namespace Types
     enum ERotationForceAxis
     {
         PLAYER,
-        WORLD
+        SELF
     }
 
     [Serializable]
