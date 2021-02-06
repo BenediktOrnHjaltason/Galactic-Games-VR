@@ -3304,7 +3304,7 @@ PrefabInstance:
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: slidesGraphics.Array.size
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
@@ -3314,6 +3314,16 @@ PrefabInstance:
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: slidesGraphics.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8c1a69d264b302d4b8d362d2234d2a40, type: 2}
+    - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
+        type: 3}
+      propertyPath: startMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
+        type: 3}
+      propertyPath: slidesGraphics.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8c1a69d264b302d4b8d362d2234d2a40, type: 2}
     - target: {fileID: 8026645783169289111, guid: aaa2cc400a5d73940af46985195c254e,

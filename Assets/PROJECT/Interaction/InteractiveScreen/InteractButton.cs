@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Button_InteractiveScreen : MonoBehaviour
+public class InteractButton : MonoBehaviour
 {
     [SerializeField]
     Material inactiveMaterial;
@@ -11,10 +11,22 @@ public class Button_InteractiveScreen : MonoBehaviour
     [SerializeField]
     Material activeMaterial;
 
-
     MeshRenderer mesh;
 
+    bool beingHighlighted = false;
+    public bool BeingHighlighted { set => beingHighlighted = value; }
+
+
     public event Action OnExecute;
+
+    bool isHighLighted = false;
+    public bool IsHighLighted 
+    {
+        set
+        {
+            if (value == true) isHighLighted = value;
+        }
+    }
 
     void Awake()
     {
@@ -22,19 +34,18 @@ public class Button_InteractiveScreen : MonoBehaviour
         mesh = transform.GetChild(0).GetComponent<MeshRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        //HandleHighLighting
+        if (beingHighlighted && mesh.material != activeMaterial) mesh.material = activeMaterial;
+        else if (!beingHighlighted && mesh.material != inactiveMaterial) mesh.material = inactiveMaterial;
+
+        beingHighlighted = false;
     }
 
     public void SetMaterial(GameObject highlightedButton)
     {
-        //Debug.Log("Button_InfoScreen::SetMaterial called. Name of highLightedButton: " + highlightedButton.name + ". GameObject this script is attached to: " + gameObject.name);
-
         mesh.material = (highlightedButton == gameObject) ? activeMaterial : inactiveMaterial;
-
-        //Debug.Log("Button_InfoScreen::Material set to" + mesh.material.name);
     }
 
     public void Execute()
@@ -45,5 +56,10 @@ public class Button_InteractiveScreen : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer.Equals(11)) Execute();
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer.Equals(11)) beingHighlighted = true;
     }
 }

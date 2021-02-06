@@ -29,8 +29,10 @@ public class OmniDevice : HandDevice
     bool scalesReset = false;
     float timeWaveOffsett = (Mathf.PI * 2) / 6;
 
-    GameObject UIButtonObjectPointedAtLast = null;
-    Button_InteractiveScreen pointedButtonScript;
+    GameObject buttonObjectPointedAtPreviously = null;
+    InteractButton button;
+
+    
      
 
 
@@ -182,25 +184,24 @@ public class OmniDevice : HandDevice
         return true;
     }
 
-    public void HandleUIButtons(GameObject button)
+    //Called only during Raytracing of buttons
+    public void HandleUIButtons(GameObject buttonPointedAt)
     {
-        if (button != UIButtonObjectPointedAtLast)
+        if (buttonPointedAt != buttonObjectPointedAtPreviously)
         {
-            UIButtonObjectPointedAtLast = button;
-            pointedButtonScript = button.GetComponent<Button_InteractiveScreen>();
 
-            InteractiveScreen buttonOwner = button.transform.root.GetComponent<InteractiveScreen>();
+            buttonObjectPointedAtPreviously = buttonPointedAt;
+            button = buttonObjectPointedAtPreviously.GetComponent<InteractButton>();
 
-            if (buttonOwner)
-            {
-                buttonOwner.HandleButtonHighLights(button);
-            }
+            if (button) button.BeingHighlighted = true;
         }
+        else if (button) button.BeingHighlighted = true;
 
-        //This will only execute while raytracing button
+
+
         if (OVRInput.GetDown(OVRInput.Button.One))
         {
-            if (pointedButtonScript) pointedButtonScript.Execute();
+            if (button) button.Execute();
         }
     }
 }

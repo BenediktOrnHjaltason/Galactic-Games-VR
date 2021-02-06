@@ -65,13 +65,13 @@ public class InteractiveScreen : MonoBehaviour
     //Buttons
 
     [SerializeField]
-    Button_InteractiveScreen buttonMinMax;
+    InteractButton buttonMinMax;
 
     [SerializeField]
-    Button_InteractiveScreen buttonForward;
+    InteractButton buttonForward;
 
     [SerializeField]
-    Button_InteractiveScreen buttonBackwards;
+    InteractButton buttonBackwards;
 
     [SerializeField]
     TextMeshPro MinMaxIcon;
@@ -130,12 +130,9 @@ public class InteractiveScreen : MonoBehaviour
 
     InteractiveScreenSync screenSync;
 
-    Realtime realtime;
-
 
     void Awake()
     {
-        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
         screenSync = GetComponent<InteractiveScreenSync>();
 
         //Make slides
@@ -147,6 +144,7 @@ public class InteractiveScreen : MonoBehaviour
             slides[i].transform.localPosition = Vector3.zero;
             slides[i].transform.localScale = slidesScale;
             slides[i].transform.rotation = Quaternion.Euler(slidesRotation);
+            slides[i].layer = 9;
 
             MeshRenderer mr = slides[i].GetComponent<MeshRenderer>();
             mr.material = slidesGraphics[i];
@@ -168,15 +166,11 @@ public class InteractiveScreen : MonoBehaviour
         //Setup buttons
 
         buttonMinMax.OnExecute += ToggleMinMax;
-        OnButtonHighlighted += buttonMinMax.SetMaterial;
 
         if (slides.Count > 1)
         {
             buttonForward.OnExecute += NextFrame;
-            OnButtonHighlighted += buttonForward.SetMaterial;
-
             buttonBackwards.OnExecute += PreviousFrame;
-            OnButtonHighlighted += buttonBackwards.SetMaterial;
         }
 
         else
