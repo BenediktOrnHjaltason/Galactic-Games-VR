@@ -31,6 +31,7 @@ public class OmniDevice : HandDevice
 
     GameObject buttonObjectPointedAtPreviously = null;
     InteractButton button;
+    InteractButton previousButton;
 
     
      
@@ -191,6 +192,7 @@ public class OmniDevice : HandDevice
         {
 
             buttonObjectPointedAtPreviously = buttonPointedAt;
+
             button = buttonObjectPointedAtPreviously.GetComponent<InteractButton>();
         }
         if (button) button.BeingHighlighted = true;

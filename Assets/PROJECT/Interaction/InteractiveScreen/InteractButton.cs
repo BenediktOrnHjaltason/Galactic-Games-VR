@@ -20,13 +20,7 @@ public class InteractButton : MonoBehaviour
     public event Action OnExecute;
 
     bool isHighLighted = false;
-    public bool IsHighLighted 
-    {
-        set
-        {
-            if (value == true) isHighLighted = value;
-        }
-    }
+    public bool IsHighLighted { set => isHighLighted = value; }
 
     void Awake()
     {
@@ -37,10 +31,17 @@ public class InteractButton : MonoBehaviour
     private void FixedUpdate()
     {
         //HandleHighLighting
-        if (beingHighlighted && mesh.material != activeMaterial) mesh.material = activeMaterial;
-        else if (!beingHighlighted && mesh.material != inactiveMaterial) mesh.material = inactiveMaterial;
 
-        beingHighlighted = false;
+        if (!beingHighlighted && mesh.material != inactiveMaterial)
+        {
+            mesh.material = inactiveMaterial;
+        }
+
+        else if (beingHighlighted && mesh.material != activeMaterial)
+        {
+            mesh.material = activeMaterial;
+            beingHighlighted = false;
+        }
     }
 
     public void Execute()
