@@ -41,4 +41,9 @@ public class Button_InteractiveScreen : MonoBehaviour
     {
         OnExecute?.Invoke();
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer.Equals(11)) Execute();
+    }
 }

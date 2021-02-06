@@ -119,9 +119,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1098208228721177621}
   - component: {fileID: 5394805669760359195}
+  - component: {fileID: 1858307728929169090}
   - component: {fileID: 8026645783169289111}
   - component: {fileID: 5504370448585728113}
-  - component: {fileID: 1858307728929169090}
   m_Layer: 0
   m_Name: PF_InteractiveScreen
   m_TagString: Untagged
@@ -210,6 +210,18 @@ MonoBehaviour:
     leftLower: {x: 4.15, y: -2.002, z: 0}
   progressBarPivot: {fileID: 2517540651679099042}
   sizesReference: {fileID: 1798422804759873770}
+--- !u!114 &1858307728929169090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766643379974452850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2f329706041ea4a8ad5c36448226ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8026645783169289111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,18 +264,6 @@ MonoBehaviour:
   _syncScale: 0
   _syncVelocity: 1
   _maintainOwnershipWhileSleeping: 0
---- !u!114 &1858307728929169090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 766643379974452850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f2f329706041ea4a8ad5c36448226ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &893450741644330112
 GameObject:
   m_ObjectHideFlags: 0

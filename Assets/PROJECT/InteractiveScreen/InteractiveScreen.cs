@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
+using Normal.Realtime;
 
 enum EPopUpDirection
 {
@@ -31,8 +32,6 @@ public class FramePopUpPositions
 
 public class InteractiveScreen : MonoBehaviour
 {
-    
-
     enum EScreenState
     {
         OPEN,
@@ -44,6 +43,9 @@ public class InteractiveScreen : MonoBehaviour
         RETRACTING,
         EXPANDING
     }
+
+    [SerializeField]
+    EScreenState startMode = EScreenState.CLOSED;
 
     [SerializeField]
     EPopUpDirection popUpDirection;
@@ -128,22 +130,13 @@ public class InteractiveScreen : MonoBehaviour
 
     InteractiveScreenSync screenSync;
 
+    Realtime realtime;
 
 
     void Awake()
     {
+        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
         screenSync = GetComponent<InteractiveScreenSync>();
-
-        //Setup buttons
-
-        buttonForward.OnExecute += NextFrame;
-        OnButtonHighlighted += buttonForward.SetMaterial;
-
-        buttonBackwards.OnExecute += PreviousFrame;
-        OnButtonHighlighted += buttonBackwards.SetMaterial;
-
-        buttonMinMax.OnExecute += ToggleMinMax;
-        OnButtonHighlighted += buttonMinMax.SetMaterial;
 
         //Make slides
         for (int i = 0; i < slidesGraphics.Count; i++)
@@ -170,13 +163,42 @@ public class InteractiveScreen : MonoBehaviour
         MinMaxIcon.text = "?";
         sizesReference.enabled = false;
         SetFrameLocalPosition();
+
+
+        //Setup buttons
+
+        buttonMinMax.OnExecute += ToggleMinMax;
+        OnButtonHighlighted += buttonMinMax.SetMaterial;
+
+        if (slides.Count > 1)
+        {
+            buttonForward.OnExecute += NextFrame;
+            OnButtonHighlighted += buttonForward.SetMaterial;
+
+            buttonBackwards.OnExecute += PreviousFrame;
+            OnButtonHighlighted += buttonBackwards.SetMaterial;
+        }
+
+        else
+        {
+            //Disable buttons and progress bar
+            buttonForward.gameObject.SetActive(false);
+            buttonBackwards.gameObject.SetActive(false);
+            progressBarPivot.transform.parent.gameObject.SetActive(false);
+        }
+
+
+        if (startMode == EScreenState.OPEN)
+        {
+            openOrClosed = EScreenState.OPEN;
+            framePivotBase.transform.localScale = Vector3.one;
+            MinMaxIcon.text = "--";
+        }
     }
 
     private void FixedUpdate()
     {
-
-        //Operate Buttons
-
+        //Operate screen
         if (screenSync.ExecutingMinMax)
         {
             if (transitionTime < 1) transitionTime += 0.1f;
@@ -196,8 +218,6 @@ public class InteractiveScreen : MonoBehaviour
 
             if (transitionTime >= 1)
             {
-
-
                 openOrClosed = (openOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
 
                 MinMaxIcon.text = (openOrClosed == EScreenState.OPEN) ? "--" : "?";
