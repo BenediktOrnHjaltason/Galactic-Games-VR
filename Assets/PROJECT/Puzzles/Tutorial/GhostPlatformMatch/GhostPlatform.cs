@@ -71,17 +71,8 @@ public class GhostPlatform : MonoBehaviour
         if (!realtime.connected) return;
 
 
-        //If nobody has network ownership of platform, someone needs to have ownership of ghost platform, so why not the first one to enter the room
-        //Someone needs to have ownership of the Ghost Platform if we want to see the idle scaling effect
-        else if (platformRtt.ownerIDSelf == -1)
-        {
-
-            //Will it break if client ID 0 leaves the room before anyone else?
-            if (thisRtt.ownerIDSelf == 0) thisRtt.RequestOwnership();
-        }
-
-        //If someone DOES have ownership of platform, and we are still unowned
-        else if (thisRtt.ownerIDSelf != platformRtt.ownerIDSelf) thisRtt.SetOwnership(platformRtt.ownerIDSelf);
+        //If nobody has network ownership of platform, someone needs to have ownership of ghost platform, and first dibs rules
+        if (thisRtt.ownerIDSelf == -1) thisRtt.RequestOwnership();
 
 
         if (true)

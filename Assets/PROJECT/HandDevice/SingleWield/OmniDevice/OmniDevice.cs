@@ -192,10 +192,8 @@ public class OmniDevice : HandDevice
 
             buttonObjectPointedAtPreviously = buttonPointedAt;
             button = buttonObjectPointedAtPreviously.GetComponent<InteractButton>();
-
-            if (button) button.BeingHighlighted = true;
         }
-        else if (button) button.BeingHighlighted = true;
+        if (button) button.BeingHighlighted = true;
 
 
 

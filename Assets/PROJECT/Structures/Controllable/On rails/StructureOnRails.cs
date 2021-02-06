@@ -114,7 +114,7 @@ public class StructureOnRails : MonoBehaviour
 
         if (!realtime.connected) return;
 
-        if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.SetOwnership(0);
+        if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.RequestOwnership();
 
         if (mode == ERailsMode.AutoForce  && realtimeTransform.ownerIDSelf == realtime.clientID)
             RB.AddForce(autoForceVector);

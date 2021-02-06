@@ -43,11 +43,6 @@ public class InteractButton : MonoBehaviour
         beingHighlighted = false;
     }
 
-    public void SetMaterial(GameObject highlightedButton)
-    {
-        mesh.material = (highlightedButton == gameObject) ? activeMaterial : inactiveMaterial;
-    }
-
     public void Execute()
     {
         OnExecute?.Invoke();
