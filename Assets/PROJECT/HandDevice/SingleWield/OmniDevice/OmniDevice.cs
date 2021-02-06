@@ -4,6 +4,11 @@ using UnityEngine;
 using Types;
 using System;
 
+
+//Possible confusions here: Both this OmniDevice, and the devices it will be owning by composition inherit from HandDevice.
+//At the moment this feels like the most flexible in regards to having devices inside OmniDevice and also have externally equippable devices,
+//letting Hand use the Using() function of all HandDevice-types
+
 public class OmniDevice : HandDevice
 {
     [SerializeField]
@@ -119,21 +124,13 @@ public class OmniDevice : HandDevice
     }
 
 
-    
-
     private void FixedUpdate()
     {
-        //Release control of structure if player occupies it after control is taken
-        /*
-        if (devices[activeDeviceIndex].StructureSync &&
-            devices[activeDeviceIndex].StructureSync.PlayersOccupying > 0 &&
-            deviceSync.OperationState == EHandDeviceState.CONTROLLING)
-        {
-            devices[activeDeviceIndex].ReleaseStructureFromControl();
-        }
-        */
-        if (!deviceSync) return;
+        if (deviceSync) AnimateDevice();
+    }
 
+    void AnimateDevice()
+    {
         if (operationEffectMultiplier < 0.0f && !scalesReset)
         {
             for (int i = 0; i < scales.Count; i++) scales[i].transform.localPosition = scalesLocalPositionsBase[i];
@@ -155,7 +152,7 @@ public class OmniDevice : HandDevice
             {
                 scales[i].transform.localPosition =
 
-                    Vector3.Lerp(scalesLocalPositionsBase[i],scalesLocalPositionsEnd[i], (Mathf.Abs(Mathf.Sin(Time.time * 5))) * operationEffectMultiplier);
+                    Vector3.Lerp(scalesLocalPositionsBase[i], scalesLocalPositionsEnd[i], (Mathf.Abs(Mathf.Sin(Time.time * 5))) * operationEffectMultiplier);
             }
         }
 
@@ -168,10 +165,8 @@ public class OmniDevice : HandDevice
             {
                 scales[i].transform.localPosition =
 
-                    Vector3.Lerp(scalesLocalPositionsBase[i], scalesLocalPositionsEnd[i], (((Mathf.Sin(Time.time * 3 + (timeWaveOffsett * (i+1))) + 1) / 2)) * operationEffectMultiplier);
+                    Vector3.Lerp(scalesLocalPositionsBase[i], scalesLocalPositionsEnd[i], (((Mathf.Sin(Time.time * 3 + (timeWaveOffsett * (i + 1))) + 1) / 2)) * operationEffectMultiplier);
             }
-
-            //scalesBase.transform.rotation = Quaternion.Euler(new Vector3(scalesBase.transform.rotation.eulerAngles.x, scalesBase.transform.rotation.eulerAngles.y, ++rotationIncrement));
         }
     }
 
@@ -183,8 +178,7 @@ public class OmniDevice : HandDevice
     protected override bool ValidateStructureState(GameObject target)
     {
         //Nothing necessary here for this class
-        //Possible confusions here: Both this OmniDevice class, and the devices it will be owning by composition inherit from HandDevice.
-        //At the moment this feels like the most flexible in regards to having devices inside OmniDevice and also have externally equippable devices.
+
         return true;
     }
 
