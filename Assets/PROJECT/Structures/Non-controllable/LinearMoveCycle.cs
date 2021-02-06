@@ -21,8 +21,8 @@ public class LinearMoveCycle : MonoBehaviour
     [SerializeField]
     float endPoint;
 
-    [SerializeField]
-    EPlatformMoveGlobal globalMoveDirection;
+    //[SerializeField]
+    //EPlatformMoveGlobal globalMoveDirection;
 
     [SerializeField]
     float speed = 1.0f;
@@ -37,6 +37,7 @@ public class LinearMoveCycle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (!moving) return;
 
         switch(globalMoveDirection)
@@ -48,6 +49,6 @@ public class LinearMoveCycle : MonoBehaviour
 
                 break;
         }
-
+        */
     }
 }

@@ -25,17 +25,6 @@ namespace Types
         GRAVITYFORCE,
         REPLICATOR
     }
-    //The different modes of the OmniDevice
-
-    enum EPlatformMoveGlobal
-    {
-        X_Positive,
-        X_Negative,
-        Y_Positive,
-        Y_Negative,
-        Z_Positive,
-        Z_Negative
-    }
 
     enum SpinDirection
     {
