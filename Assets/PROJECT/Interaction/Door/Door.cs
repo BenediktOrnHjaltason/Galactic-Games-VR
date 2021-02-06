@@ -14,7 +14,7 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
     RealtimeTransform doorRealtimeTransform;
 
-    GameObject doorObject;
+    GameObject doorPivot;
 
     Realtime worldRealtime;
 
@@ -35,11 +35,10 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
     EState currentState;
 
-    Vector3 fullScale;
+    Vector3 openScale = new Vector3(1, 0, 1);
+    Vector3 closedScale = Vector3.one;
 
     float increment = 0;
-
-    Vector3 closedRotation = new Vector3(0, 0, -360.0f);
 
 
 
@@ -51,15 +50,13 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
         doorRealtimeTransform = GetComponentInChildren<RealtimeTransform>();
 
-        doorObject = transform.GetChild(0).gameObject;
+        doorPivot = transform.GetChild(0).gameObject;
 
-        fullScale = doorObject.transform.localScale;
+        currentState = startState;
 
-
-        if (startState == EState.Open) doorObject.transform.localScale = Vector3.zero;
+        if (startState == EState.Open) doorPivot.transform.localScale = openScale;
 
         button.OnExecute += OperateDoor;
-
     }
 
     void OperateDoor()
@@ -74,34 +71,31 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
         if (doorRealtimeTransform.ownerIDSelf == worldRealtime.clientID)
         {
-            if (increment < 1) increment += 0.05f;
-            
             switch(currentState)
             {
+                //Closing
                 case EState.Open:
 
-                    doorObject.transform.localScale = Vector3.Lerp(fullScale, Vector3.zero, fastInEaseOut.Evaluate(increment));
-                    doorObject.transform.localRotation = Quaternion.Euler(Vector3.Lerp(Vector3.zero, closedRotation, fastInEaseOut.Evaluate(increment)));
+                    doorPivot.transform.localScale = Vector3.Lerp(openScale, closedScale, fastInEaseOut.Evaluate(increment));
                     break;
 
 
-
+                //Opening
                 case EState.Closed:
-                    doorObject.transform.localScale = Vector3.Lerp(Vector3.zero, fullScale, easeInFastOut.Evaluate(increment));
-                    doorObject.transform.localRotation = Quaternion.Euler(Vector3.Lerp(closedRotation, Vector3.zero, easeInFastOut.Evaluate(increment)));
+                    doorPivot.transform.localScale = Vector3.Lerp(closedScale, openScale, easeInFastOut.Evaluate(increment));
 
                     break;
             }
 
-            if (increment > 1)
+            if (increment < 1) increment += 0.1f;
+
+            else
             {
                 increment = 0;
                 currentState = (currentState == EState.Open) ? EState.Closed : EState.Open;
 
                 model.operateDoor = false;
             }
-
-
         }
     }
 
@@ -144,5 +138,4 @@ public class Door : RealtimeComponent<DoorSyncModel>
     {
         operateDoor = model.operateDoor;
     }
-
 }
