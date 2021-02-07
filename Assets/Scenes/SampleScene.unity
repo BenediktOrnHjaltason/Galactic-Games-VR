@@ -3790,7 +3790,7 @@ PrefabInstance:
         type: 3}
       propertyPath: slidesGraphics.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8c1a69d264b302d4b8d362d2234d2a40, type: 2}
+      objectReference: {fileID: 2100000, guid: bea67461f9d2a104dab762da5f1e4c40, type: 2}
     - target: {fileID: 8026645783169289111, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: _realtime
