@@ -111,15 +111,14 @@ public class StructureOnRails : MonoBehaviour
 
     void FixedUpdate()
     {
+        //Platforms in Free mode is allowed to loose ownership when sleeping because they will be static 
+        if (realtime.connected && mode == ERailsMode.AutoForce)
+        {
+            if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.RequestOwnership();
 
-        if (!realtime.connected) return;
-
-        if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.RequestOwnership();
-
-        if (mode == ERailsMode.AutoForce && realtimeTransform.ownerIDSelf == realtime.clientID)
-            RB.AddForce(autoForceVector);
-        
-
+            if (realtimeTransform.ownerIDSelf == realtime.clientID)
+                RB.AddForce(autoForceVector);
+        }
         
 
         /*
