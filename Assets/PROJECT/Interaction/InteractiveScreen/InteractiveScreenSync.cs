@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using System;
 
 public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Model>
 {
@@ -13,6 +14,9 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
             previousModel.executingAnythingDidChange -= ExecutingAnythingDidChange;
             previousModel.executingMinMaxDidChange -= ExecutingMinMaxDidChange;
             previousModel.executingSlideChangeDidChange -= ExecutingSlideChangeDidChange;
+            previousModel.activeSlideIndexDidChange -= ActiveSlideIndexDidChange;
+            previousModel.previousSlideIndexDidChange -= PreviousSlideIndexDidChange;
+            previousModel.slideChangedDidChange -= SlideChanged;
         }
 
         if (currentModel != null)
@@ -23,19 +27,26 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
                 currentModel.executingAnything = false;
                 currentModel.executingMinMax = false;
                 currentModel.executingSlideChange = false;
-
+                currentModel.activeSlideIndex = activeSlideIndex;
+                currentModel.previousSlideIndex = previousSlideIndex;
+                currentModel.slideChanged = false;
             }
 
             // Update data to match the new model
             UpdateExecutingAnything();
             UpdateExecutingMinMax();
             UpdateExecutingSlideChange();
+            UpdateActiveSlideIndex();
+            UpdatePreviousSlideIndex();
 
 
             //Register for events so we'll know if data changes later
             currentModel.executingAnythingDidChange += ExecutingAnythingDidChange;
             currentModel.executingMinMaxDidChange += ExecutingMinMaxDidChange;
             currentModel.executingSlideChangeDidChange += ExecutingSlideChangeDidChange;
+            currentModel.activeSlideIndexDidChange += ActiveSlideIndexDidChange;
+            currentModel.previousSlideIndexDidChange += PreviousSlideIndexDidChange;
+            currentModel.slideChangedDidChange += SlideChanged;
 
         }
     }
@@ -83,4 +94,48 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
         executingSlideChange = model.executingSlideChange;
     }
 
+    //----
+
+    int activeSlideIndex = 0;
+    public int ActiveSlideIndex { set => model.activeSlideIndex = value; get => activeSlideIndex; }
+
+    void ActiveSlideIndexDidChange(InteractiveScreenSync_Model model, int index)
+    {
+        UpdateActiveSlideIndex();
+    }
+
+    void UpdateActiveSlideIndex()
+    {
+        activeSlideIndex = model.activeSlideIndex;
+    }
+
+    //----
+
+    int previousSlideIndex = 0;
+    public int PreviousSlideIndex { set => model.previousSlideIndex = value; get => previousSlideIndex; }
+
+    void PreviousSlideIndexDidChange(InteractiveScreenSync_Model model, int index)
+    {
+        UpdatePreviousSlideIndex();
+    }
+
+    void UpdatePreviousSlideIndex()
+    {
+        previousSlideIndex = model.previousSlideIndex;
+    }
+
+    //------ (Just to trigger slide change in everyone)
+    public bool SlidesChanged { set => model.slideChanged = value; }
+
+    public event Action OnSlidesChanged;
+
+    void SlideChanged(InteractiveScreenSync_Model model, bool dummy)
+    {
+        OnSlidesChanged?.Invoke();
+    }
+
+    private void OnConnectedToServer()
+    {
+        
+    }
 }

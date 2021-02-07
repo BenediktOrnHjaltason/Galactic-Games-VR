@@ -60,6 +60,9 @@ public class InteractiveScreen : MonoBehaviour
     GameObject framePivotBase;
 
     [SerializeField]
+    RealtimeTransform framePivotRtt;
+
+    [SerializeField]
     GameObject frame;
 
     //Buttons
@@ -122,18 +125,21 @@ public class InteractiveScreen : MonoBehaviour
 
     //-- ChangeSlide
 
-    int activeSlideIndex = 0;
-    int previousSlideIndex = 0;
-
     ESlidesOperationPhase slideChangePhase;
+
+    bool pingPong = false;
 
 
     InteractiveScreenSync screenSync;
+    Realtime realtime;
 
 
     void Awake()
     {
+        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+
         screenSync = GetComponent<InteractiveScreenSync>();
+        screenSync.OnSlidesChanged += SetSlidesEnabled;
 
         //Make slides
         for (int i = 0; i < slidesGraphics.Count; i++)
@@ -192,6 +198,8 @@ public class InteractiveScreen : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!framePivotRtt.isOwnedLocallySelf) return;
+
         //Operate screen
         if (screenSync.ExecutingMinMax)
         {
@@ -212,6 +220,7 @@ public class InteractiveScreen : MonoBehaviour
 
             if (transitionTime >= 1)
             {
+                //Sync open or closed!
                 openOrClosed = (openOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
 
                 MinMaxIcon.text = (openOrClosed == EScreenState.OPEN) ? "--" : "?";
@@ -223,7 +232,7 @@ public class InteractiveScreen : MonoBehaviour
             }
         }
 
-        if (screenSync.ExecutingSlideChange)
+        else if (screenSync.ExecutingSlideChange)
         {
             if (slideChangePhase == ESlidesOperationPhase.RETRACTING)
             {
@@ -235,15 +244,16 @@ public class InteractiveScreen : MonoBehaviour
                 //----
                 if (transitionTime >= 1)
                 {
+                    pingPong = !pingPong;
+
+                    screenSync.SlidesChanged = pingPong;
+
                     transitionTime = 0.0f;
                     slideChangePhase = ESlidesOperationPhase.EXPANDING;
-
-                    slidesMeshRenderers[previousSlideIndex].enabled = false;
-                    slidesMeshRenderers[activeSlideIndex].enabled = true;
                 }
             }
 
-            if (slideChangePhase == ESlidesOperationPhase.EXPANDING)
+            else if (slideChangePhase == ESlidesOperationPhase.EXPANDING)
             {
                 if (transitionTime < 1) transitionTime += 0.2f;
                 //----
@@ -268,18 +278,20 @@ public class InteractiveScreen : MonoBehaviour
 
     public void NextFrame()
     {
+        if (!framePivotRtt.isOwnedLocallySelf) framePivotRtt.RequestOwnership();
+
         if (!screenSync.ExecutingAnything)
         {
             screenSync.ExecutingAnything = true;
 
 
-            previousSlideIndex = activeSlideIndex;
+            screenSync.PreviousSlideIndex = screenSync.ActiveSlideIndex;
 
-            activeSlideIndex++;
+            screenSync.ActiveSlideIndex++;
 
-            if (activeSlideIndex > slides.Count - 1) activeSlideIndex = 0;
+            if (screenSync.ActiveSlideIndex > slides.Count - 1) screenSync.ActiveSlideIndex = 0;
 
-            progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (activeSlideIndex + 1), 1, 1);
+            progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (screenSync.ActiveSlideIndex + 1), 1, 1);
 
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
@@ -289,18 +301,20 @@ public class InteractiveScreen : MonoBehaviour
 
     public void PreviousFrame()
     {
+        if (!framePivotRtt.isOwnedLocallySelf) framePivotRtt.RequestOwnership();
+
         if (!screenSync.ExecutingAnything)
         {
             screenSync.ExecutingAnything = true;
 
-            
-            previousSlideIndex = activeSlideIndex;
 
-            activeSlideIndex--;
+            screenSync.PreviousSlideIndex = screenSync.ActiveSlideIndex;
 
-            if (activeSlideIndex < 0) activeSlideIndex = slides.Count - 1;
+            screenSync.ActiveSlideIndex--;
 
-            progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (activeSlideIndex + 1), 1, 1);
+            if (screenSync.ActiveSlideIndex < 0) screenSync.ActiveSlideIndex = slides.Count - 1;
+
+            progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (screenSync.ActiveSlideIndex + 1), 1, 1);
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
             screenSync.ExecutingSlideChange = true;
@@ -346,5 +360,18 @@ public class InteractiveScreen : MonoBehaviour
                 frame.transform.localPosition = popUpFramePositions.leftUpper;
                 break;
         }
+    }
+
+    void SetSlidesEnabled()
+    {
+        slidesMeshRenderers[screenSync.ActiveSlideIndex].enabled = true;
+
+        for (int i = 0; i < slidesMeshRenderers.Count; ++i)
+            if (i != screenSync.ActiveSlideIndex && slidesMeshRenderers[i].enabled) slidesMeshRenderers[i].enabled = false;
+    }
+
+    void LateInitializeScreen()
+    {
+
     }
 }
