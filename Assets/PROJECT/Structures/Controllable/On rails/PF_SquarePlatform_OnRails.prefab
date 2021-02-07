@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efae8eb49e73b2f4babe87629a98499f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfAttractDirection: 3
+  mode: 0
+  moveDirection: 0
+  autoForcePower: 10
 --- !u!1 &5377991231537588376
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +183,7 @@ PrefabInstance:
     - target: {fileID: 1157107514533469724, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
       propertyPath: _maintainOwnershipWhileSleeping
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4381455755973571925, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
