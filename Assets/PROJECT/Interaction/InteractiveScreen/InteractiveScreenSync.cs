@@ -4,8 +4,12 @@ using UnityEngine;
 using Normal.Realtime;
 using System;
 
+
 public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Model>
 {
+    [SerializeField]
+    EScreenState startMode = EScreenState.CLOSED;
+
     protected override void OnRealtimeModelReplaced(InteractiveScreenSync_Model previousModel, InteractiveScreenSync_Model currentModel)
     {
         if (previousModel != null)
@@ -17,6 +21,7 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
             previousModel.activeSlideIndexDidChange -= ActiveSlideIndexDidChange;
             previousModel.previousSlideIndexDidChange -= PreviousSlideIndexDidChange;
             previousModel.slideChangedDidChange -= SlideChanged;
+            previousModel.openOrClosedDidChange -= OpenOrClosedDidChange;
         }
 
         if (currentModel != null)
@@ -30,6 +35,7 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
                 currentModel.activeSlideIndex = activeSlideIndex;
                 currentModel.previousSlideIndex = previousSlideIndex;
                 currentModel.slideChanged = false;
+                currentModel.openOrClosed = startMode;
             }
 
             // Update data to match the new model
@@ -38,6 +44,11 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
             UpdateExecutingSlideChange();
             UpdateActiveSlideIndex();
             UpdatePreviousSlideIndex();
+            UpdateOpenOrClosed();
+
+
+            //Initialize screen
+            OnEnterRoom?.Invoke();
 
 
             //Register for events so we'll know if data changes later
@@ -47,6 +58,7 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
             currentModel.activeSlideIndexDidChange += ActiveSlideIndexDidChange;
             currentModel.previousSlideIndexDidChange += PreviousSlideIndexDidChange;
             currentModel.slideChangedDidChange += SlideChanged;
+            currentModel.openOrClosedDidChange += OpenOrClosedDidChange;
 
         }
     }
@@ -134,8 +146,24 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
         OnSlidesChanged?.Invoke();
     }
 
-    private void OnConnectedToServer()
+    //------ Open or closed
+
+    public event Action OnEnterRoom;
+    public event Action OnMinMaxChanged;
+
+    EScreenState openOrClosed;
+
+    public EScreenState OpenOrClosed { get => openOrClosed; set => model.openOrClosed = value; }
+
+    void OpenOrClosedDidChange(InteractiveScreenSync_Model model, EScreenState state)
     {
-        
+        UpdateOpenOrClosed();
+
+        OnMinMaxChanged?.Invoke();
+    }
+
+    void UpdateOpenOrClosed()
+    {
+        openOrClosed = model.openOrClosed;
     }
 }

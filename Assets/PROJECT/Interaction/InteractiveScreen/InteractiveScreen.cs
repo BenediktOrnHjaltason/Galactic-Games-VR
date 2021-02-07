@@ -32,20 +32,6 @@ public class FramePopUpPositions
 
 public class InteractiveScreen : MonoBehaviour
 {
-    enum EScreenState
-    {
-        OPEN,
-        CLOSED
-    }
-
-    enum ESlidesOperationPhase
-    {
-        RETRACTING,
-        EXPANDING
-    }
-
-    [SerializeField]
-    EScreenState startMode = EScreenState.CLOSED;
 
     [SerializeField]
     EPopUpDirection popUpDirection;
@@ -121,7 +107,7 @@ public class InteractiveScreen : MonoBehaviour
 
     //-- MinMax
 
-    EScreenState openOrClosed = EScreenState.CLOSED;
+    
 
     //-- ChangeSlide
 
@@ -140,6 +126,8 @@ public class InteractiveScreen : MonoBehaviour
 
         screenSync = GetComponent<InteractiveScreenSync>();
         screenSync.OnSlidesChanged += SetScreenVisuals;
+        screenSync.OnMinMaxChanged += SetIcons;
+        screenSync.OnEnterRoom += Initialize;
 
         //Make slides
         for (int i = 0; i < slidesGraphics.Count; i++)
@@ -186,14 +174,6 @@ public class InteractiveScreen : MonoBehaviour
             buttonBackwards.gameObject.SetActive(false);
             progressBarPivot.transform.parent.gameObject.SetActive(false);
         }
-
-
-        if (startMode == EScreenState.OPEN)
-        {
-            openOrClosed = EScreenState.OPEN;
-            framePivotBase.transform.localScale = Vector3.one;
-            MinMaxIcon.text = "--";
-        }
     }
 
     private void FixedUpdate()
@@ -207,7 +187,7 @@ public class InteractiveScreen : MonoBehaviour
 
             //-----
 
-            if (openOrClosed == EScreenState.OPEN)
+            if (screenSync.OpenOrClosed == EScreenState.OPEN)
             {
                 framePivotBase.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, fastInEaseOut.Evaluate(transitionTime));
             }
@@ -221,9 +201,9 @@ public class InteractiveScreen : MonoBehaviour
             if (transitionTime >= 1)
             {
                 //Sync open or closed!
-                openOrClosed = (openOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
+                screenSync.OpenOrClosed = (screenSync.OpenOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
 
-                MinMaxIcon.text = (openOrClosed == EScreenState.OPEN) ? "--" : "?";
+                MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";
 
                 transitionTime = 0.0f;
 
@@ -373,8 +353,16 @@ public class InteractiveScreen : MonoBehaviour
         progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (screenSync.ActiveSlideIndex + 1), 1, 1);
     }
 
-    void LateInitializeScreen()
+    void Initialize()
     {
+        SetScreenVisuals();
 
+        framePivotBase.transform.localScale = (screenSync.OpenOrClosed == EScreenState.OPEN) ?  Vector3.one : Vector3.zero;
+        MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";
+    }
+
+    void SetIcons()
+    {
+        MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";
     }
 }

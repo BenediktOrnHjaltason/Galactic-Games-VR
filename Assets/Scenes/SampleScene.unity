@@ -3882,6 +3882,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1858307728929169090, guid: aaa2cc400a5d73940af46985195c254e,
+        type: 3}
+      propertyPath: startMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: slidesGraphics.Array.size
