@@ -322,6 +322,8 @@ public class InteractiveScreen : MonoBehaviour
 
     public void ToggleMinMax()
     {
+        if (!framePivotRtt.isOwnedLocallySelf) framePivotRtt.RequestOwnership();
+
         if (!screenSync.ExecutingAnything)
         {
             screenSync.ExecutingAnything = true;
