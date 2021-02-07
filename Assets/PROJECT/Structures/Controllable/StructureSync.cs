@@ -56,7 +56,8 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     [SerializeField]
     SelfAxisConstraints selfAxisConstraints;
 
-    float compensationForConstrainedRBImpactRotation = 220;
+    [SerializeField]
+    float selfRotateMultiplier = 1;
 
     Rigidbody RB;
 
@@ -190,7 +191,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
                 {
 
                     //Roll (Only use case for now)
-                    if (!selfAxisConstraints.constrainRoll)    RB.AddRelativeTorque(selfAxisToRotation.Roll * rollForce * compensationForConstrainedRBImpactRotation * Time.deltaTime, ForceMode.Acceleration);
+                    if (!selfAxisConstraints.constrainRoll)    RB.AddRelativeTorque(selfAxisToRotation.Roll * rollForce * selfRotateMultiplier, ForceMode.Acceleration);
 
                     //Yaw
                     //if (!localRotationConstraints.constrainYaw)     RB.AddRelativeTorque(transform.up * yawForce);
