@@ -8,15 +8,11 @@ public class VerticalMazeBall : MonoBehaviour
     [SerializeField]
     RealtimeTransform ballRtt;
 
-    RealtimeTransform thisRtt;
-
     Realtime realtime;
 
     // Start is called before the first frame update
     void Start()
     {
-        thisRtt = GetComponent<RealtimeTransform>();
-
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
 
@@ -30,8 +26,6 @@ public class VerticalMazeBall : MonoBehaviour
     {
         if (!realtime.connected) return;
 
-        else if (thisRtt.ownerIDSelf == -1) ballRtt.SetOwnership(0);
-
-        else ballRtt.SetOwnership(thisRtt.ownerIDSelf);
+        else if (ballRtt.ownerIDSelf == -1) ballRtt.RequestOwnership();
     }
 }
