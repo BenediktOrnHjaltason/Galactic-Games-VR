@@ -154,6 +154,11 @@ public class OVRPlayerController : MonoBehaviour
 	private bool ReadyToSnapTurn; // Set to true when a snap turn has occurred, code requires one frame of centered thumbstick to enable another snap turn.
 	private bool playerControllerEnabled = false;
 
+	//Respawn
+	Vector3 respawnPoint = Vector3.zero;
+
+	public Vector3 RespawnPoint { set => respawnPoint = value; get => respawnPoint; }
+
 	//Grabbing & Hanging
 
 	[SerializeField]
@@ -312,7 +317,12 @@ public class OVRPlayerController : MonoBehaviour
 		}
 	}
 
-	void Update()
+    private void FixedUpdate()
+    {
+		if (transform.position.y < -100) transform.position = respawnPoint;
+    }
+
+    void Update()
 	{
 		if (!playerControllerEnabled)
 		{
