@@ -107,7 +107,7 @@ public class Hand : MonoBehaviour
 
             omniDevice = GetComponent<OmniDevice>();
 
-            if (handDevice) deviceUI.Set(handDevice.GetUIData());
+            deviceUI.Set(omniDevice.GetUIData());
         }
     }
 

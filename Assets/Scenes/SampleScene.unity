@@ -888,7 +888,7 @@ PrefabInstance:
     - target: {fileID: 4924946959605425678, guid: 87330d51d0634ae44a187fc181a6b3b3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.6116447
+      value: 2.9
       objectReference: {fileID: 0}
     - target: {fileID: 4924946959605425678, guid: 87330d51d0634ae44a187fc181a6b3b3,
         type: 3}
@@ -898,7 +898,7 @@ PrefabInstance:
     - target: {fileID: 4924946959605425678, guid: 87330d51d0634ae44a187fc181a6b3b3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20.577057
+      value: -0.976
       objectReference: {fileID: 0}
     - target: {fileID: 4924946959605425678, guid: 87330d51d0634ae44a187fc181a6b3b3,
         type: 3}
@@ -3959,7 +3959,7 @@ PrefabInstance:
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: slidesGraphics.Array.size
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
@@ -3980,7 +3980,27 @@ PrefabInstance:
         type: 3}
       propertyPath: slidesGraphics.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 610e3301791b0d444bd60632b1d479ef, type: 2}
+      objectReference: {fileID: 2100000, guid: 53df64da191948648afa5dd429484d76, type: 2}
+    - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
+        type: 3}
+      propertyPath: slidesGraphics.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: c4dd4cabde077fb458cc7172805cb857, type: 2}
+    - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
+        type: 3}
+      propertyPath: slidesGraphics.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 63a05faaf7b086e4988b877904bc4ed2, type: 2}
+    - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
+        type: 3}
+      propertyPath: slidesGraphics.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 52c79048ed6df99488ebb892534000e8, type: 2}
+    - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
+        type: 3}
+      propertyPath: slidesGraphics.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 718eab57d78f49c4c8248021201f4027, type: 2}
     - target: {fileID: 8026645783169289111, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: _realtime
