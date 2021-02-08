@@ -56,8 +56,8 @@ MonoBehaviour:
   - componentID: 1
     component: {fileID: 751426827695282988}
   _childViews:
-  - viewID: 1
-    view: {fileID: 7920752681850921057}
+  - viewID: 2
+    view: {fileID: 1904845888349570919}
 --- !u!114 &751426827695282988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,6 +223,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 480406024426851597}
+  - component: {fileID: 1904845888349570919}
+  - component: {fileID: 5405913110515113536}
   m_Layer: 0
   m_Name: DoorPivot
   m_TagString: Untagged
@@ -245,6 +247,46 @@ Transform:
   m_Father: {fileID: 5251257045801369096}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1904845888349570919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754293183841144677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _realtime: {fileID: 0}
+  _sceneViewUUID: 
+  _viewUUID: 
+  _sceneViewPreventOwnershipTakeover: 0
+  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
+  _isRootPrefabView: 0
+  _components:
+  - componentID: 1
+    component: {fileID: 5405913110515113536}
+  _childViews: []
+--- !u!114 &5405913110515113536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754293183841144677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1029778088, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interpolate: 1
+  _syncPosition: 0
+  _syncRotation: 0
+  _syncScale: 1
+  _syncVelocity: 1
+  _maintainOwnershipWhileSleeping: 0
 --- !u!1 &4418510189861793102
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,8 +296,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2555510643975868048}
-  - component: {fileID: 7920752681850921057}
-  - component: {fileID: 1490026801451946170}
   - component: {fileID: 2996278440691838652}
   - component: {fileID: 9007306133639933386}
   - component: {fileID: 2310053372109177662}
@@ -281,46 +321,6 @@ Transform:
   m_Father: {fileID: 480406024426851597}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7920752681850921057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4418510189861793102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _realtime: {fileID: 0}
-  _sceneViewUUID: 
-  _viewUUID: 
-  _sceneViewPreventOwnershipTakeover: 0
-  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
-  _isRootPrefabView: 0
-  _components:
-  - componentID: 1
-    component: {fileID: 1490026801451946170}
-  _childViews: []
---- !u!114 &1490026801451946170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4418510189861793102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1029778088, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolate: 0
-  _syncPosition: 0
-  _syncRotation: 0
-  _syncScale: 1
-  _syncVelocity: 1
-  _maintainOwnershipWhileSleeping: 0
 --- !u!33 &2996278440691838652
 MeshFilter:
   m_ObjectHideFlags: 0

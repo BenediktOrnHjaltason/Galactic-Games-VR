@@ -5,14 +5,7 @@ using Normal.Realtime;
 
 public class Door : RealtimeComponent<DoorSyncModel>
 {
-
-    enum EState
-    {
-        Open,
-        Closed
-    }
-
-    RealtimeTransform doorRealtimeTransform;
+    RealtimeTransform doorPivotRtt;
 
     GameObject doorPivot;
 
@@ -22,7 +15,7 @@ public class Door : RealtimeComponent<DoorSyncModel>
     bool operateDoor = false;
 
     [SerializeField]
-    EState startState = EState.Closed;
+    EDoorState startState = EDoorState.Closed;
 
     [SerializeField]
     InteractButton button;
@@ -33,55 +26,48 @@ public class Door : RealtimeComponent<DoorSyncModel>
     [SerializeField]
     AnimationCurve easeInFastOut;
 
-    EState currentState;
+
 
     Vector3 openScale = new Vector3(1, 0, 1);
     Vector3 closedScale = Vector3.one;
 
     float increment = 0;
 
-
-
-
     // Start is called before the first frame update
     void Start()
     {
         worldRealtime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
-        doorRealtimeTransform = GetComponentInChildren<RealtimeTransform>();
+        doorPivotRtt = GetComponentInChildren<RealtimeTransform>();
 
         doorPivot = transform.GetChild(0).gameObject;
-
-        currentState = startState;
-
-        if (startState == EState.Open) doorPivot.transform.localScale = openScale;
 
         button.OnExecute += OperateDoor;
     }
 
     void OperateDoor()
     {
+        if (!doorPivotRtt.isOwnedLocallySelf) doorPivotRtt.RequestOwnership();
         model.operateDoor = true;
     }
 
     private void FixedUpdate()
     {
-        if (!operateDoor || !worldRealtime.connected) return;
-        else if (doorRealtimeTransform.ownerIDSelf == -1) doorRealtimeTransform.RequestOwnership();
+        if (!doorPivotRtt.isOwnedLocallySelf) return;
 
-        if (doorRealtimeTransform.ownerIDSelf == worldRealtime.clientID)
+        if (OperatingDoor)
         {
-            switch(currentState)
+            switch (openOrClosed)
             {
                 //Closing
-                case EState.Open:
+                case EDoorState.Open:
 
                     doorPivot.transform.localScale = Vector3.Lerp(openScale, closedScale, fastInEaseOut.Evaluate(increment));
                     break;
 
 
                 //Opening
-                case EState.Closed:
+                case EDoorState.Closed:
                     doorPivot.transform.localScale = Vector3.Lerp(closedScale, openScale, easeInFastOut.Evaluate(increment));
 
                     break;
@@ -92,9 +78,9 @@ public class Door : RealtimeComponent<DoorSyncModel>
             else
             {
                 increment = 0;
-                currentState = (currentState == EState.Open) ? EState.Closed : EState.Open;
+                openOrClosed = (openOrClosed == EDoorState.Open) ? EDoorState.Closed : EDoorState.Open;
 
-                model.operateDoor = false;
+                OperatingDoor = false;
             }
         }
     }
@@ -107,6 +93,7 @@ public class Door : RealtimeComponent<DoorSyncModel>
         {
             // Unregister from events
             previousModel.operateDoorDidChange -= OperatingDoorDidChange;
+            previousModel.openOrClosedDidChange -= OpenOrClosedDidChange;
 
         }
 
@@ -115,16 +102,24 @@ public class Door : RealtimeComponent<DoorSyncModel>
             // If this is a model that has no data set on it, populate it with the current availability value.
             if (currentModel.isFreshModel)
             {
-                currentModel.operateDoor = operateDoor;
+                currentModel.operateDoor = false;
+                currentModel.openOrClosed = startState;
             }
 
             // Update data to match the new model
             UpdateOperateDoor();
+            UpdateOpenOrClosed();
 
             // Register for events so we'll know if data changes later
             currentModel.operateDoorDidChange += OperatingDoorDidChange;
+            currentModel.openOrClosedDidChange += OpenOrClosedDidChange;
 
         }
+    }
+
+    private void OnConnectedToServer()
+    {
+        Initialize();
     }
 
     public bool OperatingDoor { get => operateDoor; set => model.operateDoor = value; }
@@ -137,5 +132,26 @@ public class Door : RealtimeComponent<DoorSyncModel>
     void UpdateOperateDoor()
     {
         operateDoor = model.operateDoor;
+    }
+
+    //-------
+
+    EDoorState openOrClosed;
+
+    public EDoorState OpenOrClosed { get => openOrClosed; set => model.openOrClosed = value; }
+    
+    void OpenOrClosedDidChange (DoorSyncModel model, EDoorState openOrClosed)
+    {
+        UpdateOpenOrClosed();
+    }
+
+    void UpdateOpenOrClosed()
+    {
+        openOrClosed = model.openOrClosed;
+    }
+
+    private void Initialize()
+    {
+        doorPivot.transform.localScale = (openOrClosed == EDoorState.Open) ? openScale : closedScale;
     }
 }
