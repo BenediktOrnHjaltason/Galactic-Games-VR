@@ -50,6 +50,19 @@ public class Hand : MonoBehaviour
 
     HandDevice omniDevice;
 
+    bool omniDeviceActive = false;
+    public bool OmniDeviceActive 
+    {
+        set
+        {
+            if (omniDeviceActive != value)
+            {
+                omniDeviceActive = value;
+                SetOmniDeviceState();
+            }
+        }
+    }
+
     public HandDevice OmniDevice { set => omniDevice = value; get => omniDevice; }
 
 
@@ -92,9 +105,9 @@ public class Hand : MonoBehaviour
             rightHand = this;
             grabButton = OVRInput.Button.SecondaryHandTrigger;
 
-            handDevice = omniDevice = GetComponent<OmniDevice>();
+            omniDevice = GetComponent<OmniDevice>();
 
-            deviceUI.Set(handDevice.GetUIData());
+            if (handDevice) deviceUI.Set(handDevice.GetUIData());
         }
     }
 
@@ -119,9 +132,13 @@ public class Hand : MonoBehaviour
             //Initialize OmniDeviceMenu
             ((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
             ((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
+
+            SetOmniDeviceState();
         }
 
         handSync = spawnedHand.GetComponent<HandSync>();
+
+        
     }
 
     // Update is called once per frame
@@ -253,6 +270,38 @@ public class Hand : MonoBehaviour
         {
             handDevice = omniDevice;
             deviceUI.Set(omniDevice.GetUIData());
+        }
+    }
+
+    void SetOmniDeviceState()
+    {
+        if (omniDeviceActive)
+        {
+            
+            GameObject omniDeviceRoot = transform.GetChild(1).gameObject;
+
+            if (omniDeviceRoot)
+            {
+                omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(true);
+                omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(true);
+                omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(true);
+            }
+
+            handDevice = omniDevice;
+        }
+
+        else
+        {
+            handDevice = null;
+
+            GameObject omniDeviceRoot = transform.GetChild(1).gameObject;
+
+            if (omniDeviceRoot)
+            {
+                omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(false);
+                omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(false);
+                omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(false);
+            }
         }
     }
 }
