@@ -319,7 +319,7 @@ public class OVRPlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-		if (transform.position.y < -100) transform.position = respawnPoint;
+		if (transform.position.y < -150) transform.position = respawnPoint;
     }
 
     void Update()
