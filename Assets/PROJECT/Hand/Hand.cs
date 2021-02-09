@@ -13,6 +13,8 @@ public class Hand : MonoBehaviour
     [SerializeField]
     EHandSide handSide;
 
+    public EHandSide HandSide { get => handSide; }
+
     [SerializeField]
     Material defaultColor;
 

@@ -10,7 +10,7 @@ public class OmniDeviceStation : MonoBehaviour
         {
             Hand hand = other.GetComponent<Hand>();
 
-            if (hand) hand.OmniDeviceActive = true;
+            if (hand && hand.HandSide == EHandSide.RIGHT) hand.OmniDeviceActive = true;
         }
     }
 }
