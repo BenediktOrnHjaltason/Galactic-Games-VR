@@ -140,7 +140,7 @@ public class InteractiveScreen : MonoBehaviour
             slides[i].transform.SetParent(slidesPivotBase.transform);
             slides[i].transform.localPosition = Vector3.zero;
             slides[i].transform.localScale = slidesScale;
-            slides[i].transform.rotation = Quaternion.Euler(slidesRotation);
+            slides[i].transform.rotation = slidesPivotBase.transform.rotation;;
             slides[i].layer = 9;
 
             MeshRenderer mr = slides[i].GetComponent<MeshRenderer>();
