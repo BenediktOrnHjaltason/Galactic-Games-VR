@@ -37,6 +37,9 @@ public class InteractiveScreen : MonoBehaviour
     EPopUpDirection popUpDirection;
 
     [SerializeField]
+    float frameSizeMultiplier = 1;
+
+    [SerializeField]
     AnimationCurve fastInEaseOut;
 
 
@@ -189,11 +192,11 @@ public class InteractiveScreen : MonoBehaviour
 
             if (screenSync.OpenOrClosed == EScreenState.OPEN)
             {
-                framePivotBase.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, fastInEaseOut.Evaluate(transitionTime));
+                framePivotBase.transform.localScale = Vector3.Lerp(Vector3.one * frameSizeMultiplier, Vector3.zero, fastInEaseOut.Evaluate(transitionTime));
             }
             else
             {
-                framePivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, fastInEaseOut.Evaluate(transitionTime));
+                framePivotBase.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one * frameSizeMultiplier, fastInEaseOut.Evaluate(transitionTime));
             }
 
             //-----
@@ -357,7 +360,7 @@ public class InteractiveScreen : MonoBehaviour
     {
         SetScreenVisuals();
 
-        framePivotBase.transform.localScale = (screenSync.OpenOrClosed == EScreenState.OPEN) ?  Vector3.one : Vector3.zero;
+        framePivotBase.transform.localScale = (screenSync.OpenOrClosed == EScreenState.OPEN) ?  Vector3.one * frameSizeMultiplier : Vector3.zero * frameSizeMultiplier;
         MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";
     }
 
