@@ -154,6 +154,9 @@ public class OVRPlayerController : MonoBehaviour
 	private bool ReadyToSnapTurn; // Set to true when a snap turn has occurred, code requires one frame of centered thumbstick to enable another snap turn.
 	private bool playerControllerEnabled = false;
 
+	Realtime realtime;
+
+
 	//Respawn
 	Vector3 respawnPoint = Vector3.zero;
 
@@ -165,6 +168,20 @@ public class OVRPlayerController : MonoBehaviour
 	GameObject TrackingSpaceAnchor;
 
 	Transform GrabHandleWorldTransform;
+
+	//Vignette
+	Vector3 vignetteClosed = new Vector3(0.1027964f, 0.1683785f, 0.1335174f);
+	Vector3 vignetteOpen = new Vector3(0.2440064f, 0.3996776f, 0.3169284f);
+
+	[SerializeField]
+	AnimationCurve vignetteCurve;
+
+	GameObject vignette;
+	public GameObject Vignette { set => vignette = value; }
+
+	float fallVignetteIncrement = 0;
+	float moveVignetteIncrement = 0;
+
 
 
 	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
@@ -276,6 +293,8 @@ public class OVRPlayerController : MonoBehaviour
 		var p = CameraRig.transform.localPosition;
 		p.z = OVRManager.profile.eyeDepth;
 		CameraRig.transform.localPosition = p;
+
+		realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
 	}
 
 	void Awake()
@@ -319,7 +338,45 @@ public class OVRPlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+		//Falldeath
 		if (transform.position.y < -150) transform.position = respawnPoint;
+
+		//----Vignette
+		//Fall
+
+		if (!realtime.connected) return;
+
+		if (!Controller.isGrounded && fallVignetteIncrement < 1)
+		{
+			if (moveVignetteIncrement > 0) fallVignetteIncrement = moveVignetteIncrement;
+
+			fallVignetteIncrement += 0.1f;
+			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(fallVignetteIncrement));
+
+		}
+		else if (Controller.isGrounded && fallVignetteIncrement > 0)
+		{
+			fallVignetteIncrement -= 0.02f;
+			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(fallVignetteIncrement));
+		}
+
+		//Move
+		else if (Controller.isGrounded && fallVignetteIncrement < 0.02)
+		{
+			if ((Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3 ))
+            {
+				if (moveVignetteIncrement < 1)
+				{
+					moveVignetteIncrement += 0.1f;
+					vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(moveVignetteIncrement));
+				}
+			}
+            else if (moveVignetteIncrement > 0)
+			{
+				moveVignetteIncrement -= 0.05f;
+				vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(moveVignetteIncrement));
+			}
+		}
     }
 
     void Update()

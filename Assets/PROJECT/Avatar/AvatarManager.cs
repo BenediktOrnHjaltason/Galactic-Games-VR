@@ -84,6 +84,8 @@ public class AvatarManager : MonoBehaviour
         head.transform.GetChild(0).transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
         head.transform.GetChild(0).transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false;
 
+        playerController.Vignette = head.transform.GetChild(0).Find("Vignette").gameObject;
+
 
         //3 - Torso
         GameObject.Destroy(torso);
