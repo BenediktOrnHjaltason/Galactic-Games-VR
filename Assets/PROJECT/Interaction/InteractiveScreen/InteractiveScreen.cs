@@ -131,7 +131,7 @@ public class InteractiveScreen : MonoBehaviour
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
         screenSync = GetComponent<InteractiveScreenSync>();
-        screenSync.OnSlidesChanged += SetScreenVisuals;
+        screenSync.OnSlidesChanged += SetVisuals;
         screenSync.OnMinMaxChanged += SetIcons;
         screenSync.OnEnterRoom += Initialize;
 
@@ -279,9 +279,6 @@ public class InteractiveScreen : MonoBehaviour
 
             if (screenSync.ActiveSlideIndex > slides.Count - 1) screenSync.ActiveSlideIndex = 0;
 
-
-            if (slides.Count > 1) indicatorNumber.text = (screenSync.ActiveSlideIndex + 1).ToString() + "/" + slides.Count.ToString();
-
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
             screenSync.ExecutingSlideChange = true;
         }
@@ -295,15 +292,11 @@ public class InteractiveScreen : MonoBehaviour
         {
             screenSync.ExecutingAnything = true;
 
-
             screenSync.PreviousSlideIndex = screenSync.ActiveSlideIndex;
 
             screenSync.ActiveSlideIndex--;
 
             if (screenSync.ActiveSlideIndex < 0) screenSync.ActiveSlideIndex = slides.Count - 1;
-
-            if (slides.Count > 1) indicatorNumber.text = (screenSync.ActiveSlideIndex + 1).ToString() + "/" + slides.Count.ToString();
-
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
             screenSync.ExecutingSlideChange = true;
@@ -353,19 +346,24 @@ public class InteractiveScreen : MonoBehaviour
         }
     }
 
-    void SetScreenVisuals()
+    void SetVisuals()
     {
         slidesMeshRenderers[screenSync.ActiveSlideIndex].enabled = true;
 
         for (int i = 0; i < slidesMeshRenderers.Count; ++i)
             if (i != screenSync.ActiveSlideIndex && slidesMeshRenderers[i].enabled) slidesMeshRenderers[i].enabled = false;
 
-        progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (screenSync.ActiveSlideIndex + 1), 1, 1);
+        
+        if (slides.Count > 1)
+        {
+            progressBarPivot.transform.localScale = new Vector3(progressBarIncrement * (screenSync.ActiveSlideIndex + 1), 1, 1);
+            indicatorNumber.text = (screenSync.ActiveSlideIndex + 1).ToString() + "/" + slides.Count.ToString();
+        }
     }
 
     void Initialize()
     {
-        SetScreenVisuals();
+        SetVisuals();
 
         framePivotBase.transform.localScale = (screenSync.OpenOrClosed == EScreenState.OPEN) ?  Vector3.one * frameSizeMultiplier : Vector3.zero * frameSizeMultiplier;
         MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";

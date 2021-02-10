@@ -179,8 +179,7 @@ public class OVRPlayerController : MonoBehaviour
 	GameObject vignette;
 	public GameObject Vignette { set => vignette = value; }
 
-	float fallVignetteIncrement = 0;
-	float moveVignetteIncrement = 0;
+	float vignetteIncrement = 0;
 
 
 
@@ -342,42 +341,33 @@ public class OVRPlayerController : MonoBehaviour
 		if (transform.position.y < -150) transform.position = respawnPoint;
 
 		//----Vignette
-		//Fall
 
 		if (!realtime.connected) return;
 
-		if (!Controller.isGrounded && fallVignetteIncrement < 1)
-		{
-			if (moveVignetteIncrement > 0) fallVignetteIncrement = moveVignetteIncrement;
-
-			fallVignetteIncrement += 0.1f;
-			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(fallVignetteIncrement));
-
-		}
-		else if (Controller.isGrounded && fallVignetteIncrement > 0)
-		{
-			fallVignetteIncrement -= 0.02f;
-			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(fallVignetteIncrement));
-		}
-
 		//Move
-		else if (Controller.isGrounded && fallVignetteIncrement < 0.02)
+		if (Controller.isGrounded &&
+			(Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
 		{
-			if ((Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3 ))
-            {
-				if (moveVignetteIncrement < 1)
-				{
-					moveVignetteIncrement += 0.1f;
-					vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(moveVignetteIncrement));
-				}
-			}
-            else if (moveVignetteIncrement > 0)
+			if (vignetteIncrement < 1)
 			{
-				moveVignetteIncrement -= 0.05f;
-				vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(moveVignetteIncrement));
+				vignetteIncrement += 0.025f;
+				vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(vignetteIncrement));
 			}
 		}
-    }
+
+		//Jump
+		else if (!Controller.isGrounded && vignetteIncrement < 1)
+		{
+			vignetteIncrement += 0.2f;
+			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(vignetteIncrement));
+		}
+
+		else if (vignetteIncrement > 0)
+		{
+			vignetteIncrement -= 0.025f;
+			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(vignetteIncrement));
+		}
+	}
 
     void Update()
 	{
