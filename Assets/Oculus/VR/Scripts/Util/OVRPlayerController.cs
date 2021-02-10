@@ -170,7 +170,7 @@ public class OVRPlayerController : MonoBehaviour
 	Transform GrabHandleWorldTransform;
 
 	//Vignette
-	Vector3 vignetteClosed = new Vector3(0.1027964f, 0.1683785f, 0.1335174f);
+	Vector3 vignetteClosed = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
 	Vector3 vignetteOpen = new Vector3(0.2440064f, 0.3996776f, 0.3169284f);
 
 	[SerializeField]
