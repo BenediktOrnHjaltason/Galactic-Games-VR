@@ -101,6 +101,9 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     MeshRenderer sizesReference;
 
+    [SerializeField]
+    TextMeshPro indicatorNumber;
+
 
     //----**** Operation ****----//
 
@@ -153,6 +156,8 @@ public class InteractiveScreen : MonoBehaviour
         //ProgressBar
         progressBarIncrement = 1.0f / (float)slides.Count;
         progressBarPivot.transform.localScale = new Vector3(progressBarIncrement, 1, 1);
+
+        if (slides.Count > 1) indicatorNumber.text = "1/" + slides.Count.ToString();
 
         //Initialize
         MinMaxIcon.text = "?";
@@ -274,8 +279,8 @@ public class InteractiveScreen : MonoBehaviour
 
             if (screenSync.ActiveSlideIndex > slides.Count - 1) screenSync.ActiveSlideIndex = 0;
 
-            
 
+            if (slides.Count > 1) indicatorNumber.text = (screenSync.ActiveSlideIndex + 1).ToString() + "/" + slides.Count.ToString();
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
             screenSync.ExecutingSlideChange = true;
@@ -296,6 +301,8 @@ public class InteractiveScreen : MonoBehaviour
             screenSync.ActiveSlideIndex--;
 
             if (screenSync.ActiveSlideIndex < 0) screenSync.ActiveSlideIndex = slides.Count - 1;
+
+            if (slides.Count > 1) indicatorNumber.text = (screenSync.ActiveSlideIndex + 1).ToString() + "/" + slides.Count.ToString();
 
 
             slideChangePhase = ESlidesOperationPhase.RETRACTING;
