@@ -57,15 +57,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: vignetteCurve.m_Curve.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: vignetteCurve.m_Curve.Array.data[1].time
-      value: 3.9993253
+      value: 0.99973685
       objectReference: {fileID: 0}
     - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: vignetteCurve.m_Curve.Array.data[1].value
-      value: 1.0005046
+      value: 1.0009688
       objectReference: {fileID: 0}
     - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: vignetteCurve.m_Curve.Array.data[1].inSlope
@@ -73,11 +73,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: vignetteCurve.m_Curve.Array.data[1].outSlope
-      value: 0.027747203
+      value: 1.5774388
       objectReference: {fileID: 0}
     - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
       propertyPath: vignetteCurve.m_Curve.Array.data[1].inWeight
       value: 0.9152931
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: vignetteCurve.m_Curve.Array.data[2].time
+      value: 1.9970862
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: vignetteCurve.m_Curve.Array.data[2].value
+      value: 1.5043862
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: vignetteCurve.m_Curve.Array.data[1].tangentMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400010, guid: ce816f2e6abb0504092c23ed9b970dfd, type: 3}
+      propertyPath: vignetteCurve.m_Curve.Array.data[1].outWeight
+      value: 0.07470532
       objectReference: {fileID: 0}
     - target: {fileID: 4098581626463197863, guid: ce816f2e6abb0504092c23ed9b970dfd,
         type: 3}

@@ -170,8 +170,9 @@ public class OVRPlayerController : MonoBehaviour
 	Transform GrabHandleWorldTransform;
 
 	//Vignette
-	Vector3 vignetteClosed = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
 	Vector3 vignetteOpen = new Vector3(0.2440064f, 0.3996776f, 0.3169284f);
+
+	Vector3 vignetteClosed_normal = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
 
 	[SerializeField]
 	AnimationCurve vignetteCurve;
@@ -181,7 +182,9 @@ public class OVRPlayerController : MonoBehaviour
 
 	float vignetteIncrement = 0;
 
+	float airTime = 0;
 
+	bool fellToDeath = false;
 
 	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
 	GameObject externalAvatarBase;
@@ -294,6 +297,9 @@ public class OVRPlayerController : MonoBehaviour
 		CameraRig.transform.localPosition = p;
 
 		realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+
+		//Default respawn point for testing, before entering any respawn point colliders
+		respawnPoint = transform.position;
 	}
 
 	void Awake()
@@ -338,34 +344,55 @@ public class OVRPlayerController : MonoBehaviour
     private void FixedUpdate()
     {
 		//Falldeath
-		if (transform.position.y < -150) transform.position = respawnPoint;
+		if (transform.position.y < -150)
+		{
+			transform.position = respawnPoint;
+		}
 
 		//----Vignette
 
 		if (!realtime.connected) return;
 
 		//Move
-		if (Controller.isGrounded &&
-			(Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
+		if (Controller.isGrounded)
 		{
-			if (vignetteIncrement < 1)
+			if ((Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
 			{
-				vignetteIncrement += 0.025f;
-				vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(vignetteIncrement));
+				if (vignetteIncrement < 1) vignetteIncrement += 0.025f;
 			}
+
+			else if (vignetteIncrement > 0)
+			{
+				vignetteIncrement -= 0.025f;
+			}
+
+			vignette.transform.localScale = Vector3.LerpUnclamped(vignetteOpen, vignetteClosed_normal, vignetteCurve.Evaluate(vignetteIncrement));
+
+			if (airTime != 0) airTime = 0;
 		}
 
-		//Jump
-		else if (!Controller.isGrounded && vignetteIncrement < 1)
+		//Jump / Fall
+		else if (!Controller.isGrounded)
 		{
-			vignetteIncrement += 0.2f;
-			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(vignetteIncrement));
-		}
+			airTime += Time.fixedDeltaTime;
+			
+			if (vignetteIncrement < 2)
+            {
+				//Fall death
+				if (airTime > 2)
+				{
+					vignetteIncrement += 0.02f;
+				}
 
-		else if (vignetteIncrement > 0)
-		{
-			vignetteIncrement -= 0.025f;
-			vignette.transform.localScale = Vector3.Lerp(vignetteOpen, vignetteClosed, vignetteCurve.Evaluate(vignetteIncrement));
+				//Jumping / Regular fall
+				else if (vignetteIncrement < 1)
+				{
+					vignetteIncrement += 0.2f;
+
+				}
+
+				vignette.transform.localScale = Vector3.LerpUnclamped(vignetteOpen, vignetteClosed_normal, vignetteCurve.Evaluate(vignetteIncrement));
+			}
 		}
 	}
 
