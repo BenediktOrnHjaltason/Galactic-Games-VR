@@ -175,10 +175,10 @@ public class OVRPlayerController : MonoBehaviour
 	Vector3 vignetteClosed_normal = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
 
 	[SerializeField]
-	AnimationCurve vignetteCurve;
-
 	GameObject vignette;
-	public GameObject Vignette { set => vignette = value; }
+
+	[SerializeField]
+	AnimationCurve vignetteCurve;
 
 	float vignetteIncrement = 0;
 
