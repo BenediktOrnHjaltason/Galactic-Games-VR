@@ -65,9 +65,6 @@ public class InteractiveScreen : MonoBehaviour
     [SerializeField]
     InteractButton buttonBackwards;
 
-    [SerializeField]
-    TextMeshPro MinMaxIcon;
-
     //Slides
     [SerializeField]
     List<Material> slidesGraphics;
@@ -121,7 +118,6 @@ public class InteractiveScreen : MonoBehaviour
 
     bool pingPong = false;
 
-
     InteractiveScreenSync screenSync;
     Realtime realtime;
 
@@ -132,8 +128,10 @@ public class InteractiveScreen : MonoBehaviour
 
         screenSync = GetComponent<InteractiveScreenSync>();
         screenSync.OnSlidesChanged += SetVisuals;
-        screenSync.OnMinMaxChanged += SetIcons;
+        screenSync.OnMinMaxChanged += buttonMinMax.ToggleMeshes;
         screenSync.OnEnterRoom += Initialize;
+
+        buttonMinMax.InitializeState((screenSync.StartMode == EScreenState.OPEN) ? "ScreenMaximized" : "ScreenMinimized");
 
         //Make slides
         for (int i = 0; i < slidesGraphics.Count; i++)
@@ -160,7 +158,6 @@ public class InteractiveScreen : MonoBehaviour
         if (slides.Count > 1) indicatorNumber.text = "1/" + slides.Count.ToString();
 
         //Initialize
-        MinMaxIcon.text = "?";
         sizesReference.enabled = false;
         SetFrameLocalPosition();
 
@@ -210,8 +207,6 @@ public class InteractiveScreen : MonoBehaviour
             {
                 //Sync open or closed!
                 screenSync.OpenOrClosed = (screenSync.OpenOrClosed == EScreenState.OPEN) ? EScreenState.CLOSED : EScreenState.OPEN;
-
-                MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";
 
                 transitionTime = 0.0f;
 
@@ -303,6 +298,9 @@ public class InteractiveScreen : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets variables that starts toggling sequence in Fixed Update
+    /// </summary>    
     public void ToggleMinMax()
     {
         if (!framePivotRtt.isOwnedLocallySelf) framePivotRtt.RequestOwnership();
@@ -366,11 +364,6 @@ public class InteractiveScreen : MonoBehaviour
         SetVisuals();
 
         framePivotBase.transform.localScale = (screenSync.OpenOrClosed == EScreenState.OPEN) ?  Vector3.one * frameSizeMultiplier : Vector3.zero * frameSizeMultiplier;
-        MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";
     }
 
-    void SetIcons()
-    {
-        MinMaxIcon.text = (screenSync.OpenOrClosed == EScreenState.OPEN) ? "--" : "?";
-    }
 }

@@ -10,6 +10,9 @@ public class InteractiveScreenSync : RealtimeComponent<InteractiveScreenSync_Mod
     [SerializeField]
     EScreenState startMode = EScreenState.CLOSED;
 
+    public EScreenState StartMode { get => startMode; }
+
+
     protected override void OnRealtimeModelReplaced(InteractiveScreenSync_Model previousModel, InteractiveScreenSync_Model currentModel)
     {
         if (previousModel != null)
