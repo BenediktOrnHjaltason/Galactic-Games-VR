@@ -63,6 +63,8 @@ public class Hand : MonoBehaviour
                 SetOmniDeviceState();
             }
         }
+
+        get => omniDeviceActive;
     }
 
     public HandDevice OmniDevice { set => omniDevice = value; get => omniDevice; }
