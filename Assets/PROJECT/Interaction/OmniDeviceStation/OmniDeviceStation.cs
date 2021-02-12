@@ -35,7 +35,7 @@ public class OmniDeviceStation : MonoBehaviour
 
     float runningTime = 0;
 
-    float timeAmplifier = 50;
+    float timeAmplifier = 20;
 
     float yOffsett = 10f;
     float zOffsett = 20f;
@@ -79,6 +79,7 @@ public class OmniDeviceStation : MonoBehaviour
             {
                 runSequence = false;
                 runningTime = 0;
+                hand = null;
             }
 
         }
