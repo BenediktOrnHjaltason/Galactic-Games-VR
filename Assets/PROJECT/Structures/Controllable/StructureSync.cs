@@ -34,6 +34,11 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     bool allowDuplicationByDevice;
 
     public bool AllowDuplicationByDevice { get => allowDuplicationByDevice; }
+
+
+    Rigidbody rb;
+
+    RealtimeTransform rtt;
     //----
 
     [SerializeField]
@@ -59,8 +64,6 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     [SerializeField]
     float selfRotateMultiplier = 1;
 
-    Rigidbody RB;
-
     public event Action OnBreakControl;
 
 
@@ -68,7 +71,9 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     {
         mainStructure = transform.GetChild(0).gameObject;
 
-        RB = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+
+        rtt = GetComponent<RealtimeTransform>();
     }
 
    
@@ -168,6 +173,10 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     }
     //-------------------
 
+    float sideGlowOpacity = 0.2f;
+
+    public float SideGlowOpacity { get => sideGlowOpacity; set => model.sideGlowOpacity = value; }
+
     //------**** General functionality ****------//
 
     public void Rotate(Vector3 playerForward, float rollForce, float yawForce, Vector3 playerRight, float pitchForce)
@@ -177,13 +186,13 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
             case ERotationForceAxis.PLAYER:
                 {
                     //Roll
-                    RB.AddTorque(playerForward * rollForce, ForceMode.Acceleration);
+                    rb.AddTorque(playerForward * rollForce, ForceMode.Acceleration);
 
                     //Yaw
-                    RB.AddTorque(Vector3.up * yawForce, ForceMode.Acceleration);
+                    rb.AddTorque(Vector3.up * yawForce, ForceMode.Acceleration);
 
                     //Pitch
-                    RB.AddTorque(playerRight * pitchForce, ForceMode.Acceleration);
+                    rb.AddTorque(playerRight * pitchForce, ForceMode.Acceleration);
                     break;
                 }
 
@@ -191,7 +200,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
                 {
 
                     //Roll (Only use case for now)
-                    if (!selfAxisConstraints.constrainRoll)    RB.AddRelativeTorque(selfAxisToRotation.Roll * rollForce * selfRotateMultiplier, ForceMode.Acceleration);
+                    if (!selfAxisConstraints.constrainRoll)    rb.AddRelativeTorque(selfAxisToRotation.Roll * rollForce * selfRotateMultiplier, ForceMode.Acceleration);
 
                     //Yaw
                     //if (!localRotationConstraints.constrainYaw)     RB.AddRelativeTorque(transform.up * yawForce);
@@ -211,6 +220,40 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     private void FixedUpdate()
     {
-        if (playersOccupying > 0) BreakControl(); 
+        if (playersOccupying > 0) BreakControl();
+
+        /*
+        if (!availableToManipulate)
+        {
+            if (rtt.isOwnedLocallySelf && rb.velocity != Vector3.zero)
+            {
+                //Increment float opacity
+                if (sideGlowOpacity < 1) model.sideGlowOpacity += 0.01f;
+
+                sideGlowOpacity = model.sideGlowOpacity;
+
+                //Set opacity on material
+
+            }
+            else
+            {
+                sideGlowOpacity = model.sideGlowOpacity;
+
+                //Set opcaity on material
+            }
+        }
+
+        else if (rtt.isOwnedLocallySelf && sideGlowOpacity > 0.2f)
+        {
+            model.sideGlowOpacity -= 0.1f;
+
+            //set opacity on material
+        }
+
+        else if (rtt.isOwnedRemotelySelf && sideGlowOpacity > 0.2f)
+        {
+            //set opacity on material
+        }
+        */
     }
 }
