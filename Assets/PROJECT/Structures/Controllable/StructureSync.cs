@@ -39,12 +39,28 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     Rigidbody rb;
 
     RealtimeTransform rtt;
+
     //----
 
     [SerializeField]
     bool allowRotationForces = true;
     public bool AllowRotationForces { get => allowRotationForces; }
-    
+
+    [SerializeField]
+    MeshRenderer mesh;
+
+
+    //Need to restructure stuff later
+    bool isRailsPlatform = false;
+
+    string graphVariableGlow_Free = "Vector1_A563CEE";
+
+    string graphVariableGlow_Rails = "Vector1_CDE54C4F";
+
+    Material[] materials;
+
+    bool isPlatform = false;
+
     GameObject mainStructure;
 
     [SerializeField]
@@ -74,6 +90,16 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
         rb = GetComponent<Rigidbody>();
 
         rtt = GetComponent<RealtimeTransform>();
+
+        
+
+        isRailsPlatform = (GetComponent<StructureOnRails>());
+
+        //Restructuring stuff later
+        isPlatform = this.gameObject.name.Contains("Platform");
+
+        if (isPlatform) materials = mesh.materials;
+
     }
 
    
@@ -222,17 +248,21 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     {
         if (playersOccupying > 0) BreakControl();
 
-        /*
+        
+        //Restructuring later
+        if (!isPlatform) return;
+
         if (!availableToManipulate)
         {
-            if (rtt.isOwnedLocallySelf && rb.velocity != Vector3.zero)
+            if (rtt.isOwnedLocallySelf)
             {
                 //Increment float opacity
-                if (sideGlowOpacity < 1) model.sideGlowOpacity += 0.01f;
-
-                sideGlowOpacity = model.sideGlowOpacity;
+                if (sideGlowOpacity < 1) sideGlowOpacity = model.sideGlowOpacity += 0.1f;
 
                 //Set opacity on material
+                if (isRailsPlatform) materials[1].SetFloat("Vector1_CDE54C4F", sideGlowOpacity);
+                else materials[0].SetFloat("Vector1_A563CEE", sideGlowOpacity);
+
 
             }
             else
@@ -240,20 +270,25 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
                 sideGlowOpacity = model.sideGlowOpacity;
 
                 //Set opcaity on material
+                if (isRailsPlatform) materials[1].SetFloat("Vector1_CDE54C4F", sideGlowOpacity);
+                else materials[0].SetFloat("Vector1_A563CEE", sideGlowOpacity);
             }
         }
 
-        else if (rtt.isOwnedLocallySelf && sideGlowOpacity > 0.2f)
+        else if (rtt.isOwnedLocallySelf && sideGlowOpacity > 0.6f)
         {
-            model.sideGlowOpacity -= 0.1f;
-
+            sideGlowOpacity =  model.sideGlowOpacity -= 0.01f;
+            
             //set opacity on material
+            if (isRailsPlatform) materials[1].SetFloat("Vector1_CDE54C4F", sideGlowOpacity);
+            else materials[0].SetFloat("Vector1_A563CEE", sideGlowOpacity);
         }
 
-        else if (rtt.isOwnedRemotelySelf && sideGlowOpacity > 0.2f)
+        else if (rtt.isOwnedRemotelySelf && sideGlowOpacity > 0.6f)
         {
             //set opacity on material
+            if (isRailsPlatform) materials[1].SetFloat("Vector1_CDE54C4F", sideGlowOpacity);
+            else materials[0].SetFloat("Vector1_A563CEE", sideGlowOpacity);
         }
-        */
     }
 }

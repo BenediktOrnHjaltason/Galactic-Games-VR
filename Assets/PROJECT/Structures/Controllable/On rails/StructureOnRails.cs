@@ -28,7 +28,6 @@ public class StructureOnRails : MonoBehaviour
     ERailsMode mode = ERailsMode.Free;
 
     [Header("NOTE: Script overrides Rigidbody constraints on Start.")]
-    [Tooltip("Use for both AUTOFORCE and FREE_RESETPERIODICALLY")]
     [SerializeField]
     EAutoMoveDirection moveDirection;
 
@@ -47,6 +46,13 @@ public class StructureOnRails : MonoBehaviour
 
     //float time = 0;
 
+    [SerializeField]
+    MeshRenderer mesh;
+
+    Material[] materials;
+
+    string graphVariableScrollDirection = "Vector2_BE6D9D07";
+
 
     //References
     Realtime realtime;
@@ -60,6 +66,8 @@ public class StructureOnRails : MonoBehaviour
 
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
         realtimeTransform = GetComponent<RealtimeTransform>();
+
+        materials = mesh.materials;
 
         switch(moveDirection)
         {
@@ -83,6 +91,8 @@ public class StructureOnRails : MonoBehaviour
                  autoForceVector = new Vector3(0, autoForcePower, 0);
                  RB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
                      RigidbodyConstraints.FreezeRotation;
+
+                materials[1].SetVector("Vector2_BE6D9D07", new Vector2(0, -1));
                  break;
 
             case EAutoMoveDirection.Y_Negative:
@@ -90,7 +100,8 @@ public class StructureOnRails : MonoBehaviour
                  autoForceVector = new Vector3(0, -autoForcePower, 0);
                  RB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
                     RigidbodyConstraints.FreezeRotation;
-                 break;
+                materials[1].SetVector("Vector2_BE6D9D07", new Vector2(0, 1));
+                break;
 
             case EAutoMoveDirection.Z_Positive:
                  //resetForceVector = new Vector3(0, 0, resetForcePower);

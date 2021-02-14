@@ -170,6 +170,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowDuplicationByDevice: 0
   allowRotationForces: 1
+  mesh: {fileID: 1462960014825635258}
+  rotationAxis: 0
+  selfAxisToRotation:
+    Roll: {x: 0, y: 0, z: 0}
+    Yaw: {x: 0, y: 0, z: 0}
+    Pitch: {x: 0, y: 0, z: 0}
+  selfAxisConstraints:
+    constrainRoll: 0
+    constrainYaw: 0
+    constrainPitch: 0
+  selfRotateMultiplier: 1
 --- !u!1 &971550272101953434
 GameObject:
   m_ObjectHideFlags: 0
