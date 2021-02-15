@@ -287,7 +287,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
         else if (rtt.isOwnedRemotelySelf && sideGlowOpacity > 0.6f)
         {
             //set opacity on material
-            if (isRailsPlatform) materials[1].SetFloat("Vector1_CDE54C4F", sideGlowOpacity);
+            if (isRailsPlatform) materials[1].SetFloat("Vector1_CDE54C4F", model.sideGlowOpacity);
             else materials[0].SetFloat("Vector1_A563CEE", sideGlowOpacity);
         }
     }
