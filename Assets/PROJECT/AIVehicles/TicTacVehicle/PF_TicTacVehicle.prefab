@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7395542886860659158}
-  - component: {fileID: 3281877988189897655}
+  - component: {fileID: 8929415731017942845}
   m_Layer: 0
   m_Name: PF_TicTacVehicle
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3281877988189897655
+--- !u!114 &8929415731017942845
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,36 +42,132 @@ MonoBehaviour:
   m_GameObject: {fileID: 3543675455614529945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c591627e5046fb64aaffba25731723e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 4559fb8e38d15f549aa2f1a144cb8922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 5556823508168461776}
   vehicle: {fileID: 6434553308869327900}
   movementSequences:
   - fromPosition: {x: -296.3, y: 174.7, z: -378.7}
-    fromRotation: {x: 0, y: 45, z: 0}
     toPosition: {x: -29.41221, y: 19.62, z: -20.32408}
-    toRotation: {x: 0, y: 45, z: 0}
-    duration: 0.2
-    facePlayers: 0
-  - fromPosition: {x: -29.41221, y: 19.62, z: -20.32408}
     fromRotation: {x: 0, y: 45, z: 0}
+    toRotation: {x: 0, y: 45, z: 0}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    duration: 0.2
+    pauseSequence: 0
+  - fromPosition: {x: -29.41221, y: 19.62, z: -20.32408}
     toPosition: {x: -73.8, y: 31.66, z: 90.09129}
+    fromRotation: {x: 0, y: 45, z: 0}
     toRotation: {x: 0, y: 135, z: 0}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
     duration: 5
-    facePlayers: 0
+    pauseSequence: 0
   - fromPosition: {x: -73.8, y: 31.66, z: 90.09129}
-    fromRotation: {x: 0, y: 135, z: 0}
     toPosition: {x: -54.94, y: 12.6, z: -16.78}
-    toRotation: {x: 0, y: 90.00001, z: 0}
-    duration: 5
-    facePlayers: 0
-  - fromPosition: {x: -54.94, y: 12.6, z: -16.78}
     fromRotation: {x: 0, y: 135, z: 0}
-    toPosition: {x: 0, y: 0, z: 0}
-    toRotation: {x: 0, y: 90.00001, z: 0}
-    duration: 0.4
-    facePlayers: 0
+    toRotation: {x: 0, y: 90, z: 0}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    duration: 5
+    pauseSequence: 0
+  - fromPosition: {x: -54.94, y: 12.6, z: -16.78}
+    toPosition: {x: -296.3, y: 174.7, z: -378.7}
+    fromRotation: {x: 0, y: 90, z: 0}
+    toRotation: {x: 0, y: 45, z: 0}
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    duration: 0.2
+    pauseSequence: 0
 --- !u!1001 &3950625140915414646
 PrefabInstance:
   m_ObjectHideFlags: 0

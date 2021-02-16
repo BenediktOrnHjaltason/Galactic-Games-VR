@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class TicTackVehicle : MonoBehaviour
+public class Animatic : MonoBehaviour
 {
+
     [System.Serializable]
     public struct MovementSequence
     {
         public Vector3 fromPosition;
-        public Vector3 fromRotation;
         public Vector3 toPosition;
+        public Vector3 fromRotation;
         public Vector3 toRotation;
+        public AnimationCurve curve;
         public float duration;
-        public bool facePlayers;
+        public bool pauseSequence;
     }
-
 
     [SerializeField]
     GameplayTrigger trigger;
@@ -28,19 +28,19 @@ public class TicTackVehicle : MonoBehaviour
 
     int activeSequence = 0;
 
-    bool sequenceRunning;
+    bool sequenceRunning = false;
 
-    float timeOnSequenceStart;
+    float timeOnSequenceStart = 0;
 
     float sequenceRunningTime = 0;
 
     float increment = 0;
 
-    private void Awake()
+    // Start is called before the first frame update
+    void Start()
     {
         trigger.Execute += startSequence;
     }
-
 
     private void FixedUpdate()
     {
@@ -53,20 +53,20 @@ public class TicTackVehicle : MonoBehaviour
                 increment = sequenceRunningTime / movementSequences[activeSequence].duration;
 
                 //Position
-                vehicle.transform.localPosition = 
-                    Vector3.Lerp(movementSequences[activeSequence].fromPosition, 
-                                 movementSequences[activeSequence].toPosition, 
-                                 increment);
+                vehicle.transform.localPosition =
+                    Vector3.Lerp(movementSequences[activeSequence].fromPosition,
+                                 movementSequences[activeSequence].toPosition,
+                                 movementSequences[activeSequence].curve.Evaluate(increment));
 
                 //Rotation
                 vehicle.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(movementSequences[activeSequence].fromRotation),
                                                                   Quaternion.Euler(movementSequences[activeSequence].toRotation),
-                                                                                   increment);
+                                                                                   movementSequences[activeSequence].curve.Evaluate(increment));
             }
 
             else
             {
-                if ( (activeSequence + 1) < (movementSequences.Count) )
+                if ((activeSequence + 1) < (movementSequences.Count))
                 {
                     activeSequence++;
                     timeOnSequenceStart = Time.time;
