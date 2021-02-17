@@ -25,6 +25,7 @@ public class AvatarManager : MonoBehaviour
     [SerializeField]
     GameObject trackingSpaceAnchor;
 
+    GameObject head;
     GameObject torso;
 
     void Start()
@@ -32,6 +33,7 @@ public class AvatarManager : MonoBehaviour
         playerController = GetComponent<OVRPlayerController>();
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
         torso = new GameObject();
+        head = new GameObject();
 
         realtime.didConnectToRoom += SpawnAvatar;
     }
@@ -68,10 +70,9 @@ public class AvatarManager : MonoBehaviour
         rightControllerAnchor.GetComponent<Hand>().Initialize(rightHand);
 
 
-
-
         //2 - Head
-        GameObject head = Realtime.Instantiate("PF_Head", ownedByClient: true,
+        GameObject.Destroy(head);
+        head = Realtime.Instantiate("PF_Head", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: this.realtime);
@@ -80,25 +81,16 @@ public class AvatarManager : MonoBehaviour
         head.transform.SetParent(eyeAnchor.transform);
         head.GetComponent<RealtimeTransform>().RequestOwnership();
 
-        head.transform.GetChild(0).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
-        head.transform.GetChild(0).transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
-        head.transform.GetChild(0).transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false;
-
 
         //3 - Torso
         GameObject.Destroy(torso);
-        torso = Realtime.Instantiate("PF_Torso", ownedByClient: true,
-                                                      preventOwnershipTakeover: true,
-                                                      destroyWhenOwnerOrLastClientLeaves: true,
-                                                      useInstance: this.realtime);
-
-        torso.GetComponent<RealtimeTransform>().RequestOwnership();
+        torso = head.transform.GetChild(1).gameObject;
+  
     }
 
     // Update is called once per frame
     void Update()
     {
-        torso.transform.rotation = trackingSpaceAnchor.transform.rotation;
-        torso.transform.position = eyeAnchor.transform.position + (-eyeAnchor.transform.up * 0.2f);
+        torso.transform.rotation = Quaternion.Euler(new Vector3(0, head.transform.rotation.eulerAngles.y, 1));
     }
 }
