@@ -48,7 +48,7 @@ MonoBehaviour:
   trigger: {fileID: 5556823508168461776}
   vehicle: {fileID: 6434553308869327900}
   movementSequences:
-  - fromPosition: {x: -296.3, y: 174.7, z: -378.7}
+  - fromPosition: {x: -301.6, y: 0, z: -868.8}
     toPosition: {x: -29.41221, y: 19.62, z: -20.32408}
     fromRotation: {x: 0, y: 45, z: 0}
     toRotation: {x: 0, y: 45, z: 0}
@@ -139,7 +139,7 @@ MonoBehaviour:
     duration: 5
     pauseSequence: 0
   - fromPosition: {x: -54.94, y: 12.6, z: -16.78}
-    toPosition: {x: -296.3, y: 174.7, z: -378.7}
+    toPosition: {x: -301.6, y: 0, z: -868.8}
     fromRotation: {x: 0, y: 90, z: 0}
     toRotation: {x: 0, y: 45, z: 0}
     curve:
