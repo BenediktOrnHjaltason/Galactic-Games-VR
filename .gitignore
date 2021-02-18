@@ -60,7 +60,3 @@ crashlytics-build.properties
 
 # Art folder is linked to an external google drive folder, not using git
 Assets/ArtAssets/*
-
-# Project settings
-ProjectSettings/GraphicsSettings.asset
-ProjectSettings/QualitySettings.asset

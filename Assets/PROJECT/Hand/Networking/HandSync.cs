@@ -45,6 +45,7 @@ public class HandSync : RealtimeComponent<HandSync_Model>
         }
     }
 
+    //-------- Grabbing handle effect
     public bool GrabbingGrabHandle { set => model.grabbingGrabHandle = value; get => model.grabbingGrabHandle; }
 
     private void GrabbingGrabHandleDidChange(HandSync_Model mode, bool grabbing)
@@ -55,6 +56,26 @@ public class HandSync : RealtimeComponent<HandSync_Model>
     private void UpdateHandMesh()
     {
         mesh.material = (model.grabbingGrabHandle) ? grabbingGrabHandleMaterial : defaultMaterial;
+    }
+
+    //------- OmniDevice active
+
+    bool omniDeviceActive = false;
+
+    public bool OmniDevice { get => omniDeviceActive; set => model.omniDeviceActive = value; }
+
+    void OmniDeviceActiveDidChange()
+    {
+        UpdateOmniDeviceActive();
+    }
+
+    event Action<bool> OnOmniDeviceActiveChanged;
+
+    void UpdateOmniDeviceActive()
+    {
+        omniDeviceActive = model.omniDeviceActive;
+
+
     }
 
 }

@@ -172,7 +172,10 @@ public class OVRPlayerController : MonoBehaviour
 	//Vignette
 	Vector3 vignetteOpen = new Vector3(0.2440064f, 0.3996776f, 0.3169284f);
 
-	Vector3 vignetteClosed_normal = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
+	Vector3 vignetteClosed = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
+
+	Vector3 vignette2Open = new Vector3(0.19f, 0.19f, 0.19f);
+	Vector3 vignette2Closed = new Vector3(0.1023599f, 0.1023599f, 0.1023599f);
 
 	[SerializeField]
 	GameObject vignette;
@@ -351,8 +354,6 @@ public class OVRPlayerController : MonoBehaviour
 
 		//----Vignette
 
-		if (!realtime.connected) return;
-
 		//Move
 		if (Controller.isGrounded)
 		{
@@ -366,7 +367,7 @@ public class OVRPlayerController : MonoBehaviour
 				vignetteIncrement -= 0.025f;
 			}
 
-			vignette.transform.localScale = Vector3.LerpUnclamped(vignetteOpen, vignetteClosed_normal, vignetteCurve.Evaluate(vignetteIncrement));
+			vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
 
 			if (airTime != 0) airTime = 0;
 		}
@@ -391,7 +392,7 @@ public class OVRPlayerController : MonoBehaviour
 
 				}
 
-				vignette.transform.localScale = Vector3.LerpUnclamped(vignetteOpen, vignetteClosed_normal, vignetteCurve.Evaluate(vignetteIncrement));
+				vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
 			}
 		}
 	}
