@@ -89,6 +89,7 @@ public class AvatarManager : MonoBehaviour
         //3 - Torso
         GameObject.Destroy(torso);
         torso = head.transform.GetChild(1).gameObject;
+        torso.GetComponent<RealtimeTransform>().RequestOwnership();
   
     }
 
