@@ -52,21 +52,6 @@ public class Hand : MonoBehaviour
 
     HandDevice omniDevice;
 
-    bool omniDeviceActive = false;
-    public bool OmniDeviceActive 
-    {
-        set
-        {
-            if (omniDeviceActive != value)
-            {
-                omniDeviceActive = value;
-                SetOmniDeviceState();
-            }
-        }
-
-        get => omniDeviceActive;
-    }
-
     public HandDevice OmniDevice { set => omniDevice = value; get => omniDevice; }
 
 
@@ -124,11 +109,15 @@ public class Hand : MonoBehaviour
 
     }
 
-    //Called after hand prefabs are instantiated on network
+    //Called after hand prefabs are instantiated on network. (TODO: Place hands with references directly in prefab and get rid of this code?)
     public void Initialize(GameObject spawnedHand)
     {
-        if (handSide == EHandSide.RIGHT)
+        handSync = spawnedHand.GetComponent<HandSync>();
+
+        if (handSide == EHandSide.RIGHT && handSync)
         {
+            handSync.OnOmniDeviceActiveChanged += SetOmniDeviceActive;
+
             OmniDevice od = (OmniDevice)omniDevice;
 
             od.Initialize(spawnedHand);
@@ -137,12 +126,8 @@ public class Hand : MonoBehaviour
             ((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
             ((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
 
-            SetOmniDeviceState();
+            handSync.OmniDeviceActive = false;
         }
-
-        handSync = spawnedHand.GetComponent<HandSync>();
-
-        
     }
 
     // Update is called once per frame
@@ -277,15 +262,16 @@ public class Hand : MonoBehaviour
         }
     }
 
-    void SetOmniDeviceState()
+    void SetOmniDeviceActive(bool active)
     {
-        if (omniDeviceActive)
+        if (active)
         {
             
             GameObject omniDeviceRoot = transform.GetChild(1).gameObject;
 
             if (omniDeviceRoot)
             {
+                //Meshes
                 omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(true);
                 omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(true);
                 omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(true);
@@ -302,6 +288,7 @@ public class Hand : MonoBehaviour
 
             if (omniDeviceRoot)
             {
+                //Meshes
                 omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(false);
                 omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(false);
                 omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(false);

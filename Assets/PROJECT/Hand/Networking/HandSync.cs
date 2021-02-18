@@ -25,6 +25,7 @@ public class HandSync : RealtimeComponent<HandSync_Model>
         {
             // Unregister from events
             previousModel.grabbingGrabHandleDidChange -= GrabbingGrabHandleDidChange;
+            previousModel.omniDeviceActiveDidChange -= OmniDeviceActiveDidChange;
 
         }
 
@@ -34,14 +35,17 @@ public class HandSync : RealtimeComponent<HandSync_Model>
             if (currentModel.isFreshModel)
             {
                 currentModel.grabbingGrabHandle = false;
+                currentModel.omniDeviceActive = true;
             }
 
             // Update data to match the new model
             UpdateHandMesh();
+            UpdateOmniDeviceActive();
+
 
             //Register for events so we'll know if data changes later
             currentModel.grabbingGrabHandleDidChange += GrabbingGrabHandleDidChange;
-
+            currentModel.omniDeviceActiveDidChange += OmniDeviceActiveDidChange;
         }
     }
 
@@ -62,20 +66,19 @@ public class HandSync : RealtimeComponent<HandSync_Model>
 
     bool omniDeviceActive = false;
 
-    public bool OmniDevice { get => omniDeviceActive; set => model.omniDeviceActive = value; }
+    public bool OmniDeviceActive { get => omniDeviceActive; set => model.omniDeviceActive = value; }
 
-    void OmniDeviceActiveDidChange()
+    void OmniDeviceActiveDidChange(HandSync_Model model, bool active)
     {
         UpdateOmniDeviceActive();
     }
 
-    event Action<bool> OnOmniDeviceActiveChanged;
+    public event Action<bool> OnOmniDeviceActiveChanged;
 
     void UpdateOmniDeviceActive()
     {
         omniDeviceActive = model.omniDeviceActive;
 
-
+        OnOmniDeviceActiveChanged?.Invoke(omniDeviceActive);
     }
-
 }

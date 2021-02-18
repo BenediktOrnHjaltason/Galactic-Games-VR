@@ -40,15 +40,17 @@ public class OmniDeviceStation : MonoBehaviour
     float yOffsett = 10f;
     float zOffsett = 20f;
 
+    float curveValue = 0;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer.Equals(11))
         {
             hand = other.GetComponent<Hand>();
 
-            if (hand && hand.HandSide == EHandSide.RIGHT && !runSequence && !hand.OmniDeviceActive)
+            if (hand && hand.HandSide == EHandSide.RIGHT && !runSequence && !hand.HandSync.OmniDeviceActive)
             {
-                hand.OmniDeviceActive = true;
+                hand.HandSync.OmniDeviceActive = true;
 
                 runSequence = true;
                 timeAtSequenceStart = Time.time;
@@ -64,10 +66,12 @@ public class OmniDeviceStation : MonoBehaviour
 
             if (runningTime < sequenceDuration)
             {
+                curveValue = curve.Evaluate(runningTime);
+
                 outerHull.transform.localScale =
-                    new Vector3(Mathf.Lerp(hullMaxScale.x, hullMinScale.x, Mathf.Sin(runningTime * timeAmplifier) * curve.Evaluate(runningTime)),
-                                Mathf.Lerp(hullMaxScale.y, hullMinScale.y, Mathf.Sin((runningTime + yOffsett) * timeAmplifier) * curve.Evaluate(runningTime)),
-                                Mathf.Lerp(hullMaxScale.z, hullMinScale.z, Mathf.Sin((runningTime + zOffsett) * timeAmplifier) * curve.Evaluate(runningTime))
+                    new Vector3(Mathf.Lerp(hullMaxScale.x, hullMinScale.x, Mathf.Sin(runningTime * timeAmplifier) * curveValue),
+                                Mathf.Lerp(hullMaxScale.y, hullMinScale.y, Mathf.Sin((runningTime + yOffsett) * timeAmplifier) * curveValue),
+                                Mathf.Lerp(hullMaxScale.z, hullMinScale.z, Mathf.Sin((runningTime + zOffsett) * timeAmplifier) * curveValue)
                                 );
 
                 handSphere.transform.position = hand.transform.position - hand.transform.forward * 0.06f;
