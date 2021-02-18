@@ -76,6 +76,8 @@ public class PlatformBarrier : MonoBehaviour
                         hitNormal = hit.normal;
                         hitPoint = hit.point;
 
+                        RB.velocity = Vector3.zero;
+
                         RB.AddForce(hitNormal * pushForce);
                     }
 

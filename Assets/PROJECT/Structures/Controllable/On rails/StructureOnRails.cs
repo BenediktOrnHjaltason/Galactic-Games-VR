@@ -20,7 +20,7 @@ enum ERailsMode
     //ResetPeriodically
 }
 
-public class StructureOnRails : MonoBehaviour
+public class StructureOnRails : StructureSync
 {
     //----Properties
 
@@ -33,55 +33,48 @@ public class StructureOnRails : MonoBehaviour
 
     [SerializeField]
     float autoForcePower = 10;
-    //float resetForcePower = 1000;
 
     Vector3 autoForceVector;
-    //Vector3 resetForceVector;
-
-    //[SerializeField]
-    //float resetIntervalSeconds = 120;
-
-    //float resetIncementer = 0;
-    //bool reset = false;
-
-    //float time = 0;
 
     [SerializeField]
     MeshRenderer mesh;
 
     Material[] materials;
 
+    string graphVariableScrollGlow = "Vector1_CDE54C4F";
+    int scrollGlowId;
+
     string graphVariableScrollDirection = "Vector2_BE6D9D07";
 
-
     //References
-    Realtime realtime;
+    //Realtime realtime;
     RealtimeTransform realtimeTransform;
-    Rigidbody RB;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        RB = GetComponent<Rigidbody>();
+        base.Start();
 
-        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+        //realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
         realtimeTransform = GetComponent<RealtimeTransform>();
 
         materials = mesh.materials;
+
+        scrollGlowId = materials[1].shader.FindPropertyIndex(graphVariableScrollGlow);
 
         switch(moveDirection)
         {
             case EAutoMoveDirection.X_Positive:
                  //resetForceVector = new Vector3(resetForcePower, 0, 0);
                  autoForceVector = new Vector3(autoForcePower, 0, 0);
-                 RB.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
+                 rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
                      RigidbodyConstraints.FreezeRotation;
                  break;
 
             case EAutoMoveDirection.X_Negative:
                  //resetForceVector = new Vector3(-resetForcePower, 0, 0);
                  autoForceVector = new Vector3(-autoForcePower, 0, 0);
-                 RB.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
+                 rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
                      RigidbodyConstraints.FreezeRotation;
                  break;
 
@@ -89,67 +82,86 @@ public class StructureOnRails : MonoBehaviour
             case EAutoMoveDirection.Y_Positive:
                  //resetForceVector = new Vector3(0, resetForcePower, 0);
                  autoForceVector = new Vector3(0, autoForcePower, 0);
-                 RB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
+                 rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
                      RigidbodyConstraints.FreezeRotation;
 
-                materials[1].SetVector("Vector2_BE6D9D07", new Vector2(0, -1));
+                materials[1].SetVector(graphVariableScrollDirection, new Vector2(0, -1));
                  break;
 
             case EAutoMoveDirection.Y_Negative:
                  //resetForceVector = new Vector3(0, -resetForcePower, 0);
                  autoForceVector = new Vector3(0, -autoForcePower, 0);
-                 RB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
+                 rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
                     RigidbodyConstraints.FreezeRotation;
-                materials[1].SetVector("Vector2_BE6D9D07", new Vector2(0, 1));
+                materials[1].SetVector(graphVariableScrollDirection, new Vector2(0, 1));
                 break;
 
             case EAutoMoveDirection.Z_Positive:
                  //resetForceVector = new Vector3(0, 0, resetForcePower);
                  autoForceVector = new Vector3(0, 0, autoForcePower);
-                 RB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY |
+                 rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY |
                     RigidbodyConstraints.FreezeRotation;
                     break;
 
             case EAutoMoveDirection.Z_Negative:
                 //resetForceVector = new Vector3(0, 0, resetForcePower);
                 autoForceVector = new Vector3(0, 0, autoForcePower);
-                RB.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY |
+                rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY |
                    RigidbodyConstraints.FreezeRotation;
                 break;
             }
     }
 
 
-    void FixedUpdate()
+    protected override void FixedUpdate()
     {
+        base.FixedUpdate();
+        HandleSideGlow();
+
         //Platforms in Free mode is allowed to loose ownership when sleeping because they will be static 
-        if (realtime.connected && mode == ERailsMode.AutoForce)
+        if (worldRealtime.connected && mode == ERailsMode.AutoForce)
         {
             if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.RequestOwnership();
 
             if (realtimeTransform.ownerIDSelf == realtime.clientID)
-                RB.AddForce(autoForceVector);
+                rb.AddForce(autoForceVector);
         }
-        
+    }
 
-        /*
-         time += Time.fixedDeltaTime;
-        if (time > resetIntervalSeconds)
+    void HandleSideGlow()
+    {
+        if (!availableToManipulate)
         {
-            time = 0;
-            reset = true;
-        }
-         
-        else if (mode == ERailsMode.ResetPeriodically && realtime.connected)
-        {
-            if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.SetOwnership(0);
-
-            if (reset)
+            if (rtt.isOwnedLocallySelf)
             {
-                RB.AddForce(resetForceVector);
-                reset = false;
+                //Increment float opacity
+                if (sideGlowOpacity < 1) sideGlowOpacity = model.sideGlowOpacity += 0.1f;
+
+                //set glow opacity
+                materials[1].SetFloat(scrollGlowId, sideGlowOpacity);
+            }
+            else
+            {
+                sideGlowOpacity = model.sideGlowOpacity;
+
+                //set glow opacity
+                materials[1].SetFloat(scrollGlowId, sideGlowOpacity);
             }
         }
-        */
+
+        else if (rtt.isOwnedLocallySelf && sideGlowOpacity > 0.6f)
+        {
+            sideGlowOpacity = model.sideGlowOpacity -= 0.01f;
+
+            //set glow opacity
+            materials[1].SetFloat(scrollGlowId, sideGlowOpacity);
+
+        }
+
+        else if (rtt.isOwnedRemotelySelf && sideGlowOpacity > 0.6f)
+        {
+            //set glow opacity
+            materials[1].SetFloat(scrollGlowId, model.sideGlowOpacity);
+        }
     }
 }
