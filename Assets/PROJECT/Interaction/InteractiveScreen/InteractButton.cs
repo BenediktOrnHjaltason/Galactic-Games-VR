@@ -153,8 +153,6 @@ public class InteractButton : MonoBehaviour
 
     public void InitializeState(string stateName)
     {
-        Debug.Log("InteractButton: InitializeState called for " + this.name);
-
         if (buttonSet.State1Name == stateName)
         {
             state = EButtonState.State1;

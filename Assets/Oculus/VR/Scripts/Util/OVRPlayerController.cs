@@ -169,13 +169,22 @@ public class OVRPlayerController : MonoBehaviour
 
 	Transform GrabHandleWorldTransform;
 
-	//Vignette
+	//----Vignette
 	Vector3 vignetteOpen = new Vector3(0.2440064f, 0.3996776f, 0.3169284f);
 
 	Vector3 vignetteClosed = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
 
 	Vector3 vignette2Open = new Vector3(0.19f, 0.19f, 0.19f);
 	Vector3 vignette2Closed = new Vector3(0.1023599f, 0.1023599f, 0.1023599f);
+
+	string vignetteOpacityPropertyName = "Vector1_A9520D05";
+	int vignetteGraphOpacityID;
+
+	//Walking shake
+	Vector3 vignetteUpperLocalPos = new Vector3(0.0f, -0.009f, 0.204f);
+	Vector3 vignetteLowerLocalPos = new Vector3(0.0f, -0.02f, 0.204f);
+
+	Material vignetteMaterial;
 
 	[SerializeField]
 	GameObject vignette;
@@ -303,6 +312,11 @@ public class OVRPlayerController : MonoBehaviour
 
 		//Default respawn point for testing, before entering any respawn point colliders
 		respawnPoint = transform.position;
+
+		vignetteMaterial = vignette.GetComponent<MeshRenderer>().material;
+
+		vignetteGraphOpacityID = vignetteMaterial.shader.FindPropertyIndex(vignetteOpacityPropertyName);
+
 	}
 
 	void Awake()
@@ -367,7 +381,14 @@ public class OVRPlayerController : MonoBehaviour
 				vignetteIncrement -= 0.025f;
 			}
 
-			vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
+			//vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
+
+			//Debug.Log("OVRPlayerController::FixedUpdate: vignetteOpacityPropertyIndex = " + vignetteGraphOpacityID);
+			//Debug.Log("PropertyID gotten from Find function = " + vignetteMaterial.shader.FindPropertyIndex(vignetteOpacityPropertyName));
+			//NOTE: SetFloat is not working with property ID gotten from Shader. Sending in property name until further developments
+			vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
+
+			vignette.transform.localPosition = Vector3.Lerp(vignetteLowerLocalPos, vignetteUpperLocalPos, Mathf.Abs((Mathf.Sin(Time.fixedTime * 5))) * vignetteIncrement);
 
 			if (airTime != 0) airTime = 0;
 		}
@@ -392,7 +413,8 @@ public class OVRPlayerController : MonoBehaviour
 
 				}
 
-				vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
+				vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
+				//vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
 			}
 		}
 	}

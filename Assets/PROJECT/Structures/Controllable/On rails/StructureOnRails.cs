@@ -62,7 +62,7 @@ public class StructureOnRails : StructureSync
 
         scrollGlowId = materials[1].shader.FindPropertyIndex(graphVariableScrollGlow);
 
-        switch(moveDirection)
+        switch (moveDirection)
         {
             case EAutoMoveDirection.X_Positive:
                  //resetForceVector = new Vector3(resetForcePower, 0, 0);
