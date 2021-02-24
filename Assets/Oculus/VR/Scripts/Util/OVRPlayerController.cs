@@ -169,7 +169,7 @@ public class OVRPlayerController : MonoBehaviour
 
 	Transform GrabHandleWorldTransform;
 
-	//----Vignette
+	//----Vignette (Note: Still experimenting with vignette, cleaning up after final iteration)
 	Vector3 vignetteOpen = new Vector3(0.2440064f, 0.3996776f, 0.3169284f);
 
 	Vector3 vignetteClosed = new Vector3(0.1253421f, 0.2053079f, 0.1628009f);
@@ -198,6 +198,8 @@ public class OVRPlayerController : MonoBehaviour
 
 	bool fellToDeath = false;
 
+	//-------------
+
 	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
 	GameObject externalAvatarBase;
 	Transform externalLeftHand;
@@ -214,6 +216,13 @@ public class OVRPlayerController : MonoBehaviour
 
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
+
+	//---- Controller Swing-movement
+
+	bool swingMoving = false;
+
+	float timeSinceLastSwing = 0;
+	float maxTimeForSwingMovement = 0.5f;
 
 
 	public void SetExternalHands(bool leftHand, Transform transform, GameObject baseGameObject)
@@ -417,6 +426,31 @@ public class OVRPlayerController : MonoBehaviour
 				//vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
 			}
 		}
+
+		//Swing-moving
+		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 0.6 &&
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y < -0.6)
+		{
+			swingMoving = true;
+			timeSinceLastSwing = 0;
+		}
+
+		else if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y < -0.6 &&
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 0.6)
+		{
+			swingMoving = true;
+			timeSinceLastSwing = 0;
+		}
+
+		if (swingMoving)
+        {
+
+			if (timeSinceLastSwing > maxTimeForSwingMovement) swingMoving = false;
+
+			else timeSinceLastSwing += Time.fixedDeltaTime;
+
+			Controller.Move(transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10);
+        }
 	}
 
     void Update()
@@ -574,7 +608,7 @@ public class OVRPlayerController : MonoBehaviour
 
 	public virtual void UpdateMovement()
 	{
-		if (HaltUpdateMovement)
+		if (timeSinceLastSwing < 0.2 || HaltUpdateMovement)
 			return;
 
 		if (EnableLinearMovement)
