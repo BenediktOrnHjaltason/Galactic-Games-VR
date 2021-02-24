@@ -221,7 +221,7 @@ public class OVRPlayerController : MonoBehaviour
 
 	bool swingMoving = false;
 
-	float timeSinceLastSwing = 0;
+	float timeSinceLastSwing = 0.2f;
 	float maxTimeForSwingMovement = 0.5f;
 
 

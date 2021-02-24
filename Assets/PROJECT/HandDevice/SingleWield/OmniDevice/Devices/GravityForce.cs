@@ -8,6 +8,7 @@ public class GravityForce : HandDevice
 {
 
     GameObject playerRoot;
+    Realtime realtime;
 
     public GameObject PlayerRoot { set => playerRoot = value; }
 
@@ -18,6 +19,21 @@ public class GravityForce : HandDevice
 
     Rigidbody targetRB;
     Transform targetTransform;
+
+    //----If replicating
+    GameObject duplicate;
+    //Rigidbody duplicateRB;
+
+    StructureSync duplicateStructureSync;
+
+    StructureSync sourceStructureSync;
+
+    RealtimeTransform duplicateRealtimeTransform;
+    RealtimeTransform sourceRtt;
+
+    string structureSceneName = "";
+    string structurePrefabName = "";
+    //----
 
 
     float distanceToStructure;
@@ -39,6 +55,13 @@ public class GravityForce : HandDevice
     int layer_Structures = 10;
     int layer_UI = 5;
 
+    bool replicating = false;
+
+
+    private void Start()
+    {
+        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+    }
 
     public override bool Using()
     {
@@ -56,12 +79,32 @@ public class GravityForce : HandDevice
         {
             ReleaseStructureFromControl();
 
+            if (duplicate)
+            {
+                structureSync.CollisionEnabled = true;
+                structureSync.AvailableToManipulate = true;
+
+                sourceStructureSync.CollisionEnabled = true;
+                sourceStructureSync.AvailableToManipulate = true;
+
+                duplicateRealtimeTransform.maintainOwnershipWhileSleeping = false;
+
+                duplicate = null;
+                duplicateRealtimeTransform = null;
+            }
+
+
             owner.OperationState = EHandDeviceState.IDLE;
 
             return false;
         }
 
-        else if (owner.OperationState == EHandDeviceState.IDLE) return false;
+        if (OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger)) replicating = true;
+
+        else if (OVRInput.GetUp(OVRInput.Button.SecondaryHandTrigger)) replicating = false;
+
+
+        if (owner.OperationState == EHandDeviceState.IDLE) return false;
 
 
         if (OVRInput.GetDown(OVRInput.Button.One))
@@ -79,44 +122,91 @@ public class GravityForce : HandDevice
 
         if (owner.OperationState == EHandDeviceState.SCANNING)
         {
-            //Network: update state on clients. OmniSyncDevice manages its own beam based on its on transform on client
+            //Network: update state on clients. OmniDeviceSync manages its own beam based on its on transform on client
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << layer_Structures | 1 << layer_UI))
             {
                 GameObject target = structureHit.collider.gameObject;
-
-
 
                 if (target.layer.Equals(layer_Structures))
                 {
 
                     if (!ValidateStructureState(structureHit.collider.transform.parent.gameObject)) return true;
 
-                    structureSync.AvailableToManipulate = false;
-                    structureSync.OnBreakControl += ReleaseStructureFromControl;
-
-                    targetRB = targetStructure.GetComponent<Rigidbody>();
-                    targetTransform = targetStructure.transform;
-
-                    //---- Networking
-                    structureRtt = targetStructure.GetComponent<RealtimeTransform>();
-                    if (structureRtt)
+                    if (!replicating)
                     {
-                        Debug.Log("GravityForce: Structure ownership before request: " + structureRtt.ownerIDSelf);
+                        structureSync.AvailableToManipulate = false;
+                        structureSync.OnBreakControl += ReleaseStructureFromControl;
 
-                        //If player holds structure sufficiently still while controlling it, it may register as sleeping and we could loose ownership
-                        structureRtt.maintainOwnershipWhileSleeping = true;
-                        structureRtt.RequestOwnership();
+                        //targetRB = targetStructure.GetComponent<Rigidbody>();
+                        targetTransform = targetStructure.transform;
 
-                        Debug.Log("GravityForce: Structure ownership after request: " + structureRtt.ownerIDSelf);
+                        //---- Networking
+                        structureRtt = targetStructure.GetComponent<RealtimeTransform>();
+                        if (structureRtt)
+                        {
+                            //If player holds structure sufficiently still while controlling it, it may register as sleeping and we could loose ownership
+                            structureRtt.maintainOwnershipWhileSleeping = true;
+                            structureRtt.RequestOwnership();
+                        }
+
+                        //Update state on deviceSync
+                        owner.OperationState = EHandDeviceState.CONTROLLING;
+
                     }
 
-                    //Update state on deviceSync
-                    owner.OperationState = EHandDeviceState.CONTROLLING;
+                    else
+                    {
+                        sourceStructureSync = structureSync;
 
-                    //----//
+                        structureSceneName = structureHit.collider.gameObject.transform.root.name;
 
-                    return true;
+                        //Extract prefab name 
+                        for (int i = 0; i < structureSceneName.Length; ++i)
+                        {
+                            if (structureSceneName[i] > 47) structurePrefabName += structureSceneName[i];
+                            else break;
+                        }
+
+                        //The source target
+                        targetStructure.GetComponent<RealtimeTransform>().RequestOwnership();
+
+                        structureSync.AvailableToManipulate = false;
+                        structureSync.CollisionEnabled = false;
+
+                        duplicate = Realtime.Instantiate(structurePrefabName,
+                                                              ownedByClient: false,
+                                                              preventOwnershipTakeover: false,
+                                                              destroyWhenOwnerOrLastClientLeaves: true,
+                                                              useInstance: realtime);
+
+                        //The duplicate target
+                        structureSync = duplicate.GetComponent<StructureSync>();
+
+                        structureSync.AvailableToManipulate = false;
+                        structureSync.CollisionEnabled = false;
+
+                        targetStructure = duplicate;
+                        targetTransform = structureSync.transform;
+
+                        //Place newly created duplicate in same position and rotation as source
+                        duplicate.transform.position = structureHit.collider.gameObject.transform.root.position;
+                        duplicate.transform.rotation = structureHit.collider.gameObject.transform.root.rotation;
+
+                        //duplicateRB = duplicate.GetComponent<Rigidbody>();
+
+                        duplicateRealtimeTransform = duplicate.GetComponent<RealtimeTransform>();
+                        if (duplicateRealtimeTransform)
+                        {
+                            duplicateRealtimeTransform.RequestOwnership();
+                            duplicateRealtimeTransform.maintainOwnershipWhileSleeping = true;
+                        }
+
+
+                        owner.OperationState = EHandDeviceState.CONTROLLING;
+
+                        structureSceneName = structurePrefabName = "";
+                    }
                 }
 
                 else
@@ -142,7 +232,8 @@ public class GravityForce : HandDevice
 
             
             //Movement
-            targetRB.AddForce(controlForce * Time.deltaTime * movementMultiplier);
+            //targetRB.AddForce(controlForce * Time.deltaTime * movementMultiplier);
+            structureSync.AddGravityForce(controlForce * Time.deltaTime * movementMultiplier);
 
             //Rotation
             stickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
@@ -153,18 +244,6 @@ public class GravityForce : HandDevice
 
             if (structureSync.AllowRotationForces)
             {
-                //Roll
-                //targetRB.AddTorque(playerRoot.transform.forward * rollMultiplier * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
-                //targetStructure.transform.Rotate(playerRoot.transform.forward, rollMultiplier, Space.World);
-
-                //Yaw
-                //targetRB.AddTorque(Up * ((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
-                //targetStructure.transform.Rotate(playerRoot.transform.up, ((stickInput.x * -1) / 2), Space.World);
-                
-                //Pitch
-                //targetRB.AddTorque(playerRoot.transform.right * (stickInput.y / 2) * rotationMultiplier * Time.deltaTime, ForceMode.Acceleration);
-                //targetStructure.transform.Rotate(playerRoot.transform.right, stickInput.y / 2, Space.World);
-
                 structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
                                      /*Yaw*/((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
                                      /*Pitch*/playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
@@ -178,11 +257,11 @@ public class GravityForce : HandDevice
 
     Vector3 CalculateControlForce()
     {
-        distanceToStructure = (transform.position - targetStructure.transform.position).magnitude;
+        distanceToStructure = (transform.position - structureSync.transform.position).magnitude;
 
         Vector3 adjustedForward = transform.forward * distanceToStructure;
 
-        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - targetStructure.transform.position;
+        Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureSync.transform.position;
 
         float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
         forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
@@ -195,22 +274,45 @@ public class GravityForce : HandDevice
     {
         GetStateReferencesFromTarget(target);
 
-        if (!structureSync)
+        if (!replicating)
         {
-            Debug.LogWarning(targetStructure.name + " does not have a structureSync component, and you're trying to use the GravityController on it");
-            return false;
+
+            if (!structureSync)
+            {
+                Debug.LogWarning(targetStructure.name + " does not have a structureSync component, and you're trying to use the GravityController on it");
+                return false;
+            }
+
+            if (structureSync && (structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate))
+            {
+                Debug.Log("GravityForce: Not allowed to control structure. Reason: ");
+                if (structureSync.PlayersOccupying > 0) Debug.Log("GravityForce: PlayersOccupying is more than 0 ");
+                if (!structureSync.AvailableToManipulate) Debug.Log("GravityForce: AvailableToManipulate is false");
+
+                return false;
+            }
+
+            else return true;
         }
 
-        if (structureSync && (structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate))
+        else
         {
-            Debug.Log("GravityForce: Not allowed to control structure. Reason: ");
-            if (structureSync.PlayersOccupying > 0) Debug.Log("GravityForce: PlayersOccupying is more than 0 ");
-            if (!structureSync.AvailableToManipulate) Debug.Log("GravityForce: AvailableToManipulate is false");
+            if (!structureSync ||
+            (structureSync && (!structureSync.AllowDuplicationByDevice || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0)))
+            {
+                Debug.Log("Replicator: Not allowed to replicate structure! Reason: ");
 
-            return false;
+                if (!structureSync) Debug.Log("The is no StructureSync object");
+                if (structureSync && !structureSync.AllowDuplicationByDevice) Debug.Log("AllowDuplicationByDevice is false");
+                if (structureSync && !structureSync.AvailableToManipulate) Debug.Log("AvailableToManipulate is false");
+                if (structureSync && structureSync.PlayersOccupying > 0) Debug.Log("PlayersOccupying is more than 0");
+
+                return false;
+            }
+
+
+            else return true;
         }
-
-        return true;
     }
 
     public override void Equip(EHandSide hand)

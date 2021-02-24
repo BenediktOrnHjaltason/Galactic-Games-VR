@@ -7,11 +7,6 @@ using Normal.Realtime;
 
 public class Replicator : HandDevice
 {
-    //[SerializeField]
-    //int allowedDuplicates;
-
-    //[SerializeField]
-    //TextMeshPro UICounter;
 
     Realtime realtime;
 

@@ -175,6 +175,8 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     }
     private void UpdateCollisionEnabled()
     {
+        if (!mainStructure) mainStructure = transform.GetChild(0).gameObject;
+
         mainStructure.layer = (model.collisionEnabled) ? 10 : 9;
     }
     //-------------------
@@ -217,6 +219,11 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
                     break;
                 }           
         }
+    }
+
+    public void AddGravityForce(Vector3 force)
+    {
+        rb.AddForce(force);
     }
 
     public void BreakControl()
