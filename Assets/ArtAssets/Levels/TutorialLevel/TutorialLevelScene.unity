@@ -213,6 +213,11 @@ PrefabInstance:
       propertyPath: vignetteCurve.m_Curve.Array.data[1].outWeight
       value: 0.10128323
       objectReference: {fileID: 0}
+    - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
+        type: 3}
+      propertyPath: omniDeviceStartup
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2608643927748701574, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_RootOrder

@@ -116,7 +116,7 @@ public class Hand : MonoBehaviour
     {
         handSync = spawnedHand.GetComponent<HandSync>();
 
-        if (/*handSide == EHandSide.RIGHT && */handSync)
+        if (handSync)
         {
             handSync.OnOmniDeviceActiveChanged += SetOmniDeviceActive;
 
@@ -129,6 +129,21 @@ public class Hand : MonoBehaviour
             ((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
 
             handSync.OmniDeviceActive = false;
+
+
+            if (playerController.OmniDeviceStartupState == OVRPlayerController.EOmniDeviceStartup.OnlyLeft && handSide == EHandSide.LEFT)
+            {
+                handSync.OmniDeviceActive = true;
+            }
+
+            if (playerController.OmniDeviceStartupState == OVRPlayerController.EOmniDeviceStartup.OnlyRight && handSide == EHandSide.RIGHT)
+            {
+                handSync.OmniDeviceActive = true;
+            }
+            if (playerController.OmniDeviceStartupState == OVRPlayerController.EOmniDeviceStartup.Both)
+            {
+                handSync.OmniDeviceActive = true;
+            }
         }
     }
 

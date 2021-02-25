@@ -167,6 +167,19 @@ public class OVRPlayerController : MonoBehaviour
 	[SerializeField]
 	GameObject TrackingSpaceAnchor;
 
+	public enum EOmniDeviceStartup
+    {
+		None,
+		OnlyLeft,
+		OnlyRight,
+		Both
+    }
+
+	[SerializeField]
+	EOmniDeviceStartup omniDeviceStartup;
+
+	public EOmniDeviceStartup OmniDeviceStartupState { get => omniDeviceStartup; }
+
 	Transform GrabHandleWorldTransform;
 
 	//----Vignette (Note: Still experimenting with vignette, cleaning up after final iteration)
