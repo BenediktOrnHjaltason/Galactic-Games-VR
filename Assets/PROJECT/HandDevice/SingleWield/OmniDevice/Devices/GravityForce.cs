@@ -252,12 +252,11 @@ public class GravityForce : HandDevice
             owner.DeviceSync.StructurePosition = targetTransform.position;
 
             controllerVelocity = OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch);
-            if (controllerVelocity.z > 1.5) targetRB.AddForce(transform.forward * joltForce);
-            else if (controllerVelocity.z < -1.5) targetRB.AddForce(-transform.forward * joltForce);
+            if (controllerVelocity.z > 1.5) structureSync.AddGravityForce(transform.forward * joltForce);
+            else if (controllerVelocity.z < -1.5) structureSync.AddGravityForce(-transform.forward * joltForce);
 
             
             //Movement
-            //targetRB.AddForce(controlForce * Time.deltaTime * movementMultiplier);
             structureSync.AddGravityForce(controlForce * Time.deltaTime * movementMultiplier);
 
             //Rotation

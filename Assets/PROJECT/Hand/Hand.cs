@@ -82,8 +82,8 @@ public class Hand : MonoBehaviour
     {
         playerController = transform.root.GetComponent<OVRPlayerController>();
 
-        deviceUI = GetComponentInChildren<UIHandDevice>();
-        deviceUI.Initialize();
+        //deviceUI = GetComponentInChildren<UIHandDevice>();
+        //deviceUI.Initialize();
 
         if (handSide == EHandSide.LEFT)
         {
@@ -99,7 +99,7 @@ public class Hand : MonoBehaviour
 
         omniDevice = GetComponent<OmniDevice>();
 
-        deviceUI.Set(omniDevice.GetUIData());
+        //deviceUI.Set(omniDevice.GetUIData());
     }
 
     private void Start()
@@ -125,8 +125,8 @@ public class Hand : MonoBehaviour
             od.Initialize(spawnedHand, handSide);
 
             //Initialize OmniDeviceMenu
-            ((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
-            ((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
+            //((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
+            //((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
 
             handSync.OmniDeviceActive = false;
 

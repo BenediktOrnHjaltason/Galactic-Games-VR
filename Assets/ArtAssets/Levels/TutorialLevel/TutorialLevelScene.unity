@@ -14399,6 +14399,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6646478178804545988, guid: 93e94e5d78c4b9f4295f8730db211538,
+        type: 3}
+      propertyPath: allowDuplicationByDevice
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7093053046080912970, guid: 93e94e5d78c4b9f4295f8730db211538,
         type: 3}
       propertyPath: m_Name

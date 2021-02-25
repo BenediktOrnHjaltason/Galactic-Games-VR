@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Normal.Realtime;
 
 public class AvatarManager : MonoBehaviour
@@ -31,11 +32,20 @@ public class AvatarManager : MonoBehaviour
     void Start()
     {
         playerController = GetComponent<OVRPlayerController>();
-        realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
-        torso = new GameObject();
-        head = new GameObject();
+        
 
-        realtime.didConnectToRoom += SpawnAvatar;
+        if (!SceneManager.GetActiveScene().name.Contains("MainMenu"))
+        {
+            realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+            torso = new GameObject();
+            head = new GameObject();
+            realtime.didConnectToRoom += SpawnAvatar;
+        }
+        else
+        {
+            head = eyeAnchor.transform.GetChild(1).gameObject;
+            torso = head.transform.GetChild(1).gameObject;
+        }
     }
 
     void SpawnAvatar(Realtime realtime)

@@ -237,6 +237,7 @@ MonoBehaviour:
   EnableRotation: 1
   RotationEitherThumbstick: 0
   TrackingSpaceAnchor: {fileID: 162066}
+  omniDeviceStartup: 0
   vignette: {fileID: 1517468382636232852}
   vignetteCurve:
     serializedVersion: 2
@@ -1154,7 +1155,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: e842f0cb5a09a924a9bca1a203667d37, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

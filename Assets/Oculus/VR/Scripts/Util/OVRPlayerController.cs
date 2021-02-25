@@ -14,6 +14,7 @@ permissions and limitations under the License.
 
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using Normal.Realtime;
 
@@ -237,6 +238,11 @@ public class OVRPlayerController : MonoBehaviour
 	float timeSinceLastSwing = 0.2f;
 	float maxTimeForSwingMovement = 0.5f;
 
+	//----
+
+	event Action OnUpdate_Fixed;
+	event Action OnUpdate_PerFrame;
+
 
 	public void SetExternalHands(bool leftHand, Transform transform, GameObject baseGameObject)
     {
@@ -330,7 +336,7 @@ public class OVRPlayerController : MonoBehaviour
 		p.z = OVRManager.profile.eyeDepth;
 		CameraRig.transform.localPosition = p;
 
-		realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+		
 
 		//Default respawn point for testing, before entering any respawn point colliders
 		respawnPoint = transform.position;
@@ -339,6 +345,14 @@ public class OVRPlayerController : MonoBehaviour
 
 		vignetteGraphOpacityID = vignetteMaterial.shader.FindPropertyIndex(vignetteOpacityPropertyName);
 
+		if (!SceneManager.GetActiveScene().name.Contains("MainMenu"))
+        {
+			realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
+
+			OnUpdate_Fixed += GameplayFunctionsFixedUpdate;
+			OnUpdate_PerFrame += GameplayFunctionsUpdate;
+		}
+			
 	}
 
 	void Awake()
@@ -380,13 +394,52 @@ public class OVRPlayerController : MonoBehaviour
 		}
 	}
 
-    private void FixedUpdate()
+	void Update()
+	{
+		if (!playerControllerEnabled)
+		{
+			if (OVRManager.OVRManagerinitialized)
+			{
+				OVRManager.display.RecenteredPose += ResetOrientation;
+
+				if (CameraRig != null)
+				{
+					CameraRig.UpdatedAnchors += UpdateTransform;
+				}
+				playerControllerEnabled = true;
+			}
+			else
+				return;
+		}
+		//Use keys to ratchet rotation
+		if (Input.GetKeyDown(KeyCode.Q))
+			buttonRotation -= RotationRatchet;
+
+		if (Input.GetKeyDown(KeyCode.E))
+			buttonRotation += RotationRatchet;
+
+		//Our gameplay functions
+		OnUpdate_PerFrame?.Invoke();
+	}
+
+	private void FixedUpdate()
+    {
+		OnUpdate_Fixed?.Invoke();
+	}
+
+	//It's a long function with different stuff, but since we're doing this every fixed update, 
+	//there could be a small performance gain having them gathered rather than calling a bunch of different functions 
+	void GameplayFunctionsFixedUpdate()
     {
 		//Falldeath
 		if (transform.position.y < -150)
 		{
 			transform.position = respawnPoint;
 		}
+
+		//Jump
+		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !grabbingHandle && !grabbingZipLine) Jump();
 
 		//----Vignette
 
@@ -419,9 +472,9 @@ public class OVRPlayerController : MonoBehaviour
 		else if (!Controller.isGrounded)
 		{
 			airTime += Time.fixedDeltaTime;
-			
+
 			if (vignetteIncrement < 2)
-            {
+			{
 				//Fall death
 				if (airTime > 2) vignetteIncrement += 0.02f;
 
@@ -450,49 +503,22 @@ public class OVRPlayerController : MonoBehaviour
 		}
 
 		if (swingMoving)
-        {
+		{
 
 			if (timeSinceLastSwing > maxTimeForSwingMovement) swingMoving = false;
 
 			else timeSinceLastSwing += Time.fixedDeltaTime;
 
-			if (EnableLinearMovement) 
+			if (EnableLinearMovement)
 				Controller.Move(transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10);
-        }
+		}
 	}
 
-    void Update()
-	{
-		if (!playerControllerEnabled)
-		{
-			if (OVRManager.OVRManagerinitialized)
-			{
-				OVRManager.display.RecenteredPose += ResetOrientation;
-
-				if (CameraRig != null)
-				{
-					CameraRig.UpdatedAnchors += UpdateTransform;
-				}
-				playerControllerEnabled = true;
-			}
-			else
-				return;
-		}
-		//Use keys to ratchet rotation
-		if (Input.GetKeyDown(KeyCode.Q))
-			buttonRotation -= RotationRatchet;
-
-		if (Input.GetKeyDown(KeyCode.E))
-			buttonRotation += RotationRatchet;
-
-		//Handle jumping
-		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
-			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !grabbingHandle && !grabbingZipLine) Jump();
-
-
+	void GameplayFunctionsUpdate()
+    {
 		if (externalAvatarBase) externalAvatarBase.transform.rotation = TrackingSpaceAnchor.transform.rotation;
 
-		
+
 		//Handle grabbing and climbing
 		if (grabbingHandle)
 		{
@@ -505,7 +531,7 @@ public class OVRPlayerController : MonoBehaviour
 			}
 
 			else if (grabbing_RightHand)
-            {
+			{
 				externalHandWorldPositionDelta = externalRightHandPositionOnGrab - externalRightHand.position;
 			}
 
@@ -515,11 +541,12 @@ public class OVRPlayerController : MonoBehaviour
 
 		//Handle ZipLine transportation
 		if (grabbingZipLine)
-        {
+		{
 			transform.position += zipLineDirection * zipLineSpeed * Time.deltaTime;
-        }
-		
+		}
 	}
+
+    
 
 	protected virtual void UpdateController()
 	{
