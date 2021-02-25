@@ -67,6 +67,8 @@ public class Hand : MonoBehaviour
 
     bool usingHandDevice = false;
 
+    public bool UsingHandDevice { get => usingHandDevice; }
+
     bool grabbingZipLine = false;
     
 
@@ -89,15 +91,15 @@ public class Hand : MonoBehaviour
             grabButton = OVRInput.Button.PrimaryHandTrigger;
         }
 
-        if (handSide == EHandSide.RIGHT)
+        else if (handSide == EHandSide.RIGHT)
         {
             rightHand = this;
             grabButton = OVRInput.Button.SecondaryHandTrigger;
-
-            omniDevice = GetComponent<OmniDevice>();
-
-            deviceUI.Set(omniDevice.GetUIData());
         }
+
+        omniDevice = GetComponent<OmniDevice>();
+
+        deviceUI.Set(omniDevice.GetUIData());
     }
 
     private void Start()
@@ -109,18 +111,18 @@ public class Hand : MonoBehaviour
 
     }
 
-    //Called after hand prefabs are instantiated on network. (TODO: Place hands with references directly in prefab and get rid of this code?)
+    //Called after hand prefabs are instantiated on network.
     public void Initialize(GameObject spawnedHand)
     {
         handSync = spawnedHand.GetComponent<HandSync>();
 
-        if (handSide == EHandSide.RIGHT && handSync)
+        if (/*handSide == EHandSide.RIGHT && */handSync)
         {
             handSync.OnOmniDeviceActiveChanged += SetOmniDeviceActive;
 
             OmniDevice od = (OmniDevice)omniDevice;
 
-            od.Initialize(spawnedHand);
+            od.Initialize(spawnedHand, handSide);
 
             //Initialize OmniDeviceMenu
             ((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
@@ -139,11 +141,18 @@ public class Hand : MonoBehaviour
         //Operate handheld device 
         if (handDevice)
         {
-            deviceUI.Operate(handSide);
+            //deviceUI.Operate(handSide);
 
             //(NOTE!) handDevice.Using() actually operates the device with input detection and all
             usingHandDevice = handDevice.Using();
-            playerController.EnableRotation = !usingHandDevice;
+            //playerController.EnableRotation = playerController.EnableLinearMovement = !usingHandDevice;
+
+            if ((usingHandDevice || otherHand.UsingHandDevice) && playerController.EnableLinearMovement)
+                playerController.EnableLinearMovement = playerController.EnableRotation = false;
+
+            else if ((!usingHandDevice && !otherHand.UsingHandDevice) && !playerController.EnableLinearMovement) 
+                playerController.EnableLinearMovement = playerController.EnableRotation = true;
+
         }
 
         if (OVRInput.GetDown(grabButton))
@@ -273,8 +282,8 @@ public class Hand : MonoBehaviour
             {
                 //Meshes
                 omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(true);
-                omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(true);
-                omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(true);
+                //omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(true);
+                //omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(true);
             }
 
             handDevice = omniDevice;
@@ -290,8 +299,8 @@ public class Hand : MonoBehaviour
             {
                 //Meshes
                 omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(false);
-                omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(false);
-                omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(false);
+                //omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(false);
+                //omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(false);
             }
         }
     }

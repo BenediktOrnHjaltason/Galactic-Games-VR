@@ -48,7 +48,7 @@ public class OmniDeviceStation : MonoBehaviour
         {
             hand = other.GetComponent<Hand>();
 
-            if (hand && hand.HandSide == EHandSide.RIGHT && !runSequence && !hand.HandSync.OmniDeviceActive)
+            if (hand && !runSequence && !hand.HandSync.OmniDeviceActive)
             {
                 hand.HandSync.OmniDeviceActive = true;
 

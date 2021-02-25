@@ -236,8 +236,9 @@ MonoBehaviour:
     m_RotationOrder: 4
   outerHull: {fileID: 1827271938764017891}
   handSphere: {fileID: 5136934884404616160}
-  hullMaxScale: {x: 0, y: 0, z: 0}
-  hullMinScale: {x: 0, y: 0, z: 0}
+  hullMaxScale: {x: 2.5779, y: 2.5779, z: 2.5779}
+  hullMinScale: {x: 1.8, y: 1.8, z: 1.8}
+  handSphereMaxScale: {x: 1.08697, y: 1.08697, z: 1.08697}
 --- !u!1 &5136934884404616160
 GameObject:
   m_ObjectHideFlags: 0

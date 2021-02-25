@@ -22,8 +22,7 @@ public class OmniDevice : HandDevice
 
     Transform scalesBase;
 
-    [SerializeField]
-    List<Vector3> scalesLocalPositionsEnd;
+    List<Vector3> scalesLocalPositionsEnd = new List<Vector3>();
 
     float operationEffectMultiplier;
     bool scalesReset = false;
@@ -86,16 +85,18 @@ public class OmniDevice : HandDevice
     //GravityForce and other OmniDevice device uses deviceSync in their operations.
     //deviceSync is located there so it can control it's own mesh and beam.
     //Maybe it could be located locally and reference mesh and beam from spawned hand. 
-    public void Initialize(GameObject spawnedHand)
+    public void Initialize(GameObject spawnedHand, EHandSide handSide)
     {
-        this.deviceSync = spawnedHand.GetComponentInChildren<HandDeviceSync>(); 
+        this.deviceSync = spawnedHand.GetComponentInChildren<HandDeviceSync>();
+
+        gravityForce.Initialize(handSide);
 
         devices.Add(gravityForce);
         devices.Add(replicator);
 
         Mode = EOmniDeviceMode.GRAVITYFORCE;
 
-        scalesBase = spawnedHand.transform.GetChild(3);
+        scalesBase = spawnedHand.transform.GetChild(1).transform.GetChild(1);
 
         for (int i = 0; i < 6; i++)
         {
@@ -186,7 +187,7 @@ public class OmniDevice : HandDevice
     }
 
     //Called only during Raytracing of buttons
-    public void HandleUIButtons(GameObject buttonPointedAt)
+    public void HandleUIButtons(GameObject buttonPointedAt, OVRInput.Button executionButton)
     {
         if (buttonPointedAt != buttonObjectPointedAtPreviously)
         {
@@ -199,7 +200,7 @@ public class OmniDevice : HandDevice
 
 
 
-        if (OVRInput.GetDown(OVRInput.Button.One))
+        if (OVRInput.GetDown(executionButton))
         {
             if (button) button.Execute();
         }

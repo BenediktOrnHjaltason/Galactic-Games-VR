@@ -382,7 +382,7 @@ public class OVRPlayerController : MonoBehaviour
 		{
 			if ((Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
 			{
-				if (vignetteIncrement < 1) vignetteIncrement += 0.025f;
+				if (EnableLinearMovement && vignetteIncrement < 1) vignetteIncrement += 0.025f;
 			}
 
 			else if (vignetteIncrement > 0)
@@ -410,17 +410,11 @@ public class OVRPlayerController : MonoBehaviour
 			if (vignetteIncrement < 2)
             {
 				//Fall death
-				if (airTime > 2)
-				{
-					vignetteIncrement += 0.02f;
-				}
+				if (airTime > 2) vignetteIncrement += 0.02f;
 
 				//Jumping / Regular fall
-				else if (vignetteIncrement < 1)
-				{
-					vignetteIncrement += 0.2f;
+				else if (EnableLinearMovement && vignetteIncrement < 1) vignetteIncrement += 0.2f;
 
-				}
 
 				vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
 				//vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
@@ -449,7 +443,8 @@ public class OVRPlayerController : MonoBehaviour
 
 			else timeSinceLastSwing += Time.fixedDeltaTime;
 
-			Controller.Move(transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10);
+			if (EnableLinearMovement) 
+				Controller.Move(transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10);
         }
 	}
 
@@ -488,9 +483,7 @@ public class OVRPlayerController : MonoBehaviour
 		//Handle grabbing and climbing
 		if (grabbingHandle)
 		{
-
-			
-			Vector3 externalHandWorldPositionDelta = new Vector3(0, 0, 0);
+			Vector3 externalHandWorldPositionDelta = Vector3.zero;
 
 			if (grabbing_LeftHand)
 			{

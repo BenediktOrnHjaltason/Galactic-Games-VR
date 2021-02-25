@@ -17074,51 +17074,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: OmniDeviceGiver
       objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: hullMaxScale.x
-      value: 2.5779
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: hullMaxScale.y
-      value: 2.5779
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: hullMaxScale.z
-      value: 2.5779
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: hullMinScale.x
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: hullMinScale.y
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: hullMinScale.z
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: handSphereMaxScale.x
-      value: 1.08697
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: handSphereMaxScale.y
-      value: 1.08697
-      objectReference: {fileID: 0}
-    - target: {fileID: 1827271940213737345, guid: 1c8e99a634ed1304aba69189c3e194fe,
-        type: 3}
-      propertyPath: handSphereMaxScale.z
-      value: 1.08697
-      objectReference: {fileID: 0}
     - target: {fileID: 1827271940213737347, guid: 1c8e99a634ed1304aba69189c3e194fe,
         type: 3}
       propertyPath: m_Enabled

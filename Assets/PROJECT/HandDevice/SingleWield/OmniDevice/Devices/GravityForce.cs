@@ -57,6 +57,31 @@ public class GravityForce : HandDevice
 
     bool replicating = false;
 
+    //Buttons depending on HandSide
+
+    OVRInput.Button indexTrigger;
+    OVRInput.Button handTrigger;
+    OVRInput.Button platformForward;
+    OVRInput.Button platformBackward;
+
+    public void Initialize(EHandSide handSide)
+    {
+        if (handSide == EHandSide.RIGHT)
+        {
+            indexTrigger = OVRInput.Button.SecondaryIndexTrigger;
+            handTrigger = OVRInput.Button.SecondaryHandTrigger;
+            platformBackward = OVRInput.Button.One;
+            platformForward = OVRInput.Button.Two;
+        }
+
+        else if (handSide == EHandSide.LEFT)
+        {
+            indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+            handTrigger = OVRInput.Button.PrimaryHandTrigger;
+            platformBackward = OVRInput.Button.Three;
+            platformForward = OVRInput.Button.Four;
+        }
+    }
 
     private void Start()
     {
@@ -68,14 +93,14 @@ public class GravityForce : HandDevice
 
         //************ Manage input **************//
 
-        if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
+        if (OVRInput.GetDown(indexTrigger))
         {
             //Update state locally and on networked deviceSync
             owner.OperationState = EHandDeviceState.SCANNING;
         }
 
 
-        else if (OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger))
+        else if (OVRInput.GetUp(indexTrigger))
         {
             ReleaseStructureFromControl();
 
@@ -99,22 +124,22 @@ public class GravityForce : HandDevice
             return false;
         }
 
-        if (OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger)) replicating = true;
+        if (OVRInput.GetDown(handTrigger)) replicating = true;
 
-        else if (OVRInput.GetUp(OVRInput.Button.SecondaryHandTrigger)) replicating = false;
+        else if (OVRInput.GetUp(handTrigger)) replicating = false;
 
 
         if (owner.OperationState == EHandDeviceState.IDLE) return false;
 
 
-        if (OVRInput.GetDown(OVRInput.Button.One))
+        if (OVRInput.GetDown(platformBackward))
             pushingBackward = true;
-        else if (OVRInput.GetUp(OVRInput.Button.One))
+        else if (OVRInput.GetUp(platformBackward))
             pushingBackward = false;
 
-        if (OVRInput.GetDown(OVRInput.Button.Two))
+        if (OVRInput.GetDown(platformForward))
             pushingForward = true;
-        else if (OVRInput.GetUp(OVRInput.Button.Two))
+        else if (OVRInput.GetUp(platformForward))
             pushingForward = false;
 
 
@@ -211,7 +236,7 @@ public class GravityForce : HandDevice
 
                 else
                 {
-                    ((OmniDevice)owner).HandleUIButtons(target);
+                    ((OmniDevice)owner).HandleUIButtons(target, platformBackward);
                 }
             }
 
