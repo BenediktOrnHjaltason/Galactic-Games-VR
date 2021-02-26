@@ -63,6 +63,9 @@ public class GravityForce : HandDevice
     OVRInput.Button handTrigger;
     OVRInput.Button platformForward;
     OVRInput.Button platformBackward;
+    OVRInput.Axis2D thumbStick;
+
+    
 
     public void Initialize(EHandSide handSide)
     {
@@ -72,6 +75,7 @@ public class GravityForce : HandDevice
             handTrigger = OVRInput.Button.SecondaryHandTrigger;
             platformBackward = OVRInput.Button.One;
             platformForward = OVRInput.Button.Two;
+            thumbStick = OVRInput.Axis2D.SecondaryThumbstick;
         }
 
         else if (handSide == EHandSide.LEFT)
@@ -80,6 +84,7 @@ public class GravityForce : HandDevice
             handTrigger = OVRInput.Button.PrimaryHandTrigger;
             platformBackward = OVRInput.Button.Three;
             platformForward = OVRInput.Button.Four;
+            thumbStick = OVRInput.Axis2D.PrimaryThumbstick;
         }
     }
 
@@ -260,7 +265,7 @@ public class GravityForce : HandDevice
             structureSync.AddGravityForce(controlForce * Time.deltaTime * movementMultiplier);
 
             //Rotation
-            stickInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+            stickInput = OVRInput.Get(thumbStick);
 
             if (transform.rotation.eulerAngles.z < 330 && transform.rotation.eulerAngles.z > 200) rollMultiplier = -0.5f;
             else if (transform.rotation.eulerAngles.z > 30 && transform.rotation.eulerAngles.z < 140) rollMultiplier = 0.5f;
