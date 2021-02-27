@@ -273,9 +273,48 @@ public class GravityForce : HandDevice
 
             if (structureSync.AllowRotationForces)
             {
-                structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
+                float atan = Mathf.Atan2(stickInput.y, stickInput.x) * Mathf.Rad2Deg;
+
+
+                //Debug.Log("Atan Rad2Deg = " + atan);
+                //Debug.Log("Stick input: " + stickInput);
+
+                if (atan > -45f && atan < 45f )
+                {
+                    //Debug.Log("RIGHT");
+                    structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
                                      /*Yaw*/((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
+                                     /*Pitch*/Vector3.zero,0);
+
+                }
+                else if (atan > 45f && atan < 135f)
+                {
+                    //Debug.Log("UP");
+                    structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
+                                     /*Yaw*/0,
                                      /*Pitch*/playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
+                }
+                else if (atan > 135f || atan < -135)
+                {
+                    //Debug.Log("LEFT");
+                    structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
+                                     /*Yaw*/((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
+                                     /*Pitch*/Vector3.zero, 0);
+                }
+                else if (atan > -135 && atan < -45)
+                {
+                    //Debug.Log("DOWN");
+                    structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
+                                     /*Yaw*/0,
+                                     /*Pitch*/playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
+                }
+                
+
+                
+                //structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
+                                     ///*Yaw*/((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
+                                     ///*Pitch*/playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
+                
             }
             
             return true;
