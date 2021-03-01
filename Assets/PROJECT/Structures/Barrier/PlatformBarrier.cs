@@ -15,11 +15,6 @@ public class PlatformBarrier : MonoBehaviour
 
     Vector3 thisToPlatform;
 
-    /// <summary>
-    /// Vector representing the horizontal plane
-    /// </summary>
-    Vector3 projectedOnUp;
-
     RaycastHit hit;
 
     bool showEffectPlane = false;
@@ -65,9 +60,6 @@ public class PlatformBarrier : MonoBehaviour
                 if (RB && ss)
                 {
                     thisToPlatform = other.transform.position - transform.position;
-
-                    projectedOnUp = thisToPlatform - (Vector3.up * (Vector3.Dot(thisToPlatform, Vector3.up)));
-
 
                     Vector3 hitNormal = Vector3.zero; ;
                     Vector3 hitPoint = Vector3.zero;
