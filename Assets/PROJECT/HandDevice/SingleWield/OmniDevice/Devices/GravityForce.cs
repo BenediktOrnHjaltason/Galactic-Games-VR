@@ -98,6 +98,11 @@ public class GravityForce : HandDevice
 
         //************ Manage input **************//
 
+        if (OVRInput.GetDown(handTrigger)) replicating = true;
+
+        else if (OVRInput.GetUp(handTrigger)) replicating = false;
+
+
         if (OVRInput.GetDown(indexTrigger))
         {
             //Update state locally and on networked deviceSync
@@ -128,10 +133,6 @@ public class GravityForce : HandDevice
 
             return false;
         }
-
-        if (OVRInput.GetDown(handTrigger)) replicating = true;
-
-        else if (OVRInput.GetUp(handTrigger)) replicating = false;
 
 
         if (owner.OperationState == EHandDeviceState.IDLE) return false;
