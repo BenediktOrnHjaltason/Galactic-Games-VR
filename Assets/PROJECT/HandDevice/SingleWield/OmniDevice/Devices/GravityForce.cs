@@ -344,10 +344,14 @@ public class GravityForce : HandDevice
 
         Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureSync.transform.position;
 
-        float forwardMultiplyer = (pushingForward) ? 7.0f : 0.0f;
-        forwardMultiplyer += (pushingBackward) ? -7.0f : 0.0f;
+        float forwardMultiplier = (pushingForward) ? 7.0f : 0.0f;
 
-        return (structureToAdjustedForward + transform.forward * forwardMultiplyer);
+
+        if (distanceToStructure > 7) forwardMultiplier += (pushingBackward) ? -7.0f : 0.0f;
+
+        else forwardMultiplier += (pushingBackward) ? -7.0f + (7 - distanceToStructure) : 0.0f;
+
+        return (structureToAdjustedForward + transform.forward * forwardMultiplier);
     }
 
     //Validate state relevant to GravityForce
