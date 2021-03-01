@@ -123,7 +123,7 @@ public class StructureOnRails : StructureSync
         {
             if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.RequestOwnership();
 
-            if (realtimeTransform.ownerIDSelf == realtime.clientID)
+            if (realtimeTransform.ownerIDSelf == realtime.clientID && availableToManipulate)
                 rb.AddForce(autoForceVector);
         }
     }
