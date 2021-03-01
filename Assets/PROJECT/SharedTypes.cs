@@ -50,4 +50,10 @@ namespace Types
         public Material material;
         public Vector3 fullScale;
     }
+
+    public struct HandDeviceData
+    {
+        public bool controllingStructure;
+        public bool targetStructureAllowsRotation;
+    }
 }

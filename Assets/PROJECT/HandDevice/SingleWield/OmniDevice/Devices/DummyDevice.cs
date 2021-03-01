@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Types;
 
 public class DummyDevice : HandDevice
 {
@@ -15,8 +16,8 @@ public class DummyDevice : HandDevice
         return true;
     }
 
-    public override bool Using()
+    public override void Using(ref HandDeviceData data)
     {
-        return false;
+
     }
 }

@@ -54,6 +54,9 @@ public class GravityForce : HandDevice
 
     int layer_Structures = 10;
     int layer_UI = 5;
+    
+    //Restrict ray-casting through walls
+    int layer_GeneralBlock = 16;
 
     bool replicating = false;
 
@@ -93,7 +96,7 @@ public class GravityForce : HandDevice
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
 
-    public override bool Using()
+    public override void Using(ref HandDeviceData handDeviceData)
     {
 
         //************ Manage input **************//
@@ -130,12 +133,17 @@ public class GravityForce : HandDevice
 
 
             owner.OperationState = EHandDeviceState.IDLE;
+            handDeviceData.controllingStructure = false;
 
-            return false;
+            return;
         }
 
 
-        if (owner.OperationState == EHandDeviceState.IDLE) return false;
+        if (owner.OperationState == EHandDeviceState.IDLE)
+        {
+            if (handDeviceData.controllingStructure) handDeviceData.controllingStructure = false;
+            return;
+        }
 
 
         if (OVRInput.GetDown(platformBackward))
@@ -155,21 +163,27 @@ public class GravityForce : HandDevice
         {
             //Network: update state on clients. OmniDeviceSync manages its own beam based on its on transform on client
 
-            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << layer_Structures | 1 << layer_UI))
+            if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << layer_Structures | 1 << layer_UI | 1 << layer_GeneralBlock))
             {
                 GameObject target = structureHit.collider.gameObject;
 
                 if (target.layer.Equals(layer_Structures))
                 {
 
-                    if (!ValidateStructureState(structureHit.collider.transform.parent.gameObject)) return true;
+                    if (!ValidateStructureState(structureHit.collider.transform.parent.gameObject))
+                    {
+                        handDeviceData.controllingStructure = false;
+                        return;
+                    }
+
+                    handDeviceData.controllingStructure = true;
 
                     if (!replicating)
                     {
                         structureSync.AvailableToManipulate = false;
                         structureSync.OnBreakControl += ReleaseStructureFromControl;
 
-                        //targetRB = targetStructure.GetComponent<Rigidbody>();
+                        handDeviceData.targetStructureAllowsRotation = structureSync.AllowRotationForces;
                         targetTransform = targetStructure.transform;
 
                         //---- Networking
@@ -217,6 +231,9 @@ public class GravityForce : HandDevice
                         structureSync.AvailableToManipulate = false;
                         structureSync.CollisionEnabled = false;
 
+                        handDeviceData.targetStructureAllowsRotation = structureSync.AllowRotationForces;
+
+
                         targetStructure = duplicate;
                         targetTransform = structureSync.transform;
 
@@ -242,11 +259,10 @@ public class GravityForce : HandDevice
 
                 else
                 {
+                    handDeviceData.controllingStructure = false;
                     ((OmniDevice)owner).HandleUIButtons(target, platformBackward);
                 }
             }
-
-            return true;
         }
 
         else if (owner.OperationState == EHandDeviceState.CONTROLLING)
@@ -317,11 +333,7 @@ public class GravityForce : HandDevice
                                      ///*Pitch*/playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
                 
             }
-            
-            return true;
         }
-
-        return false;
     }
 
     Vector3 CalculateControlForce()

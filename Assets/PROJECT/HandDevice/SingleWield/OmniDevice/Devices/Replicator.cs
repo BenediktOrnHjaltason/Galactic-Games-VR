@@ -36,13 +36,14 @@ public class Replicator : HandDevice
     }
 
     ///Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
-    public override bool Using()
+    public override void Using(ref HandDeviceData handDeviceData)
     {
         //************ Manage input **************//
 
         if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
             owner.OperationState = EHandDeviceState.SCANNING;
+            handDeviceData.controllingStructure = false;
         }
 
 
@@ -50,6 +51,7 @@ public class Replicator : HandDevice
         {
             ReleaseStructureFromControl();
             owner.OperationState = EHandDeviceState.IDLE;
+            handDeviceData.controllingStructure = false;
 
             if (duplicate)
             {
@@ -66,10 +68,14 @@ public class Replicator : HandDevice
                 duplicateRealtimeTransform = null;
             }
 
-            return false;
+            return;
         }
 
-        else if (owner.OperationState == EHandDeviceState.IDLE) return false;
+        else if (owner.OperationState == EHandDeviceState.IDLE)
+        {
+            handDeviceData.controllingStructure = false;
+            return;
+        }
 
         //************ Operation logic **************//
 
@@ -78,7 +84,11 @@ public class Replicator : HandDevice
 
             if (Physics.Raycast(transform.position, transform.forward, out structureHit, Mathf.Infinity, 1 << 10))
             {
-                if (!ValidateStructureState(structureHit.collider.transform.root.gameObject)) return true;
+                if (!ValidateStructureState(structureHit.collider.transform.root.gameObject))
+                {
+                    handDeviceData.controllingStructure = false;
+                    return;
+                }
 
                 
 
@@ -123,11 +133,12 @@ public class Replicator : HandDevice
                 
 
                 owner.OperationState = EHandDeviceState.CONTROLLING;
+                handDeviceData.controllingStructure = true;
 
                 structureSceneName = structurePrefabName = "";
             }
 
-            return true;
+            return;
         }
 
         else if (owner.OperationState == EHandDeviceState.CONTROLLING)
@@ -140,10 +151,10 @@ public class Replicator : HandDevice
             //Movement
             duplicateRB.AddForce(controlForce.normalized * 3);
 
-            return true;
+            return;
         }
 
-        return false;
+        //return false;
     }
 
     //Validate state relevant to Replicator

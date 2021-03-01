@@ -52,6 +52,8 @@ public class Hand : MonoBehaviour
 
     HandDevice omniDevice;
 
+    HandDeviceData handDeviceData;
+
     public HandDevice OmniDevice { set => omniDevice = value; get => omniDevice; }
 
 
@@ -100,6 +102,8 @@ public class Hand : MonoBehaviour
         omniDevice = GetComponent<OmniDevice>();
 
         //deviceUI.Set(omniDevice.GetUIData());
+
+        handDeviceData.controllingStructure = false;
     }
 
     private void Start()
@@ -159,13 +163,17 @@ public class Hand : MonoBehaviour
             //deviceUI.Operate(handSide);
 
             //(NOTE!) handDevice.Using() actually operates the device with input detection and all
-            usingHandDevice = handDevice.Using();
-            //playerController.EnableRotation = playerController.EnableLinearMovement = !usingHandDevice;
+            /*usingHandDevice = */handDevice.Using(ref handDeviceData);
 
-            if ((usingHandDevice || otherHand.UsingHandDevice) && playerController.EnableLinearMovement)
+            usingHandDevice = handDeviceData.controllingStructure;
+
+
+            if ((handDeviceData.controllingStructure && handDeviceData.targetStructureAllowsRotation) || 
+                  (otherHand.handDeviceData.controllingStructure && otherHand.handDeviceData.targetStructureAllowsRotation) && 
+                  playerController.EnableLinearMovement)
                 playerController.EnableLinearMovement = playerController.EnableRotation = false;
 
-            else if ((!usingHandDevice && !otherHand.UsingHandDevice) && !playerController.EnableLinearMovement) 
+            else if ((!handDeviceData.controllingStructure && !otherHand.handDeviceData.controllingStructure) && !playerController.EnableLinearMovement) 
                 playerController.EnableLinearMovement = playerController.EnableRotation = true;
 
         }
@@ -297,8 +305,6 @@ public class Hand : MonoBehaviour
             {
                 //Meshes
                 omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(true);
-                //omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(true);
-                //omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(true);
             }
 
             handDevice = omniDevice;
@@ -312,10 +318,8 @@ public class Hand : MonoBehaviour
 
             if (omniDeviceRoot)
             {
-                //Meshes
+                //Mesh
                 omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(false);
-                //omniDeviceRoot.transform.GetChild(2).gameObject.SetActive(false);
-                //omniDeviceRoot.transform.GetChild(3).gameObject.SetActive(false);
             }
         }
     }

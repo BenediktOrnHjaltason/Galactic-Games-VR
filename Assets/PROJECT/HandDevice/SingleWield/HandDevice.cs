@@ -46,7 +46,7 @@ public abstract class HandDevice : MonoBehaviour
     protected HandDevice owner;
     public HandDevice Owner { set => owner = value; get => owner; }
 
-    public abstract bool Using();
+    public abstract void Using(ref HandDeviceData data);
 
     public abstract void Equip(EHandSide hand);
 
