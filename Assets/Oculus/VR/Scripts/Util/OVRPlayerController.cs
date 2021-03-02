@@ -210,8 +210,6 @@ public class OVRPlayerController : MonoBehaviour
 
 	float airTime = 0;
 
-	bool fellToDeath = false;
-
 	//-------------
 
 	//External pair of tracked hands that gives us delta movement in world space for climbing mechanic.
@@ -236,7 +234,9 @@ public class OVRPlayerController : MonoBehaviour
 	bool swingMoving = false;
 
 	float timeSinceLastSwing = 0.2f;
-	float maxTimeForSwingMovement = 0.5f;
+	float maxTimeForSwingMovement = 0.6f;
+
+	Vector3 swingWalkVector;
 
 	//----
 
@@ -351,6 +351,13 @@ public class OVRPlayerController : MonoBehaviour
 
 			OnUpdate_Fixed += GameplayFunctionsFixedUpdate;
 			OnUpdate_PerFrame += GameplayFunctionsUpdate;
+
+
+			if (PlayerPrefs.GetInt("blinders") == 1)
+			{
+				OnUpdate_Fixed += OperateVignette;
+			}
+			else vignette.transform.gameObject.SetActive(false);
 		}
 			
 	}
@@ -441,51 +448,7 @@ public class OVRPlayerController : MonoBehaviour
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
 			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !grabbingHandle && !grabbingZipLine) Jump();
 
-		//----Vignette
-
-		//Move
-		if (Controller.isGrounded)
-		{
-			if ((Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
-			{
-				if (EnableLinearMovement && vignetteIncrement < 1) vignetteIncrement += 0.025f;
-			}
-
-			else if (vignetteIncrement > 0)
-			{
-				vignetteIncrement -= 0.025f;
-			}
-
-			//vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
-
-			//Debug.Log("OVRPlayerController::FixedUpdate: vignetteOpacityPropertyIndex = " + vignetteGraphOpacityID);
-			//Debug.Log("PropertyID gotten from Find function = " + vignetteMaterial.shader.FindPropertyIndex(vignetteOpacityPropertyName));
-			//NOTE: SetFloat is not working with property ID gotten from Shader. Sending in property name until further developments
-			vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
-
-			vignette.transform.localPosition = Vector3.Lerp(vignetteLowerLocalPos, vignetteUpperLocalPos, Mathf.Abs((Mathf.Sin(Time.fixedTime * 5))) * vignetteIncrement);
-
-			if (airTime != 0) airTime = 0;
-		}
-
-		//Jump / Fall
-		else if (!Controller.isGrounded)
-		{
-			airTime += Time.fixedDeltaTime;
-
-			if (vignetteIncrement < 2)
-			{
-				//Fall death
-				if (airTime > 2) vignetteIncrement += 0.02f;
-
-				//Jumping / Regular fall
-				else if (EnableLinearMovement && vignetteIncrement < 1) vignetteIncrement += 0.2f;
-
-
-				vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
-				//vignette.transform.localScale = Vector3.LerpUnclamped(vignette2Open, vignette2Closed, vignetteCurve.Evaluate(vignetteIncrement));
-			}
-		}
+		
 
 		//Swing-moving
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 0.6 &&
@@ -505,12 +468,57 @@ public class OVRPlayerController : MonoBehaviour
 		if (swingMoving)
 		{
 
-			if (timeSinceLastSwing > maxTimeForSwingMovement) swingMoving = false;
+			if (timeSinceLastSwing > maxTimeForSwingMovement)
+			{
+				swingMoving = false;
+			}
 
 			else timeSinceLastSwing += Time.fixedDeltaTime;
 
 			if (EnableLinearMovement)
-				Controller.Move(transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10);
+            {
+				swingWalkVector = (transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10) /*+ new Vector3(0,-0.1f,0)*/;
+				Controller.Move(swingWalkVector);
+			}
+		}
+	}
+
+	void OperateVignette()
+	{
+		//----Vignette
+
+
+		//Move
+		if (Controller.isGrounded)
+		{
+			if ((Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
+			{
+				if (EnableLinearMovement && vignetteIncrement < 1) vignetteIncrement += 0.025f;
+			}
+
+			else if (vignetteIncrement > 0)
+			{
+				vignetteIncrement -= 0.025f;
+			}
+
+			//Debug.Log("OVRPlayerController::FixedUpdate: vignetteOpacityPropertyIndex = " + vignetteGraphOpacityID);
+			//Debug.Log("PropertyID gotten from Find function = " + vignetteMaterial.shader.FindPropertyIndex(vignetteOpacityPropertyName));
+			//NOTE: SetFloat is not working with property ID gotten from Shader. Sending in property name until further developments
+			vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
+
+			vignette.transform.localPosition = Vector3.Lerp(vignetteLowerLocalPos, vignetteUpperLocalPos, Mathf.Abs((Mathf.Sin(Time.fixedTime * 5))) * vignetteIncrement);
+
+			if (airTime != 0) airTime = 0;
+		}
+
+		
+		//Jump / Fall
+		else if (!Controller.isGrounded)
+		{
+				//Jumping / Regular fall
+				if (EnableLinearMovement && !swingMoving && vignetteIncrement < 1) vignetteIncrement += 0.025f;
+
+				vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
 		}
 	}
 

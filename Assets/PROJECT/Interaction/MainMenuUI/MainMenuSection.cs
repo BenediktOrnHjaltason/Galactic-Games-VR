@@ -8,7 +8,7 @@ public class MainMenuSection : MonoBehaviour
     AnimationCurve selectionMoveCurve;
 
     [SerializeField]
-    GameObject SelectIndicator;
+    protected GameObject SelectIndicator;
     float increment = 0;
 
     protected bool makingNewSelection = false;
@@ -20,9 +20,9 @@ public class MainMenuSection : MonoBehaviour
     [SerializeField]
     protected List<InteractButton> buttons;
 
-    private void Start()
+    protected virtual void Start()
     {
-        previousIndicatorLocalPos = new Vector3(2.725f, 0, 0.92f) + IndicatorOffsettToButton;
+        previousIndicatorLocalPos = buttons[0].transform.localPosition + IndicatorOffsettToButton;
         SelectIndicator.transform.localPosition = previousIndicatorLocalPos;
     }
 

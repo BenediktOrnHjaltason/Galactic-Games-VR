@@ -1130,17 +1130,17 @@ PrefabInstance:
     - target: {fileID: 681878085018550780, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
       propertyPath: m_text
-      value: Other(same)
+      value: Tutorial
       objectReference: {fileID: 0}
     - target: {fileID: 681878085018550780, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
       propertyPath: m_fontSize
-      value: 23
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 681878085018550780, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 23
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 2552284517074242287, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
