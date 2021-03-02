@@ -46,15 +46,31 @@ public abstract class HandDevice : MonoBehaviour
     protected HandDevice owner;
     public HandDevice Owner { set => owner = value; get => owner; }
 
-    public abstract void Using(ref HandDeviceData data);
+    protected int layer_Structures = 10;
+    protected int layer_UI = 5;
 
-    public abstract void Equip(EHandSide hand);
+    //Restrict ray-casting through walls
+    protected int layer_GeneralBlock = 16;
+
+
+    public virtual void Using(ref HandDeviceData data)
+    {
+
+    }
+
+    public virtual void Equip(EHandSide hand)
+    {
+
+    }
 
     /// <summary>
     /// Validate if allowed to manupulate structure
     /// </summary>
 
-    protected abstract bool ValidateStructureState(GameObject target);
+    protected virtual bool ValidateStructureState(GameObject target)
+    {
+        return false;
+    }
 
     protected void GetStateReferencesFromTarget(GameObject target)
     {
@@ -91,6 +107,31 @@ public abstract class HandDevice : MonoBehaviour
             structureRtt.maintainOwnershipWhileSleeping = false;
 
             OperationState = EHandDeviceState.IDLE;
+        }
+    }
+
+
+
+    GameObject buttonObjectPointedAtPreviously = null;
+    InteractButton button;
+
+    //Called only during Raytracing of buttons
+    public void HandleUIButtons(GameObject buttonPointedAt, OVRInput.Button executionButton)
+    {
+        if (buttonPointedAt != buttonObjectPointedAtPreviously)
+        {
+
+            buttonObjectPointedAtPreviously = buttonPointedAt;
+
+            button = buttonObjectPointedAtPreviously.GetComponent<InteractButton>();
+        }
+        if (button) button.BeingHighlighted = true;
+
+
+
+        if (OVRInput.GetDown(executionButton))
+        {
+            if (button) button.Execute();
         }
     }
 }

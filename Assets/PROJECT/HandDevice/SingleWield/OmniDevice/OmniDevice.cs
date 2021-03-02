@@ -28,12 +28,6 @@ public class OmniDevice : HandDevice
     bool scalesReset = false;
     float timeWaveOffsett = (Mathf.PI * 2) / 6;
 
-    GameObject buttonObjectPointedAtPreviously = null;
-    InteractButton button;
-    InteractButton previousButton;
-
-    
-     
 
 
     /// <summary>
@@ -123,7 +117,6 @@ public class OmniDevice : HandDevice
     //Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
     public override void Using(ref HandDeviceData data)
     {
-        //Using operates the active device
         devices[activeDeviceIndex].Using(ref data);
     }
 
@@ -186,23 +179,4 @@ public class OmniDevice : HandDevice
         return true;
     }
 
-    //Called only during Raytracing of buttons
-    public void HandleUIButtons(GameObject buttonPointedAt, OVRInput.Button executionButton)
-    {
-        if (buttonPointedAt != buttonObjectPointedAtPreviously)
-        {
-
-            buttonObjectPointedAtPreviously = buttonPointedAt;
-
-            button = buttonObjectPointedAtPreviously.GetComponent<InteractButton>();
-        }
-        if (button) button.BeingHighlighted = true;
-
-
-
-        if (OVRInput.GetDown(executionButton))
-        {
-            if (button) button.Execute();
-        }
-    }
 }

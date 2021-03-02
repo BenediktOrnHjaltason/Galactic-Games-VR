@@ -52,12 +52,6 @@ public class GravityForce : HandDevice
     [SerializeField]
     float rotationMultiplier = 2600;
 
-    int layer_Structures = 10;
-    int layer_UI = 5;
-    
-    //Restrict ray-casting through walls
-    int layer_GeneralBlock = 16;
-
     bool replicating = false;
 
     //Buttons depending on HandSide
@@ -260,7 +254,7 @@ public class GravityForce : HandDevice
                 else
                 {
                     handDeviceData.controllingStructure = false;
-                    ((OmniDevice)owner).HandleUIButtons(target, platformBackward);
+                    HandleUIButtons(target, platformBackward);
                 }
             }
         }
