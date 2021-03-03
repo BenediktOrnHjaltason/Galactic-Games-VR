@@ -136,7 +136,7 @@ public class OVRPlayerController : MonoBehaviour
 	/// </summary>
 	public bool RotationEitherThumbstick = false;
 
-	protected CharacterController Controller = null;
+	public CharacterController Controller = null;
 	protected OVRCameraRig CameraRig = null;
 
 	private float MoveScale = 1.0f;
@@ -157,6 +157,9 @@ public class OVRPlayerController : MonoBehaviour
 
 	Realtime realtime;
 
+
+	RealtimeView headRealtimeView;
+	public RealtimeView HeadRealtimeView { set => headRealtimeView = value; get => headRealtimeView; }
 
 	//Respawn
 	Vector3 respawnPoint = Vector3.zero;
@@ -327,6 +330,13 @@ public class OVRPlayerController : MonoBehaviour
 			grabbingZipLine = false;
 		}
 	}
+
+	public void ResetToRespawnPoint()
+    {
+		Controller.enabled = false;
+		transform.position = respawnPoint;
+		Controller.enabled = true;
+	}
 	
 
 	void Start()
@@ -338,7 +348,7 @@ public class OVRPlayerController : MonoBehaviour
 
 		
 
-		//Default respawn point for testing, before entering any respawn point colliders
+		//Default respawn point for testing, before entering any respawn point triggers
 		respawnPoint = transform.position;
 
 		vignetteMaterial = vignette.GetComponent<MeshRenderer>().material;

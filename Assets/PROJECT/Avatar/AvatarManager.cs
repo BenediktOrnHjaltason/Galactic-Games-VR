@@ -87,6 +87,8 @@ public class AvatarManager : MonoBehaviour
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: this.realtime);
 
+        playerController.HeadRealtimeView = head.GetComponent<RealtimeView>();
+
         head.transform.SetPositionAndRotation(eyeAnchor.transform.position, eyeAnchor.transform.rotation);
         head.transform.SetParent(eyeAnchor.transform);
         head.GetComponent<RealtimeTransform>().RequestOwnership();
