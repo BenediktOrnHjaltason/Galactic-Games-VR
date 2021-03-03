@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Tutorial_OmnDeviceScreen
+  m_Name: M_Tutorial_Replicator
   m_Shader: {fileID: -6465566751694194690, guid: f9631b7479125264f99c952cdf456973,
     type: 3}
   m_ShaderKeywords: 
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_6F63D17B:
-        m_Texture: {fileID: 2800000, guid: 06f4f4c4c19943342b36f10f5bd1c7d6, type: 3}
+        m_Texture: {fileID: 2800000, guid: 105c3e6db042575469de6898f4acd84f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -46,6 +46,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_B66AB313_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 105c3e6db042575469de6898f4acd84f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
