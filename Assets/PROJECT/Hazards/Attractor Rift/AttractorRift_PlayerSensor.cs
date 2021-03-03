@@ -18,18 +18,18 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     [SerializeField]
     AttractorRift_Core core;
 
-    Transform baseTransform;
+    Transform attractionPoint;
     RealtimeTransform rtt;
     Rigidbody rb;
 
-    Vector3 baseToRoot = Vector3.zero;
+    Vector3 attractionPointToRoot = Vector3.zero;
 
     List<OVRPlayerController> playersInReach = new List<OVRPlayerController>();
 
     // Start is called before the first frame update
     void Start()
     {
-        baseTransform = transform.GetComponentInParent<Transform>();
+        attractionPoint = transform.GetComponentInParent<Transform>();
         rtt = transform.GetComponentInParent<RealtimeTransform>();
         rb = GetComponentInParent<Rigidbody>();
 
@@ -50,15 +50,15 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         if (rtt.isUnownedSelf) rtt.RequestOwnership();
         else if (rtt.isOwnedLocallySelf)
         {
-            baseToRoot = transform.root.position - baseTransform.position;
+            attractionPointToRoot = transform.root.position - attractionPoint.position;
 
             if ((transform.position - transform.root.transform.position).sqrMagnitude > 0.02)
-                rb.AddForce(baseToRoot * autoForce);
+                rb.AddForce(attractionPointToRoot * autoForce);
         }
 
         foreach (OVRPlayerController player in playersInReach)
         {
-            if (player.HeadRealtimeView.isOwnedLocallySelf) player.transform.position += (baseTransform.position - player.transform.position).normalized * 0.04f;
+            if (player.HeadRealtimeView.isOwnedLocallySelf) player.Controller.Move((attractionPoint.position - player.transform.position).normalized * 0.04f); //transform.position += (attractionPoint.position - player.transform.position).normalized * 0.04f;
         }
     }
 
@@ -70,6 +70,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
             if (player)
             {
+                player.GravityModifier = 0.0f;
                 playersInReach.Add(player);
             }
         }
@@ -92,6 +93,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
     void RemovePlayerFromInfluence(OVRPlayerController player)
     {
+        player.GravityModifier = 0.04f;
         playersInReach.Remove(player);
     }
 }
