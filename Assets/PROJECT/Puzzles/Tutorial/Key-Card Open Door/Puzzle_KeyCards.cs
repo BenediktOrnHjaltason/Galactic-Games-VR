@@ -47,7 +47,7 @@ public class Puzzle_KeyCards : MonoBehaviour
             door.Operate();
             previousActionOpenedDoor = true;
         }
-        else if (insertedKeys == 0 && previousActionOpenedDoor)
+        else if ((insertedKeys == 0 && previousActionOpenedDoor) || (insertedKeys == 1 && previousActionOpenedDoor))
         {
             door.Operate();
             previousActionOpenedDoor = false;
