@@ -60,8 +60,6 @@ public class InteractButton : MonoBehaviour
 
     public event Action OnExecute;
 
-    bool isHighLighted = false;
-    public bool IsHighLighted { set => isHighLighted = value; }
 
 
     private void FixedUpdate()

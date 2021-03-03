@@ -42,10 +42,10 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
         doorPivot = transform.GetChild(0).gameObject;
 
-        button.OnExecute += OperateDoor;
+        button.OnExecute += Operate;
     }
 
-    void OperateDoor()
+    public void Operate()
     {
         if (!doorPivotRtt.isOwnedLocallySelf) doorPivotRtt.RequestOwnership();
         model.operateDoor = true;
