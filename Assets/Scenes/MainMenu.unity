@@ -839,6 +839,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: OVRPlayerControllerOffline
       objectReference: {fileID: 0}
+    - target: {fileID: 7073179586813533512, guid: 830392e5e7ec39f42a2b18ac5420afd7,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: da7301841d93ce74d9fc9c8ea151bbdf, type: 3}
+    - target: {fileID: 7073179586813533512, guid: 830392e5e7ec39f42a2b18ac5420afd7,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.912
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 830392e5e7ec39f42a2b18ac5420afd7, type: 3}
 --- !u!1 &1789474063

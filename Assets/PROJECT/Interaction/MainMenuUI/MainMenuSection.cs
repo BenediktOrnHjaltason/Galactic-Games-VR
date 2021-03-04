@@ -15,7 +15,7 @@ public class MainMenuSection : MonoBehaviour
     protected Vector3 previousIndicatorLocalPos;
     protected Vector3 newIndicatorLocalPos;
 
-    protected Vector3 IndicatorOffsettToButton = new Vector3(0, 0.02f, 0);
+    protected Vector3 IndicatorOffsettToButton = new Vector3(0, 0.06f, 0);
 
     [SerializeField]
     protected List<InteractButton> buttons;
