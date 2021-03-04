@@ -23,8 +23,9 @@ public class PlayerSensor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        structureSync = transform.root.gameObject.GetComponent<StructureSync>();
+        
         parentTransform = transform.GetComponentInParent<Transform>();
+        structureSync = parentTransform.GetComponentInParent<StructureSync>();
     }
 
 
