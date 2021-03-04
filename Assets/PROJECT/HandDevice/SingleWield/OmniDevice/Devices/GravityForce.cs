@@ -57,7 +57,7 @@ public class GravityForce : HandDevice
     //Buttons depending on HandSide
 
     OVRInput.Button indexTrigger;
-    OVRInput.Button handTrigger;
+    OVRInput.Axis1D handTrigger;
     OVRInput.Button platformForward;
     OVRInput.Button platformBackward;
     OVRInput.Axis2D thumbStick;
@@ -69,7 +69,7 @@ public class GravityForce : HandDevice
         if (handSide == EHandSide.RIGHT)
         {
             indexTrigger = OVRInput.Button.SecondaryIndexTrigger;
-            handTrigger = OVRInput.Button.SecondaryHandTrigger;
+            handTrigger = OVRInput.Axis1D.SecondaryHandTrigger;
             platformBackward = OVRInput.Button.One;
             platformForward = OVRInput.Button.Two;
             thumbStick = OVRInput.Axis2D.SecondaryThumbstick;
@@ -78,7 +78,7 @@ public class GravityForce : HandDevice
         else if (handSide == EHandSide.LEFT)
         {
             indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-            handTrigger = OVRInput.Button.PrimaryHandTrigger;
+            handTrigger = OVRInput.Axis1D.PrimaryHandTrigger;
             platformBackward = OVRInput.Button.Three;
             platformForward = OVRInput.Button.Four;
             thumbStick = OVRInput.Axis2D.PrimaryThumbstick;
@@ -95,9 +95,9 @@ public class GravityForce : HandDevice
 
         //************ Manage input **************//
 
-        if (OVRInput.GetDown(handTrigger)) replicating = true;
+        if (OVRInput.Get(handTrigger) > 0.8f) replicating = true;
 
-        else if (OVRInput.GetUp(handTrigger)) replicating = false;
+        else replicating = false;
 
 
         if (OVRInput.GetDown(indexTrigger))
