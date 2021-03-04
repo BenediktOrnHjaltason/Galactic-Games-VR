@@ -18,6 +18,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     [SerializeField]
     AttractorRift_Core core;
 
+    GameObject defaultLinesBase;
+
     Transform attractionPoint;
     RealtimeTransform rtt;
     Rigidbody rb;
@@ -56,10 +58,10 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             core.OnPlayerReachedCore += RemovePlayerFromInfluence;
         }
 
-        defaultBeams.Add(transform.GetChild(0).GetComponent<LineRenderer>());
-        defaultBeams.Add(transform.GetChild(1).GetComponent<LineRenderer>());
-        defaultBeams.Add(transform.GetChild(2).GetComponent<LineRenderer>());
-        defaultBeams.Add(transform.GetChild(3).GetComponent<LineRenderer>());
+        defaultBeams.Add(transform.GetChild(0).transform.GetChild(0).GetComponent<LineRenderer>());
+        defaultBeams.Add(transform.GetChild(0).transform.GetChild(1).GetComponent<LineRenderer>());
+        defaultBeams.Add(transform.GetChild(0).transform.GetChild(2).GetComponent<LineRenderer>());
+        defaultBeams.Add(transform.GetChild(0).transform.GetChild(3).GetComponent<LineRenderer>());
 
     }
 
@@ -87,6 +89,11 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
                 beam.SetPosition(2, attractionPoint.transform.position + randomPathToEdge);
             }
+        }
+
+        else
+        {
+
         }
 
         if (!rtt.realtime.connected) return;
