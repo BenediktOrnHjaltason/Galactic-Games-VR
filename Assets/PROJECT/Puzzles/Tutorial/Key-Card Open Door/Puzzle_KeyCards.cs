@@ -22,6 +22,9 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
     [SerializeField]
     Puzzle_Keycards_Port rightPort;
 
+    int clientControllingLeftKey;
+    int clientControllingRightKey;
+
 
     private void Awake()
     {
@@ -29,14 +32,17 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
         rightPort.OnKeycardAction += RegisterKeycardAction;
     }
 
-    void RegisterKeycardAction(EKeycardPortSide side, EKeycardAction action)
+    void RegisterKeycardAction(EKeycardPortSide side, EKeycardAction action, int clientID)
     {
-        //Debug.Log("Keycard Puzzle: RegisterKeycardAction called");
+        Debug.Log("Keycard Puzzle: RegisterKeycardAction called");
 
         if (side == EKeycardPortSide.LEFT)
         {
             if (action == EKeycardAction.INSERT && !LeftPortOccupied)
             {
+
+                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
+
                 LeftPortOccupied = true;
                 InsertedKeys++;
 
@@ -45,6 +51,8 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
 
             else if (action == EKeycardAction.REMOVE && LeftPortOccupied)
             {
+                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
+
                 LeftPortOccupied = false;
                 InsertedKeys--;
 
@@ -56,6 +64,8 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
         {
             if (action == EKeycardAction.INSERT && !RightPortOccupied)
             {
+                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
+
                 RightPortOccupied = true;
                 InsertedKeys++;
 
@@ -66,6 +76,8 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
 
             else if (action == EKeycardAction.REMOVE && RightPortOccupied)
             {
+                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
+
                 RightPortOccupied = false;
                 InsertedKeys--;
 
@@ -88,6 +100,15 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
         }
     }
 
+    void RegisterClientControllingLeftKey(int id)
+    {
+        clientControllingLeftKey = id;
+    }
+
+    void RegisterClientControllingRightKey(int id)
+    {
+        clientControllingRightKey = id;
+    }
 
     //--------Networking
 
