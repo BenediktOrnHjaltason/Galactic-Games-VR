@@ -172,7 +172,7 @@ MonoBehaviour:
   allowRotationForces: 1
   rotationAxis: 0
   selfAxisToRotation:
-    Roll: {x: 0, y: 0, z: 0}
+    Roll: {x: 1, y: 0, z: 0}
     Yaw: {x: 0, y: 0, z: 0}
     Pitch: {x: 0, y: 0, z: 0}
   selfAxisConstraints:

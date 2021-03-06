@@ -5,17 +5,19 @@ using Normal.Realtime;
 
 public class Door : RealtimeComponent<DoorSyncModel>
 {
-    RealtimeTransform doorPivotRtt;
-
     GameObject doorPivot;
-
-    Realtime worldRealtime;
 
     //Network synced
     bool operateDoor = false;
 
+    bool doorOperationTriggered = false;
+
     [SerializeField]
-    EDoorState startState = EDoorState.Closed;
+    EDoorState state;
+
+    public EDoorState State { get => state; }
+
+
 
     [SerializeField]
     InteractButton button;
@@ -36,28 +38,31 @@ public class Door : RealtimeComponent<DoorSyncModel>
     // Start is called before the first frame update
     void Start()
     {
-        worldRealtime = GameObject.Find("Realtime").GetComponent<Realtime>();
-
-        doorPivotRtt = GetComponentInChildren<RealtimeTransform>();
-
-        doorPivot = transform.GetChild(0).gameObject;
-
         button.OnExecute += Operate;
     }
 
     public void Operate()
     {
-        if (!doorPivotRtt.isOwnedLocallySelf) doorPivotRtt.RequestOwnership();
         model.operateDoor = true;
     }
 
     private void FixedUpdate()
     {
-        if (!doorPivotRtt.isOwnedLocallySelf) return;
-
-        if (OperatingDoor)
+        if (doorOperationTriggered)
         {
-            switch (openOrClosed)
+            if (increment < 1) increment += 0.1f;
+            else
+            {
+                increment = 0;
+
+                doorOperationTriggered = false;
+                model.operateDoor = false;
+                
+                state = (state == EDoorState.Open) ? EDoorState.Closed : EDoorState.Open; 
+            }
+
+
+            switch (state)
             {
                 //Closing
                 case EDoorState.Open:
@@ -72,16 +77,6 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
                     break;
             }
-
-            if (increment < 1) increment += 0.1f;
-
-            else
-            {
-                increment = 0;
-                openOrClosed = (openOrClosed == EDoorState.Open) ? EDoorState.Closed : EDoorState.Open;
-
-                OperatingDoor = false;
-            }
         }
     }
 
@@ -93,7 +88,7 @@ public class Door : RealtimeComponent<DoorSyncModel>
         {
             // Unregister from events
             previousModel.operateDoorDidChange -= OperatingDoorDidChange;
-            previousModel.openOrClosedDidChange -= OpenOrClosedDidChange;
+            //previousModel.openOrClosedDidChange -= OpenOrClosedDidChange;
 
         }
 
@@ -102,25 +97,37 @@ public class Door : RealtimeComponent<DoorSyncModel>
             // If this is a model that has no data set on it, populate it with the current availability value.
             if (currentModel.isFreshModel)
             {
+                //Debug.Log("Door: isFreshModel");
+
                 currentModel.operateDoor = false;
-                currentModel.openOrClosed = startState;
+                currentModel.openOrClosed = state;
             }
+
+           // else Debug.Log("Door: Model was not fresh");
+
 
             // Update data to match the new model
             UpdateOperateDoor();
             UpdateOpenOrClosed();
 
+
+            Initialize();
+
             // Register for events so we'll know if data changes later
             currentModel.operateDoorDidChange += OperatingDoorDidChange;
-            currentModel.openOrClosedDidChange += OpenOrClosedDidChange;
-
+            //currentModel.openOrClosedDidChange += OpenOrClosedDidChange;
         }
     }
 
-    private void OnConnectedToServer()
+    private void Initialize()
     {
-        Initialize();
+        doorPivot = transform.GetChild(0).gameObject;
+
+        //Debug.Log("Door: Initialized called with state " + state.ToString());
+
+        doorPivot.transform.localScale = (state == EDoorState.Open) ? openScale : closedScale;
     }
+
 
     public bool OperatingDoor { get => operateDoor; set => model.operateDoor = value; }
 
@@ -131,7 +138,7 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
     void UpdateOperateDoor()
     {
-        operateDoor = model.operateDoor;
+        if (model.operateDoor) doorOperationTriggered = true;
     }
 
     //-------
@@ -147,11 +154,6 @@ public class Door : RealtimeComponent<DoorSyncModel>
 
     void UpdateOpenOrClosed()
     {
-        openOrClosed = model.openOrClosed;
-    }
-
-    private void Initialize()
-    {
-        doorPivot.transform.localScale = (openOrClosed == EDoorState.Open) ? openScale : closedScale;
+        state = model.openOrClosed;
     }
 }

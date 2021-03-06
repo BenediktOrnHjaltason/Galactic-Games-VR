@@ -214,6 +214,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7313976613552981435}
+  - component: {fileID: 4518423349451966489}
   m_Layer: 0
   m_Name: PF_AttractorRift
   m_TagString: Untagged
@@ -236,6 +237,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4518423349451966489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2797829715584074367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _realtime: {fileID: 0}
+  _sceneViewUUID: 
+  _viewUUID: 
+  _sceneViewPreventOwnershipTakeover: 0
+  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
+  _isRootPrefabView: 1
+  _components: []
+  _childViews:
+  - viewID: 1
+    view: {fileID: 4975552797274218985}
 --- !u!1 &2858832829891549644
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,7 +1041,7 @@ MonoBehaviour:
   _viewUUID: 
   _sceneViewPreventOwnershipTakeover: 0
   _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
-  _isRootPrefabView: 1
+  _isRootPrefabView: 0
   _components:
   - componentID: 1
     component: {fileID: 423241526646593031}

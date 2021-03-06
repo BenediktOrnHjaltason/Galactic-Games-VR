@@ -55,9 +55,7 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 751426827695282988}
-  _childViews:
-  - viewID: 2
-    view: {fileID: 1904845888349570919}
+  _childViews: []
 --- !u!114 &751426827695282988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4f15299cf9e515418204201f68fbab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startState: 1
+  state: 1
   button: {fileID: 7370797571754663593}
   fastInEaseOut:
     serializedVersion: 2
@@ -133,7 +131,7 @@ GameObject:
   - component: {fileID: 8566096233380753406}
   - component: {fileID: 8957415196272291232}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,8 +221,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 480406024426851597}
-  - component: {fileID: 1904845888349570919}
-  - component: {fileID: 5405913110515113536}
   m_Layer: 0
   m_Name: DoorPivot
   m_TagString: Untagged
@@ -240,53 +236,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 754293183841144677}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.603, z: 0}
+  m_LocalPosition: {x: -0.15, y: 5.243, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2555510643975868048}
   m_Father: {fileID: 5251257045801369096}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1904845888349570919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754293183841144677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _realtime: {fileID: 0}
-  _sceneViewUUID: 
-  _viewUUID: 
-  _sceneViewPreventOwnershipTakeover: 0
-  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
-  _isRootPrefabView: 0
-  _components:
-  - componentID: 1
-    component: {fileID: 5405913110515113536}
-  _childViews: []
---- !u!114 &5405913110515113536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 754293183841144677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1029778088, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interpolate: 1
-  _syncPosition: 0
-  _syncRotation: 0
-  _syncScale: 1
-  _syncVelocity: 1
-  _maintainOwnershipWhileSleeping: 0
 --- !u!1 &4418510189861793102
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,7 +256,7 @@ GameObject:
   - component: {fileID: 9007306133639933386}
   - component: {fileID: 2310053372109177662}
   m_Layer: 0
-  m_Name: Door
+  m_Name: DoorMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 4418510189861793102}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -1.7, z: 0}
-  m_LocalScale: {x: 1.7831999, y: 3.3773808, z: 0.12604988}
+  m_LocalScale: {x: 4.243201, y: 8.577894, z: 0.12604988}
   m_Children:
   - {fileID: 8296289906609728051}
   m_Father: {fileID: 480406024426851597}
