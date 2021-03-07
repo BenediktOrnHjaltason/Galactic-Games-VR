@@ -27,7 +27,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     List<OVRPlayerController> playersInReach = new List<OVRPlayerController>();
 
     //---- beams
-    float changeInterval = 0.166f;
+    float changeInterval = 0.466f; //Previous number 0.166
     float nextTimeToChange = 0;
     float timeAtChange = 0;
     GameObject dummyObject;
@@ -36,7 +36,13 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     List<LineRenderer> defaultBeams = new List<LineRenderer>();
 
     Vector3 pathToEdge;
-    Vector3 direction;
+    Vector3 randomDirection;
+
+    Vector3[] offsetRight = new Vector3[4];
+    Vector3[] offsetUp = new Vector3[4];
+
+    Vector3[] endPointsInitial = new Vector3[4];
+    Vector3[] endPointsMoveTo = new Vector3[4];
 
     //--------- PlayerLines
     List<LineRenderer> playerBeams = new List<LineRenderer>();
@@ -79,21 +85,26 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             nextTimeToChange += changeInterval;
 
             //Default beams 
-            foreach (LineRenderer beam in defaultBeams)
+            for (int i = 0; i < defaultBeams.Count; i++)
             {
-                beam.SetPosition(0, attractionPoint.transform.position);
+                defaultBeams[i].SetPosition(0, attractionPoint.transform.position);
 
-                direction = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
-                pathToEdge = direction.normalized * transform.localScale.x / 2;
+                randomDirection = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+                pathToEdge = randomDirection.normalized * transform.localScale.x / 1.5f;
 
 
                 dummyObject.transform.rotation = Quaternion.LookRotation(pathToEdge * 10);
 
-                beam.SetPosition(1, attractionPoint.transform.position + (pathToEdge / 2) +
-                    dummyObject.transform.up * direction.x +
-                    dummyObject.transform.right * direction.y);
+                offsetUp[i] = dummyObject.transform.up * randomDirection.x;
+                offsetRight[i] = dummyObject.transform.right * randomDirection.y;
 
-                beam.SetPosition(2, attractionPoint.transform.position + pathToEdge);
+                defaultBeams[i].SetPosition(1, attractionPoint.transform.position + (pathToEdge / 2) +
+                    offsetUp[i] + offsetRight[i]);
+
+                endPointsInitial[i] = attractionPoint.transform.position + pathToEdge + offsetUp[i] + offsetRight[i];
+                endPointsMoveTo[i] = attractionPoint.transform.position + pathToEdge - offsetUp[i] * 1.5f - offsetRight[i] * 1.5f;
+
+                defaultBeams[i].SetPosition(2, endPointsInitial[i]);
             }
 
             //Beams to players
@@ -103,13 +114,13 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
                 {
                     playerBeams[i].SetPosition(0, transform.position);
 
-                    direction = playersInReach[i].transform.position - transform.position;
+                    randomDirection = playersInReach[i].transform.position - transform.position;
 
-                    playerBeams[i].SetPosition(1, transform.position + (direction / 2) +
-                    dummyObject.transform.up * (direction.x /5) +
-                    dummyObject.transform.right * (direction.y /5));
+                    playerBeams[i].SetPosition(1, transform.position + (randomDirection / 2) +
+                    dummyObject.transform.up * (randomDirection.x /5) +
+                    dummyObject.transform.right * (randomDirection.y /5));
 
-                    playerBeams[i].SetPosition(2, transform.position + direction);
+                    playerBeams[i].SetPosition(2, transform.position + randomDirection);
                 }
             }
 
@@ -120,6 +131,16 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
                     beam.SetPosition(1, transform.position);
                     beam.SetPosition(2, transform.position);
                 }
+        }
+
+        else
+        {
+            //Move tip of beams along edges
+            for (int i = 0; i < defaultBeams.Count; i++)
+            {
+                defaultBeams[i].SetPosition(2, Vector3.Lerp(endPointsInitial[i], endPointsMoveTo[i], (nextTimeToChange - Time.time) / changeInterval));
+            }
+
         }
 
         
