@@ -45,13 +45,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4559fb8e38d15f549aa2f1a144cb8922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  title: Default
   trigger: {fileID: 5556823508168461776}
-  vehicle: {fileID: 6434553308869327900}
+  target: {fileID: 0}
   movementSequences:
-  - fromPosition: {x: -301.6, y: 0, z: -868.8}
+  - animatePosition: 1
+    fromPosition: {x: -301.6, y: 0, z: -868.8}
     toPosition: {x: -29.41221, y: 19.62, z: -20.32408}
+    animateRotation: 1
     fromRotation: {x: 0, y: 45, z: 0}
     toRotation: {x: 0, y: 45, z: 0}
+    animateScale: 0
+    fromScale: {x: 0, y: 0, z: 0}
+    toScale: {x: 0, y: 0, z: 0}
     curve:
       serializedVersion: 2
       m_Curve:
@@ -78,10 +84,15 @@ MonoBehaviour:
       m_RotationOrder: 0
     duration: 0.2
     pauseSequence: 0
-  - fromPosition: {x: -29.41221, y: 19.62, z: -20.32408}
+  - animatePosition: 1
+    fromPosition: {x: -29.41221, y: 19.62, z: -20.32408}
     toPosition: {x: -73.8, y: 31.66, z: 90.09129}
+    animateRotation: 1
     fromRotation: {x: 0, y: 45, z: 0}
     toRotation: {x: 0, y: 135, z: 0}
+    animateScale: 0
+    fromScale: {x: 0, y: 0, z: 0}
+    toScale: {x: 0, y: 0, z: 0}
     curve:
       serializedVersion: 2
       m_Curve:
@@ -108,10 +119,15 @@ MonoBehaviour:
       m_RotationOrder: 0
     duration: 5
     pauseSequence: 0
-  - fromPosition: {x: -73.8, y: 31.66, z: 90.09129}
+  - animatePosition: 1
+    fromPosition: {x: -73.8, y: 31.66, z: 90.09129}
     toPosition: {x: -54.94, y: 12.6, z: -16.78}
+    animateRotation: 1
     fromRotation: {x: 0, y: 135, z: 0}
     toRotation: {x: 0, y: 90, z: 0}
+    animateScale: 0
+    fromScale: {x: 0, y: 0, z: 0}
+    toScale: {x: 0, y: 0, z: 0}
     curve:
       serializedVersion: 2
       m_Curve:
@@ -138,10 +154,15 @@ MonoBehaviour:
       m_RotationOrder: 0
     duration: 5
     pauseSequence: 0
-  - fromPosition: {x: -54.94, y: 12.6, z: -16.78}
+  - animatePosition: 1
+    fromPosition: {x: -54.94, y: 12.6, z: -16.78}
     toPosition: {x: -301.6, y: 0, z: -868.8}
+    animateRotation: 1
     fromRotation: {x: 0, y: 90, z: 0}
     toRotation: {x: 0, y: 45, z: 0}
+    animateScale: 0
+    fromScale: {x: 0, y: 0, z: 0}
+    toScale: {x: 0, y: 0, z: 0}
     curve:
       serializedVersion: 2
       m_Curve:
@@ -344,12 +365,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: de8210b53ecdb0f489f2b0e1fea36f3f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17fea9dbba8b3784ab62f617dcd2d27d, type: 3}
---- !u!1 &6434553308869327900 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 17fea9dbba8b3784ab62f617dcd2d27d,
-    type: 3}
-  m_PrefabInstance: {fileID: 6164664783224521037}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5910957503352940198 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 17fea9dbba8b3784ab62f617dcd2d27d,

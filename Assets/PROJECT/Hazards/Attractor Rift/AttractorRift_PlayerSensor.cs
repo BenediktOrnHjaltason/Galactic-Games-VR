@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using Unity.Profiling;
 
 /*
     The player sensor is the large field detecting if players are in are of influence,
@@ -29,7 +30,6 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     //---- beams
     float changeInterval = 0.466f; //Previous number 0.166
     float nextTimeToChange = 0;
-    float timeAtChange = 0;
     GameObject dummyObject;
 
     //--------- Default beams
@@ -79,7 +79,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     private void FixedUpdate()
     {
         //Handle beams
-
+        
         if (Time.time > nextTimeToChange)
         {
             nextTimeToChange += changeInterval;
