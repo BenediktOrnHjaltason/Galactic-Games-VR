@@ -122,6 +122,8 @@ public class Hand : MonoBehaviour
     {
         handSync = spawnedHand.GetComponent<HandSync>();
 
+        
+
         if (handSync)
         {
             handSync.OnOmniDeviceActiveChanged += SetOmniDeviceActive;
@@ -134,22 +136,24 @@ public class Hand : MonoBehaviour
             //((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
             //((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
 
-            handSync.OmniDeviceActive = false;
+
+            SetOmniDeviceActive(false);
 
 
             if (playerController.OmniDeviceStartupState == OVRPlayerController.EOmniDeviceStartup.OnlyLeft && handSide == EHandSide.LEFT)
             {
-                handSync.OmniDeviceActive = true;
+                SetOmniDeviceActive(true);
             }
 
             if (playerController.OmniDeviceStartupState == OVRPlayerController.EOmniDeviceStartup.OnlyRight && handSide == EHandSide.RIGHT)
             {
-                handSync.OmniDeviceActive = true;
+                SetOmniDeviceActive(true);
             }
             if (playerController.OmniDeviceStartupState == OVRPlayerController.EOmniDeviceStartup.Both)
             {
-                handSync.OmniDeviceActive = true;
+                SetOmniDeviceActive(true);
             }
+            
         }
     }
 
@@ -296,18 +300,12 @@ public class Hand : MonoBehaviour
         }
     }
 
-    void SetOmniDeviceActive(bool active)
+    public void SetOmniDeviceActive(bool active)
     {
         if (active)
         {
-            
-            GameObject omniDeviceRoot = transform.GetChild(1).gameObject;
 
-            if (omniDeviceRoot)
-            {
-                //Meshes
-                omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(true);
-            }
+            handSync.OmniDeviceActive = true;
 
             handDevice = omniDevice;
         }
@@ -316,13 +314,7 @@ public class Hand : MonoBehaviour
         {
             handDevice = null;
 
-            GameObject omniDeviceRoot = transform.GetChild(1).gameObject;
-
-            if (omniDeviceRoot)
-            {
-                //Mesh
-                omniDeviceRoot.transform.GetChild(1).gameObject.SetActive(false);
-            }
+            handSync.OmniDeviceActive = false;
         }
     }
 }

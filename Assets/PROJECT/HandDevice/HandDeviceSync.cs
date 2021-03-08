@@ -14,7 +14,7 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
     Material controllingMaterial;
 
 
-    MeshRenderer mesh;
+    MeshRenderer deviceMesh;
     ControllingBeam beam;
 
     EHandDeviceState operationState;
@@ -22,7 +22,7 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
 
     private void Awake()
     {
-        mesh = GetComponent<MeshRenderer>();
+        deviceMesh = GetComponent<MeshRenderer>();
         beam = GetComponentInChildren<ControllingBeam>();
     }
 
@@ -36,6 +36,7 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
             previousModel.operationStateDidChange -= OperationStateDidChange;
             previousModel.controlledStructurePositionDidChange -= ControlledStructurePositionDidChange;
             previousModel.controlForceDidChange -= ControlForceDidChange;
+            previousModel.visibleDidChange -= VisibleDidChange;
 
         }
 
@@ -47,17 +48,20 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
                 currentModel.deviceMode = EOmniDeviceMode.GRAVITYFORCE;
                 currentModel.operationState = EHandDeviceState.IDLE;
                 currentModel.controlForce = Vector3.zero;
+                currentModel.visible = false;
             }
 
             // Update data to match the new model
             UpdateDeviceMode();
             UpdateOperationState();
+            UpdateVisible();
 
             //Register for events so we'll know if data changes later
             currentModel.deviceModeDidChange += DeviceModeDidChange;
             currentModel.operationStateDidChange += OperationStateDidChange;
             currentModel.controlledStructurePositionDidChange += ControlledStructurePositionDidChange;
             currentModel.controlForceDidChange += ControlForceDidChange;
+            currentModel.visibleDidChange += VisibleDidChange;
         }
     }
 
@@ -114,20 +118,49 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
     }
     //-----------------
 
+    public bool Visible { set => model.visible = value; }
+
+    void VisibleDidChange(HandDeviceSync_Model model, bool visible)
+    {
+        UpdateVisible();
+    }
+
+    void UpdateVisible()
+    {
+        if (!deviceMesh) deviceMesh = GetComponent<MeshRenderer>();
+
+        if (model.visible)
+        {
+            deviceMesh.enabled = true;
+
+            //Ring of scales
+            deviceMesh.transform.GetChild(1).gameObject.SetActive(true);
+
+        }
+
+        else
+        {
+            deviceMesh.enabled = false;
+
+            //Ring of scales
+            deviceMesh.transform.GetChild(1).gameObject.SetActive(false);
+        }
+    }
+
     void SetMeshState(EHandDeviceState mode)
     {
         switch (mode)
         {
             case EHandDeviceState.IDLE:
-                mesh.material = searchingMaterial;
+                deviceMesh.material = searchingMaterial;
                 break;
 
             case EHandDeviceState.SCANNING:
-                mesh.material = searchingMaterial;
+                deviceMesh.material = searchingMaterial;
                 break;
 
             case EHandDeviceState.CONTROLLING:
-                mesh.material = controllingMaterial;
+                deviceMesh.material = controllingMaterial;
                 break;
         }
     }

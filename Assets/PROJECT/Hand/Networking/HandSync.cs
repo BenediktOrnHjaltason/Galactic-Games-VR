@@ -14,6 +14,11 @@ public class HandSync : RealtimeComponent<HandSync_Model>
 
     MeshRenderer mesh;
 
+    [SerializeField]
+    HandDeviceSync handDeviceSync;
+    
+
+
     private void Awake()
     {
         mesh = transform.Find("HandMesh").GetComponent<MeshRenderer>();
@@ -40,7 +45,7 @@ public class HandSync : RealtimeComponent<HandSync_Model>
 
             // Update data to match the new model
             UpdateHandMesh();
-            UpdateOmniDeviceActive();
+            //UpdateOmniDeviceActive();
 
 
             //Register for events so we'll know if data changes later
@@ -79,6 +84,8 @@ public class HandSync : RealtimeComponent<HandSync_Model>
     {
         omniDeviceActive = model.omniDeviceActive;
 
-        OnOmniDeviceActiveChanged?.Invoke(omniDeviceActive);
+        if (omniDeviceActive) handDeviceSync.Visible = true;
+
+        else handDeviceSync.Visible = false;
     }
 }

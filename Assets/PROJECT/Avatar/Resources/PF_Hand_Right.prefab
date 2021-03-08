@@ -111,6 +111,7 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: 454ce27cafae2ec4ca487ed8b65ee4fc, type: 2}
   grabbingGrabHandleMaterial: {fileID: 2100000, guid: 01642051d9aea1e49a0051f74fb238cf,
     type: 2}
+  handDeviceSync: {fileID: 1977966329137532918}
 --- !u!1 &6281839373683487286
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,10 +198,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6278023195210233604}
     m_Modifications:
+    - target: {fileID: 235776663506409769, guid: edae6d7bea1f72b419dd41127c4bcdd4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1365338179228366585, guid: edae6d7bea1f72b419dd41127c4bcdd4,
         type: 3}
       propertyPath: m_Name
       value: OmniDevice
+      objectReference: {fileID: 0}
+    - target: {fileID: 1365338179228366585, guid: edae6d7bea1f72b419dd41127c4bcdd4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4849777324668552350, guid: edae6d7bea1f72b419dd41127c4bcdd4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5826653760692471518, guid: edae6d7bea1f72b419dd41127c4bcdd4,
         type: 3}
@@ -275,5 +291,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1977966329137532918 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8877614559687811657, guid: edae6d7bea1f72b419dd41127c4bcdd4,
+    type: 3}
+  m_PrefabInstance: {fileID: 6935748543100104127}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c17d0ce516e9554aa954e70e61f8ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

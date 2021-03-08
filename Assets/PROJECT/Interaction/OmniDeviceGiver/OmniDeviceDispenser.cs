@@ -78,9 +78,11 @@ public class OmniDeviceDispenser : MonoBehaviour
     {
         handTransform = hand.transform;
 
-        if (hand && !runDispenseSequence && !hand.HandSync.OmniDeviceActive && !hand.OtherHand.HandSync.OmniDeviceActive)
+        if (hand && !runDispenseSequence && !hand.HandSync.OmniDeviceActive)
         {
-            hand.HandSync.OmniDeviceActive = true;
+            if (hand.OtherHand.HandSync.OmniDeviceActive) hand.OtherHand.SetOmniDeviceActive(false);
+
+            hand.SetOmniDeviceActive(true);
 
             runDispenseSequence = true;
             timeAtSequenceStart = Time.time;
@@ -118,7 +120,7 @@ public class OmniDeviceDispenser : MonoBehaviour
                 handSphere.transform.localScale = Vector3.zero;
                 handSphere.transform.SetParent(this.transform);
 
-                startDisappearSequence();
+                //startDisappearSequence();
             }
         }
     }

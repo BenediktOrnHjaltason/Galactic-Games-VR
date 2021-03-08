@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+    Old class, been replaced by OmniDeviceDispenser
+ */
 public class OmniDeviceStation : MonoBehaviour
 {
     [SerializeField]
