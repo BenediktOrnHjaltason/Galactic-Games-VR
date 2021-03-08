@@ -63,24 +63,7 @@ public class Animatic : MonoBehaviour
             {
                 increment = sequenceRunningTime / movementSequences[activeSequence].duration;
 
-                //Position
-                if (movementSequences[activeSequence].animatePosition)
-                    target.transform.localPosition =
-                        Vector3.Lerp(movementSequences[activeSequence].fromPosition,
-                                     movementSequences[activeSequence].toPosition,
-                                     movementSequences[activeSequence].curve.Evaluate(increment));
-
-                //Rotation
-                if (movementSequences[activeSequence].animateRotation)
-                    target.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(movementSequences[activeSequence].fromRotation),
-                                                                  Quaternion.Euler(movementSequences[activeSequence].toRotation),
-                                                                                   movementSequences[activeSequence].curve.Evaluate(increment));
-
-                //Scale
-                if (movementSequences[activeSequence].animateScale)
-                    target.transform.localScale = Vector3.Lerp(movementSequences[activeSequence].fromScale,
-                                                               movementSequences[activeSequence].toScale,
-                                                               movementSequences[activeSequence].curve.Evaluate(increment));
+                SetTransforms();
             }
 
             else
@@ -92,12 +75,17 @@ public class Animatic : MonoBehaviour
                 }
                 else
                 {
-                    //Reset Sequence
+
+                    Debug.Log("Animatic: local scale on animatic end: " + target.transform.localScale + " . Increment:  " + increment);
+
+                    //Ensure everything gets to the end
+                    increment = 1;
+                    SetTransforms();
 
                     activeSequence = 0;
                     sequenceRunning = false;
-                    target.transform.localPosition = movementSequences[0].fromPosition;
-                    target.transform.localRotation = Quaternion.Euler(movementSequences[0].fromRotation);
+                    //target.transform.localPosition = movementSequences[0].fromPosition;
+                    //target.transform.localRotation = Quaternion.Euler(movementSequences[0].fromRotation);
 
                     OnAnimaticEnds?.Invoke();
                 }
@@ -112,5 +100,27 @@ public class Animatic : MonoBehaviour
             sequenceRunning = true;
             timeOnSequenceStart = Time.time;
         }
+    }
+
+    void SetTransforms()
+    {
+        //Position
+        if (movementSequences[activeSequence].animatePosition)
+            target.transform.localPosition =
+                Vector3.Lerp(movementSequences[activeSequence].fromPosition,
+                             movementSequences[activeSequence].toPosition,
+                             movementSequences[activeSequence].curve.Evaluate(increment));
+
+        //Rotation
+        if (movementSequences[activeSequence].animateRotation)
+            target.transform.localRotation = Quaternion.Lerp(Quaternion.Euler(movementSequences[activeSequence].fromRotation),
+                                                          Quaternion.Euler(movementSequences[activeSequence].toRotation),
+                                                                           movementSequences[activeSequence].curve.Evaluate(increment));
+
+        //Scale
+        if (movementSequences[activeSequence].animateScale)
+            target.transform.localScale = Vector3.Lerp(movementSequences[activeSequence].fromScale,
+                                                       movementSequences[activeSequence].toScale,
+                                                       movementSequences[activeSequence].curve.Evaluate(increment));
     }
 }
