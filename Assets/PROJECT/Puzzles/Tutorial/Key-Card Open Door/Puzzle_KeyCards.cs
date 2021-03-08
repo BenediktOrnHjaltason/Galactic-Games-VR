@@ -18,13 +18,10 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
 
     [SerializeField]
     Puzzle_Keycards_Port leftPort;
+
     
     [SerializeField]
     Puzzle_Keycards_Port rightPort;
-
-    int clientControllingLeftKey;
-    int clientControllingRightKey;
-
 
     private void Awake()
     {
@@ -98,16 +95,6 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
         {
             door.Operate();
         }
-    }
-
-    void RegisterClientControllingLeftKey(int id)
-    {
-        clientControllingLeftKey = id;
-    }
-
-    void RegisterClientControllingRightKey(int id)
-    {
-        clientControllingRightKey = id;
     }
 
     //--------Networking
