@@ -19,6 +19,15 @@ public class Puzzle_Keycards_Port : MonoBehaviour
 
     Realtime realTime;
 
+    [SerializeField]
+    MeshRenderer statusIndicator;
+
+    [SerializeField]
+    Material m_statusIdle;
+
+    [SerializeField]
+    Material m_StatusOccupied;
+
 
     public event Action<EKeycardPortSide, EKeycardAction, int> OnKeycardAction;
 
@@ -29,11 +38,18 @@ public class Puzzle_Keycards_Port : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(10) && Time.time > 4.0f) OnKeycardAction?.Invoke(side, EKeycardAction.INSERT, realTime.clientID);
+        if (other.gameObject.layer.Equals(10))
+        {
+            if (statusIndicator.material != m_StatusOccupied) statusIndicator.material = m_StatusOccupied;
+
+            OnKeycardAction?.Invoke(side, EKeycardAction.INSERT, realTime.clientID);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (statusIndicator.material != m_statusIdle) statusIndicator.material = m_statusIdle;
+
         if (other.gameObject.layer.Equals(10)) OnKeycardAction?.Invoke(side, EKeycardAction.REMOVE, realTime.clientID);
     }
 }

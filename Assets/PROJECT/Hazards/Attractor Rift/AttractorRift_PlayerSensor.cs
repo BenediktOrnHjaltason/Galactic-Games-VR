@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using Unity.Profiling;
 
 /*
     The player sensor is the large field detecting if players are in are of influence,
@@ -18,7 +19,6 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     [SerializeField]
     AttractorRift_Core core;
 
-    Transform attractionPoint;
     RealtimeTransform rtt;
     Rigidbody rb;
 
@@ -27,9 +27,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     List<OVRPlayerController> playersInReach = new List<OVRPlayerController>();
 
     //---- beams
-    float changeInterval = 0.466f; //Previous number 0.166
+    float changeInterval = 0.466f;
     float nextTimeToChange = 0;
-    float timeAtChange = 0;
     GameObject dummyObject;
 
     //--------- Default beams
@@ -56,7 +55,6 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         dummyObject = new GameObject();
         dummyObject.layer = 9; //Ignore
 
-        attractionPoint = transform.GetComponentInParent<Transform>();
         rtt = transform.GetComponentInParent<RealtimeTransform>();
         rb = GetComponentInParent<Rigidbody>();
 
@@ -71,15 +69,12 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         defaultBeams.Add(transform.GetChild(0).transform.GetChild(3).GetComponent<LineRenderer>());
 
         playerBeams.Add(transform.GetChild(1).transform.GetChild(0).GetComponent<LineRenderer>());
-        playerBeams.Add(transform.GetChild(1).transform.GetChild(1).GetComponent<LineRenderer>());
-        playerBeams.Add(transform.GetChild(1).transform.GetChild(2).GetComponent<LineRenderer>());
-
     }
 
     private void FixedUpdate()
     {
         //Handle beams
-
+        
         if (Time.time > nextTimeToChange)
         {
             nextTimeToChange += changeInterval;
@@ -87,22 +82,20 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             //Default beams 
             for (int i = 0; i < defaultBeams.Count; i++)
             {
-                defaultBeams[i].SetPosition(0, attractionPoint.transform.position);
-
                 randomDirection = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
-                pathToEdge = randomDirection.normalized * transform.localScale.x / 1.5f;
+                pathToEdge = randomDirection.normalized * (transform.localScale.x / 24.0f);
 
 
                 dummyObject.transform.rotation = Quaternion.LookRotation(pathToEdge * 10);
 
-                offsetUp[i] = dummyObject.transform.up * randomDirection.x;
-                offsetRight[i] = dummyObject.transform.right * randomDirection.y;
+                offsetUp[i] = dummyObject.transform.up * (randomDirection.x / 10);
+                offsetRight[i] = dummyObject.transform.right * (randomDirection.y / 10);
 
-                defaultBeams[i].SetPosition(1, attractionPoint.transform.position + (pathToEdge / 2) +
+                defaultBeams[i].SetPosition(1, (pathToEdge / 2) +
                     offsetUp[i] + offsetRight[i]);
 
-                endPointsInitial[i] = attractionPoint.transform.position + pathToEdge + offsetUp[i] + offsetRight[i];
-                endPointsMoveTo[i] = attractionPoint.transform.position + pathToEdge - offsetUp[i] * 1.5f - offsetRight[i] * 1.5f;
+                endPointsInitial[i] = pathToEdge + offsetUp[i] + offsetRight[i];
+                endPointsMoveTo[i] = pathToEdge - offsetUp[i] * 1.5f - offsetRight[i] * 1.5f;
 
                 defaultBeams[i].SetPosition(2, endPointsInitial[i]);
             }
@@ -141,9 +134,23 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
                 defaultBeams[i].SetPosition(2, Vector3.Lerp(endPointsInitial[i], endPointsMoveTo[i], (nextTimeToChange - Time.time) / changeInterval));
             }
 
+            //Place playerBeams inside core when not used
+            if (playersInReach.Count < 1)
+            {
+                foreach (LineRenderer beam in playerBeams)
+                {
+                    beam.SetPosition(0, transform.position);
+                    beam.SetPosition(1, transform.position);
+                    beam.SetPosition(2, transform.position);
+                }
+            }
+            
+            else
+            {
+                foreach (LineRenderer beam in playerBeams)
+                    beam.SetPosition(0, transform.position);
+            }
         }
-
-        
 
         if (!rtt.realtime.connected) return;
 
@@ -151,7 +158,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         if (rtt.isUnownedSelf) rtt.RequestOwnership();
         else if (rtt.isOwnedLocallySelf)
         {
-            attractionPointToRoot = transform.root.position - attractionPoint.position;
+            attractionPointToRoot = transform.root.position - transform.position;
 
             if ((transform.position - transform.root.transform.position).sqrMagnitude > 0.02)
                 rb.AddForce(attractionPointToRoot * autoForce);
@@ -161,7 +168,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         foreach (OVRPlayerController player in playersInReach)
         {
             if (player.HeadRealtimeView.isOwnedLocallySelf) 
-                player.Controller.Move((attractionPoint.position - player.transform.position).normalized * 0.04f);
+                player.Controller.Move((transform.position - player.transform.position).normalized * 0.04f);
         }
     }
 

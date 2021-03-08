@@ -41,6 +41,8 @@ public class Hand : MonoBehaviour
 
     Hand otherHand;
 
+    public Hand OtherHand { get => otherHand; }
+
     OVRInput.Button grabButton;
 
     bool shouldGrab = false;
