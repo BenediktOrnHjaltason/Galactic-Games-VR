@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Default
   trigger: {fileID: 5556823508168461776}
-  target: {fileID: 0}
+  target: {fileID: 6434553308869327900}
   movementSequences:
   - animatePosition: 1
     fromPosition: {x: -301.6, y: 0, z: -868.8}
@@ -365,6 +365,12 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: de8210b53ecdb0f489f2b0e1fea36f3f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 17fea9dbba8b3784ab62f617dcd2d27d, type: 3}
+--- !u!1 &6434553308869327900 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 17fea9dbba8b3784ab62f617dcd2d27d,
+    type: 3}
+  m_PrefabInstance: {fileID: 6164664783224521037}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5910957503352940198 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 17fea9dbba8b3784ab62f617dcd2d27d,
