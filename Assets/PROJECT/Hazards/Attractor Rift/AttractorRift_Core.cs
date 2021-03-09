@@ -26,5 +26,16 @@ public class AttractorRift_Core : MonoBehaviour
                 player.ResetToRespawnPoint();
             }
         }
+
+        if (other.gameObject.layer.Equals(11))
+        {
+            OVRPlayerController player = other.transform.root.GetComponent<OVRPlayerController>();
+
+            if (player)
+            {
+                OnPlayerReachedCore?.Invoke(player);
+                player.ResetToRespawnPoint();
+            }
+        }
     }
 }
