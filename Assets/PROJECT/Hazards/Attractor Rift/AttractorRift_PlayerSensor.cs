@@ -19,6 +19,9 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     [SerializeField]
     AttractorRift_Core core;
 
+    [SerializeField]
+    GameObject anchor;
+
     RealtimeTransform rtt;
     Rigidbody rb;
 
@@ -155,12 +158,17 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         if (!rtt.realtime.connected) return;
 
         //Place self
-        if (rtt.isUnownedSelf) rtt.RequestOwnership();
+        if (rtt.ownerIDSelf == -1)
+        {
+            Debug.Log("AttractorRift: Rtt ownerID was -1");
+
+            rtt.RequestOwnership();
+        }
         else if (rtt.isOwnedLocallySelf)
         {
-            attractionPointToRoot = transform.root.position - transform.position;
+            attractionPointToRoot = anchor.transform.position - transform.position;
 
-            if ((transform.position - transform.root.transform.position).sqrMagnitude > 0.02)
+            //if ((transform.position - anchor.transform.position).sqrMagnitude > 0.02)
                 rb.AddForce(attractionPointToRoot * autoForce);
         }
 
