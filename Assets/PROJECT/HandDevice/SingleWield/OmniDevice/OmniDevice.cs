@@ -16,11 +16,12 @@ public class OmniDevice : HandDevice
 
     public GameObject PlayerRoot { get => playerRoot; }
 
-    List<GameObject> scales = new List<GameObject>();
+    List<GameObject> floaties = new List<GameObject>();
     List<Vector3> scalesLocalPositionsBase = new List<Vector3>();
 
 
-    Transform scalesBase;
+    Transform floatiesBase;
+    Vector3 floatiesLocalPositionStart = new Vector3(-0.0002236087f, 0.09533767f, -0.04992739f);
 
     List<Vector3> scalesLocalPositionsEnd = new List<Vector3>();
 
@@ -71,8 +72,6 @@ public class OmniDevice : HandDevice
         //Just so we don't get a nullreference in Using() before hands are spawned when client connects to server.
         //Allows for no if-testing in Using()
         devices.Add(dummyDevice);
-
-
     }
 
     //Must be initialized after spawning hands on network, because deviceSync is located there
@@ -86,25 +85,28 @@ public class OmniDevice : HandDevice
         gravityForce.Initialize(handSide);
 
         devices.Add(gravityForce);
+
+        //Not used for anything atm. Added replication as mode for gravity force
         devices.Add(replicator);
 
         Mode = EOmniDeviceMode.GRAVITYFORCE;
 
-        scalesBase = spawnedHand.transform.GetChild(1).transform.GetChild(1);
+        floatiesBase = spawnedHand.transform.GetChild(1);
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 8; i++)
         {
-            scales.Add(scalesBase.transform.GetChild(i).gameObject);
-            scalesLocalPositionsBase.Add(scales[i].transform.localPosition);
+            floaties.Add(floatiesBase.GetChild(i).gameObject);
+            scalesLocalPositionsBase.Add(floaties[i].transform.localPosition);
         }
 
-        scalesLocalPositionsEnd.Add(new Vector3(0.0f, 0.04994f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(0.03878f, 0.02724f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(0.03859f, -0.01703f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(0.0007f, -0.03938f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(-0.03842f, -0.01737f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(-0.0385f, 0.0279f, -0.0282f));
-
+        scalesLocalPositionsEnd.Add(new Vector3(-0.0002236087f, 0.201f, -0.04992739f));
+        scalesLocalPositionsEnd.Add(new Vector3(0.073f, 0.172f, -0.05f));
+        scalesLocalPositionsEnd.Add(new Vector3(0.106f, 0.09533767f, -0.05f));
+        scalesLocalPositionsEnd.Add(new Vector3(0.075f, 0.022f, -0.05f));
+        scalesLocalPositionsEnd.Add(new Vector3(-0.0002236087f, -0.009f, -0.04992739f));
+        scalesLocalPositionsEnd.Add(new Vector3(-0.074f, 0.019f, -0.05f));
+        scalesLocalPositionsEnd.Add(new Vector3(-0.107f, 0.09533767f, -0.05f));
+        scalesLocalPositionsEnd.Add(new Vector3(-0.073f, 0.172f, -0.05f));
     }
 
     public void SetDeviceMode(int index)
@@ -130,7 +132,7 @@ public class OmniDevice : HandDevice
     {
         if (operationEffectMultiplier < 0.0f && !scalesReset)
         {
-            for (int i = 0; i < scales.Count; i++) scales[i].transform.localPosition = scalesLocalPositionsBase[i];
+            for (int i = 0; i < floaties.Count; i++) floaties[i].transform.localPosition = scalesLocalPositionsBase[i];
             scalesReset = true;
         }
 
@@ -145,11 +147,11 @@ public class OmniDevice : HandDevice
         {
             if (operationEffectMultiplier < 1) operationEffectMultiplier += 0.2f;
 
-            for (int i = 0; i < scales.Count; i++)
+            for (int i = 0; i < floaties.Count; i++)
             {
-                scales[i].transform.localPosition =
+                floaties[i].transform.localPosition =
 
-                    Vector3.Lerp(scalesLocalPositionsBase[i], scalesLocalPositionsEnd[i], (Mathf.Abs(Mathf.Sin(Time.time * 5))) * operationEffectMultiplier);
+                    Vector3.Lerp(floatiesLocalPositionStart, scalesLocalPositionsEnd[i], (Mathf.Abs(Mathf.Sin(Time.time * 5))) * operationEffectMultiplier);
             }
         }
 
@@ -158,11 +160,11 @@ public class OmniDevice : HandDevice
         {
             if (operationEffectMultiplier < 1) operationEffectMultiplier += 0.2f;
 
-            for (int i = 0; i < scales.Count; i++)
+            for (int i = 0; i < floaties.Count; i++)
             {
-                scales[i].transform.localPosition =
+                floaties[i].transform.localPosition =
 
-                    Vector3.Lerp(scalesLocalPositionsBase[i], scalesLocalPositionsEnd[i], (((Mathf.Sin(Time.time * 3 + (timeWaveOffsett * (i + 1))) + 1) / 2)) * operationEffectMultiplier);
+                    Vector3.Lerp(floatiesLocalPositionStart, scalesLocalPositionsEnd[i], (((Mathf.Sin(Time.time * 3 + (timeWaveOffsett * (i + 1))) + 1) / 2)) * operationEffectMultiplier);
             }
         }
     }

@@ -14,12 +14,6 @@ public class Hand : MonoBehaviour
     EHandSide handSide;
 
     public EHandSide HandSide { get => handSide; }
-
-    [SerializeField]
-    Material defaultColor;
-
-    [SerializeField]
-    Material grabbingColor;
     
     OVRPlayerController playerController; //Handles movement of Avatar when grabbing
 

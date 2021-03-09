@@ -15,6 +15,11 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
 
 
     MeshRenderer deviceMesh;
+
+    //Only for OmniDevice. Should derive new class from this for OmniDevice
+    List<MeshRenderer> floaties = new List<MeshRenderer>();
+    
+
     ControllingBeam beam;
 
     EHandDeviceState operationState;
@@ -22,8 +27,14 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
 
     private void Awake()
     {
-        deviceMesh = GetComponent<MeshRenderer>();
+        deviceMesh = transform.GetChild(9).GetComponent<MeshRenderer>();
         beam = GetComponentInChildren<ControllingBeam>();
+
+        for (int i = 0; i < 9; i++)
+        {
+            floaties.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
+        }
+
     }
 
 
@@ -134,8 +145,9 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
             deviceMesh.enabled = true;
 
             //Ring of scales
-            deviceMesh.transform.GetChild(1).gameObject.SetActive(true);
+            //deviceMesh.transform.GetChild(1).gameObject.SetActive(true);
 
+            foreach (MeshRenderer floatie in floaties) floatie.enabled = true;
         }
 
         else
@@ -143,7 +155,9 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
             deviceMesh.enabled = false;
 
             //Ring of scales
-            deviceMesh.transform.GetChild(1).gameObject.SetActive(false);
+            //deviceMesh.transform.GetChild(1).gameObject.SetActive(false);
+
+            foreach (MeshRenderer floatie in floaties) floatie.enabled = false;
         }
     }
 
