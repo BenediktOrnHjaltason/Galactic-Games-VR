@@ -1248,6 +1248,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7667897470759542377, guid: e4ff5bb541b1a6e47b88675fb4397713,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0224bdc86bee78141ad6c86ba7e226b7, type: 2}
     - target: {fileID: -7507541220788707242, guid: e4ff5bb541b1a6e47b88675fb4397713,
         type: 3}
       propertyPath: m_Layer
@@ -1408,6 +1413,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 2290883764280641213, guid: e4ff5bb541b1a6e47b88675fb4397713,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0224bdc86bee78141ad6c86ba7e226b7, type: 2}
     - target: {fileID: 3089027843066289749, guid: e4ff5bb541b1a6e47b88675fb4397713,
         type: 3}
       propertyPath: m_Layer
@@ -2186,7 +2196,7 @@ Transform:
   - {fileID: 1180097431}
   - {fileID: 1924683923}
   m_Father: {fileID: 704652016}
-  m_RootOrder: 19
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &230423719
 GameObject:
