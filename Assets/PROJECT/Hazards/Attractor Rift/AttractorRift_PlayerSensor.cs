@@ -86,7 +86,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             for (int i = 0; i < defaultBeams.Count; i++)
             {
                 randomDirection = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
-                pathToEdge = randomDirection.normalized * (transform.localScale.x / 24.0f);
+                pathToEdge = randomDirection.normalized * (transform.localScale.x / 15.0f);
 
 
                 dummyObject.transform.rotation = Quaternion.LookRotation(pathToEdge * 10);
