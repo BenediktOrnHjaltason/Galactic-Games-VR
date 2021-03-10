@@ -278,8 +278,18 @@ public class GravityForce : HandDevice
             //Rotation
             stickInput = OVRInput.Get(thumbStick);
 
-            if (transform.rotation.eulerAngles.z < 330 && transform.rotation.eulerAngles.z > 200) rollMultiplier = -0.5f;
-            else if (transform.rotation.eulerAngles.z > 30 && transform.rotation.eulerAngles.z < 140) rollMultiplier = 0.5f;
+            float z = transform.rotation.eulerAngles.z;
+
+            if (z < 330 && z > 220)
+            {
+                rollMultiplier = -1.5f * ((110 - (z - 220))/110);
+                //Debug.Log("GravityForce: Rolling to the right. coefficient = " + ((110 - (z - 220)) / 110));
+            }
+            else if (z > 30 && z < 140)
+            {
+                rollMultiplier = 1.5f * ((z - 30) / 110);
+                //Debug.Log("GravityForce: Rolling to the left. coefficient = " + ((z - 30) / 110));
+            }
             else rollMultiplier = 0;
 
             if (structureSync.AllowRotationForces)
