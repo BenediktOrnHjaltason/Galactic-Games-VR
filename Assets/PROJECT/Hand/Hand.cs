@@ -258,6 +258,8 @@ public class Hand : MonoBehaviour
         handOffsetToPlayerControllerOnZipLineGrab = transform.position - playerController.transform.position;
 
         grabbingZipLine = true;
+
+        handSync.GrabbingGrabHandle = true;
     }
 
     void ReleaseZipLine()
@@ -265,6 +267,8 @@ public class Hand : MonoBehaviour
         playerController.SetGrabbingZipLine(false, new Vector3(0, 0, 0));
 
         grabbingZipLine = false;
+
+        handSync.GrabbingGrabHandle = false;
     }
 
     void GrabDevice(GameObject device)
