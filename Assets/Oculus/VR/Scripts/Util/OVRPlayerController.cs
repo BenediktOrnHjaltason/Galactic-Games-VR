@@ -226,6 +226,7 @@ public class OVRPlayerController : MonoBehaviour
 
 	bool grabbingHandle = false;
 	bool grabbingZipLine = false;
+	bool grabbingAnything = false;
 	Vector3 zipLineDirection;
 	float zipLineSpeed = 0.1f;
 
@@ -300,13 +301,13 @@ public class OVRPlayerController : MonoBehaviour
 			Controller.enabled = false;
 			HmdRotatesY = false;
 
-			grabbingHandle = true;
+			grabbingHandle = grabbingAnything = true;
 		}
 		else
 		{
 			Controller.enabled = true;
 			HmdRotatesY = true;
-			grabbingHandle = false;
+			grabbingHandle = grabbingAnything = false;
 		}
     }
 
@@ -319,7 +320,7 @@ public class OVRPlayerController : MonoBehaviour
 			Controller.enabled = false;
 			HmdRotatesY = false;
 
-			grabbingZipLine = true;
+			grabbingZipLine = grabbingAnything = true;
 			
 		}
 		else
@@ -327,7 +328,7 @@ public class OVRPlayerController : MonoBehaviour
 			Controller.enabled = true;
 			HmdRotatesY = true;
 
-			grabbingZipLine = false;
+			grabbingZipLine = grabbingAnything = false;
 		}
 	}
 
@@ -497,16 +498,16 @@ public class OVRPlayerController : MonoBehaviour
 	{
 		//----Vignette
 
-
 		//Move
 		if (Controller.isGrounded)
 		{
-			if ((Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
+			if (grabbingAnything ||
+				(Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y) > 0.3 || Mathf.Abs(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).x) > 0.3))
 			{
-				if (EnableLinearMovement && vignetteIncrement < 1) vignetteIncrement += 0.025f;
+				if ((EnableLinearMovement || grabbingAnything) && vignetteIncrement < 1) vignetteIncrement += 0.025f;
 			}
 
-			else if (vignetteIncrement > 0)
+			else if (!grabbingZipLine && vignetteIncrement > 0)
 			{
 				vignetteIncrement -= 0.025f;
 			}
@@ -516,20 +517,26 @@ public class OVRPlayerController : MonoBehaviour
 			//NOTE: SetFloat is not working with property ID gotten from Shader. Sending in property name until further developments
 			vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
 
-			vignette.transform.localPosition = Vector3.Lerp(vignetteLowerLocalPos, vignetteUpperLocalPos, Mathf.Abs((Mathf.Sin(Time.fixedTime * 5))) * vignetteIncrement);
-
-			if (airTime != 0) airTime = 0;
+			if (!grabbingAnything) 
+					vignette.transform.localPosition = 
+					Vector3.Lerp(vignetteLowerLocalPos, vignetteUpperLocalPos, Mathf.Abs((Mathf.Sin(Time.fixedTime * 5))) * vignetteIncrement);
 		}
 
 		
 		//Jump / Fall
 		else if (!Controller.isGrounded)
 		{
-				//Jumping / Regular fall
-				if (EnableLinearMovement && !swingMoving && vignetteIncrement < 1) vignetteIncrement += 0.025f;
+			//Jumping / Regular fall
+			if ((EnableLinearMovement) && !swingMoving && vignetteIncrement < 1)
+			{
+				vignetteIncrement += 0.025f;
+			}
 
 				vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
 		}
+
+		//if (grabbingZipLine && vignetteIncrement < 1) vignetteIncrement += 0.025f;
+		//vignetteMaterial.SetFloat(vignetteOpacityPropertyName, vignetteCurve.Evaluate(vignetteIncrement));
 	}
 
 	void GameplayFunctionsUpdate()
