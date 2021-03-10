@@ -195,12 +195,20 @@ public class Hand : MonoBehaviour
         {
             grabHandleRumble -= 9.0f * Time.deltaTime;
 
+
+
+
             if (grabHandleRumble <= 0)
             {
                 grabHandleRumble = 0;
                 OVRInput.SetControllerVibration(0.0f, 0.0f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
             }
         }
+
+        //Extend default rumble limit of 2 seconds
+        if (grabbingZipLine && timeOfZiplineRumble > 0.8f)
+            OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
+
     }
 
     private void OnTriggerStay(Collider other)
@@ -267,6 +275,9 @@ public class Hand : MonoBehaviour
         playerController.RegisterGrabHandleEvent(false, (int)handSide);
     }
 
+    //Rumble stops at 2 seconds as default from OVRInput
+    float timeOfZiplineRumble = 0;
+
     void GrabZipLine(Vector3 moveDirection)
     {
         playerController.SetGrabbingZipLine(true, moveDirection);
@@ -274,6 +285,8 @@ public class Hand : MonoBehaviour
         handOffsetToPlayerControllerOnZipLineGrab = transform.position - playerController.transform.position;
 
         grabbingZipLine = true;
+
+        timeOfZiplineRumble = Time.time;
 
         handSync.GrabbingGrabHandle = true;
 
