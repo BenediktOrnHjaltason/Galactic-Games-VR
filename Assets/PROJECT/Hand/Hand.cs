@@ -42,6 +42,8 @@ public class Hand : MonoBehaviour
     bool shouldGrab = false;
     bool shouldRelease = false;
 
+    float grabHandleRumble = 0;
+
     //(OmniDevice controller default for right arm when not holding other device)
 
     HandDevice handDevice;
@@ -188,6 +190,17 @@ public class Hand : MonoBehaviour
             shouldRelease = true;
             shouldGrab = false;
         }
+
+        if (grabHandleRumble > 0)
+        {
+            grabHandleRumble -= 9.0f * Time.deltaTime;
+
+            if (grabHandleRumble <= 0)
+            {
+                grabHandleRumble = 0;
+                OVRInput.SetControllerVibration(0.0f, 0.0f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
+            }
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -242,6 +255,9 @@ public class Hand : MonoBehaviour
 
         playerController.RegisterGrabHandleEvent(false, (int)otherHand.handSide);
         playerController.RegisterGrabHandleEvent(true, (int)handSide, handle.transform);
+
+        grabHandleRumble = 1;
+        OVRInput.SetControllerVibration(0.001f, 0.5f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
     }
 
     void ReleaseHandle()
@@ -260,6 +276,8 @@ public class Hand : MonoBehaviour
         grabbingZipLine = true;
 
         handSync.GrabbingGrabHandle = true;
+
+        OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
     }
 
     void ReleaseZipLine()
@@ -269,6 +287,8 @@ public class Hand : MonoBehaviour
         grabbingZipLine = false;
 
         handSync.GrabbingGrabHandle = false;
+
+        OVRInput.SetControllerVibration(0, 0, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
     }
 
     void GrabDevice(GameObject device)
