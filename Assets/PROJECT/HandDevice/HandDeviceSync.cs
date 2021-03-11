@@ -26,7 +26,7 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
 
     protected virtual void Awake()
     {
-        deviceMesh = transform.GetChild(9).GetComponent<MeshRenderer>();
+        deviceMesh = transform.GetChild(10).GetComponent<MeshRenderer>();
         beam = GetComponentInChildren<ControllingBeam>();
     }
 

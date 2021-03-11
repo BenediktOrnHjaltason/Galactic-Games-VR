@@ -225,10 +225,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56d2e70481cc49748b8c4d62127ffcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchingMaterial: {fileID: 670224309865224971, guid: 606c2782831c7db4a98ba96898a83aeb,
-    type: 3}
-  controllingMaterial: {fileID: 670224309865224971, guid: 606c2782831c7db4a98ba96898a83aeb,
-    type: 3}
+  searchingMaterial: {fileID: 2100000, guid: e5c349c69af90fe458e1cfc791eb51b0, type: 2}
+  controllingMaterial: {fileID: 2100000, guid: e5c349c69af90fe458e1cfc791eb51b0, type: 2}
 --- !u!1001 &4358136201437813284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -284,7 +282,7 @@ PrefabInstance:
     - target: {fileID: 6451958674537176193, guid: 2c97f08e9635f1046af462a7a39c3549,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6451958674537176193, guid: 2c97f08e9635f1046af462a7a39c3549,
         type: 3}
@@ -434,6 +432,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -122097315038792069, guid: 606c2782831c7db4a98ba96898a83aeb,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 606c2782831c7db4a98ba96898a83aeb,
         type: 3}

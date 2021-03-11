@@ -5,7 +5,8 @@ using Types;
 
 public class OmniDeviceSync : HandDeviceSync
 {
-    MeshRenderer modeScreen;
+    MeshRenderer details1;
+    MeshRenderer details2;
     
     //Ring of animated objects on the Omnidevice
     List<MeshRenderer> floaties = new List<MeshRenderer>();
@@ -34,7 +35,8 @@ public class OmniDeviceSync : HandDeviceSync
         scalesLocalPositionsEnd.Add(new Vector3(-0.107f, 0.09533767f, -0.05f));
         scalesLocalPositionsEnd.Add(new Vector3(-0.073f, 0.172f, -0.05f));
 
-        modeScreen = transform.GetChild(8).GetComponent<MeshRenderer>();
+        details1 = transform.GetChild(8).GetComponent<MeshRenderer>();
+        details2 = transform.GetChild(9).GetComponent<MeshRenderer>();
 
         //Makes individual floaties animate in a smooth wave
         timeOffsett = (Mathf.PI * 2) / scalesLocalPositionsEnd.Count;
@@ -98,13 +100,15 @@ public class OmniDeviceSync : HandDeviceSync
         if (visible)
         {
             foreach (MeshRenderer floatie in floaties) floatie.enabled = true;
-            modeScreen.enabled = true;
+            details1.enabled = true;
+            details2.enabled = true;
         }
 
         else
         {
             foreach (MeshRenderer floatie in floaties) floatie.enabled = false;
-            modeScreen.enabled = false;
+            details1.enabled = false;
+            details2.enabled = false;
         }
     }
 }
