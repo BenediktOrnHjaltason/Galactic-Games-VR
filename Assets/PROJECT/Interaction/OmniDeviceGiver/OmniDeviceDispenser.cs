@@ -88,7 +88,7 @@ public class OmniDeviceDispenser : MonoBehaviour
             timeAtSequenceStart = Time.time;
 
             handSphere.transform.SetParent(handTransform);
-            handSphere.transform.localPosition = new Vector3(0, 0, -0.0422f);
+            handSphere.transform.localPosition = new Vector3(0, 0, -0.1f);
         }
     }
 
