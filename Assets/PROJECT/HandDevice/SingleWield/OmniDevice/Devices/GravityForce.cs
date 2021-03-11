@@ -12,8 +12,8 @@ public class GravityForce : HandDevice
 
     public GameObject PlayerRoot { set => playerRoot = value; }
 
-    bool pushingForward;
-    bool pushingBackward;
+    bool pushingStructure;
+    bool pullingStructure;
 
     Vector2 stickInput;
 
@@ -96,9 +96,11 @@ public class GravityForce : HandDevice
                 duplicateRealtimeTransform = null;
             }
 
-
             owner.OperationState = EHandDeviceState.IDLE;
             handDeviceData.controllingStructure = false;
+
+            pullingStructure = false;
+            pushingStructure = false;
 
             return;
         }
@@ -109,17 +111,6 @@ public class GravityForce : HandDevice
             if (handDeviceData.controllingStructure) handDeviceData.controllingStructure = false;
             return;
         }
-
-
-        if (OVRInput.GetDown(platformBackward))
-            pushingBackward = true;
-        else if (OVRInput.GetUp(platformBackward))
-            pushingBackward = false;
-
-        if (OVRInput.GetDown(platformForward))
-            pushingForward = true;
-        else if (OVRInput.GetUp(platformForward))
-            pushingForward = false;
 
 
         //************ Operation logic **************//
@@ -232,6 +223,19 @@ public class GravityForce : HandDevice
 
         else if (owner.OperationState == EHandDeviceState.CONTROLLING)
         {
+
+            if (OVRInput.GetDown(structurePull))
+                pullingStructure = true;
+            else if (OVRInput.GetUp(structurePull))
+                pullingStructure = false;
+
+            if (OVRInput.GetDown(structurePush))
+                pushingStructure = true;
+            else if (OVRInput.GetUp(structurePush))
+                pushingStructure = false;
+
+
+
             controlForce = CalculateControlForce();
 
             //Network: Update controlForce and structurePosition in deviceSync, so all clients can update their own visual beam
@@ -319,12 +323,12 @@ public class GravityForce : HandDevice
 
         Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureSync.transform.position;
 
-        float forwardMultiplier = (pushingForward) ? 7.0f : 0.0f;
+        float forwardMultiplier = (pushingStructure) ? 7.0f : 0.0f;
 
 
-        if (distanceToStructure > 7) forwardMultiplier += (pushingBackward) ? -7.0f : 0.0f;
+        if (distanceToStructure > 7) forwardMultiplier += (pullingStructure) ? -7.0f : 0.0f;
 
-        else forwardMultiplier += (pushingBackward) ? -7.0f + (7 - distanceToStructure) : 0.0f;
+        else forwardMultiplier += (pullingStructure) ? -7.0f + (7 - distanceToStructure) : 0.0f;
 
         return (structureToAdjustedForward + transform.forward * forwardMultiplier);
     }

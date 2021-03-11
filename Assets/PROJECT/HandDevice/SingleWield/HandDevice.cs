@@ -56,8 +56,8 @@ public abstract class HandDevice : MonoBehaviour
 
     protected OVRInput.Button indexTrigger;
     protected OVRInput.Axis1D handTrigger;
-    protected OVRInput.Button platformForward;
-    protected OVRInput.Button platformBackward;
+    protected OVRInput.Button structurePush;
+    protected OVRInput.Button structurePull;
     protected OVRInput.Axis2D thumbStick;
 
     public void Initialize(EHandSide handSide)
@@ -66,8 +66,8 @@ public abstract class HandDevice : MonoBehaviour
         {
             indexTrigger = OVRInput.Button.SecondaryIndexTrigger;
             handTrigger = OVRInput.Axis1D.SecondaryHandTrigger;
-            platformBackward = OVRInput.Button.One;
-            platformForward = OVRInput.Button.Two;
+            structurePull = OVRInput.Button.One;
+            structurePush = OVRInput.Button.Two;
             thumbStick = OVRInput.Axis2D.SecondaryThumbstick;
         }
 
@@ -75,8 +75,8 @@ public abstract class HandDevice : MonoBehaviour
         {
             indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
             handTrigger = OVRInput.Axis1D.PrimaryHandTrigger;
-            platformBackward = OVRInput.Button.Three;
-            platformForward = OVRInput.Button.Four;
+            structurePull = OVRInput.Button.Three;
+            structurePush = OVRInput.Button.Four;
             thumbStick = OVRInput.Axis2D.PrimaryThumbstick;
         }
     }
