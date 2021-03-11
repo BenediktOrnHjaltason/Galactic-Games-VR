@@ -271,10 +271,6 @@ public class GravityForce : HandDevice
             {
                 float atan = Mathf.Atan2(stickInput.y, stickInput.x) * Mathf.Rad2Deg;
 
-
-                //Debug.Log("Atan Rad2Deg = " + atan);
-                //Debug.Log("Stick input: " + stickInput);
-
                 if (atan > -45f && atan < 45f )
                 {
                     //Debug.Log("RIGHT");

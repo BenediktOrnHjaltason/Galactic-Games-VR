@@ -165,7 +165,7 @@ public class Hand : MonoBehaviour
             //deviceUI.Operate(handSide);
 
             //(NOTE!) handDevice.Using() actually operates the device with input detection and all
-            /*usingHandDevice = */handDevice.Using(ref handDeviceData);
+            handDevice.Using(ref handDeviceData);
 
             usingHandDevice = handDeviceData.controllingStructure;
 
