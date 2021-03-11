@@ -3,7 +3,12 @@ guid: 606c2782831c7db4a98ba96898a83aeb
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: OmniDevice
+    second: {fileID: 2100000, guid: e5c349c69af90fe458e1cfc791eb51b0, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
