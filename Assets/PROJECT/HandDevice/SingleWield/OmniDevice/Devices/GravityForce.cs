@@ -54,36 +54,7 @@ public class GravityForce : HandDevice
 
     bool replicating = false;
 
-    //Buttons depending on HandSide
-
-    OVRInput.Button indexTrigger;
-    OVRInput.Axis1D handTrigger;
-    OVRInput.Button platformForward;
-    OVRInput.Button platformBackward;
-    OVRInput.Axis2D thumbStick;
-
     
-
-    public void Initialize(EHandSide handSide)
-    {
-        if (handSide == EHandSide.RIGHT)
-        {
-            indexTrigger = OVRInput.Button.SecondaryIndexTrigger;
-            handTrigger = OVRInput.Axis1D.SecondaryHandTrigger;
-            platformBackward = OVRInput.Button.One;
-            platformForward = OVRInput.Button.Two;
-            thumbStick = OVRInput.Axis2D.SecondaryThumbstick;
-        }
-
-        else if (handSide == EHandSide.LEFT)
-        {
-            indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-            handTrigger = OVRInput.Axis1D.PrimaryHandTrigger;
-            platformBackward = OVRInput.Button.Three;
-            platformForward = OVRInput.Button.Four;
-            thumbStick = OVRInput.Axis2D.PrimaryThumbstick;
-        }
-    }
 
     private void Start()
     {
@@ -254,7 +225,7 @@ public class GravityForce : HandDevice
                 else
                 {
                     handDeviceData.controllingStructure = false;
-                    HandleUIButtons(target, platformBackward);
+                    HandleUIButtons(target);
                 }
             }
         }

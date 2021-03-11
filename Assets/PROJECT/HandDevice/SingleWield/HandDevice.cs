@@ -52,6 +52,35 @@ public abstract class HandDevice : MonoBehaviour
     //Restrict ray-casting through walls
     protected int layer_GeneralBlock = 16;
 
+    //Buttons depending on HandSide
+
+    protected OVRInput.Button indexTrigger;
+    protected OVRInput.Axis1D handTrigger;
+    protected OVRInput.Button platformForward;
+    protected OVRInput.Button platformBackward;
+    protected OVRInput.Axis2D thumbStick;
+
+    public void Initialize(EHandSide handSide)
+    {
+        if (handSide == EHandSide.RIGHT)
+        {
+            indexTrigger = OVRInput.Button.SecondaryIndexTrigger;
+            handTrigger = OVRInput.Axis1D.SecondaryHandTrigger;
+            platformBackward = OVRInput.Button.One;
+            platformForward = OVRInput.Button.Two;
+            thumbStick = OVRInput.Axis2D.SecondaryThumbstick;
+        }
+
+        else if (handSide == EHandSide.LEFT)
+        {
+            indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
+            handTrigger = OVRInput.Axis1D.PrimaryHandTrigger;
+            platformBackward = OVRInput.Button.Three;
+            platformForward = OVRInput.Button.Four;
+            thumbStick = OVRInput.Axis2D.PrimaryThumbstick;
+        }
+    }
+
 
     public virtual void Using(ref HandDeviceData data)
     {
@@ -115,8 +144,10 @@ public abstract class HandDevice : MonoBehaviour
     GameObject buttonObjectPointedAtPreviously = null;
     InteractButton button;
 
+    bool buttonHasBeenPushed = false;
+
     //Called only during Raytracing of buttons
-    public void HandleUIButtons(GameObject buttonPointedAt, OVRInput.Button executionButton)
+    public void HandleUIButtons(GameObject buttonPointedAt)
     {
         if (buttonPointedAt != buttonObjectPointedAtPreviously)
         {
@@ -125,13 +156,18 @@ public abstract class HandDevice : MonoBehaviour
 
             button = buttonObjectPointedAtPreviously.GetComponent<InteractButton>();
         }
+
         if (button) button.BeingHighlighted = true;
 
+        buttonHasBeenPushed = false;
+    }
 
-
-        if (OVRInput.GetDown(executionButton))
+    public virtual void Update()
+    {
+        if (button && !buttonHasBeenPushed && OVRInput.GetUp(indexTrigger))
         {
-            if (button) button.Execute();
+            button.Execute();
+            buttonHasBeenPushed = true;
         }
     }
 }
