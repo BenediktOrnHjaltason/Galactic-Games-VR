@@ -38,7 +38,7 @@ public class PlatformBarrier : MonoBehaviour
             if (runningTime > showTimeLimit)
             {
                 showEffectPlane = false;
-                effectPlane.enabled = false;
+                //effectPlane.enabled = false;
                 runningTime = 0;
             }
         }
@@ -78,7 +78,7 @@ public class PlatformBarrier : MonoBehaviour
                     effectPlane.transform.position = hitPoint + hitNormal * 0.1f;
                     effectPlane.transform.rotation = Quaternion.LookRotation(hitNormal) * Quaternion.Euler(90, 0, 0);
 
-                    effectPlane.enabled = true;
+                    //effectPlane.enabled = true;
                     showEffectPlane = true;
                 }
             }

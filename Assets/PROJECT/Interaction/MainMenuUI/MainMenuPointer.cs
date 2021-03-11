@@ -16,13 +16,16 @@ public class MainMenuPointer : HandDevice
 
     private void Start()
     {
-        executeButton = (handSide == EHandSide.LEFT) ? OVRInput.Button.Three : OVRInput.Button.One;
+        executeButton = (handSide == EHandSide.LEFT) ? OVRInput.Button.PrimaryIndexTrigger : OVRInput.Button.SecondaryIndexTrigger;
         line = GetComponent<LineRenderer>();
+
+        Initialize(handSide);
     }
 
 
-    private void Update()
+    public override void Update()
     {
+        base.Update();
 
         line.SetPosition(0, transform.position);
         line.SetPosition(1, transform.position + transform.forward * 10);
@@ -30,7 +33,7 @@ public class MainMenuPointer : HandDevice
 
         if (Physics.Raycast(transform.position, transform.forward, out structureHit, 10, 1 << layer_Structures | 1 << layer_UI))
         {
-            HandleUIButtons(structureHit.transform.gameObject, executeButton);
+            HandleUIButtons(structureHit.transform.gameObject);
         }
     }
 }

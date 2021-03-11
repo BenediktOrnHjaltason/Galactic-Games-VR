@@ -16,19 +16,6 @@ public class OmniDevice : HandDevice
 
     public GameObject PlayerRoot { get => playerRoot; }
 
-    List<GameObject> scales = new List<GameObject>();
-    List<Vector3> scalesLocalPositionsBase = new List<Vector3>();
-
-
-    Transform scalesBase;
-
-    List<Vector3> scalesLocalPositionsEnd = new List<Vector3>();
-
-    float operationEffectMultiplier;
-    bool scalesReset = false;
-    float timeWaveOffsett = (Mathf.PI * 2) / 6;
-
-
 
     /// <summary>
     /// All the devices belonging to the OmniDevice
@@ -71,40 +58,23 @@ public class OmniDevice : HandDevice
         //Just so we don't get a nullreference in Using() before hands are spawned when client connects to server.
         //Allows for no if-testing in Using()
         devices.Add(dummyDevice);
-
-
     }
 
     //Must be initialized after spawning hands on network, because deviceSync is located there
     //GravityForce and other OmniDevice device uses deviceSync in their operations.
-    //deviceSync is located there so it can control it's own mesh and beam.
-    //Maybe it could be located locally and reference mesh and beam from spawned hand. 
+
     public void Initialize(GameObject spawnedHand, EHandSide handSide)
     {
-        this.deviceSync = spawnedHand.GetComponentInChildren<HandDeviceSync>();
+        deviceSync = spawnedHand.GetComponentInChildren<OmniDeviceSync>();
 
         gravityForce.Initialize(handSide);
 
         devices.Add(gravityForce);
+
+        //Not used for anything atm. Added replication as mode for gravity force
         devices.Add(replicator);
 
         Mode = EOmniDeviceMode.GRAVITYFORCE;
-
-        scalesBase = spawnedHand.transform.GetChild(1).transform.GetChild(1);
-
-        for (int i = 0; i < 6; i++)
-        {
-            scales.Add(scalesBase.transform.GetChild(i).gameObject);
-            scalesLocalPositionsBase.Add(scales[i].transform.localPosition);
-        }
-
-        scalesLocalPositionsEnd.Add(new Vector3(0.0f, 0.04994f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(0.03878f, 0.02724f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(0.03859f, -0.01703f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(0.0007f, -0.03938f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(-0.03842f, -0.01737f, -0.0282f));
-        scalesLocalPositionsEnd.Add(new Vector3(-0.0385f, 0.0279f, -0.0282f));
-
     }
 
     public void SetDeviceMode(int index)
@@ -119,64 +89,4 @@ public class OmniDevice : HandDevice
     {
         devices[activeDeviceIndex].Using(ref data);
     }
-
-
-    private void FixedUpdate()
-    {
-        if (deviceSync) AnimateDevice();
-    }
-
-    void AnimateDevice()
-    {
-        if (operationEffectMultiplier < 0.0f && !scalesReset)
-        {
-            for (int i = 0; i < scales.Count; i++) scales[i].transform.localPosition = scalesLocalPositionsBase[i];
-            scalesReset = true;
-        }
-
-        if (deviceSync.OperationState == EHandDeviceState.IDLE && operationEffectMultiplier > 0)
-        {
-            operationEffectMultiplier -= 0.2f;
-
-            if (scalesReset) scalesReset = false;
-        }
-
-        else if (deviceSync.OperationState == EHandDeviceState.SCANNING)
-        {
-            if (operationEffectMultiplier < 1) operationEffectMultiplier += 0.2f;
-
-            for (int i = 0; i < scales.Count; i++)
-            {
-                scales[i].transform.localPosition =
-
-                    Vector3.Lerp(scalesLocalPositionsBase[i], scalesLocalPositionsEnd[i], (Mathf.Abs(Mathf.Sin(Time.time * 5))) * operationEffectMultiplier);
-            }
-        }
-
-
-        else if (deviceSync.OperationState == EHandDeviceState.CONTROLLING)
-        {
-            if (operationEffectMultiplier < 1) operationEffectMultiplier += 0.2f;
-
-            for (int i = 0; i < scales.Count; i++)
-            {
-                scales[i].transform.localPosition =
-
-                    Vector3.Lerp(scalesLocalPositionsBase[i], scalesLocalPositionsEnd[i], (((Mathf.Sin(Time.time * 3 + (timeWaveOffsett * (i + 1))) + 1) / 2)) * operationEffectMultiplier);
-            }
-        }
-    }
-
-    public override void Equip(EHandSide hand)
-    {
-        //Nothing necessary here for this class
-    }
-
-    protected override bool ValidateStructureState(GameObject target)
-    {
-        //Nothing necessary here for this class
-
-        return true;
-    }
-
 }

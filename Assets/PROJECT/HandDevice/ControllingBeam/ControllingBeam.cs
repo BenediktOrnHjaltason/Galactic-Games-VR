@@ -19,7 +19,12 @@ public class ControllingBeam : MonoBehaviour
     Material controllingMaterial;
 
     Vector3 controlForce;
+
+    Vector3 previousStructurePosition;
     public Vector3 ControlForce { set => controlForce = value; }
+
+    bool readyToRenderControllingBeam = false;
+    int numberOfFramesControlling = 0;
 
     // Start is called before the first frame update
     void Awake()
@@ -47,15 +52,22 @@ public class ControllingBeam : MonoBehaviour
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, transform.position);
                 line.SetPosition(2, transform.position + transform.forward * 1000);
+
                 break;
 
             case EHandDeviceState.CONTROLLING:
 
                 line.startWidth = line.endWidth = 0.024f;
 
-                line.SetPosition(0, transform.position);
-                line.SetPosition(1, structurePosition + controlForce);
-                line.SetPosition(2, structurePosition);
+                if (structurePosition != previousStructurePosition)
+                {
+                    line.SetPosition(0, transform.position);
+                    line.SetPosition(1, structurePosition + controlForce);
+                    line.SetPosition(2, structurePosition);
+
+                    previousStructurePosition = structurePosition;
+                }
+
                 break;
         }
     }

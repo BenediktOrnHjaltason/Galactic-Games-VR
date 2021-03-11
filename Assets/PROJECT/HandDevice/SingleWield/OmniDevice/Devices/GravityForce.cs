@@ -12,8 +12,8 @@ public class GravityForce : HandDevice
 
     public GameObject PlayerRoot { set => playerRoot = value; }
 
-    bool pushingForward;
-    bool pushingBackward;
+    bool pushingStructure;
+    bool pullingStructure;
 
     Vector2 stickInput;
 
@@ -54,36 +54,7 @@ public class GravityForce : HandDevice
 
     bool replicating = false;
 
-    //Buttons depending on HandSide
-
-    OVRInput.Button indexTrigger;
-    OVRInput.Axis1D handTrigger;
-    OVRInput.Button platformForward;
-    OVRInput.Button platformBackward;
-    OVRInput.Axis2D thumbStick;
-
     
-
-    public void Initialize(EHandSide handSide)
-    {
-        if (handSide == EHandSide.RIGHT)
-        {
-            indexTrigger = OVRInput.Button.SecondaryIndexTrigger;
-            handTrigger = OVRInput.Axis1D.SecondaryHandTrigger;
-            platformBackward = OVRInput.Button.One;
-            platformForward = OVRInput.Button.Two;
-            thumbStick = OVRInput.Axis2D.SecondaryThumbstick;
-        }
-
-        else if (handSide == EHandSide.LEFT)
-        {
-            indexTrigger = OVRInput.Button.PrimaryIndexTrigger;
-            handTrigger = OVRInput.Axis1D.PrimaryHandTrigger;
-            platformBackward = OVRInput.Button.Three;
-            platformForward = OVRInput.Button.Four;
-            thumbStick = OVRInput.Axis2D.PrimaryThumbstick;
-        }
-    }
 
     private void Start()
     {
@@ -125,9 +96,11 @@ public class GravityForce : HandDevice
                 duplicateRealtimeTransform = null;
             }
 
-
             owner.OperationState = EHandDeviceState.IDLE;
             handDeviceData.controllingStructure = false;
+
+            pullingStructure = false;
+            pushingStructure = false;
 
             return;
         }
@@ -138,17 +111,6 @@ public class GravityForce : HandDevice
             if (handDeviceData.controllingStructure) handDeviceData.controllingStructure = false;
             return;
         }
-
-
-        if (OVRInput.GetDown(platformBackward))
-            pushingBackward = true;
-        else if (OVRInput.GetUp(platformBackward))
-            pushingBackward = false;
-
-        if (OVRInput.GetDown(platformForward))
-            pushingForward = true;
-        else if (OVRInput.GetUp(platformForward))
-            pushingForward = false;
 
 
         //************ Operation logic **************//
@@ -254,13 +216,26 @@ public class GravityForce : HandDevice
                 else
                 {
                     handDeviceData.controllingStructure = false;
-                    HandleUIButtons(target, platformBackward);
+                    HandleUIButtons(target);
                 }
             }
         }
 
         else if (owner.OperationState == EHandDeviceState.CONTROLLING)
         {
+
+            if (OVRInput.GetDown(structurePull))
+                pullingStructure = true;
+            else if (OVRInput.GetUp(structurePull))
+                pullingStructure = false;
+
+            if (OVRInput.GetDown(structurePush))
+                pushingStructure = true;
+            else if (OVRInput.GetUp(structurePush))
+                pushingStructure = false;
+
+
+
             controlForce = CalculateControlForce();
 
             //Network: Update controlForce and structurePosition in deviceSync, so all clients can update their own visual beam
@@ -278,17 +253,23 @@ public class GravityForce : HandDevice
             //Rotation
             stickInput = OVRInput.Get(thumbStick);
 
-            if (transform.rotation.eulerAngles.z < 330 && transform.rotation.eulerAngles.z > 200) rollMultiplier = -0.5f;
-            else if (transform.rotation.eulerAngles.z > 30 && transform.rotation.eulerAngles.z < 140) rollMultiplier = 0.5f;
+            float z = transform.rotation.eulerAngles.z;
+
+            if (z < 330 && z > 220)
+            {
+                rollMultiplier = -1.5f * ((110 - (z - 220))/110);
+                //Debug.Log("GravityForce: Rolling to the right. coefficient = " + ((110 - (z - 220)) / 110));
+            }
+            else if (z > 30 && z < 140)
+            {
+                rollMultiplier = 1.5f * ((z - 30) / 110);
+                //Debug.Log("GravityForce: Rolling to the left. coefficient = " + ((z - 30) / 110));
+            }
             else rollMultiplier = 0;
 
             if (structureSync.AllowRotationForces)
             {
                 float atan = Mathf.Atan2(stickInput.y, stickInput.x) * Mathf.Rad2Deg;
-
-
-                //Debug.Log("Atan Rad2Deg = " + atan);
-                //Debug.Log("Stick input: " + stickInput);
 
                 if (atan > -45f && atan < 45f )
                 {
@@ -338,12 +319,12 @@ public class GravityForce : HandDevice
 
         Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureSync.transform.position;
 
-        float forwardMultiplier = (pushingForward) ? 7.0f : 0.0f;
+        float forwardMultiplier = (pushingStructure) ? 7.0f : 0.0f;
 
 
-        if (distanceToStructure > 7) forwardMultiplier += (pushingBackward) ? -7.0f : 0.0f;
+        if (distanceToStructure > 7) forwardMultiplier += (pullingStructure) ? -7.0f : 0.0f;
 
-        else forwardMultiplier += (pushingBackward) ? -7.0f + (7 - distanceToStructure) : 0.0f;
+        else forwardMultiplier += (pullingStructure) ? -7.0f + (7 - distanceToStructure) : 0.0f;
 
         return (structureToAdjustedForward + transform.forward * forwardMultiplier);
     }

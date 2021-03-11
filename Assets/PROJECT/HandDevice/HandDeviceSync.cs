@@ -15,14 +15,18 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
 
 
     MeshRenderer deviceMesh;
+
+    protected bool baseClassExtended = false;
+    
+
     ControllingBeam beam;
 
     EHandDeviceState operationState;
     public EHandDeviceState OperationState { set => model.operationState = value; get => operationState; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        deviceMesh = GetComponent<MeshRenderer>();
+        deviceMesh = transform.GetChild(9).GetComponent<MeshRenderer>();
         beam = GetComponentInChildren<ControllingBeam>();
     }
 
@@ -86,7 +90,7 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
     {
         operationState = model.operationState;
 
-        SetMeshState(operationState);
+        SetVisuals(operationState);
         beam.SetVisuals(operationState);
     }
     //-----------------
@@ -125,29 +129,21 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
         UpdateVisible();
     }
 
-    void UpdateVisible()
+    protected bool visible = false;
+
+    protected virtual void UpdateVisible()
     {
+        //Preventing object from getting value from data store when extended 
+        //(OmniDeviceSync fetches it to set its animations)
+        if (!baseClassExtended) visible = model.visible;
+
         if (!deviceMesh) deviceMesh = GetComponent<MeshRenderer>();
 
-        if (model.visible)
-        {
-            deviceMesh.enabled = true;
-
-            //Ring of scales
-            deviceMesh.transform.GetChild(1).gameObject.SetActive(true);
-
-        }
-
-        else
-        {
-            deviceMesh.enabled = false;
-
-            //Ring of scales
-            deviceMesh.transform.GetChild(1).gameObject.SetActive(false);
-        }
+        if (visible) deviceMesh.enabled = true;
+        else deviceMesh.enabled = false;
     }
 
-    void SetMeshState(EHandDeviceState mode)
+    void SetVisuals(EHandDeviceState mode)
     {
         switch (mode)
         {
@@ -163,6 +159,11 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
                 deviceMesh.material = controllingMaterial;
                 break;
         }
+    }
+
+    public virtual void FixedUpdate()
+    {
+
     }
 
     private void Update()
