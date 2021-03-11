@@ -190,7 +190,7 @@ MonoBehaviour:
   defaultMaterial: {fileID: 2100000, guid: 454ce27cafae2ec4ca487ed8b65ee4fc, type: 2}
   grabbingGrabHandleMaterial: {fileID: 2100000, guid: 01642051d9aea1e49a0051f74fb238cf,
     type: 2}
-  handDeviceSync: {fileID: 875320958942422452}
+  handDeviceSync: {fileID: 8876800380959913749}
 --- !u!114 &186885531694486503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,9 +211,9 @@ MonoBehaviour:
   _isRootPrefabView: 0
   _components:
   - componentID: 1
-    component: {fileID: 875320958942422452}
+    component: {fileID: 8876800380959913749}
   _childViews: []
---- !u!114 &875320958942422452
+--- !u!114 &8876800380959913749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9084357760562212924}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c17d0ce516e9554aa954e70e61f8ab7, type: 3}
+  m_Script: {fileID: 11500000, guid: 56d2e70481cc49748b8c4d62127ffcd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   searchingMaterial: {fileID: 670224309865224971, guid: 606c2782831c7db4a98ba96898a83aeb,

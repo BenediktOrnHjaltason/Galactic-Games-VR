@@ -16,8 +16,7 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
 
     MeshRenderer deviceMesh;
 
-    //Only for OmniDevice. Should derive new class from this for OmniDevice
-    List<MeshRenderer> floaties = new List<MeshRenderer>();
+    protected bool baseClassExtended = false;
     
 
     ControllingBeam beam;
@@ -25,16 +24,10 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
     EHandDeviceState operationState;
     public EHandDeviceState OperationState { set => model.operationState = value; get => operationState; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         deviceMesh = transform.GetChild(9).GetComponent<MeshRenderer>();
         beam = GetComponentInChildren<ControllingBeam>();
-
-        for (int i = 0; i < 9; i++)
-        {
-            floaties.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
-        }
-
     }
 
 
@@ -97,7 +90,7 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
     {
         operationState = model.operationState;
 
-        SetMeshState(operationState);
+        SetVisuals(operationState);
         beam.SetVisuals(operationState);
     }
     //-----------------
@@ -136,32 +129,21 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
         UpdateVisible();
     }
 
-    void UpdateVisible()
+    protected bool visible = false;
+
+    protected virtual void UpdateVisible()
     {
+        //Preventing object from getting value from data store when extended 
+        //(OmniDeviceSync fetches it to set its animations)
+        if (!baseClassExtended) visible = model.visible;
+
         if (!deviceMesh) deviceMesh = GetComponent<MeshRenderer>();
 
-        if (model.visible)
-        {
-            deviceMesh.enabled = true;
-
-            //Ring of scales
-            //deviceMesh.transform.GetChild(1).gameObject.SetActive(true);
-
-            foreach (MeshRenderer floatie in floaties) floatie.enabled = true;
-        }
-
-        else
-        {
-            deviceMesh.enabled = false;
-
-            //Ring of scales
-            //deviceMesh.transform.GetChild(1).gameObject.SetActive(false);
-
-            foreach (MeshRenderer floatie in floaties) floatie.enabled = false;
-        }
+        if (visible) deviceMesh.enabled = true;
+        else deviceMesh.enabled = false;
     }
 
-    void SetMeshState(EHandDeviceState mode)
+    void SetVisuals(EHandDeviceState mode)
     {
         switch (mode)
         {
@@ -177,6 +159,11 @@ public class HandDeviceSync : RealtimeComponent<HandDeviceSync_Model>
                 deviceMesh.material = controllingMaterial;
                 break;
         }
+    }
+
+    public virtual void FixedUpdate()
+    {
+
     }
 
     private void Update()

@@ -206,7 +206,7 @@ public class Hand : MonoBehaviour
         }
 
         //Extend default rumble limit of 2 seconds
-        if (grabbingZipLine && timeOfZiplineRumble > 0.8f)
+        if (grabbingZipLine && timeOfZiplineRumble > 1.8f)
             OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
 
     }

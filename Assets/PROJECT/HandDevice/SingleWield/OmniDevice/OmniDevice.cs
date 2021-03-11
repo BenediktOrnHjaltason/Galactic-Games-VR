@@ -16,6 +16,10 @@ public class OmniDevice : HandDevice
 
     public GameObject PlayerRoot { get => playerRoot; }
 
+
+
+    //---------MOVING
+    /*
     List<GameObject> floaties = new List<GameObject>();
     List<Vector3> scalesLocalPositionsBase = new List<Vector3>();
 
@@ -28,6 +32,8 @@ public class OmniDevice : HandDevice
     float operationEffectMultiplier;
     bool scalesReset = false;
     float timeWaveOffsett = (Mathf.PI * 2) / 6;
+    */
+    //---------/MOVING
 
 
 
@@ -76,11 +82,11 @@ public class OmniDevice : HandDevice
 
     //Must be initialized after spawning hands on network, because deviceSync is located there
     //GravityForce and other OmniDevice device uses deviceSync in their operations.
-    //deviceSync is located there so it can control it's own mesh and beam.
-    //Maybe it could be located locally and reference mesh and beam from spawned hand. 
+    //deviceSync is located there so it can control it's own mesh and beam. (+ animating floaties?)
+    //Maybe it could be located on deviceSync/OmniDeviceSync which references the synced hand object
     public void Initialize(GameObject spawnedHand, EHandSide handSide)
     {
-        this.deviceSync = spawnedHand.GetComponentInChildren<HandDeviceSync>();
+        deviceSync = spawnedHand.GetComponentInChildren<OmniDeviceSync>();
 
         gravityForce.Initialize(handSide);
 
@@ -91,6 +97,9 @@ public class OmniDevice : HandDevice
 
         Mode = EOmniDeviceMode.GRAVITYFORCE;
 
+
+        //MOVING
+        /*
         floatiesBase = spawnedHand.transform.GetChild(1);
 
         for (int i = 0; i < 8; i++)
@@ -107,6 +116,8 @@ public class OmniDevice : HandDevice
         scalesLocalPositionsEnd.Add(new Vector3(-0.074f, 0.019f, -0.05f));
         scalesLocalPositionsEnd.Add(new Vector3(-0.107f, 0.09533767f, -0.05f));
         scalesLocalPositionsEnd.Add(new Vector3(-0.073f, 0.172f, -0.05f));
+        */
+        //-/MOVING
     }
 
     public void SetDeviceMode(int index)
@@ -125,9 +136,13 @@ public class OmniDevice : HandDevice
 
     private void FixedUpdate()
     {
-        if (deviceSync) AnimateDevice();
+        //----MOVING
+        //if (deviceSync) AnimateDevice();
+        //---/MOVING
     }
 
+    //----MOVING
+    /*
     void AnimateDevice()
     {
         if (operationEffectMultiplier < 0.0f && !scalesReset)
@@ -168,7 +183,11 @@ public class OmniDevice : HandDevice
             }
         }
     }
+    //---/MOVING
+    */
 
+
+    /*
     public override void Equip(EHandSide hand)
     {
         //Nothing necessary here for this class
@@ -180,5 +199,6 @@ public class OmniDevice : HandDevice
 
         return true;
     }
+    */
 
 }
