@@ -107,8 +107,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866a421ff2888574594053cc372ef04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inactiveMaterial: {fileID: 2100000, guid: 54df2bd0fc8def44c88dc4fbf8e5d35c, type: 2}
-  activeMaterial: {fileID: 2100000, guid: 2e32495cadf5f5f43ba180264acea8de, type: 2}
+  changeMeshOnExecute: 0
+  buttonSet:
+    State1Name: 
+    State1_Idle: {fileID: 0}
+    State1_Highlighted: {fileID: 0}
+    State2Name: 
+    State2_Idle: {fileID: 0}
+    State2_Highlighted: {fileID: 0}
+  plane: {fileID: 0}
+  materialIdle: {fileID: 0}
+  materialHighlighted: {fileID: 0}
 --- !u!1 &5402669088591294073
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +145,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5402669088591294073}
   m_LocalRotation: {x: 0.00000011590384, y: 0.70710677, z: -0.7071068, w: 0.00000011590384}
-  m_LocalPosition: {x: 0, y: 0, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0.32}
   m_LocalScale: {x: 0.94178, y: 3.0373347, z: 0.94178}
   m_Children: []
   m_Father: {fileID: 2051836661193756920}
@@ -144,7 +153,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: -180.00002}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7.7, y: 0.1}
+  m_AnchoredPosition: {x: 0.12, y: 0.02}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &1587220235994708853

@@ -22,16 +22,17 @@ public class MainMenuPointer : HandDevice
         Initialize(handSide);
     }
 
+    float beamLength = 3;
 
     public override void Update()
     {
         base.Update();
 
         line.SetPosition(0, transform.position);
-        line.SetPosition(1, transform.position + transform.forward * 10);
+        line.SetPosition(1, transform.position + transform.forward * beamLength);
 
 
-        if (Physics.Raycast(transform.position, transform.forward, out structureHit, 10, 1 << layer_Structures | 1 << layer_UI))
+        if (Physics.Raycast(transform.position, transform.forward, out structureHit, beamLength, 1 << layer_Structures | 1 << layer_UI))
         {
             HandleUIButtons(structureHit.transform.gameObject);
         }
