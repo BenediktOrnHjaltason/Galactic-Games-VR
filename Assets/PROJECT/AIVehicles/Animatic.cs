@@ -9,6 +9,9 @@ public class Animatic : MonoBehaviour
     [System.Serializable]
     public struct MovementSequence
     {
+        public event Action OnSequenceStart;
+        public void InvokeStartEvent() { OnSequenceStart?.Invoke(); }
+
         public bool animatePosition;
         public Vector3 fromPosition;
         public Vector3 toPosition;
@@ -23,6 +26,9 @@ public class Animatic : MonoBehaviour
         public bool pauseSequence;
     }
 
+    public event Action OnAnimaticEnds;
+
+
     [SerializeField]
     string title = "Default";
 
@@ -32,8 +38,8 @@ public class Animatic : MonoBehaviour
     [SerializeField]
     GameObject target;
 
-    [SerializeField]
-    List<MovementSequence> movementSequences;
+    
+    public List<MovementSequence> movementSequences;
 
     int activeSequence = 0;
 
@@ -45,12 +51,11 @@ public class Animatic : MonoBehaviour
 
     float increment = 0;
 
-    public event Action OnAnimaticEnds;
 
     // Start is called before the first frame update
     void Start()
     {
-        if (trigger) trigger.Execute += startSequence;
+        if (trigger) trigger.Execute += Run;
     }
 
     private void FixedUpdate()
@@ -71,6 +76,7 @@ public class Animatic : MonoBehaviour
                 if ((activeSequence + 1) < (movementSequences.Count))
                 {
                     activeSequence++;
+                    movementSequences[activeSequence].InvokeStartEvent();
                     timeOnSequenceStart = Time.time;
                 }
                 else
@@ -84,8 +90,6 @@ public class Animatic : MonoBehaviour
 
                     activeSequence = 0;
                     sequenceRunning = false;
-                    //target.transform.localPosition = movementSequences[0].fromPosition;
-                    //target.transform.localRotation = Quaternion.Euler(movementSequences[0].fromRotation);
 
                     OnAnimaticEnds?.Invoke();
                 }
@@ -93,10 +97,11 @@ public class Animatic : MonoBehaviour
         }
     }
 
-    public void startSequence()
+    public void Run()
     {
         if (!sequenceRunning)
         {
+            movementSequences[activeSequence].InvokeStartEvent();
             sequenceRunning = true;
             timeOnSequenceStart = Time.time;
         }

@@ -63,15 +63,15 @@ public class OmniDeviceDispenser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        shrinkRing.OnAnimaticEnds += screwDownLegs.startSequence;
-        screwDownLegs.OnAnimaticEnds += shrinkFoot.startSequence;
+        shrinkRing.OnAnimaticEnds += screwDownLegs.Run;
+        screwDownLegs.OnAnimaticEnds += shrinkFoot.Run;
 
         if (trigger) trigger.OnHandEnters += OnHandEntersTrigger;
     }
 
     void startDisappearSequence()
     {
-        shrinkRing.startSequence();
+        shrinkRing.Run();
     }
 
     void OnHandEntersTrigger(Hand hand)
