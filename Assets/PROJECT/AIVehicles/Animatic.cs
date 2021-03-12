@@ -9,8 +9,7 @@ public class Animatic : MonoBehaviour
     [System.Serializable]
     public struct MovementSequence
     {
-        public event Action OnSequenceStart;
-        public void InvokeStartEvent() { OnSequenceStart?.Invoke(); }
+        //public delegate void OnSequenceStart();
 
         public bool animatePosition;
         public Vector3 fromPosition;
@@ -27,6 +26,8 @@ public class Animatic : MonoBehaviour
     }
 
     public event Action OnAnimaticEnds;
+
+    public event Action TestEvent;
 
 
     [SerializeField]
@@ -76,14 +77,14 @@ public class Animatic : MonoBehaviour
                 if ((activeSequence + 1) < (movementSequences.Count))
                 {
                     activeSequence++;
-                    movementSequences[activeSequence].InvokeStartEvent();
+
+                    if (activeSequence == 1) TestEvent?.Invoke();
+
+                    //movementSequences[activeSequence].OnSequenceStart;
                     timeOnSequenceStart = Time.time;
                 }
                 else
                 {
-
-                    Debug.Log("Animatic: local scale on animatic end: " + target.transform.localScale + " . Increment:  " + increment);
-
                     //Ensure everything gets to the end
                     increment = 1;
                     SetTransforms();
@@ -101,7 +102,7 @@ public class Animatic : MonoBehaviour
     {
         if (!sequenceRunning)
         {
-            movementSequences[activeSequence].InvokeStartEvent();
+            //movementSequences[activeSequence].InvokeStartEvent();
             sequenceRunning = true;
             timeOnSequenceStart = Time.time;
         }

@@ -79,9 +79,16 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
 
         OnPuzzleSolved += helperCraftAnimatic.Run;
-        helperCraftAnimatic.movementSequences[1].OnSequenceStart += ProvideProgressPlatforms;
 
+        //helperCraftAnimatic.movementSequences[1].OnSequenceStart += ProvideProgressPlatforms;
+        helperCraftAnimatic.TestEvent += ProvideProgressPlatforms;
+        
         helperCraft = helperCraftAnimatic.transform.GetChild(1).GetComponent<Vehicle_TicTac>();
+
+        OnPuzzleSolved += helperCraft.MakeVisible;
+
+        helperCraftAnimatic.OnAnimaticEnds += helperCraft.MakeInvisible;
+
         helperCraft.MakeInvisible();
     }
 
@@ -89,7 +96,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
     {
         
         //If we are not connected to server we cannon request ownerships
-        if (!realtime.connected) return;
+        if (!realTime.connected) return;
 
 
         //If nobody has network ownership of platform, someone needs to have ownership of ghost platform, and first dibs rules
@@ -181,24 +188,22 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
     bool provideProgressPlatforms = false;
     float numberOfPlatformsToGive = 4;
-    float timeOfFire = 0;
     float fireIncrement = 0;
     int platformsGiven = 0;
     float nextTimeToFire = 0;
 
     void ProvideProgressPlatforms()
     {
-        
         provideProgressPlatforms = true;
-        fireIncrement = helperCraftAnimatic.movementSequences[1].duration / numberOfPlatformsToGive;
+        fireIncrement = (helperCraftAnimatic.movementSequences[1].duration / numberOfPlatformsToGive) - 0.2f;
 
         SpawnPlatform();
     }
 
     void SpawnPlatform()
-    {
-        timeOfFire = Time.time;
-        nextTimeToFire = timeOfFire + fireIncrement;
+    { 
+
+        nextTimeToFire = Time.time + fireIncrement;
         platformsGiven++;
 
 
@@ -206,20 +211,20 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
                                                     ownedByClient: false,
                                                     preventOwnershipTakeover: false,
                                                     destroyWhenOwnerOrLastClientLeaves: true,
-                                                    useInstance: realtime);
+                                                    useInstance: realTime);
 
         platform.GetComponent<RealtimeTransform>().RequestOwnership();
 
         Vector3 fireDirection = helperCraft.transform.forward - helperCraft.transform.up;
         platform.transform.position = helperCraft.transform.position + fireDirection;
 
+        platform.transform.rotation = Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0.0f, 360.0f),
+                                                         UnityEngine.Random.Range(0.0f, 360.0f),
+                                                         UnityEngine.Random.Range(0.0f, 360.0f)));
+
         Rigidbody rb = platform.GetComponent<Rigidbody>();
 
-        rb.AddForce(fireDirection);
-
-        rb.AddTorque(new Vector3(UnityEngine.Random.Range(-3.0f, 3.0f),
-                                 UnityEngine.Random.Range(-3.0f, 3.0f),
-                                 UnityEngine.Random.Range(-3.0f, 3.0f)));
+        rb.AddForce(fireDirection * 2500);
 
     }
 
@@ -249,7 +254,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
         }
     }
 
-    int matchesLeftToWin = 1;
+    int matchesLeftToWin = 2;
 
     int MatchesLeftToWin 
     { 
@@ -275,17 +280,17 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
             text1.text = text2.text = matchesLeftToWin.ToString();
         }
 
-        else if (matchesLeftToWin == 0)
+        else if (matchesLeftToWin == 0 && realTime.connected)
         {
             text1.transform.GetComponent<MeshRenderer>().enabled =
             text2.transform.GetComponent<MeshRenderer>().enabled = false;
 
-            helperCraft.MakeVisible();
+            Debug.Log("MAKING TIC TAC VISIBLE!");
 
-            if (platformRtt.ownerIDSelf == realtime.clientID)
+            if (platformRtt.ownerIDSelf == realTime.clientID)
             {
-                helperCraft.GetComponent<RealtimeTransform>().RequestOwnership();
-                ProvideProgressPlatforms();
+                helperCraft.GetComponent<RealtimeTransform>().SetOwnership(platformRtt.ownerIDSelf);
+                OnPuzzleSolved?.Invoke();
             }
         }
     }
