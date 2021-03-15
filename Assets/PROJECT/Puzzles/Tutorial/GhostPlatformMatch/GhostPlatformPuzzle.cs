@@ -254,7 +254,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
         }
     }
 
-    int matchesLeftToWin = 2;
+    int matchesLeftToWin = 5;
 
     int MatchesLeftToWin 
     { 
