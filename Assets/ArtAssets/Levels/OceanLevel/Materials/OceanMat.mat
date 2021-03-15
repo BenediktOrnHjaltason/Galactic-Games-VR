@@ -27,12 +27,16 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 22
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_D3D2930A:
+        m_Texture: {fileID: 2800000, guid: da225b0c7f6a4e04899586c942121e17, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -57,8 +61,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_23C46F79_Texture_1:
+        m_Texture: {fileID: 2800000, guid: f935635c79b9dd94e806a99c76c5ad04, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_74333130_Texture_1:
         m_Texture: {fileID: 2800000, guid: 7e961ba2a88401e4aab4cafa63cc1c49, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_B75D0F35_Texture_1:
+        m_Texture: {fileID: 2800000, guid: fce5e9cf866f9074bb5c71cf0ddd33fd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_E6B57224_Texture_1:
@@ -70,6 +82,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_97D72FB3: 30000
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
