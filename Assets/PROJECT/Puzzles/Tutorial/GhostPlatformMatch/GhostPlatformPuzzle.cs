@@ -103,7 +103,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
                     platformToGhost = transform.position - platformRtt.transform.position;
 
                     //Position match
-                    if (platformToGhost.sqrMagnitude < 0.32f)
+                    if (platformToGhost.sqrMagnitude < 1.6f)
                     {
                         //Rotation match
                         forwardAllignment = Vector3.Dot(transform.forward, platformRtt.transform.forward);
@@ -301,7 +301,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
     {
         bool visible = model.helperCraftVisible;
 
-        helperCraft.SetVisibility(visible);
+        if (helperCraft) helperCraft.SetVisibility(visible);
     }
 
     void SetHelperCraftInvisible()
