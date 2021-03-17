@@ -39,6 +39,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
     [SerializeField]
     Animatic helperCraftAnimatic;
 
+    [SerializeField]
     Vehicle_TicTac helperCraft;
 
 
@@ -60,8 +61,6 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
     Quaternion oldRotation;
     Quaternion newRotation;
 
-    event Action OnPuzzleSolved;
-
     //----- Operation
     EOperationPhase phase = EOperationPhase.DETECTALLIGNMENT;
 
@@ -77,33 +76,23 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
         baseLocalScale = transform.localScale;
 
-
-        OnPuzzleSolved += helperCraftAnimatic.Run;
-
-        //helperCraftAnimatic.movementSequences[1].OnSequenceStart += ProvideProgressPlatforms;
         helperCraftAnimatic.TestEvent += ProvideProgressPlatforms;
-        
-        helperCraft = helperCraftAnimatic.transform.GetChild(1).GetComponent<Vehicle_TicTac>();
 
-        OnPuzzleSolved += helperCraft.MakeVisible;
-
-        helperCraftAnimatic.OnAnimaticEnds += helperCraft.MakeInvisible;
-
-        helperCraft.MakeInvisible();
+        helperCraftAnimatic.OnAnimaticEnds += SetHelperCraftInvisible;
     }
 
     private void FixedUpdate()
     {
         
-        //If we are not connected to server we cannon request ownerships
+        //If we are not connected to server we cannot request ownerships
         if (!realTime.connected) return;
 
 
-        //If nobody has network ownership of platform, someone needs to have ownership of ghost platform, and first dibs rules
+        //Someone needs to have ownership of ghost platform to animate it, and first dibs rules
         if (thisRtt.ownerIDSelf == -1) thisRtt.RequestOwnership();
 
 
-        if (true)
+        else if (thisRtt.ownerIDSelf == realTime.clientID)
         {
             switch (phase)
             {
@@ -143,9 +132,9 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
                         transform.localScale = baseLocalScale;
                         oldRotation = transform.localRotation;
-                        newRotation = 
-                            Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0.0f, 360.0f), 
-                                                         UnityEngine.Random.Range(0.0f, 360.0f), 
+                        newRotation =
+                            Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0.0f, 360.0f),
+                                                         UnityEngine.Random.Range(0.0f, 360.0f),
                                                          UnityEngine.Random.Range(0.0f, 360.0f)));
 
                         phase = EOperationPhase.MOVE;
@@ -174,6 +163,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
                     break;
             }
         }
+        
 
         if (provideProgressPlatforms)
         {
@@ -236,6 +226,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
         {
             // Unregister from events
             previousModel.matchesLeftToWinDidChange -= MatchesLeftToWinDidChange;
+            previousModel.helperCraftVisibleDidChange -= HelperCraftVisibleDidChange;
         }
 
         if (currentModel != null)
@@ -244,13 +235,16 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
             if (currentModel.isFreshModel)
             {
                 currentModel.matchesLeftToWin = matchesLeftToWin;
+                currentModel.helperCraftVisible = false;
             }
 
             // Update data to match the new model
             UpdateMatchesLeftToWin();
+            UpdateHelperCraftVisible();
 
             //Register for events so we'll know if data changes later
             currentModel.matchesLeftToWinDidChange += MatchesLeftToWinDidChange;
+            currentModel.helperCraftVisibleDidChange += HelperCraftVisibleDidChange;
         }
     }
 
@@ -285,13 +279,33 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
             text1.transform.GetComponent<MeshRenderer>().enabled =
             text2.transform.GetComponent<MeshRenderer>().enabled = false;
 
-            Debug.Log("MAKING TIC TAC VISIBLE!");
-
-            if (platformRtt.ownerIDSelf == realTime.clientID)
+            if (thisRtt.ownerIDSelf == realTime.clientID)
             {
-                helperCraft.GetComponent<RealtimeTransform>().SetOwnership(platformRtt.ownerIDSelf);
-                OnPuzzleSolved?.Invoke();
+                HelperCraftVisible = true;
+
+                helperCraft.GetComponent<RealtimeTransform>().SetOwnership(thisRtt.ownerIDSelf);
+
+                helperCraftAnimatic.Run();
             }
         }
+    }
+
+    bool HelperCraftVisible { set => model.helperCraftVisible = value; }
+
+    void HelperCraftVisibleDidChange(GhostPlatformPuzzle_Model model, bool visible)
+    {
+        UpdateHelperCraftVisible();
+    }
+
+    void UpdateHelperCraftVisible()
+    {
+        bool visible = model.helperCraftVisible;
+
+        helperCraft.SetVisibility(visible);
+    }
+
+    void SetHelperCraftInvisible()
+    {
+        HelperCraftVisible = false;
     }
 }

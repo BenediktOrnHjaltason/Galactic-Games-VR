@@ -158,12 +158,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         if (!rtt.realtime.connected) return;
 
         //Place self
-        if (rtt.ownerIDSelf == -1)
-        {
-            Debug.Log("AttractorRift: Rtt ownerID was -1");
+        if (rtt.ownerIDSelf == -1) rtt.RequestOwnership();
 
-            rtt.RequestOwnership();
-        }
         else if (rtt.isOwnedLocallySelf)
         {
             attractionPointToRoot = anchor.transform.position - transform.position;
