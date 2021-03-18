@@ -63,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   queueAhead: 1
-  useRecommendedMSAALevel: 0
+  useRecommendedMSAALevel: 1
   _monoscopic: 0
   enableAdaptiveResolution: 0
   minRenderScale: 0.7
@@ -956,8 +956,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handSide: 1
-  defaultColor: {fileID: 2100000, guid: 454ce27cafae2ec4ca487ed8b65ee4fc, type: 2}
-  grabbingColor: {fileID: 2100000, guid: 01642051d9aea1e49a0051f74fb238cf, type: 2}
 --- !u!54 &2533775269139174856
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1101,8 +1099,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   handSide: 0
-  defaultColor: {fileID: 2100000, guid: 454ce27cafae2ec4ca487ed8b65ee4fc, type: 2}
-  grabbingColor: {fileID: 2100000, guid: 01642051d9aea1e49a0051f74fb238cf, type: 2}
 --- !u!54 &4346954011464413575
 Rigidbody:
   m_ObjectHideFlags: 0

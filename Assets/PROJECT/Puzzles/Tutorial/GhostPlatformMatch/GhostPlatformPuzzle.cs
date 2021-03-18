@@ -261,6 +261,8 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
         platform.GetComponent<RealtimeTransform>().RequestOwnership();
 
+        platform.GetComponent<StructureSync>().AllowDuplicationByDevice = false;
+
         Vector3 fireDirection = helperCraft.transform.forward - helperCraft.transform.up;
         platform.transform.position = helperCraft.transform.position + fireDirection;
 
