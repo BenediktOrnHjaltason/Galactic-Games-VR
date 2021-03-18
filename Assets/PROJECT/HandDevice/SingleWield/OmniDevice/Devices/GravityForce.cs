@@ -339,16 +339,18 @@ public class GravityForce : HandDevice
 
             if (!structureSync)
             {
-                Debug.LogWarning(targetStructure.name + " does not have a structureSync component, and you're trying to use the GravityController on it");
+                //Debug.LogWarning(targetStructure.name + " does not have a structureSync component, and you're trying to use the GravityController on it");
                 return false;
             }
 
-            if (structureSync && (structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate))
+            if (structureSync && (!structureSync.AllowGravityForceByDevice || structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate))
             {
+                /*
                 Debug.Log("GravityForce: Not allowed to control structure. Reason: ");
+                if (!structureSync.AllowGravityForceByDevice) Debug.Log("GravityForce: GravityForce not allowed ");
                 if (structureSync.PlayersOccupying > 0) Debug.Log("GravityForce: PlayersOccupying is more than 0 ");
                 if (!structureSync.AvailableToManipulate) Debug.Log("GravityForce: AvailableToManipulate is false");
-
+                */
                 return false;
             }
 
@@ -360,13 +362,14 @@ public class GravityForce : HandDevice
             if (!structureSync ||
             (structureSync && (!structureSync.AllowDuplicationByDevice || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0)))
             {
+                /*
                 Debug.Log("Replicator: Not allowed to replicate structure! Reason: ");
 
                 if (!structureSync) Debug.Log("The is no StructureSync object");
                 if (structureSync && !structureSync.AllowDuplicationByDevice) Debug.Log("AllowDuplicationByDevice is false");
                 if (structureSync && !structureSync.AvailableToManipulate) Debug.Log("AvailableToManipulate is false");
                 if (structureSync && structureSync.PlayersOccupying > 0) Debug.Log("PlayersOccupying is more than 0");
-
+                */
                 return false;
             }
 

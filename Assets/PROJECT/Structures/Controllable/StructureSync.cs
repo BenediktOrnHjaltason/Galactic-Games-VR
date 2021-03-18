@@ -33,6 +33,11 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     public bool AllowDuplicationByDevice { get => allowDuplicationByDevice; }
 
+    [SerializeField]
+    bool allowGravityForceByDevice = true;
+
+    public bool AllowGravityForceByDevice { get => allowGravityForceByDevice; }
+
     protected Rigidbody rb;
 
     protected RealtimeTransform rtt;
