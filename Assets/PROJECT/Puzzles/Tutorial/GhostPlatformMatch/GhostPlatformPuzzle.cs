@@ -37,6 +37,25 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
     TextMeshPro text2;
 
     [SerializeField]
+    Transform rollGizmoBase;
+
+    MeshRenderer rollGizmoMesh;
+
+    [SerializeField]
+    Transform pitchGizmoBase;
+
+    MeshRenderer pitchGizmoMesh;
+
+    [SerializeField]
+    Transform yawGizmoBase;
+
+    MeshRenderer yawGizmoMesh;
+
+    [SerializeField]
+    Transform playerHeadAnchor;
+
+
+    [SerializeField]
     Animatic helperCraftAnimatic;
 
     [SerializeField]
@@ -79,6 +98,41 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
         helperCraftAnimatic.TestEvent += ProvideProgressPlatforms;
 
         helperCraftAnimatic.OnAnimaticEnds += SetHelperCraftInvisible;
+
+        rollGizmoMesh = rollGizmoBase.GetComponentInChildren<MeshRenderer>();
+        pitchGizmoMesh = pitchGizmoBase.GetComponentInChildren<MeshRenderer>();
+        yawGizmoMesh = yawGizmoBase.GetComponentInChildren<MeshRenderer>();
+
+        StructureSync platformSS = platformRtt.GetComponent<StructureSync>();
+
+        if (platformSS)
+        {
+            platformSS.OnControlTaken += EnableRotateGizmo;
+            platformSS.OnControlReleased += DisableRotateGizmo;
+        }
+    }
+
+    float platformRollForce;
+    float platformYawForce;
+    float platformPitchForce;
+
+    void SamplePlatformRotationForces(float roll, float yaw, float pitch)
+    {
+        platformRollForce = roll; platformYawForce = yaw; platformPitchForce = pitch;
+    }
+
+    private void Update()
+    {
+        if (animateRotateGizmo)
+        {
+            Vector3 playerHeadToPlatform = platformRtt.transform.position - playerHeadAnchor.transform.position;
+            rollGizmoBase.rotation = pitchGizmoBase.rotation = Quaternion.LookRotation(playerHeadToPlatform);
+            yawGizmoBase.rotation = Quaternion.LookRotation(Vector3.up);
+
+            rollGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformRollForce / 30);
+            yawGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformYawForce / 30);
+            pitchGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformPitchForce / 30);
+        }
     }
 
     private void FixedUpdate()
@@ -216,6 +270,28 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
         rb.AddForce(fireDirection * 2500);
 
+    }
+
+    bool animateRotateGizmo = false;
+
+    void EnableRotateGizmo()
+    {
+        if (platformRtt.ownerIDSelf == realTime.clientID)
+            animateRotateGizmo = rollGizmoMesh.enabled = pitchGizmoMesh.enabled = yawGizmoMesh.enabled = true;
+
+        StructureSync platformSS = platformRtt.GetComponent<StructureSync>();
+
+        if (platformSS) platformSS.OnExternalPiggybacking += SamplePlatformRotationForces;
+    }
+
+    void DisableRotateGizmo()
+    {
+        if (platformRtt.ownerIDSelf == realTime.clientID)
+            animateRotateGizmo = rollGizmoMesh.enabled = pitchGizmoMesh.enabled = yawGizmoMesh.enabled = false;
+
+        StructureSync platformSS = platformRtt.GetComponent<StructureSync>();
+
+        if (platformSS) platformSS.OnExternalPiggybacking -= SamplePlatformRotationForces;
     }
 
     //-------------Networking------------//

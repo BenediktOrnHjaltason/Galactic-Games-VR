@@ -147,12 +147,15 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     //-----------------
 
     /// <summary>
-    /// Is structure available for being moved/rotated/replicated with gun etc? Used to guarantee that only one player
+    /// Is structure available for being moved/rotated/replicated with OmniDevice? Used to guarantee that only one player
     /// at a time can manipulate this structure
     /// </summary>
     protected bool availableToManipulate = true;
 
     public bool AvailableToManipulate { get => availableToManipulate; set => model.availableToManipulate = value; }
+
+    public event Action OnControlTaken;
+    public event Action OnControlReleased;
 
     private void AvailableToManipulateDidChange(StructureSync_Model model, bool available)
     {
@@ -161,6 +164,9 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     private void UpdateAvailableToManipulate()
     {
         availableToManipulate = model.availableToManipulate;
+
+        if (!availableToManipulate) OnControlTaken?.Invoke();
+        else OnControlReleased?.Invoke();
     }
     //------------------
 
@@ -176,6 +182,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     private void CollisionEnabledDidChange(StructureSync_Model model, bool enabled)
     {
+        
         UpdateCollisionEnabled();
     }
     private void UpdateCollisionEnabled()
@@ -192,12 +199,17 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     //------**** General functionality ****------//
 
+    public event Action<float, float, float> OnExternalPiggybacking;
+
     public void Rotate(Vector3 playerForward, float rollForce, float yawForce, Vector3 playerRight, float pitchForce)
     {
         switch (rotationAxis)
         {
             case ERotationForceAxis.PLAYER:
                 {
+
+                    OnExternalPiggybacking?.Invoke(rollForce, yawForce, pitchForce);
+
                     //Roll
                     rb.AddTorque(playerForward * rollForce, ForceMode.Acceleration);
 
