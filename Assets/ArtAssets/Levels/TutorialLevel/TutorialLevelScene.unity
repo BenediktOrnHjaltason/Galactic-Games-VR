@@ -136,17 +136,17 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 79.61
+      value: -68.44
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.674
+      value: 22.233
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.819
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -216,7 +216,7 @@ PrefabInstance:
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: omniDeviceStartup
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -10531,6 +10531,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 914694277}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &918398153 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 434376374121400323, guid: 44d0c0eb097264d47a9c65867699a3ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 8798864}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &923957383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19451,6 +19457,11 @@ PrefabInstance:
       propertyPath: helperCraft
       value: 
       objectReference: {fileID: 90238594}
+    - target: {fileID: 154575813426020696, guid: 93e94e5d78c4b9f4295f8730db211538,
+        type: 3}
+      propertyPath: playerHeadAnchor
+      value: 
+      objectReference: {fileID: 918398153}
     - target: {fileID: 174979852317976229, guid: 93e94e5d78c4b9f4295f8730db211538,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -19796,6 +19807,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6397244547356255494, guid: 93e94e5d78c4b9f4295f8730db211538,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
     - target: {fileID: 6594718706342144750, guid: 93e94e5d78c4b9f4295f8730db211538,
         type: 3}
       propertyPath: pushForce
