@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -136,17 +136,17 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 78.39
+      value: 79.61
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.654
+      value: -1.674
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.4
+      value: 9.819
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -956,6 +956,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 86858824}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &90238594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2350362136695086751, guid: bc91355b21a6594459c1c8084588f4c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2113593712}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca04a49842e9e674694918908dcf45e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &96905045
 GameObject:
   m_ObjectHideFlags: 0
@@ -19434,6 +19446,11 @@ PrefabInstance:
       propertyPath: helperCraftAnimatic
       value: 
       objectReference: {fileID: 1393156610}
+    - target: {fileID: 154575813426020696, guid: 93e94e5d78c4b9f4295f8730db211538,
+        type: 3}
+      propertyPath: helperCraft
+      value: 
+      objectReference: {fileID: 90238594}
     - target: {fileID: 174979852317976229, guid: 93e94e5d78c4b9f4295f8730db211538,
         type: 3}
       propertyPath: m_LocalPosition.x

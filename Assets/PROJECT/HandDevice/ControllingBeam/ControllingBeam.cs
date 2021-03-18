@@ -59,14 +59,9 @@ public class ControllingBeam : MonoBehaviour
 
                 line.startWidth = line.endWidth = 0.024f;
 
-                if (structurePosition != previousStructurePosition)
-                {
-                    line.SetPosition(0, transform.position);
-                    line.SetPosition(1, structurePosition + controlForce);
-                    line.SetPosition(2, structurePosition);
-
-                    previousStructurePosition = structurePosition;
-                }
+                line.SetPosition(0, transform.position);
+                line.SetPosition(1, structurePosition + controlForce);
+                line.SetPosition(2, structurePosition);
 
                 break;
         }

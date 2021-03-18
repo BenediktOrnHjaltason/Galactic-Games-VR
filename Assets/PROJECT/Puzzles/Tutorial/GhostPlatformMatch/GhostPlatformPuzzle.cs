@@ -37,8 +37,28 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
     TextMeshPro text2;
 
     [SerializeField]
+    Transform rollGizmoBase;
+
+    MeshRenderer rollGizmoMesh;
+
+    [SerializeField]
+    Transform pitchGizmoBase;
+
+    MeshRenderer pitchGizmoMesh;
+
+    [SerializeField]
+    Transform yawGizmoBase;
+
+    MeshRenderer yawGizmoMesh;
+
+    [SerializeField]
+    Transform playerHeadAnchor;
+
+
+    [SerializeField]
     Animatic helperCraftAnimatic;
 
+    [SerializeField]
     Vehicle_TicTac helperCraft;
 
 
@@ -60,8 +80,6 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
     Quaternion oldRotation;
     Quaternion newRotation;
 
-    event Action OnPuzzleSolved;
-
     //----- Operation
     EOperationPhase phase = EOperationPhase.DETECTALLIGNMENT;
 
@@ -77,33 +95,60 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
         baseLocalScale = transform.localScale;
 
-
-        OnPuzzleSolved += helperCraftAnimatic.Run;
-
-        //helperCraftAnimatic.movementSequences[1].OnSequenceStart += ProvideProgressPlatforms;
         helperCraftAnimatic.TestEvent += ProvideProgressPlatforms;
-        
-        helperCraft = helperCraftAnimatic.transform.GetChild(1).GetComponent<Vehicle_TicTac>();
 
-        OnPuzzleSolved += helperCraft.MakeVisible;
+        helperCraftAnimatic.OnAnimaticEnds += SetHelperCraftInvisible;
 
-        helperCraftAnimatic.OnAnimaticEnds += helperCraft.MakeInvisible;
+        rollGizmoMesh = rollGizmoBase.GetComponentInChildren<MeshRenderer>();
+        pitchGizmoMesh = pitchGizmoBase.GetComponentInChildren<MeshRenderer>();
+        yawGizmoMesh = yawGizmoBase.GetComponentInChildren<MeshRenderer>();
 
-        helperCraft.MakeInvisible();
+        StructureSync platformSS = platformRtt.GetComponent<StructureSync>();
+
+        if (platformSS)
+        {
+            platformSS.OnControlTaken += EnableRotateGizmo;
+            platformSS.OnControlReleased += DisableRotateGizmo;
+        }
+    }
+
+    float platformRollForce;
+    float platformYawForce;
+    float platformPitchForce;
+
+    void SamplePlatformRotationForces(float roll, float yaw, float pitch)
+    {
+        platformRollForce = roll; platformYawForce = yaw; platformPitchForce = pitch;
+    }
+
+    private void Update()
+    {
+        if (animateRotateGizmo) AllignRotateGizmoToPlayer();
+    }
+
+    void AllignRotateGizmoToPlayer()
+    {
+        Vector3 playerHeadToPlatform = platformRtt.transform.position - playerHeadAnchor.transform.position;
+        rollGizmoBase.rotation = pitchGizmoBase.rotation = Quaternion.LookRotation(playerHeadToPlatform);
+        yawGizmoBase.rotation = Quaternion.LookRotation(Vector3.up);
+
+        rollGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformRollForce / 30);
+        yawGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformYawForce / 30);
+        pitchGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformPitchForce / 30);
     }
 
     private void FixedUpdate()
     {
         
-        //If we are not connected to server we cannon request ownerships
+        //If we are not connected to server we cannot request ownerships
         if (!realTime.connected) return;
 
 
-        //If nobody has network ownership of platform, someone needs to have ownership of ghost platform, and first dibs rules
+        //Someone needs to have ownership of ghost platform to animate it, and first dibs rules
         if (thisRtt.ownerIDSelf == -1) thisRtt.RequestOwnership();
 
 
-        if (true)
+        else if (thisRtt.ownerIDSelf == realTime.clientID)
         {
             switch (phase)
             {
@@ -114,7 +159,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
                     platformToGhost = transform.position - platformRtt.transform.position;
 
                     //Position match
-                    if (platformToGhost.sqrMagnitude < 0.32f)
+                    if (platformToGhost.sqrMagnitude < 1.6f)
                     {
                         //Rotation match
                         forwardAllignment = Vector3.Dot(transform.forward, platformRtt.transform.forward);
@@ -143,9 +188,9 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
                         transform.localScale = baseLocalScale;
                         oldRotation = transform.localRotation;
-                        newRotation = 
-                            Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0.0f, 360.0f), 
-                                                         UnityEngine.Random.Range(0.0f, 360.0f), 
+                        newRotation =
+                            Quaternion.Euler(new Vector3(UnityEngine.Random.Range(0.0f, 360.0f),
+                                                         UnityEngine.Random.Range(0.0f, 360.0f),
                                                          UnityEngine.Random.Range(0.0f, 360.0f)));
 
                         phase = EOperationPhase.MOVE;
@@ -174,6 +219,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
                     break;
             }
         }
+        
 
         if (provideProgressPlatforms)
         {
@@ -228,6 +274,33 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
     }
 
+    bool animateRotateGizmo = false;
+
+    void EnableRotateGizmo()
+    {
+        StructureSync platformSS = platformRtt.GetComponent<StructureSync>();
+
+        if (platformSS)
+        {
+            platformSS.OnExternalPiggybacking += SamplePlatformRotationForces;
+
+            AllignRotateGizmoToPlayer();
+
+            if (platformSS.OwnedByPlayer)
+                animateRotateGizmo = rollGizmoMesh.enabled = pitchGizmoMesh.enabled = yawGizmoMesh.enabled = true;
+        }
+    }
+
+    void DisableRotateGizmo()
+    {
+        if (platformRtt.ownerIDSelf == realTime.clientID)
+            animateRotateGizmo = rollGizmoMesh.enabled = pitchGizmoMesh.enabled = yawGizmoMesh.enabled = false;
+
+        StructureSync platformSS = platformRtt.GetComponent<StructureSync>();
+
+        if (platformSS) platformSS.OnExternalPiggybacking -= SamplePlatformRotationForces;
+    }
+
     //-------------Networking------------//
 
     protected override void OnRealtimeModelReplaced(GhostPlatformPuzzle_Model previousModel, GhostPlatformPuzzle_Model currentModel)
@@ -236,6 +309,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
         {
             // Unregister from events
             previousModel.matchesLeftToWinDidChange -= MatchesLeftToWinDidChange;
+            previousModel.helperCraftVisibleDidChange -= HelperCraftVisibleDidChange;
         }
 
         if (currentModel != null)
@@ -244,13 +318,16 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
             if (currentModel.isFreshModel)
             {
                 currentModel.matchesLeftToWin = matchesLeftToWin;
+                currentModel.helperCraftVisible = false;
             }
 
             // Update data to match the new model
             UpdateMatchesLeftToWin();
+            UpdateHelperCraftVisible();
 
             //Register for events so we'll know if data changes later
             currentModel.matchesLeftToWinDidChange += MatchesLeftToWinDidChange;
+            currentModel.helperCraftVisibleDidChange += HelperCraftVisibleDidChange;
         }
     }
 
@@ -285,13 +362,33 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
             text1.transform.GetComponent<MeshRenderer>().enabled =
             text2.transform.GetComponent<MeshRenderer>().enabled = false;
 
-            Debug.Log("MAKING TIC TAC VISIBLE!");
-
-            if (platformRtt.ownerIDSelf == realTime.clientID)
+            if (thisRtt.ownerIDSelf == realTime.clientID)
             {
-                helperCraft.GetComponent<RealtimeTransform>().SetOwnership(platformRtt.ownerIDSelf);
-                OnPuzzleSolved?.Invoke();
+                HelperCraftVisible = true;
+
+                helperCraft.GetComponent<RealtimeTransform>().SetOwnership(thisRtt.ownerIDSelf);
+
+                helperCraftAnimatic.Run();
             }
         }
+    }
+
+    bool HelperCraftVisible { set => model.helperCraftVisible = value; }
+
+    void HelperCraftVisibleDidChange(GhostPlatformPuzzle_Model model, bool visible)
+    {
+        UpdateHelperCraftVisible();
+    }
+
+    void UpdateHelperCraftVisible()
+    {
+        bool visible = model.helperCraftVisible;
+
+        if (helperCraft) helperCraft.SetVisibility(visible);
+    }
+
+    void SetHelperCraftInvisible()
+    {
+        HelperCraftVisible = false;
     }
 }

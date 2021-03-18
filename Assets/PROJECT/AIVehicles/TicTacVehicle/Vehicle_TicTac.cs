@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Vehicle_TicTac : MonoBehaviour
 {
-    
     List<MeshRenderer> meshes = new List<MeshRenderer>();
 
     private void Awake()
@@ -12,14 +11,8 @@ public class Vehicle_TicTac : MonoBehaviour
         for (int i = 0; i < 3; i++) meshes.Add(transform.GetChild(i).GetComponent<MeshRenderer>());
     }
 
-    public void MakeVisible()
+    public void SetVisibility(bool visibility)
     {
-        foreach (MeshRenderer mr in meshes) mr.enabled = true;
+        foreach (MeshRenderer mr in meshes) mr.enabled = visibility;
     }
-
-    public void MakeInvisible()
-    {
-        foreach (MeshRenderer mr in meshes) mr.enabled = false;
-    }
-
 }
