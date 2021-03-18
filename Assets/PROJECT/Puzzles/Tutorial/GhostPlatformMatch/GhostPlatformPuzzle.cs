@@ -123,16 +123,18 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
     private void Update()
     {
-        if (animateRotateGizmo)
-        {
-            Vector3 playerHeadToPlatform = platformRtt.transform.position - playerHeadAnchor.transform.position;
-            rollGizmoBase.rotation = pitchGizmoBase.rotation = Quaternion.LookRotation(playerHeadToPlatform);
-            yawGizmoBase.rotation = Quaternion.LookRotation(Vector3.up);
+        if (animateRotateGizmo) AllignRotateGizmoToPlayer();
+    }
 
-            rollGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformRollForce / 30);
-            yawGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformYawForce / 30);
-            pitchGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformPitchForce / 30);
-        }
+    void AllignRotateGizmoToPlayer()
+    {
+        Vector3 playerHeadToPlatform = platformRtt.transform.position - playerHeadAnchor.transform.position;
+        rollGizmoBase.rotation = pitchGizmoBase.rotation = Quaternion.LookRotation(playerHeadToPlatform);
+        yawGizmoBase.rotation = Quaternion.LookRotation(Vector3.up);
+
+        rollGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformRollForce / 30);
+        yawGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformYawForce / 30);
+        pitchGizmoMesh.transform.localRotation *= Quaternion.Euler(0.0f, 0.0f, platformPitchForce / 30);
     }
 
     private void FixedUpdate()
@@ -276,12 +278,17 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
     void EnableRotateGizmo()
     {
-        if (platformRtt.ownerIDSelf == realTime.clientID)
-            animateRotateGizmo = rollGizmoMesh.enabled = pitchGizmoMesh.enabled = yawGizmoMesh.enabled = true;
-
         StructureSync platformSS = platformRtt.GetComponent<StructureSync>();
 
-        if (platformSS) platformSS.OnExternalPiggybacking += SamplePlatformRotationForces;
+        if (platformSS)
+        {
+            platformSS.OnExternalPiggybacking += SamplePlatformRotationForces;
+
+            AllignRotateGizmoToPlayer();
+
+            if (platformSS.OwnedByPlayer)
+                animateRotateGizmo = rollGizmoMesh.enabled = pitchGizmoMesh.enabled = yawGizmoMesh.enabled = true;
+        }
     }
 
     void DisableRotateGizmo()

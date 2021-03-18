@@ -136,8 +136,12 @@ public class GravityForce : HandDevice
 
                     if (!replicating)
                     {
+                        structureSync.OwnedByPlayer = true;
+
                         structureSync.AvailableToManipulate = false;
                         structureSync.OnBreakControl += ReleaseStructureFromControl;
+
+                        
 
                         handDeviceData.targetStructureAllowsRotation = structureSync.AllowRotationForces;
                         targetTransform = targetStructure.transform;
@@ -148,7 +152,7 @@ public class GravityForce : HandDevice
                         {
                             //If player holds structure sufficiently still while controlling it, it may register as sleeping and we could loose ownership
                             structureRtt.maintainOwnershipWhileSleeping = true;
-                            structureRtt.RequestOwnership();
+                            structureRtt.SetOwnership(realtime.clientID);
                         }
 
                         //Update state on deviceSync

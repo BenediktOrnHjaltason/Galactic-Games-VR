@@ -121,6 +121,8 @@ public abstract class HandDevice : MonoBehaviour
         {
             if (owner.OperationState == EHandDeviceState.CONTROLLING)
             {
+                structureSync.OwnedByPlayer = false;
+
                 structureSync.AvailableToManipulate = true;
                 structureRtt.maintainOwnershipWhileSleeping = false;
 

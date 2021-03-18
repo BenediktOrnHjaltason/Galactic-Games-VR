@@ -46,7 +46,10 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     [SerializeField]
     bool allowRotationForces = true;
-    public bool AllowRotationForces { get => allowRotationForces; set => allowRotationForces = value; }    
+    public bool AllowRotationForces { get => allowRotationForces; set => allowRotationForces = value; }
+
+    bool ownedByPlayer = false;
+    public bool OwnedByPlayer { get => ownedByPlayer; set => ownedByPlayer = value; }
 
 
     GameObject mainStructure;
