@@ -13,6 +13,8 @@ public class ZipLinePoint : MonoBehaviour
     [SerializeField]
     EZipLine point;
 
+    public EZipLine Point { get => point; }
+
 
     /// <summary>
     /// Prefab to spawn
@@ -23,11 +25,25 @@ public class ZipLinePoint : MonoBehaviour
     [SerializeField]
     GameObject otherPoint;
 
+    public GameObject OtherPoint 
+    {
+        set
+        {
+            otherPoint = value;
+
+            if (point == EZipLine.START)
+            {
+                transportLineActive = (value != null) ? true : false;
+
+                if (value == null) transportLine.transform.localScale = Vector3.zero; 
+            }
+        }
+    }
+
     GameObject transportLine;
 
     ZipLineTransport zipLineTransport;
 
-    //Vector3 startToEnd;
     Vector3 selfToOther;
 
 
@@ -43,8 +59,9 @@ public class ZipLinePoint : MonoBehaviour
             transportLine = Instantiate<GameObject>(PF_TransportLine, transform);
 
             zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
+            zipLineTransport.OnBeamTouchesObstacle += BreakConnection;
 
-            if (transportLine && zipLineTransport) Debug.Log("ZipLinePoint::Start: We have reference to zipline object and script");
+            if (otherPoint) transportLineActive = true;
         }
 
         rtt = transform.root.GetComponent<RealtimeTransform>();
@@ -52,31 +69,56 @@ public class ZipLinePoint : MonoBehaviour
 
     void FixedUpdate()
     {
-        selfToOther =  otherPoint.transform.root.position - transform.root.position;
+        if (otherPoint) selfToOther = otherPoint.transform.root.position - transform.root.position;
 
-        if (transportLine)
+        //Start-points handles transport line
+        if (transportLine && otherPoint)
         {
-            //startToEnd = otherPoint.transform.position - transform.position;
-            zipLineTransport.TransportDirection = selfToOther;
+            if (transportLineActive)
+            {
+                zipLineTransport.TransportDirection = selfToOther;
 
-            //if (Vector3.Dot(startToEnd.normalized, transform.root.forward) > 0.96f && Vector3.Dot(-startToEnd.normalized, otherPoint.transform.forward) > 0.96f)
-            //{
+
                 transportLine.transform.SetPositionAndRotation(transform.position + (selfToOther / 2), Quaternion.LookRotation(selfToOther));
                 transportLine.transform.localScale = new Vector3(0.25f, 0.25f, selfToOther.magnitude);
-            //}
-
-            //else
-            //{
-            //transportLine.transform.position = transform.position;
-            //transportLine.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
-            //}
-
-            
+            }
+            else
+            {
+                transportLine.transform.position = transform.position;
+            }
         }
 
-        if (rtt.realtime.connected && rtt.isUnownedSelf) rtt.RequestOwnership();
+        if (rtt.realtime.connected && rtt.ownerIDSelf == -1) rtt.RequestOwnership();
 
         if (rtt.realtime.connected && rtt.isOwnedLocallySelf) transform.root.rotation = Quaternion.LookRotation(selfToOther);
+
+    }
+
+
+    //Only for Start-points
+
+    bool transportLineActive = false;
+
+    void BreakConnection(GameObject otherCollidingObject)
+    {
+
+        if (otherCollidingObject == this) return;
+
+        
+
+        ZipLinePoint zp = otherPoint.GetComponentInChildren<ZipLinePoint>();
+
+        if (zp)
+        {
+            zp.OtherPoint = null;
+            OtherPoint = null;
+
+            transportLineActive = false;
+        }
+    }
+
+    void MakeConnection()
+    {
 
     }
 }

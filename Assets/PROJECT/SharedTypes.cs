@@ -32,7 +32,7 @@ namespace Types
         COUNTERCLOCKWISE
     }
 
-    enum EZipLine
+    public enum EZipLine
     {
         START,
         END
