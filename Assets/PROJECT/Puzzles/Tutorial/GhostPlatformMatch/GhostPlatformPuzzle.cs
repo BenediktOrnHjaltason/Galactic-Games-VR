@@ -95,7 +95,12 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
 
         baseLocalScale = transform.localScale;
 
-        helperCraftAnimatic.TestEvent += ProvideProgressPlatforms;
+        //helperCraftAnimatic.TestEvent += ProvideProgressPlatforms;
+
+        helperCraftAnimatic.InitializeSequenceDelegates();
+
+        if (helperCraftAnimatic.onSequenceStart.Length >= 2)
+            helperCraftAnimatic.onSequenceStart[1] = ProvideProgressPlatforms;
 
         helperCraftAnimatic.OnAnimaticEnds += SetHelperCraftInvisible;
 

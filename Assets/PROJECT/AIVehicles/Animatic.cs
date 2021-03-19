@@ -29,6 +29,10 @@ public class Animatic : MonoBehaviour
 
     public event Action TestEvent;
 
+    public delegate void OnSequenceStart();
+
+    public OnSequenceStart[] onSequenceStart = null;
+
 
     [SerializeField]
     string title = "Default";
@@ -59,6 +63,11 @@ public class Animatic : MonoBehaviour
         if (trigger) trigger.Execute += Run;
     }
 
+    public void InitializeSequenceDelegates()
+    {
+        onSequenceStart = new OnSequenceStart[movementSequences.Count];
+    }
+
     private void FixedUpdate()
     {
         if (sequenceRunning)
@@ -80,7 +89,9 @@ public class Animatic : MonoBehaviour
 
                     if (activeSequence == 1) TestEvent?.Invoke();
 
-                    //movementSequences[activeSequence].OnSequenceStart;
+                    if (onSequenceStart != null && onSequenceStart[activeSequence] != null)
+                        onSequenceStart[activeSequence]();
+
                     timeOnSequenceStart = Time.time;
                 }
                 else
@@ -102,8 +113,12 @@ public class Animatic : MonoBehaviour
     {
         if (!sequenceRunning)
         {
-            //movementSequences[activeSequence].InvokeStartEvent();
+            
             sequenceRunning = true;
+
+            if (onSequenceStart != null && onSequenceStart[activeSequence] != null)
+                onSequenceStart[activeSequence]();
+
             timeOnSequenceStart = Time.time;
         }
     }
