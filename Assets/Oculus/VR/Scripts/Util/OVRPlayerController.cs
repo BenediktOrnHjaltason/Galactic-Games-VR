@@ -370,7 +370,9 @@ public class OVRPlayerController : MonoBehaviour
 			}
 			else vignette.transform.gameObject.SetActive(false);
 		}
-			
+
+		OVRManager.display.RecenterPose();
+
 	}
 
 	void Awake()
