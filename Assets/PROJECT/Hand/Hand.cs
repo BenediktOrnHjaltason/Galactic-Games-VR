@@ -69,6 +69,8 @@ public class Hand : MonoBehaviour
 
     public bool UsingHandDevice { get => usingHandDevice; }
 
+
+    ZipLineTransport zipLineGrabbed;
     bool grabbingZipLine = false;
     
 
@@ -149,7 +151,6 @@ public class Hand : MonoBehaviour
             {
                 SetOmniDeviceActive(true);
             }
-            
         }
     }
 
@@ -206,9 +207,13 @@ public class Hand : MonoBehaviour
         }
 
         //Extend default rumble limit of 2 seconds
-        if (grabbingZipLine && timeOfZiplineRumble > 1.8f)
-            OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
-
+        if (grabbingZipLine)
+        {
+            playerController.ZipLineDirection = zipLineGrabbed.TransportDirection;
+            
+            if (timeOfZiplineRumble > 1.8f)
+                OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
+        }
     }
 
     private void OnTriggerStay(Collider other)
@@ -229,7 +234,11 @@ public class Hand : MonoBehaviour
                 GrabDevice(other.gameObject);
 
             else if (other.gameObject.layer.Equals(layer_ZipLineHandle))
-                GrabZipLine(other.gameObject.GetComponent<ZipLineTransport>().TransportDirection);
+            {
+                zipLineGrabbed = other.gameObject.GetComponent<ZipLineTransport>();
+                GrabZipLine();
+            }
+                
         }
 
         else if (shouldRelease) 
@@ -278,9 +287,9 @@ public class Hand : MonoBehaviour
     //Rumble stops at 2 seconds as default from OVRInput
     float timeOfZiplineRumble = 0;
 
-    void GrabZipLine(Vector3 moveDirection)
+    void GrabZipLine()
     {
-        playerController.SetGrabbingZipLine(true, moveDirection);
+        playerController.SetGrabbingZipLine(true, transform, (int)handSide, zipLineGrabbed.StartPointTransform);
 
         handOffsetToPlayerControllerOnZipLineGrab = transform.position - playerController.transform.position;
 
@@ -295,7 +304,7 @@ public class Hand : MonoBehaviour
 
     void ReleaseZipLine()
     {
-        playerController.SetGrabbingZipLine(false, new Vector3(0, 0, 0));
+        playerController.SetGrabbingZipLine(false);
 
         grabbingZipLine = false;
 

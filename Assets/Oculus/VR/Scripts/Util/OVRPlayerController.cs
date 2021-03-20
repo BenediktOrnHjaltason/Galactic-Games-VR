@@ -157,6 +157,8 @@ public class OVRPlayerController : MonoBehaviour
 
 	Realtime realtime;
 
+	//public enum EHandSide { LEFT, RIGHT }
+
 
 	RealtimeView headRealtimeView;
 	public RealtimeView HeadRealtimeView { set => headRealtimeView = value; get => headRealtimeView; }
@@ -227,8 +229,34 @@ public class OVRPlayerController : MonoBehaviour
 	bool grabbingHandle = false;
 	bool grabbingZipLine = false;
 	bool grabbingAnything = false;
+
+
+	//ZipLine
+
 	Vector3 zipLineDirection;
-	float zipLineSpeed = 0.1f;
+	public Vector3 ZipLineDirection { set => zipLineDirection = value; }
+
+	Vector3 positionOnZipLineGrab;
+	Vector3 handPositionOnZipLineGrab;
+
+	Transform externalHandForZipLine;
+	Vector3 externalHandForZipLinePosOnGrab;
+
+	//The transform of the start point structure for the zipline we grabbed
+	Transform grabbedZipLineStartPoint;
+	Vector3 grabbedZipLineStartPointPosOnGrab;
+
+	Vector3 playerControllerOffsettToHandOnGrab;
+
+	float zipStartToHandDistanceOnGrab;
+
+	Transform grabbingHandTransform;
+
+
+
+	float zipLineSpeed = 3.0f;
+
+	float distanceTravelledOnZipLine = 0;
 
 	bool grabbing_LeftHand = false;
 	bool grabbing_RightHand = false;
@@ -311,12 +339,24 @@ public class OVRPlayerController : MonoBehaviour
 		}
     }
 
-	public void SetGrabbingZipLine(bool state, Vector3 moveDirection)
+	public void SetGrabbingZipLine(bool state, Transform hand = null, int handSide = -1, Transform zipLineStart = null)
     {
-		zipLineDirection = moveDirection;
-
 		if (state == true)
 		{
+			grabbingHandTransform = hand;
+			playerControllerOffsettToHandOnGrab = transform.position - hand.position;
+
+			zipStartToHandDistanceOnGrab = (hand.transform.position - zipLineStart.position).magnitude;
+
+
+			grabbedZipLineStartPoint = zipLineStart;
+			grabbedZipLineStartPointPosOnGrab = zipLineStart.position;
+
+			externalHandForZipLine = (handSide == 0) ? externalLeftHand : externalRightHand;
+			externalHandForZipLinePosOnGrab = externalHandForZipLine.position;
+
+			positionOnZipLineGrab = transform.position;
+
 			Controller.enabled = false;
 			HmdRotatesY = false;
 
@@ -329,6 +369,7 @@ public class OVRPlayerController : MonoBehaviour
 			HmdRotatesY = true;
 
 			grabbingZipLine = grabbingAnything = false;
+			distanceTravelledOnZipLine = 0;
 		}
 	}
 
@@ -569,7 +610,15 @@ public class OVRPlayerController : MonoBehaviour
 		//Handle ZipLine transportation
 		if (grabbingZipLine)
 		{
-			transform.position += zipLineDirection * zipLineSpeed * Time.deltaTime;
+			distanceTravelledOnZipLine += zipLineSpeed * Time.deltaTime;
+
+			//transform.position += zipLineDirection.normalized * zipLineSpeed * Time.deltaTime;
+
+			transform.position =
+				grabbedZipLineStartPointPosOnGrab +
+				(grabbedZipLineStartPoint.forward * zipStartToHandDistanceOnGrab) +
+				playerControllerOffsettToHandOnGrab - (externalHandForZipLine.position - externalHandForZipLinePosOnGrab) +
+				grabbedZipLineStartPoint.forward * distanceTravelledOnZipLine;
 		}
 	}
 

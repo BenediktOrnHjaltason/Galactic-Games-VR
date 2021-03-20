@@ -42,7 +42,7 @@ public class ZipLinePoint : MonoBehaviour
 
     GameObject transportLine;
 
-    ZipLineTransport zipLineTransport;
+    ZipLineTransport transportBeam;
 
     Vector3 selfToOther;
 
@@ -58,8 +58,10 @@ public class ZipLinePoint : MonoBehaviour
         {
             transportLine = Instantiate<GameObject>(PF_TransportLine, transform);
 
-            zipLineTransport = transportLine.GetComponent<ZipLineTransport>();
-            zipLineTransport.OnBeamTouchesObstacle += BreakConnection;
+            transportBeam = transportLine.GetComponent<ZipLineTransport>();
+            transportBeam.OnBeamTouchesObstacle += BreakConnection;
+
+            transportBeam.StartPointTransform = transform.root;
 
             if (otherPoint) transportLineActive = true;
         }
@@ -76,7 +78,7 @@ public class ZipLinePoint : MonoBehaviour
         {
             if (transportLineActive)
             {
-                zipLineTransport.TransportDirection = selfToOther;
+                transportBeam.TransportDirection = selfToOther;
 
 
                 transportLine.transform.SetPositionAndRotation(transform.position + (selfToOther / 2), Quaternion.LookRotation(selfToOther));
