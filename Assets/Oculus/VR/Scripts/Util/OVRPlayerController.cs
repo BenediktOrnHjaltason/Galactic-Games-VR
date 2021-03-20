@@ -250,6 +250,8 @@ public class OVRPlayerController : MonoBehaviour
 
 	float zipStartToHandDistanceOnGrab;
 
+	Vector3 handOffsettToMiddleOfBeamAtGrabPoint;
+
 	Transform grabbingHandTransform;
 
 
@@ -347,6 +349,8 @@ public class OVRPlayerController : MonoBehaviour
 			playerControllerOffsettToHandOnGrab = transform.position - hand.position;
 
 			zipStartToHandDistanceOnGrab = (hand.transform.position - zipLineStart.position).magnitude;
+
+			handOffsettToMiddleOfBeamAtGrabPoint = hand.position - (zipLineStart.position + (zipLineStart.forward * zipStartToHandDistanceOnGrab));
 
 
 			grabbedZipLineStartPoint = zipLineStart;
@@ -618,6 +622,7 @@ public class OVRPlayerController : MonoBehaviour
 				grabbedZipLineStartPoint.position +
 				(grabbedZipLineStartPoint.forward * zipStartToHandDistanceOnGrab) +
 				playerControllerOffsettToHandOnGrab - (externalHandForZipLine.position - externalHandForZipLinePosOnGrab) +
+				handOffsettToMiddleOfBeamAtGrabPoint +
 				grabbedZipLineStartPoint.forward * distanceTravelledOnZipLine;
 		}
 	}
