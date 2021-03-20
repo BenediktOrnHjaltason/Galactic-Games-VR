@@ -112,15 +112,12 @@ public class Hand : MonoBehaviour
 
         //Temp
         if (handSide == EHandSide.LEFT) rightHand.otherHand = this;
-
     }
 
     //Called after hand prefabs are instantiated on network.
     public void Initialize(GameObject spawnedHand)
     {
         handSync = spawnedHand.GetComponent<HandSync>();
-
-        
 
         if (handSync)
         {
@@ -134,9 +131,7 @@ public class Hand : MonoBehaviour
             //((UIOmniDeviceMenu)deviceUI).NumberOfDevices = od.NumberOfDevices;
             //((UIOmniDeviceMenu)deviceUI).OnMenuChange += od.SetDeviceMode;
 
-
             SetOmniDeviceActive(false);
-
 
             if (playerController.OmniDeviceStartupState == OVRPlayerController.EOmniDeviceStartup.OnlyLeft && handSide == EHandSide.LEFT)
             {
@@ -170,7 +165,6 @@ public class Hand : MonoBehaviour
 
             usingHandDevice = handDeviceData.controllingStructure;
 
-
             if ((handDeviceData.controllingStructure && handDeviceData.targetStructureAllowsRotation) || 
                   (otherHand.handDeviceData.controllingStructure && otherHand.handDeviceData.targetStructureAllowsRotation) && 
                   playerController.EnableLinearMovement)
@@ -178,7 +172,6 @@ public class Hand : MonoBehaviour
 
             else if ((!handDeviceData.controllingStructure && !otherHand.handDeviceData.controllingStructure) && !playerController.EnableLinearMovement) 
                 playerController.EnableLinearMovement = playerController.EnableRotation = true;
-
         }
 
         if (OVRInput.GetDown(grabButton))
@@ -196,9 +189,6 @@ public class Hand : MonoBehaviour
         {
             grabHandleRumble -= 9.0f * Time.deltaTime;
 
-
-
-
             if (grabHandleRumble <= 0)
             {
                 grabHandleRumble = 0;
@@ -208,12 +198,8 @@ public class Hand : MonoBehaviour
 
         //Extend default rumble limit of 2 seconds
         if (grabbingZipLine)
-        {
-            playerController.ZipLineDirection = zipLineGrabbed.TransportDirection;
-            
             if (timeOfZiplineRumble > 1.8f)
                 OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
-        }
     }
 
     private void OnTriggerStay(Collider other)

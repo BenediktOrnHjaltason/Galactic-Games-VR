@@ -233,10 +233,6 @@ public class OVRPlayerController : MonoBehaviour
 
 	//ZipLine
 
-	Vector3 zipLineDirection;
-	public Vector3 ZipLineDirection { set => zipLineDirection = value; }
-
-	Vector3 positionOnZipLineGrab;
 	Vector3 handPositionOnZipLineGrab;
 
 	Transform externalHandForZipLine;
@@ -256,7 +252,11 @@ public class OVRPlayerController : MonoBehaviour
 
 	Vector3 projectionOfVectorBetweenOldAndNewStartPositionsOnNewDirection;
 
-	Transform grabbingHandTransform;
+	OVRInput.Axis2D zipLineControllerThumbStick;
+
+	float zipSpeedModifier;
+
+
 
 
 
@@ -302,16 +302,11 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (hand == 0)
 		{
-
-			
-
 			grabbing_LeftHand = (grabbing) ? true : false;
 
 			if (grabbing_LeftHand) grabbing_RightHand = false;
 
 			externalLeftHandPositionOnGrab = externalLeftHand.position;
-
-			
 		}
 
 		else if (hand == 1)
@@ -349,7 +344,6 @@ public class OVRPlayerController : MonoBehaviour
     {
 		if (state == true)
 		{
-			grabbingHandTransform = hand;
 			playerControllerOffsettToHandOnGrab = transform.position - hand.position;
 
 			ZipStartForwardOnGrab = zipLineStart.forward;
@@ -358,14 +352,13 @@ public class OVRPlayerController : MonoBehaviour
 
 			handOffsettToMiddleOfBeamAtGrabPoint = hand.position - (zipLineStart.position + (zipLineStart.forward * zipStartToHandDistanceOnGrab));
 
-
 			grabbedZipLineStartPoint = zipLineStart;
 			grabbedZipLineStartPointPosOnGrab = zipLineStart.position;
 
 			externalHandForZipLine = (handSide == 0) ? externalLeftHand : externalRightHand;
 			externalHandForZipLinePosOnGrab = externalHandForZipLine.position;
 
-			positionOnZipLineGrab = transform.position;
+			zipLineControllerThumbStick = (handSide == 0) ? OVRInput.Axis2D.PrimaryThumbstick : OVRInput.Axis2D.SecondaryThumbstick;
 
 			Controller.enabled = false;
 			HmdRotatesY = false;
@@ -541,7 +534,7 @@ public class OVRPlayerController : MonoBehaviour
 
 			if (EnableLinearMovement)
             {
-				swingWalkVector = (transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10) /*+ new Vector3(0,-0.1f,0)*/;
+				swingWalkVector = (transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10);
 				Controller.Move(swingWalkVector);
 			}
 		}
@@ -620,7 +613,10 @@ public class OVRPlayerController : MonoBehaviour
 		//Handle ZipLine transportation
 		if (grabbingZipLine)
 		{
-			distanceTravelledOnZipLine += zipLineSpeed * Time.deltaTime;
+			zipSpeedModifier = (OVRInput.Get(zipLineControllerThumbStick).y + 1);
+
+			distanceTravelledOnZipLine += (zipLineSpeed * Time.deltaTime * zipSpeedModifier);
+
 
 			//transform.position += zipLineDirection.normalized * zipLineSpeed * Time.deltaTime;
 			/*
@@ -636,7 +632,8 @@ public class OVRPlayerController : MonoBehaviour
 				(grabbedZipLineStartPoint.forward * zipStartToHandDistanceOnGrab) +
 				playerControllerOffsettToHandOnGrab - (externalHandForZipLine.position - externalHandForZipLinePosOnGrab) +
 				handOffsettToMiddleOfBeamAtGrabPoint +
-				(grabbedZipLineStartPoint.forward * distanceTravelledOnZipLine); //-
+				(grabbedZipLineStartPoint.forward * distanceTravelledOnZipLine ) +
+				(grabbedZipLineStartPoint.forward * Time.deltaTime * zipSpeedModifier); //-
 				//projectionOfVectorBetweenOldAndNewStartPositionsOnNewDirection;
 		}
 	}
