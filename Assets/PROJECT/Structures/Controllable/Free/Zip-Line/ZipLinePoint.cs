@@ -107,7 +107,7 @@ public class ZipLinePoint : MonoBehaviour
 
     bool transportLineActive = false;
 
-    void BreakConnection(GameObject otherCollidingObject)
+    public void BreakConnection()
     {
 
         //if (otherCollidingObject == this) return;

@@ -293,6 +293,9 @@ public class Hand : MonoBehaviour
 
     void GrabZipLine()
     {
+        otherHand.ReleaseZipLine();
+
+
         playerController.SetGrabbingZipLine(true, transform, (int)handSide, zipLineGrabbed.StartPointTransform);
 
         handOffsetToPlayerControllerOnZipLineGrab = transform.position - playerController.transform.position;
@@ -306,7 +309,7 @@ public class Hand : MonoBehaviour
         OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
     }
 
-    void ReleaseZipLine(GameObject actionDummy = null)
+    public void ReleaseZipLine()
     {
         zipLineGrabbed.OnBeamTouchesObstacle -= ReleaseZipLine;
 

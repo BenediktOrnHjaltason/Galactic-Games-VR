@@ -5,7 +5,7 @@ using System;
 
 public class ZipLineTransport : MonoBehaviour
 {
-    public event Action<GameObject> OnBeamTouchesObstacle;
+    public event Action OnBeamTouchesObstacle;
 
     Transform startPointTransform;
     public Transform StartPointTransform { set => startPointTransform = value; get => startPointTransform; }
@@ -20,7 +20,7 @@ public class ZipLineTransport : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(16) || other.gameObject.layer.Equals(0) || other.gameObject.layer.Equals(10))
         {
-            OnBeamTouchesObstacle?.Invoke(other.gameObject);
+            OnBeamTouchesObstacle?.Invoke();
         }
     }
 }
