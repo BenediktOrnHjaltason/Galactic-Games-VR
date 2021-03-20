@@ -70,7 +70,7 @@ public class Hand : MonoBehaviour
     public bool UsingHandDevice { get => usingHandDevice; }
 
 
-    ZipLineTransport zipLineGrabbed;
+    static ZipLineTransport zipLineGrabbed;
     bool grabbingZipLine = false;
     
 
@@ -236,6 +236,7 @@ public class Hand : MonoBehaviour
             else if (other.gameObject.layer.Equals(layer_ZipLineHandle))
             {
                 zipLineGrabbed = other.gameObject.GetComponent<ZipLineTransport>();
+                zipLineGrabbed.OnBeamTouchesObstacle += ReleaseZipLine;
                 GrabZipLine();
             }
                 
@@ -258,8 +259,9 @@ public class Hand : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (grabbingZipLine && other.gameObject.layer.Equals(layer_ZipLineHandle))
-            ReleaseZipLine();
+        if (grabbingZipLine && zipLineGrabbed && other.gameObject.layer.Equals(layer_ZipLineHandle) &&
+            (zipLineGrabbed.EndPointTransform.position - transform.position).magnitude < 1 || (zipLineGrabbed.StartPointTransform.position - transform.position).magnitude < 1)
+                ReleaseZipLine();
     }
 
     void GrabHandle(GameObject handle)
@@ -302,8 +304,10 @@ public class Hand : MonoBehaviour
         OVRInput.SetControllerVibration(0.01f, 0.18f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
     }
 
-    void ReleaseZipLine()
+    void ReleaseZipLine(GameObject actionDummy = null)
     {
+        zipLineGrabbed.OnBeamTouchesObstacle -= ReleaseZipLine;
+
         playerController.SetGrabbingZipLine(false);
 
         grabbingZipLine = false;

@@ -63,7 +63,11 @@ public class ZipLinePoint : MonoBehaviour
 
             transportBeam.StartPointTransform = transform.root;
 
-            if (otherPoint) transportLineActive = true;
+            if (otherPoint)
+            {
+                transportBeam.EndPointTransform = otherPoint.transform;
+                transportLineActive = true;
+            }
         }
 
         rtt = transform.root.GetComponent<RealtimeTransform>();
@@ -117,10 +121,5 @@ public class ZipLinePoint : MonoBehaviour
 
             transportLineActive = false;
         }
-    }
-
-    void MakeConnection()
-    {
-
     }
 }

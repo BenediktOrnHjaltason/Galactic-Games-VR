@@ -615,7 +615,7 @@ public class OVRPlayerController : MonoBehaviour
 			//transform.position += zipLineDirection.normalized * zipLineSpeed * Time.deltaTime;
 
 			transform.position =
-				grabbedZipLineStartPointPosOnGrab +
+				grabbedZipLineStartPoint.position +
 				(grabbedZipLineStartPoint.forward * zipStartToHandDistanceOnGrab) +
 				playerControllerOffsettToHandOnGrab - (externalHandForZipLine.position - externalHandForZipLinePosOnGrab) +
 				grabbedZipLineStartPoint.forward * distanceTravelledOnZipLine;

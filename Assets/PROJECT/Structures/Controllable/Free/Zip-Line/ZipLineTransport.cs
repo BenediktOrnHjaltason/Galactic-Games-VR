@@ -8,8 +8,10 @@ public class ZipLineTransport : MonoBehaviour
     public event Action<GameObject> OnBeamTouchesObstacle;
 
     Transform startPointTransform;
-
     public Transform StartPointTransform { set => startPointTransform = value; get => startPointTransform; }
+
+    Transform endPointTransform;
+    public Transform EndPointTransform { set => endPointTransform = value; get => endPointTransform; }
 
     Vector3 transportDirection;
     public Vector3 TransportDirection { get => transportDirection;  set => transportDirection = value; }

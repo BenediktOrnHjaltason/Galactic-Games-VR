@@ -17,14 +17,15 @@ public class ZipLineEndSensor : MonoBehaviour
         if (other.gameObject.layer.Equals(10))
         {
             ZipLinePoint endPoint = other.gameObject.GetComponentInChildren<ZipLinePoint>();
+            ZipLineTransport transport = transform.root.GetComponentInChildren<ZipLineTransport>();
 
-            if (endPoint && endPoint.Point == Types.EZipLine.END)
+            if (endPoint && endPoint.Point == Types.EZipLine.END && transport)
             {
                 ownerPoint.OtherPoint = endPoint.transform.root.gameObject;
                 endPoint.OtherPoint = transform.root.gameObject;
+
+                transport.EndPointTransform = endPoint.transform;
             }
         }
     }
-
-
 }
