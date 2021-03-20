@@ -38,6 +38,8 @@ public class ZipLinePoint : MonoBehaviour
                 if (value == null) transportLine.transform.localScale = Vector3.zero; 
             }
         }
+
+        get => otherPoint;
     }
 
     GameObject transportLine;
@@ -96,7 +98,7 @@ public class ZipLinePoint : MonoBehaviour
 
         if (rtt.realtime.connected && rtt.ownerIDSelf == -1) rtt.RequestOwnership();
 
-        if (rtt.realtime.connected && rtt.isOwnedLocallySelf) transform.root.rotation = Quaternion.LookRotation(selfToOther);
+        if (otherPoint && rtt.realtime.connected && rtt.isOwnedLocallySelf) transform.root.rotation = Quaternion.LookRotation(selfToOther);
 
     }
 
@@ -108,11 +110,11 @@ public class ZipLinePoint : MonoBehaviour
     void BreakConnection(GameObject otherCollidingObject)
     {
 
-        if (otherCollidingObject == this) return;
+        //if (otherCollidingObject == this) return;
 
         
 
-        ZipLinePoint zp = otherPoint.GetComponentInChildren<ZipLinePoint>();
+        ZipLinePoint zp = otherPoint.transform.root.GetComponentInChildren<ZipLinePoint>();
 
         if (zp)
         {

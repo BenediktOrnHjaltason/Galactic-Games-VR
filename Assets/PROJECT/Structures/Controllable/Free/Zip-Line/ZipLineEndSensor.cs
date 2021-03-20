@@ -21,6 +21,8 @@ public class ZipLineEndSensor : MonoBehaviour
 
             if (endPoint && endPoint.Point == Types.EZipLine.END && transport)
             {
+
+                ownerPoint.OtherPoint.transform.root.GetComponentInChildren<ZipLinePoint>().OtherPoint = null;
                 ownerPoint.OtherPoint = endPoint.transform.root.gameObject;
                 endPoint.OtherPoint = transform.root.gameObject;
 

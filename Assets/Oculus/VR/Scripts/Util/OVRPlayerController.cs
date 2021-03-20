@@ -252,6 +252,10 @@ public class OVRPlayerController : MonoBehaviour
 
 	Vector3 handOffsettToMiddleOfBeamAtGrabPoint;
 
+	Vector3 ZipStartForwardOnGrab;
+
+	Vector3 projectionOfVectorBetweenOldAndNewStartPositionsOnNewDirection;
+
 	Transform grabbingHandTransform;
 
 
@@ -347,6 +351,8 @@ public class OVRPlayerController : MonoBehaviour
 		{
 			grabbingHandTransform = hand;
 			playerControllerOffsettToHandOnGrab = transform.position - hand.position;
+
+			ZipStartForwardOnGrab = zipLineStart.forward;
 
 			zipStartToHandDistanceOnGrab = (hand.transform.position - zipLineStart.position).magnitude;
 
@@ -617,13 +623,21 @@ public class OVRPlayerController : MonoBehaviour
 			distanceTravelledOnZipLine += zipLineSpeed * Time.deltaTime;
 
 			//transform.position += zipLineDirection.normalized * zipLineSpeed * Time.deltaTime;
+			/*
+			if (grabbedZipLineStartPoint.position != grabbedZipLineStartPointPosOnGrab)
+				projectionOfVectorBetweenOldAndNewStartPositionsOnNewDirection =
+					grabbedZipLineStartPoint.forward * (Vector3.Dot(grabbedZipLineStartPoint.position - grabbedZipLineStartPointPosOnGrab, grabbedZipLineStartPoint.forward));
+
+			else projectionOfVectorBetweenOldAndNewStartPositionsOnNewDirection = new Vector3(0, 0, 0);
+			*/
 
 			transform.position =
 				grabbedZipLineStartPoint.position +
 				(grabbedZipLineStartPoint.forward * zipStartToHandDistanceOnGrab) +
 				playerControllerOffsettToHandOnGrab - (externalHandForZipLine.position - externalHandForZipLinePosOnGrab) +
 				handOffsettToMiddleOfBeamAtGrabPoint +
-				grabbedZipLineStartPoint.forward * distanceTravelledOnZipLine;
+				(grabbedZipLineStartPoint.forward * distanceTravelledOnZipLine); //-
+				//projectionOfVectorBetweenOldAndNewStartPositionsOnNewDirection;
 		}
 	}
 
