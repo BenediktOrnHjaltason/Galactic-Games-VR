@@ -6,6 +6,13 @@ using UnityEngine;
 
 namespace Types
 {
+    public enum EMobility
+    {
+        DYNAMIC,
+        STATIC
+    }
+
+
     /// <summary>
     /// The operational stages of using a HandDevice (IDLE, SCANNING, CONTROLLING)
     /// </summary>
@@ -32,7 +39,7 @@ namespace Types
         COUNTERCLOCKWISE
     }
 
-    public enum EZipLine
+    public enum EZipLinePoint
     {
         START,
         END

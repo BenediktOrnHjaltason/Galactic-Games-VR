@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1081370156061868041}
   - component: {fileID: 3766711793532295909}
   - component: {fileID: 6866907831758392377}
+  - component: {fileID: 6051959997286598515}
   m_Layer: 9
   m_Name: PF_ZipLineEnd
   m_TagString: Untagged
@@ -156,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowDuplicationByDevice: 0
+  allowGravityForceByDevice: 1
   allowRotationForces: 0
   rotationAxis: 0
   selfAxisToRotation:
@@ -167,6 +169,20 @@ MonoBehaviour:
     constrainYaw: 0
     constrainPitch: 0
   selfRotateMultiplier: 1
+--- !u!114 &6051959997286598515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878307240987444276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5c2e198d11806047abb931a7f0e932e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startOrEnd: 1
+  otherPoint: {fileID: 0}
 --- !u!1 &6980998400429675533
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +194,6 @@ GameObject:
   - component: {fileID: 5717744238929813730}
   - component: {fileID: 1013495042520058796}
   - component: {fileID: 1462960014825635258}
-  - component: {fileID: 1930304090164267079}
   - component: {fileID: 704280297195422050}
   m_Layer: 10
   m_Name: EndCollider
@@ -227,7 +242,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0bc506e262983de48b584360bca6d5ed, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -248,22 +263,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &1930304090164267079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6980998400429675533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3ad9c4f71ad19a45aa3577080f417f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  point: 1
-  PF_TransportLine: {fileID: 205585418577007493, guid: 13cbd56b0803a7b4182ce09c6b53f5b1,
-    type: 3}
-  otherPoint: {fileID: 0}
 --- !u!136 &704280297195422050
 CapsuleCollider:
   m_ObjectHideFlags: 0

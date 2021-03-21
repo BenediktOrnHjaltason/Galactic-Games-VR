@@ -10,60 +10,54 @@ public class ZipLinePoint : MonoBehaviour
     //TODO?: Split up into two scripts inheriting from base?
 
 
-    [SerializeField]
-    EZipLine point;
-
-    public EZipLine Point { get => point; }
-
-
     /// <summary>
-    /// Prefab to spawn
+    /// Start or end-point?
     /// </summary>
     [SerializeField]
-    GameObject PF_TransportLine;
+    EZipLinePoint startOrEnd;
 
-    [SerializeField]
-    GameObject otherPoint;
+    public EZipLinePoint StartOrEnd { get => startOrEnd; }
 
-    public GameObject OtherPoint 
+
+    public ZipLinePoint otherPoint;
+
+    ZipLineTransport transportBeam;
+    public ZipLineTransport TransportBeam { get => transportBeam; }
+
+    protected Vector3 selfToOther;
+
+    //Is turned to false if base class of dynamic point
+    protected bool staticZipLinePoint = true;
+
+
+    public ZipLinePoint OtherPoint 
     {
         set
         {
             otherPoint = value;
 
-            if (point == EZipLine.START)
+            if (startOrEnd == EZipLinePoint.START)
             {
-                transportLineActive = (value != null) ? true : false;
+                transportLineActive = (value == null) ? false : true;
 
-                if (value == null) transportLine.transform.localScale = Vector3.zero; 
+                if (value == null) transportBeam.transform.localScale = Vector3.zero; 
             }
         }
 
         get => otherPoint;
     }
 
-    GameObject transportLine;
-
-    ZipLineTransport transportBeam;
-
-    Vector3 selfToOther;
-
-
-    RealtimeTransform rtt;
-    
-
-
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
-        if (point == EZipLine.START)
+        if (startOrEnd == EZipLinePoint.START)
         {
-            transportLine = Instantiate<GameObject>(PF_TransportLine, transform);
 
-            transportBeam = transportLine.GetComponent<ZipLineTransport>();
+            transportBeam = transform.root.Find("PF_TransportBeam").GetComponent<ZipLineTransport>();
+
             transportBeam.OnBeamTouchesObstacle += BreakConnection;
 
-            transportBeam.StartPointTransform = transform.root;
+            transportBeam.StartPointTransform = transform;
 
             if (otherPoint)
             {
@@ -71,57 +65,48 @@ public class ZipLinePoint : MonoBehaviour
                 transportLineActive = true;
             }
         }
-
-        rtt = transform.root.GetComponent<RealtimeTransform>();
     }
 
-    void FixedUpdate()
+    public virtual void FixedUpdate()
     {
-        if (otherPoint) selfToOther = otherPoint.transform.root.position - transform.root.position;
+
+        if (otherPoint)
+        {
+            selfToOther = otherPoint.transform.position - transform.position;
+
+            if (staticZipLinePoint)
+                transform.rotation = Quaternion.LookRotation(selfToOther);
+        }
 
         //Start-points handles transport line
-        if (transportLine && otherPoint)
+        if (startOrEnd == EZipLinePoint.START)
         {
             if (transportLineActive)
             {
-                transportBeam.TransportDirection = selfToOther;
+                transportBeam.transform.SetPositionAndRotation(transform.position + (selfToOther / 2), Quaternion.LookRotation(selfToOther));
+                transportBeam.transform.localScale = new Vector3(0.25f, 0.25f, selfToOther.magnitude);
 
+                
+            }
 
-                transportLine.transform.SetPositionAndRotation(transform.position + (selfToOther / 2), Quaternion.LookRotation(selfToOther));
-                transportLine.transform.localScale = new Vector3(0.25f, 0.25f, selfToOther.magnitude);
-            }
-            else
-            {
-                transportLine.transform.position = transform.position;
-            }
+            else transportBeam.transform.position = transform.position;
+
+            
         }
-
-        if (rtt.realtime.connected && rtt.ownerIDSelf == -1) rtt.RequestOwnership();
-
-        if (otherPoint && rtt.realtime.connected && rtt.isOwnedLocallySelf) transform.root.rotation = Quaternion.LookRotation(selfToOther);
-
     }
 
 
     //Only for Start-points
-
     bool transportLineActive = false;
 
     public void BreakConnection()
     {
-
-        //if (otherCollidingObject == this) return;
-
-        
-
-        ZipLinePoint zp = otherPoint.transform.root.GetComponentInChildren<ZipLinePoint>();
-
-        if (zp)
+        if (otherPoint)
         {
-            zp.OtherPoint = null;
+            otherPoint.OtherPoint = null;
             OtherPoint = null;
 
-            transportLineActive = false;
+            if (startOrEnd == EZipLinePoint.START) transportLineActive = false;
         }
     }
 }
