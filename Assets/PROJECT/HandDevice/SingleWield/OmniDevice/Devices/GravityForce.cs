@@ -323,14 +323,14 @@ public class GravityForce : HandDevice
 
         Vector3 structureToAdjustedForward = (transform.position + adjustedForward) - structureSync.transform.position;
 
-        float forwardMultiplier = (pushingStructure) ? 7.0f : 0.0f;
+        float pushPullForce = (pushingStructure) ? 7.0f : 0.0f;
 
 
-        if (distanceToStructure > 7) forwardMultiplier += (pullingStructure) ? -7.0f : 0.0f;
+        if (distanceToStructure > 7) pushPullForce += (pullingStructure) ? -7.0f : 0.0f;
 
-        else forwardMultiplier += (pullingStructure) ? -7.0f + (7 - distanceToStructure) : 0.0f;
+        else pushPullForce += (pullingStructure) ? -7.0f + (7 - distanceToStructure) : 0.0f;
 
-        return (structureToAdjustedForward + transform.forward * forwardMultiplier);
+        return (structureToAdjustedForward + transform.forward * pushPullForce * structureSync.PushPullMultiplier);
     }
 
     //Validate state relevant to GravityForce
@@ -343,18 +343,18 @@ public class GravityForce : HandDevice
 
             if (!structureSync)
             {
-                //Debug.LogWarning(targetStructure.name + " does not have a structureSync component, and you're trying to use the GravityController on it");
+                Debug.LogWarning(targetStructure.name + " does not have a structureSync component, and you're trying to use the GravityController on it");
                 return false;
             }
 
             if (structureSync && (!structureSync.AllowGravityForceByDevice || structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate))
             {
-                /*
+                
                 Debug.Log("GravityForce: Not allowed to control structure. Reason: ");
                 if (!structureSync.AllowGravityForceByDevice) Debug.Log("GravityForce: GravityForce not allowed ");
                 if (structureSync.PlayersOccupying > 0) Debug.Log("GravityForce: PlayersOccupying is more than 0 ");
                 if (!structureSync.AvailableToManipulate) Debug.Log("GravityForce: AvailableToManipulate is false");
-                */
+                
                 return false;
             }
 

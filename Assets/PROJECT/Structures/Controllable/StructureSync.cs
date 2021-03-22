@@ -48,6 +48,11 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     bool allowRotationForces = true;
     public bool AllowRotationForces { get => allowRotationForces; set => allowRotationForces = value; }
 
+    [SerializeField]
+    float pushPullMultiplier = 1;
+
+    public float PushPullMultiplier { get => pushPullMultiplier; }
+
     bool ownedByPlayer = false;
     public bool OwnedByPlayer { get => ownedByPlayer; set => ownedByPlayer = value; }
 
@@ -60,7 +65,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     /// <summary>
     /// Settings for structures rotating in local space
     /// </summary>
-    [Header("Define which self direction represent which rotation")]
+    [Header("Define which world self direction represent which rotation")]
     [SerializeField]
     SelfAxisToRotation selfAxisToRotation;
 
