@@ -8,7 +8,7 @@ public class Star_Pulsar : MonoBehaviour
     [SerializeField]
     Transform basePivot;
 
-    public event Action OnTriggerEntered;
+    public event Action<DysonSpherePiece> OnDysonPieceTouches;
 
 
     // Start is called before the first frame update
@@ -25,6 +25,11 @@ public class Star_Pulsar : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        OnTriggerEntered?.Invoke();
+        if (other.gameObject.layer.Equals(10))
+        {
+            DysonSpherePiece dsp = other.transform.GetComponentInParent<DysonSpherePiece>();
+
+            if (dsp) OnDysonPieceTouches?.Invoke(dsp);
+        }
     }
 }

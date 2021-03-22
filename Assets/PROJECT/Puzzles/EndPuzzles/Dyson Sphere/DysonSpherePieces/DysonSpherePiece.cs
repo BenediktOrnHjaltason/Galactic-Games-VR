@@ -1,18 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Normal.Realtime;
 
 public class DysonSpherePiece : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    LineRenderer beam;
+
+    [SerializeField]
+    RealtimeTransform rtt;
+
+    public RealtimeTransform Rtt { get => rtt; }
+
+    float beamLength = 1000;
+
+
+    private void FixedUpdate()
     {
-        
+        //beam.SetPositions
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

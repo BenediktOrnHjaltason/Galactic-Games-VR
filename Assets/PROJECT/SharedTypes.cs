@@ -63,4 +63,10 @@ namespace Types
         public bool controllingStructure;
         public bool targetStructureAllowsRotation;
     }
+
+    public enum EDysonSphereBeam
+    {
+        SCANNING,
+        ALLIGNEDWITHSTAR
+    }
 }
