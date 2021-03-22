@@ -48,8 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   star: {fileID: 9090008234489272399}
+  starAttractionForce: 100
   leftDysonPiece: {fileID: 4610120371552423431}
   rightDysonPiece: {fileID: 3836792896179463569}
+  magneticFieldTrigger: {fileID: 657379178790947323}
 --- !u!114 &1933488270451759055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +76,18 @@ MonoBehaviour:
     view: {fileID: 3249683104272258449}
   - viewID: 2
     view: {fileID: 2872249080624774663}
+--- !u!114 &657379178790947323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7687870129049561738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 206bd1f1c878d8e4eb62782c480c0eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1331496083558770376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -279,6 +293,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7890074538415451183}
     m_Modifications:
+    - target: {fileID: 616153460289243035, guid: 7a34ef63be898a74191ccc2e2d97727b,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3234534011496092431, guid: 7a34ef63be898a74191ccc2e2d97727b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -357,17 +376,17 @@ PrefabInstance:
     - target: {fileID: 6373314898097285975, guid: 7a34ef63be898a74191ccc2e2d97727b,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 5.7675037
+      value: 25.368774
       objectReference: {fileID: 0}
     - target: {fileID: 6373314898097285975, guid: 7a34ef63be898a74191ccc2e2d97727b,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 5.7675037
+      value: 25.368774
       objectReference: {fileID: 0}
     - target: {fileID: 6373314898097285975, guid: 7a34ef63be898a74191ccc2e2d97727b,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5.7675037
+      value: 25.368774
       objectReference: {fileID: 0}
     - target: {fileID: 6729247267910568549, guid: 7a34ef63be898a74191ccc2e2d97727b,
         type: 3}
@@ -409,3 +428,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d32bf0749bf1644986d91f04b5f9051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7687870129049561738 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2121612918201849433, guid: 7a34ef63be898a74191ccc2e2d97727b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8629379104251641043}
+  m_PrefabAsset: {fileID: 0}

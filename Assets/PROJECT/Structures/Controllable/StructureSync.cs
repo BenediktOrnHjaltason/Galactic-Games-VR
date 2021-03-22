@@ -41,6 +41,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     protected Rigidbody rb;
 
     protected RealtimeTransform rtt;
+    public RealtimeTransform Rtt { get => rtt; }
 
     //----
 
@@ -260,4 +261,11 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     {
         if (playersOccupying > 0) BreakControl();
     }
+
+    public void ResetLinearVelocity()
+    {
+        rb.velocity = Vector3.zero;
+    }
+
+    
 }
