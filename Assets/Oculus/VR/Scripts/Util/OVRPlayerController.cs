@@ -256,10 +256,6 @@ public class OVRPlayerController : MonoBehaviour
 
 	float zipSpeedModifier;
 
-
-
-
-
 	float zipLineSpeed = 3.0f;
 
 	float distanceTravelledOnZipLine = 0;
