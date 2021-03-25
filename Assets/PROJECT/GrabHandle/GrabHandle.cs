@@ -6,10 +6,15 @@ public class GrabHandle : MonoBehaviour
 {
     StructureSync parentStructureSync;
 
+    GameObject handPositionReference;
+
+    GameObject HandPositionReference { get => handPositionReference; }
+
     // Start is called before the first frame update
     void Start()
     {
         parentStructureSync = transform.root.GetComponent<StructureSync>();
+        handPositionReference = transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame

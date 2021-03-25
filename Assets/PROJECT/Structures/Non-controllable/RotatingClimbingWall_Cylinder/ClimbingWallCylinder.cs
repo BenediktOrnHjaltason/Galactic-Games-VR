@@ -18,6 +18,6 @@ public class ClimbingWallCylinder : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0.1f, 0));
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0.3f, 0));
     }
 }

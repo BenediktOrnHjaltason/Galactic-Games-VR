@@ -399,6 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   footRise: {fileID: 7871061723101078854}
   screenScaleOut: {fileID: 6895316352660246635}
+  logoAnimatic: {fileID: 0}
 --- !u!114 &7871061723101078854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1343,7 +1344,7 @@ PrefabInstance:
     - target: {fileID: 679351703844268584, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
         type: 3}
       propertyPath: m_text
-      value: Tutorial
+      value: 1. Ocean
       objectReference: {fileID: 0}
     - target: {fileID: 679351703844268584, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
         type: 3}
@@ -1364,6 +1365,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontStyle
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 679351703844268584, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 679351703844268584, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1446008589730145259, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
         type: 3}

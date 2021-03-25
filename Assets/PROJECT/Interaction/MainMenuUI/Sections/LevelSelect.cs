@@ -34,7 +34,7 @@ public class LevelSelect : MainMenuSection
         if (!makingNewSelection)
         {
             newIndicatorLocalPos = buttons[1].transform.localPosition + IndicatorOffsettToButton;
-            selectedLevel = "TutorialLevelScene";
+            selectedLevel = "OceanLevel";
             makingNewSelection = true;
         }
     }

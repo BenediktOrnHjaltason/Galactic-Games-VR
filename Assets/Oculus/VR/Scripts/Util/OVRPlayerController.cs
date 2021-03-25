@@ -186,7 +186,8 @@ public class OVRPlayerController : MonoBehaviour
 
 	public EOmniDeviceStartup OmniDeviceStartupState { get => omniDeviceStartup; }
 
-	Transform GrabHandleWorldTransform;
+	Transform grabHandleTransform;
+	Transform grabHandleChild;
 
 	//----Vignette (Note: Still experimenting with vignette, cleaning up after final iteration)
 	Vector3 vignetteOpen = new Vector3(0.2440064f, 0.3996776f, 0.3169284f);
@@ -289,13 +290,20 @@ public class OVRPlayerController : MonoBehaviour
 	float handleYRotationOnGrab;
 	Quaternion playerControllerRotationOnGrab;
 
-	public void RegisterGrabHandleEvent(bool grabbing, int hand, Transform handleTransform = null)
+	Vector3 handleOffsettToGrabPointOnGrab;
+
+	float handleOffsettDivider = 5;
+
+	public void RegisterGrabHandleEvent(bool grabbing, int hand, Vector3 handPosition, Transform handleTransform = null)
     {
 		if (grabbing && handleTransform)
 		{
-			GrabHandleWorldTransform = handleTransform;
+			grabHandleTransform = handleTransform;
+			grabHandleChild = handleTransform.GetChild(0);
+			grabHandleChild.position = handPosition;
+			handleOffsettToGrabPointOnGrab = (handPosition - handleTransform.position);
 
-			PlayerControllerOffsetToHandle = transform.position - GrabHandleWorldTransform.position;
+			PlayerControllerOffsetToHandle = transform.position - grabHandleTransform.position;
 		}
 
 		if (hand == 0)
@@ -609,12 +617,13 @@ public class OVRPlayerController : MonoBehaviour
 				externalHandWorldPositionDelta = externalRightHandPositionOnGrab - externalRightHand.position;
 			}
 
-			transform.position = (GrabHandleWorldTransform.position + PlayerControllerOffsetToHandle +
-								 externalHandWorldPositionDelta);
+			Vector3 handleOffsettToGrabPoint = (grabHandleChild.transform.position - grabHandleTransform.position);
 
-			transform.rotation = playerControllerRotationOnGrab * Quaternion.Euler(0, GrabHandleWorldTransform.rotation.eulerAngles.y - handleYRotationOnGrab, 0);
+			transform.position = (grabHandleTransform.position + PlayerControllerOffsetToHandle +
+								 externalHandWorldPositionDelta); // + handleOffsettToGrabPointOnGrab + (handleOffsettToGrabPoint));
+
+			transform.rotation = playerControllerRotationOnGrab * Quaternion.Euler(0, grabHandleTransform.rotation.eulerAngles.y - handleYRotationOnGrab, 0);
 		}
-
 		//Handle ZipLine transportation
 		if (grabbingZipLine)
 		{

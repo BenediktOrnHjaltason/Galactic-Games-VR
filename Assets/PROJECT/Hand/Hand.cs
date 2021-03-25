@@ -71,6 +71,7 @@ public class Hand : MonoBehaviour
 
 
     static ZipLineTransport zipLineGrabbed;
+
     bool grabbingZipLine = false;
     
 
@@ -260,8 +261,8 @@ public class Hand : MonoBehaviour
         handSync.GrabbingGrabHandle = true;
         if (otherHand.handSync.GrabbingGrabHandle) otherHand.handSync.GrabbingGrabHandle = false;
 
-        playerController.RegisterGrabHandleEvent(false, (int)otherHand.handSide);
-        playerController.RegisterGrabHandleEvent(true, (int)handSide, handle.transform);
+        playerController.RegisterGrabHandleEvent(false, (int)otherHand.handSide, transform.position);
+        playerController.RegisterGrabHandleEvent(true, (int)handSide, transform.position, handle.transform);
 
         grabHandleRumble = 1;
         OVRInput.SetControllerVibration(0.001f, 0.5f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
@@ -271,7 +272,7 @@ public class Hand : MonoBehaviour
     {
         handle = null;
         handSync.GrabbingGrabHandle = false;
-        playerController.RegisterGrabHandleEvent(false, (int)handSide);
+        playerController.RegisterGrabHandleEvent(false, (int)handSide, transform.position);
     }
 
     //Rumble stops at 2 seconds as default from OVRInput
