@@ -285,10 +285,12 @@ public class OVRPlayerController : MonoBehaviour
 
 		externalAvatarBase = baseGameObject;
     }
-	
+
+	float handleYRotationOnGrab;
+	Quaternion playerControllerRotationOnGrab;
+
 	public void RegisterGrabHandleEvent(bool grabbing, int hand, Transform handleTransform = null)
     {
-
 		if (grabbing && handleTransform)
 		{
 			GrabHandleWorldTransform = handleTransform;
@@ -316,7 +318,12 @@ public class OVRPlayerController : MonoBehaviour
 		}
 
 		if (!grabbing_LeftHand && !grabbing_RightHand) SetGrabbing(false);
-		else SetGrabbing(true);
+		else
+		{
+			handleYRotationOnGrab = handleTransform.rotation.eulerAngles.y;
+			playerControllerRotationOnGrab = transform.rotation;
+			SetGrabbing(true);
+		}
     }
 
 	public void SetGrabbing(bool state)
@@ -604,6 +611,8 @@ public class OVRPlayerController : MonoBehaviour
 
 			transform.position = (GrabHandleWorldTransform.position + PlayerControllerOffsetToHandle +
 								 externalHandWorldPositionDelta);
+
+			transform.rotation = playerControllerRotationOnGrab * Quaternion.Euler(0, GrabHandleWorldTransform.rotation.eulerAngles.y - handleYRotationOnGrab, 0);
 		}
 
 		//Handle ZipLine transportation
