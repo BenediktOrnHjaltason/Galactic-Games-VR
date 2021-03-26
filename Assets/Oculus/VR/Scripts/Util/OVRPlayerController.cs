@@ -328,7 +328,8 @@ public class OVRPlayerController : MonoBehaviour
 		if (!grabbing_LeftHand && !grabbing_RightHand) SetGrabbing(false);
 		else
 		{
-			handleYRotationOnGrab = handleTransform.rotation.eulerAngles.y;
+			if (handleTransform) handleYRotationOnGrab = handleTransform.rotation.eulerAngles.y;
+
 			playerControllerRotationOnGrab = transform.rotation;
 			SetGrabbing(true);
 		}
@@ -520,14 +521,14 @@ public class OVRPlayerController : MonoBehaviour
 
 		//Swing-moving
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 0.6 &&
-			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y < -0.6)
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y < -0.6 && !grabbingAnything)
 		{
 			swingMoving = true;
 			timeSinceLastSwing = 0;
 		}
 
 		else if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y < -0.6 &&
-			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 0.6)
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 0.6 && !grabbingAnything)
 		{
 			swingMoving = true;
 			timeSinceLastSwing = 0;
