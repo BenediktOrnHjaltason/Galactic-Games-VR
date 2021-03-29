@@ -342,6 +342,7 @@ public class OVRPlayerController : MonoBehaviour
 			Controller.enabled = false;
 			HmdRotatesY = false;
 
+			FallSpeed = 0.0f;
 			grabbingHandle = grabbingAnything = true;
 		}
 		else
@@ -374,6 +375,9 @@ public class OVRPlayerController : MonoBehaviour
 
 			Controller.enabled = false;
 			HmdRotatesY = false;
+
+			FallSpeed = 0.0f;
+			
 
 			grabbingZipLine = grabbingAnything = true;
 			

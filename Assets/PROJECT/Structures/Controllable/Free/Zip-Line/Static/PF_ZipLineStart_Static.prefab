@@ -158,7 +158,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5717744238929813730}
   - component: {fileID: 6942942586319560472}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BlockingCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
