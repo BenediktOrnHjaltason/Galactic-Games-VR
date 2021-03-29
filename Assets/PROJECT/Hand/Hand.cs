@@ -239,7 +239,7 @@ public class Hand : MonoBehaviour
             else if (other.gameObject.layer.Equals(layer_HandDevice))
                 DropDevice();
 
-            else if (other.gameObject.layer.Equals(layer_ZipLineHandle))
+            else if (other.gameObject.layer.Equals(layer_ZipLineHandle) && !otherHand.grabbingZipLine)
                 ReleaseZipLine();
         }
     }
