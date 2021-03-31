@@ -33,7 +33,7 @@ namespace Types
         REPLICATOR
     }
 
-    enum SpinDirection
+    public enum ESpinDirection
     {
         CLOCKWISE,
         COUNTERCLOCKWISE

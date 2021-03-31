@@ -7,7 +7,7 @@ public class SpinningWheel : MonoBehaviour
 {
 
     [SerializeField]
-    SpinDirection spinDirection;
+    ESpinDirection spinDirection;
 
     [SerializeField]
     float spinAmount = 15.0f;
@@ -17,7 +17,7 @@ public class SpinningWheel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spinMultiplier = (spinDirection == SpinDirection.CLOCKWISE) ? 1 : -1;
+        spinMultiplier = (spinDirection == ESpinDirection.CLOCKWISE) ? 1 : -1;
     }
 
     // Update is called once per frame

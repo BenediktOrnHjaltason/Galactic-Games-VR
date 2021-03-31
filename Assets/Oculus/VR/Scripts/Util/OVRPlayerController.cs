@@ -251,6 +251,7 @@ public class OVRPlayerController : MonoBehaviour
 
 	Vector3 ZipStartForwardOnGrab;
 
+	//Trying to support moving the start-piece and have player transport normally on beam
 	Vector3 projectionOfVectorBetweenOldAndNewStartPositionsOnNewDirection;
 
 	OVRInput.Axis2D zipLineControllerThumbStick;
@@ -627,7 +628,7 @@ public class OVRPlayerController : MonoBehaviour
 			transform.position = (grabHandleTransform.position + PlayerControllerOffsetToHandle +
 								 externalHandWorldPositionDelta); // + handleOffsettToGrabPointOnGrab + (handleOffsettToGrabPoint));
 
-			transform.rotation = playerControllerRotationOnGrab * Quaternion.Euler(0, grabHandleTransform.rotation.eulerAngles.y - handleYRotationOnGrab, 0);
+			//transform.rotation = playerControllerRotationOnGrab * Quaternion.Euler(0, grabHandleTransform.rotation.eulerAngles.y - handleYRotationOnGrab, 0);
 		}
 		//Handle ZipLine transportation
 		if (grabbingZipLine)
