@@ -13,6 +13,11 @@ public class ZipLineTransport : MonoBehaviour
     Transform endPointTransform;
     public Transform EndPointTransform { set => endPointTransform = value; get => endPointTransform; }
 
+    [SerializeField]
+    float travelSpeed = 3;
+
+    public float TravelSpeed { get => travelSpeed; }
+
 
     private void OnTriggerEnter(Collider other)
     {

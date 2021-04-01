@@ -213,8 +213,8 @@ public class Hand : MonoBehaviour
 
             if (other.gameObject.layer.Equals(layer_GrabHandle))
             {
-                GrabHandle(other.gameObject);
-                otherHand.ReleaseHandle();
+                GrabClimbHandle(other.gameObject);
+                otherHand.ReleaseClimbHandle();
             }
 
             else if (other.gameObject.layer.Equals(layer_HandDevice))
@@ -224,7 +224,7 @@ public class Hand : MonoBehaviour
             {
                 zipLineGrabbed = other.gameObject.GetComponent<ZipLineTransport>();
                 zipLineGrabbed.OnBeamTouchesObstacle += ReleaseZipLine;
-                GrabZipLine();
+                GrabZipLine(zipLineGrabbed.TravelSpeed);
             }
                 
         }
@@ -234,7 +234,7 @@ public class Hand : MonoBehaviour
             shouldRelease = false;
 
             if (other.gameObject.layer.Equals(layer_GrabHandle))
-                ReleaseHandle();
+                ReleaseClimbHandle();
 
             else if (other.gameObject.layer.Equals(layer_HandDevice))
                 DropDevice();
@@ -253,7 +253,7 @@ public class Hand : MonoBehaviour
                 ReleaseZipLine();
     }
 
-    void GrabHandle(GameObject handle)
+    void GrabClimbHandle(GameObject handle)
     {
         this.handle = handle;
         offsettToHandleOnGrab = transform.position - handle.transform.position;
@@ -261,29 +261,29 @@ public class Hand : MonoBehaviour
         handSync.GrabbingGrabHandle = true;
         if (otherHand.handSync.GrabbingGrabHandle) otherHand.handSync.GrabbingGrabHandle = false;
 
-        playerController.RegisterGrabHandleEvent(false, (int)otherHand.handSide, transform.position);
-        playerController.RegisterGrabHandleEvent(true, (int)handSide, transform.position, handle.transform);
+        playerController.SetGrabbingClimbHandle(false, (int)otherHand.handSide, transform.position);
+        playerController.SetGrabbingClimbHandle(true, (int)handSide, transform.position, handle.transform);
 
         grabHandleRumble = 1;
         OVRInput.SetControllerVibration(0.001f, 0.5f, (handSide == EHandSide.RIGHT) ? OVRInput.Controller.RTouch : OVRInput.Controller.LTouch);
     }
 
-    void ReleaseHandle()
+    void ReleaseClimbHandle()
     {
         handle = null;
         handSync.GrabbingGrabHandle = false;
-        playerController.RegisterGrabHandleEvent(false, (int)handSide, transform.position);
+        playerController.SetGrabbingClimbHandle(false, (int)handSide, transform.position);
     }
 
     //Rumble stops at 2 seconds as default from OVRInput
     float timeOfZiplineRumble = 0;
 
-    void GrabZipLine()
+    void GrabZipLine(float transportSpeed)
     {
         otherHand.ReleaseZipLine();
 
 
-        playerController.SetGrabbingZipLine(true, transform, (int)handSide, zipLineGrabbed.StartPointTransform);
+        playerController.SetGrabbingZipLine(true, transform, (int)handSide, zipLineGrabbed.StartPointTransform, transportSpeed);
 
         handOffsetToPlayerControllerOnZipLineGrab = transform.position - playerController.transform.position;
 
