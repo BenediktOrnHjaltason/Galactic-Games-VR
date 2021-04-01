@@ -2,39 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using Types;
 
-enum EAutoMoveDirection
+
+
+public class Structure_RestrictedMove : StructureSync
 {
-    X_Positive,
-    X_Negative,
-    Y_Positive,
-    Y_Negative,
-    Z_Positive,
-    Z_Negative
-}
-
-enum ERailsMode
-{
-    Free,
-    AutoForce
-    //ResetPeriodically
-}
-
-public class StructureOnRails : StructureSync
-{
-    //----Properties
-
     [SerializeField]
-    ERailsMode mode = ERailsMode.Free;
+    ERestrictedStructureMode mode = ERestrictedStructureMode.Free;
 
     [Header("NOTE: Script overrides Rigidbody constraints on Start.")]
     [SerializeField]
-    EAutoMoveDirection moveDirection;
+    EAutoForceAxis moveDirection;
 
     [SerializeField]
     float autoForcePower = 10;
 
-    Vector3 autoForceVector;
+    Vector3 autoMoveVector;
 
     [SerializeField]
     MeshRenderer mesh;
@@ -55,7 +39,6 @@ public class StructureOnRails : StructureSync
     {
         base.Start();
 
-        //realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
         realtimeTransform = GetComponent<RealtimeTransform>();
 
         materials = mesh.materials;
@@ -64,52 +47,46 @@ public class StructureOnRails : StructureSync
 
         switch (moveDirection)
         {
-            case EAutoMoveDirection.X_Positive:
-                 //resetForceVector = new Vector3(resetForcePower, 0, 0);
-                 autoForceVector = new Vector3(autoForcePower, 0, 0);
+            case EAutoForceAxis.X_Positive:
+                 autoMoveVector = new Vector3(autoForcePower, 0, 0);
                  rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
                      RigidbodyConstraints.FreezeRotation;
                  break;
 
-            case EAutoMoveDirection.X_Negative:
-                 //resetForceVector = new Vector3(-resetForcePower, 0, 0);
-                 autoForceVector = new Vector3(-autoForcePower, 0, 0);
+            case EAutoForceAxis.X_Negative:
+                 autoMoveVector = new Vector3(-autoForcePower, 0, 0);
                  rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
                      RigidbodyConstraints.FreezeRotation;
                  break;
 
 
-            case EAutoMoveDirection.Y_Positive:
-                 //resetForceVector = new Vector3(0, resetForcePower, 0);
-                 autoForceVector = new Vector3(0, autoForcePower, 0);
+            case EAutoForceAxis.Y_Positive:
+                 autoMoveVector = new Vector3(0, autoForcePower, 0);
                  rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
                      RigidbodyConstraints.FreezeRotation;
 
                 materials[1].SetVector(graphVariableScrollDirection, new Vector2(0, -1));
                  break;
 
-            case EAutoMoveDirection.Y_Negative:
-                 //resetForceVector = new Vector3(0, -resetForcePower, 0);
-                 autoForceVector = new Vector3(0, -autoForcePower, 0);
+            case EAutoForceAxis.Y_Negative:
+                 autoMoveVector = new Vector3(0, -autoForcePower, 0);
                  rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ |
                     RigidbodyConstraints.FreezeRotation;
                 materials[1].SetVector(graphVariableScrollDirection, new Vector2(0, 1));
                 break;
 
-            case EAutoMoveDirection.Z_Positive:
-                 //resetForceVector = new Vector3(0, 0, resetForcePower);
-                 autoForceVector = new Vector3(0, 0, autoForcePower);
+            case EAutoForceAxis.Z_Positive:
+                 autoMoveVector = new Vector3(0, 0, autoForcePower);
                  rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY |
                     RigidbodyConstraints.FreezeRotation;
                     break;
 
-            case EAutoMoveDirection.Z_Negative:
-                //resetForceVector = new Vector3(0, 0, resetForcePower);
-                autoForceVector = new Vector3(0, 0, autoForcePower);
+            case EAutoForceAxis.Z_Negative:
+                autoMoveVector = new Vector3(0, 0, autoForcePower);
                 rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY |
                    RigidbodyConstraints.FreezeRotation;
                 break;
-            }
+        }
     }
 
 
@@ -119,12 +96,12 @@ public class StructureOnRails : StructureSync
         HandleSideGlow();
 
         //Platforms in Free mode is allowed to loose ownership when sleeping because they will be static 
-        if (worldRealtime.connected && mode == ERailsMode.AutoForce)
+        if (worldRealtime.connected && mode == ERestrictedStructureMode.AutoForce)
         {
             if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.RequestOwnership();
 
             if (realtimeTransform.ownerIDSelf == realtime.clientID && availableToManipulate)
-                rb.AddForce(autoForceVector);
+                rb.AddForce(autoMoveVector);
         }
     }
 

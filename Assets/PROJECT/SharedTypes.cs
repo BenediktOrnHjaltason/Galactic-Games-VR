@@ -51,6 +51,22 @@ namespace Types
         SELF
     }
 
+    public enum ERestrictedStructureMode
+    {
+        Free,
+        AutoForce
+    }
+
+    enum EAutoForceAxis
+    {
+        X_Positive,
+        X_Negative,
+        Y_Positive,
+        Y_Negative,
+        Z_Positive,
+        Z_Negative
+    }
+
     [Serializable]
     public struct HandDeviceUIData
     {

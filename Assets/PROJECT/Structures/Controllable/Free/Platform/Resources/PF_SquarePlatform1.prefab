@@ -169,7 +169,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowDuplicationByDevice: 1
+  allowGravityForceByDevice: 1
   allowRotationForces: 1
+  pushPullMultiplier: 1
   rotationAxis: 0
   selfAxisToRotation:
     Roll: {x: 1, y: 0, z: 0}
@@ -463,6 +465,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 88e626f8a6d236a4ca7c2277ea65c592,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88e626f8a6d236a4ca7c2277ea65c592, type: 3}

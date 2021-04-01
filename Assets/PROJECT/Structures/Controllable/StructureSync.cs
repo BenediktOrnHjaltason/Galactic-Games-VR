@@ -237,7 +237,7 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
                     if (!selfAxisConstraints.constrainRoll)    rb.AddRelativeTorque(selfAxisToRotation.Roll * rollForce * selfRotateMultiplier, ForceMode.Acceleration);
 
                     //Yaw
-                    //if (!localRotationConstraints.constrainYaw)     RB.AddRelativeTorque(transform.up * yawForce);
+                    if (!selfAxisConstraints.constrainYaw)     rb.AddRelativeTorque(selfAxisToRotation.Yaw * yawForce * selfRotateMultiplier, ForceMode.Acceleration);
 
                     //Pitch
                     //if (!localRotationConstraints.constrainPitch)   RB.AddRelativeTorque(transform.right * pitchForce);
