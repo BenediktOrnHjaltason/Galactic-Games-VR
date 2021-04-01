@@ -4,7 +4,6 @@ using UnityEngine;
 using Normal.Realtime;
 
 
-
 public enum EKeycardAction
 {
     INSERT,
@@ -16,82 +15,50 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
     [SerializeField]
     Door door;
 
-    [SerializeField]
-    Puzzle_Keycards_Port leftPort;
 
-    
     [SerializeField]
-    Puzzle_Keycards_Port rightPort;
+    List<KeycardPort> ports = new List<KeycardPort>();
 
     private void Awake()
     {
-        leftPort.OnKeycardAction += RegisterKeycardAction;
-        rightPort.OnKeycardAction += RegisterKeycardAction;
+        foreach (KeycardPort port in ports)
+            port.OnKeycardAction += RegisterKeycardAction;
     }
 
-    void RegisterKeycardAction(EKeycardPortSide side, EKeycardAction action, int clientID)
+    void RegisterKeycardAction(KeycardPort port, EKeycardAction action)
     {
-        Debug.Log("Keycard Puzzle: RegisterKeycardAction called");
-
-        if (side == EKeycardPortSide.LEFT)
+        foreach (KeycardPort p in ports)
         {
-            if (action == EKeycardAction.INSERT && !LeftPortOccupied)
+            if (p == port)
             {
+                if (action == EKeycardAction.INSERT && !p.Occupied)
+                {
+                    p.Occupied = true;
+                    InsertedKeys++;
 
-                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
+                    VerifyCondition();
+                }
 
-                LeftPortOccupied = true;
-                InsertedKeys++;
+                else if (action == EKeycardAction.REMOVE && p.Occupied)
+                {
+                    p.Occupied = false;
+                    InsertedKeys--;
 
-                VerifyCondition();
-            }
+                    VerifyCondition();
+                }
 
-            else if (action == EKeycardAction.REMOVE && LeftPortOccupied)
-            {
-                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
-
-                LeftPortOccupied = false;
-                InsertedKeys--;
-
-                VerifyCondition();
-            }
-        }
-
-        else
-        {
-            if (action == EKeycardAction.INSERT && !RightPortOccupied)
-            {
-                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
-
-                RightPortOccupied = true;
-                InsertedKeys++;
-
-                //Debug.Log("Inserted Keys = " + InsertedKeys);
-
-                VerifyCondition();
-            }
-
-            else if (action == EKeycardAction.REMOVE && RightPortOccupied)
-            {
-                Debug.Log("Keycard Puzzle: Desktop gets past PortOccupied check when Quest controls ports");
-
-                RightPortOccupied = false;
-                InsertedKeys--;
-
-                //Debug.Log("Inserted Keys = " + InsertedKeys);
-
-                VerifyCondition();
+                break;
             }
         }
     }
 
     void VerifyCondition()
     {
-        if (InsertedKeys == 2 && door.State == EDoorState.Closed)
+        if (InsertedKeys == ports.Count && door.State == EDoorState.Closed)
         {
             door.Operate();
         }
-        else if (InsertedKeys < 2 && door.State == EDoorState.Open)
+        else if (InsertedKeys < ports.Count && door.State == EDoorState.Open)
         {
             door.Operate();
         }
