@@ -1721,7 +1721,7 @@ PrefabInstance:
     - target: {fileID: 681878085018550780, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
       propertyPath: m_text
-      value: '1: Ocean'
+      value: Ocean
       objectReference: {fileID: 0}
     - target: {fileID: 681878085018550780, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}

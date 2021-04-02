@@ -14,8 +14,9 @@ public class LevelSelect : MainMenuSection
         base.Start();
 
         buttons[0].OnExecute += SelectTutorialLevel;
-        buttons[1].OnExecute += SelectDummyLevel;
-        buttons[2].OnExecute += OpenLevel;
+        buttons[1].OnExecute += SelectOceanLevel;
+        buttons[2].OnExecute += Select3PProtoLevel;
+        buttons[3].OnExecute += OpenLevel;
     }
 
     void SelectTutorialLevel()
@@ -29,12 +30,22 @@ public class LevelSelect : MainMenuSection
         }
     }
 
-    void SelectDummyLevel()
+    void SelectOceanLevel()
     {
         if (!makingNewSelection)
         {
             newIndicatorLocalPos = buttons[1].transform.localPosition + IndicatorOffsettToButton;
             selectedLevel = "OceanLevel";
+            makingNewSelection = true;
+        }
+    }
+
+    void Select3PProtoLevel()
+    {
+        if (!makingNewSelection)
+        {
+            newIndicatorLocalPos = buttons[2].transform.localPosition + IndicatorOffsettToButton;
+            selectedLevel = "MultiplayerPrototyping";
             makingNewSelection = true;
         }
     }
