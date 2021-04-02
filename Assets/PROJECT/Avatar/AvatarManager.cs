@@ -102,7 +102,9 @@ public class AvatarManager : MonoBehaviour
         GameObject.Destroy(torso);
         torso = head.transform.GetChild(1).gameObject;
         torso.GetComponent<RealtimeTransform>().RequestOwnership();
-  
+
+        OVRManager.display.RecenterPose();
+
     }
 
     // Update is called once per frame
