@@ -29,6 +29,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
     List<OVRPlayerController> playersInReach = new List<OVRPlayerController>();
 
+    static List<AttractorRift_PlayerSensor> allSensors = new List<AttractorRift_PlayerSensor>();
+
     //---- beams
     float changeInterval = 0.466f;
     float nextTimeToChange = 0;
@@ -72,6 +74,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         defaultBeams.Add(transform.GetChild(0).transform.GetChild(3).GetComponent<LineRenderer>());
 
         playerBeams.Add(transform.GetChild(1).transform.GetChild(0).GetComponent<LineRenderer>());
+
+        allSensors.Add(this);
     }
 
     private void FixedUpdate()
@@ -208,6 +212,10 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     void RemovePlayerFromInfluence(OVRPlayerController player)
     {
         player.GravityModifier = 0.04f;
-        playersInReach.Remove(player);
+
+        foreach (AttractorRift_PlayerSensor ps in allSensors)
+        {
+            if (ps.playersInReach.Contains(player)) ps.playersInReach.Remove(player);
+        }
     }
 }
