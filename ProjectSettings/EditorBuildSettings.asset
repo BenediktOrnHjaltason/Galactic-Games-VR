@@ -8,13 +8,13 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: e5393e85e5a362243a0965e1eaa1a6e8
-  - enabled: 0
+  - enabled: 1
     path: Assets/ArtAssets/Levels/TutorialLevel/TutorialLevelScene.unity
     guid: a8bd3fe9b5972974f921504b6191a7a7
-  - enabled: 0
+  - enabled: 1
     path: Assets/ArtAssets/Levels/OceanLevel/OceanLevel.unity
     guid: 78fc31c785f7125408e387fb4249d110
   - enabled: 1
