@@ -61,7 +61,7 @@ public class GravityForce : HandDevice
         realtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
 
-    public override void Using(ref HandDeviceData handDeviceData)
+    public override void Operate(ref HandDeviceData handDeviceData)
     {
 
         //************ Manage input **************//

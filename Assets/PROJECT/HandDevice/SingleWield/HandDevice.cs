@@ -82,7 +82,7 @@ public abstract class HandDevice : MonoBehaviour
     }
 
 
-    public virtual void Using(ref HandDeviceData data)
+    public virtual void Operate(ref HandDeviceData data)
     {
 
     }

@@ -85,8 +85,8 @@ public class OmniDevice : HandDevice
     }
 
     //Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
-    public override void Using(ref HandDeviceData data)
+    public override void Operate(ref HandDeviceData data)
     {
-        devices[activeDeviceIndex].Using(ref data);
+        devices[activeDeviceIndex].Operate(ref data);
     }
 }

@@ -36,7 +36,7 @@ public class Replicator : HandDevice
     }
 
     ///Operates the HandDevice. Returns true or false so Hand.cs can restrict grabbing/climbing while operating it
-    public override void Using(ref HandDeviceData handDeviceData)
+    public override void Operate(ref HandDeviceData handDeviceData)
     {
         //************ Manage input **************//
 

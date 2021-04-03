@@ -16,7 +16,7 @@ public class DummyDevice : HandDevice
         return true;
     }
 
-    public override void Using(ref HandDeviceData data)
+    public override void Operate(ref HandDeviceData data)
     {
 
     }

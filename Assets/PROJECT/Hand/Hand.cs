@@ -164,8 +164,7 @@ public class Hand : MonoBehaviour
         {
             //deviceUI.Operate(handSide);
 
-            //(NOTE!) handDevice.Using() actually operates the device with input detection and all
-            handDevice.Using(ref handDeviceData);
+            handDevice.Operate(ref handDeviceData);
 
             usingHandDevice = handDeviceData.controllingStructure;
 
@@ -251,7 +250,7 @@ public class Hand : MonoBehaviour
         if (!grabbingZipLine) return;
 
         if (grabbingZipLine && zipLineGrabbed && other.gameObject.layer.Equals(layer_ZipLineHandle) &&
-            (zipLineGrabbed.EndPointTransform.position - transform.position).magnitude < 1 || (zipLineGrabbed.StartPointTransform.position - transform.position).magnitude < 1)
+            (zipLineGrabbed.EndPointTransform.position - transform.position).magnitude < 2 || (zipLineGrabbed.StartPointTransform.position - transform.position).magnitude < 2)
                 ReleaseZipLine();
     }
 
