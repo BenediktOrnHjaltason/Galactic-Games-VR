@@ -529,9 +529,10 @@ public class OVRPlayerController : MonoBehaviour
 			transform.position = respawnPoint;
 		}
 
-		//Jump
-		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
-			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !grabbingClimbHandle && !grabbingZipLine) Jump();
+		//Swing-jumping
+		if ((!grabbingAnything && OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5)) 
+				Jump();
 
 
 		//Swing-moving
@@ -540,13 +541,14 @@ public class OVRPlayerController : MonoBehaviour
 		{
 			swingMoving = true;
 			timeSinceLastSwing = 0;
-
+			/* If accidental swing combos gets annoying, this is a system for requiring two swings to start walking
 			if (!leftUpRightDownSwung)
             {
 				leftUpRightDownSwung = true;
 				rightUpLeftDownSwung = false;
 				numberOfSwings++;
 			}
+			*/
 		}
 
 		else if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y < -0.6 &&
@@ -555,12 +557,14 @@ public class OVRPlayerController : MonoBehaviour
 			 swingMoving = true;
 			 timeSinceLastSwing = 0;
 			 
+			 /*
 			 if (!rightUpLeftDownSwung)
              {
 			 	rightUpLeftDownSwung = true;
 			 	leftUpRightDownSwung = false;
 			 	numberOfSwings++;
 			 }
+			 */
 		}
 
 		if (swingMoving)
@@ -574,7 +578,7 @@ public class OVRPlayerController : MonoBehaviour
 
 			else timeSinceLastSwing += Time.fixedDeltaTime;
 
-			if (EnableLinearMovement && numberOfSwings > 1)
+			if (EnableLinearMovement /*&& numberOfSwings > 1*/)
             {
 				swingWalkVector = (transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * swingWalkDefaultSpeed *
 					(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y + 1));
@@ -631,6 +635,8 @@ public class OVRPlayerController : MonoBehaviour
 	void GameplayFunctionsUpdate()
     {
 		if (externalAvatarBase) externalAvatarBase.transform.rotation = TrackingSpaceAnchor.transform.rotation;
+
+		if (!GrabbingAnything && OVRInput.GetDown(OVRInput.Button.One)) Jump();
 
 
 		//Handle grabbing and climbing
