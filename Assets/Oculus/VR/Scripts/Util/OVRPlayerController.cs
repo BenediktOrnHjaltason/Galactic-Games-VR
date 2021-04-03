@@ -636,7 +636,7 @@ public class OVRPlayerController : MonoBehaviour
     {
 		if (externalAvatarBase) externalAvatarBase.transform.rotation = TrackingSpaceAnchor.transform.rotation;
 
-		if (!GrabbingAnything && OVRInput.GetDown(OVRInput.Button.One)) Jump();
+		if (!GrabbingAnything && EnableLinearMovement && OVRInput.GetDown(OVRInput.Button.One)) Jump();
 
 
 		//Handle grabbing and climbing

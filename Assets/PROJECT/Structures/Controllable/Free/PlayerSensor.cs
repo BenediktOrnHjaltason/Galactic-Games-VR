@@ -15,7 +15,8 @@ public class PlayerSensor : MonoBehaviour
     float yMultiplier;
     float zMultiplier;
 
-    float extentPadding = 3;
+    float extentPadding = 1.2f;
+    Vector3 offsettToPlatform = new Vector3(0, 0.3f, 0);
 
     float dot1;
     float dot2;
@@ -32,6 +33,7 @@ public class PlayerSensor : MonoBehaviour
     private void FixedUpdate()
     {
         transform.localScale = CalculateLocalScale();
+        transform.position = transform.root.position + offsettToPlatform;
     }
 
     private void OnTriggerEnter(Collider other)
