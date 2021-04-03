@@ -278,6 +278,9 @@ public class OVRPlayerController : MonoBehaviour
 	float maxTimeForSwingMovement = 0.6f;
 
 	Vector3 swingWalkVector;
+	float swingWalkDefaultSpeed = 8;
+
+	int numberOfSwings = 0;
 
 	//----
 
@@ -513,6 +516,9 @@ public class OVRPlayerController : MonoBehaviour
 		OnUpdate_Fixed?.Invoke();
 	}
 
+	bool leftUpRightDownSwung = false;
+	bool rightUpLeftDownSwung = false;
+
 	//It's a long function with different stuff, but since we're doing this every fixed update, 
 	//there could be a small performance gain having them gathered rather than calling a bunch of different functions 
 	void GameplayFunctionsFixedUpdate()
@@ -527,7 +533,6 @@ public class OVRPlayerController : MonoBehaviour
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
 			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5 && !grabbingClimbHandle && !grabbingZipLine) Jump();
 
-		
 
 		//Swing-moving
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 0.6 &&
@@ -535,13 +540,27 @@ public class OVRPlayerController : MonoBehaviour
 		{
 			swingMoving = true;
 			timeSinceLastSwing = 0;
+
+			if (!leftUpRightDownSwung)
+            {
+				leftUpRightDownSwung = true;
+				rightUpLeftDownSwung = false;
+				numberOfSwings++;
+			}
 		}
 
 		else if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y < -0.6 &&
 			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 0.6 && !grabbingAnything)
 		{
-			swingMoving = true;
-			timeSinceLastSwing = 0;
+			 swingMoving = true;
+			 timeSinceLastSwing = 0;
+			 
+			 if (!rightUpLeftDownSwung)
+             {
+			 	rightUpLeftDownSwung = true;
+			 	leftUpRightDownSwung = false;
+			 	numberOfSwings++;
+			 }
 		}
 
 		if (swingMoving)
@@ -550,13 +569,15 @@ public class OVRPlayerController : MonoBehaviour
 			if (timeSinceLastSwing > maxTimeForSwingMovement)
 			{
 				swingMoving = false;
+				numberOfSwings = 0;
 			}
 
 			else timeSinceLastSwing += Time.fixedDeltaTime;
 
-			if (EnableLinearMovement)
+			if (EnableLinearMovement && numberOfSwings > 1)
             {
-				swingWalkVector = (transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * 10);
+				swingWalkVector = (transform.forward * Time.fixedDeltaTime * (maxTimeForSwingMovement - timeSinceLastSwing) * swingWalkDefaultSpeed *
+					(OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick).y + 1));
 				Controller.Move(swingWalkVector);
 			}
 		}
