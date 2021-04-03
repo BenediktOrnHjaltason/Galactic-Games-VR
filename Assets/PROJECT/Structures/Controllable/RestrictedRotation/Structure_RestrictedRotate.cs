@@ -64,7 +64,7 @@ public class Structure_RestrictedRotate : StructureSync
                 break;
 
             case EAutoForceAxis.Z_Negative:
-                autoRotateVector = new Vector3(0, 0, autoForcePower);
+                autoRotateVector = new Vector3(0, 0, -autoForcePower);
                 rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY |
                    RigidbodyConstraints.FreezePosition;
                 break;
@@ -79,7 +79,7 @@ public class Structure_RestrictedRotate : StructureSync
 
             if (rtt.ownerIDSelf == realtime.clientID)
             {
-                rb.AddTorque(forwardOnStart * autoForcePower);
+                rb.AddTorque(autoRotateVector /** autoForcePower*/);
                 //transform.Rotate(autoRotateVector);
                 //rb.transform.position = rootPositionOnStart;
             }

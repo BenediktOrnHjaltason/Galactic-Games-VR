@@ -616,7 +616,7 @@ PrefabInstance:
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
       propertyPath: autoForceAxis
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
@@ -641,7 +641,7 @@ PrefabInstance:
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
       propertyPath: mode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
@@ -7159,7 +7159,7 @@ PrefabInstance:
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
       propertyPath: mode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
