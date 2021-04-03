@@ -17,7 +17,7 @@ public class Hand : MonoBehaviour
     
     OVRPlayerController playerController; //Handles movement of Avatar when grabbing
 
-    int layer_GrabHandle = 8;
+    int layer_ClimbHandle = 8;
     int layer_HandDevice = 12;
     int layer_ZipLineHandle = 13;
 
@@ -84,6 +84,9 @@ public class Hand : MonoBehaviour
     void Awake()
     {
         playerController = transform.root.GetComponent<OVRPlayerController>();
+
+        playerController.OnHazardEncountered += ReleaseClimbHandle;
+        playerController.OnHazardEncountered += ReleaseZipLine;
 
         //deviceUI = GetComponentInChildren<UIHandDevice>();
         //deviceUI.Initialize();
@@ -211,7 +214,7 @@ public class Hand : MonoBehaviour
         {
             shouldGrab = false;
 
-            if (other.gameObject.layer.Equals(layer_GrabHandle))
+            if (other.gameObject.layer.Equals(layer_ClimbHandle))
             {
                 GrabClimbHandle(other.gameObject);
                 otherHand.ReleaseClimbHandle();
@@ -226,14 +229,13 @@ public class Hand : MonoBehaviour
                 zipLineGrabbed.OnBeamTouchesObstacle += ReleaseZipLine;
                 GrabZipLine(zipLineGrabbed.TravelSpeed);
             }
-                
         }
 
         else if (shouldRelease) 
         {
             shouldRelease = false;
 
-            if (other.gameObject.layer.Equals(layer_GrabHandle))
+            if (other.gameObject.layer.Equals(layer_ClimbHandle))
                 ReleaseClimbHandle();
 
             else if (other.gameObject.layer.Equals(layer_HandDevice))
@@ -298,6 +300,7 @@ public class Hand : MonoBehaviour
 
     public void ReleaseZipLine()
     {
+        if (zipLineGrabbed)
         zipLineGrabbed.OnBeamTouchesObstacle -= ReleaseZipLine;
 
         playerController.SetGrabbingZipLine(false);

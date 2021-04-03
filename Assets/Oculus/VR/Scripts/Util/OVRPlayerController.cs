@@ -231,6 +231,8 @@ public class OVRPlayerController : MonoBehaviour
 	bool grabbingZipLine = false;
 	bool grabbingAnything = false;
 
+	public bool GrabbingAnything { get => grabbingAnything; }
+
 
 	//ZipLine
 
@@ -282,6 +284,11 @@ public class OVRPlayerController : MonoBehaviour
 	event Action OnUpdate_Fixed;
 	event Action OnUpdate_PerFrame;
 
+	public event Action OnHazardEncountered;
+	public void RespondToEncounteredHazard()
+    {
+		OnHazardEncountered?.Invoke();
+    }
 
 	public void SetExternalHands(bool leftHand, Transform transform, GameObject baseGameObject)
     {
@@ -329,33 +336,26 @@ public class OVRPlayerController : MonoBehaviour
 
 		}
 
-		if (!grabbing_LeftHand && !grabbing_RightHand) SetGrabbing(false);
+		if (!grabbing_LeftHand && !grabbing_RightHand)
+		{
+			Controller.enabled = true;
+			HmdRotatesY = true;
+			grabbingClimbHandle = grabbingAnything = false;
+		}
 		else
 		{
 			if (handleTransform) handleYRotationOnGrab = handleTransform.rotation.eulerAngles.y;
 
 			playerControllerRotationOnGrab = transform.rotation;
-			SetGrabbing(true);
-		}
-    }
 
-	public void SetGrabbing(bool state)
-    {
-		if (state == true)
-		{
 			Controller.enabled = false;
 			HmdRotatesY = false;
 
 			FallSpeed = 0.0f;
 			grabbingClimbHandle = grabbingAnything = true;
 		}
-		else
-		{
-			Controller.enabled = true;
-			HmdRotatesY = true;
-			grabbingClimbHandle = grabbingAnything = false;
-		}
     }
+
 
 	public void SetGrabbingZipLine(bool grabbing, Transform hand = null, int handSide = -1, Transform zipLineStart = null, float zipLineSpeed = 0.0f)
     {

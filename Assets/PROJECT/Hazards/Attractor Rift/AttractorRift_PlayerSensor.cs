@@ -25,9 +25,10 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     RealtimeTransform rtt;
     Rigidbody rb;
 
-    Vector3 attractionPointToRoot = Vector3.zero;
-
-    List<OVRPlayerController> playersInReach = new List<OVRPlayerController>();
+    
+    //Only one instance of OVRPlayerController exists per client, only avatar parts parented to the anchors are network replicated.
+     
+    OVRPlayerController playerInReach = null;
 
     static List<AttractorRift_PlayerSensor> allSensors = new List<AttractorRift_PlayerSensor>();
 
@@ -49,7 +50,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     Vector3[] endPointsMoveTo = new Vector3[4];
 
     //--------- PlayerLines
-    List<LineRenderer> playerBeams = new List<LineRenderer>();
+    LineRenderer playerBeam;
     
 
 
@@ -73,10 +74,12 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         defaultBeams.Add(transform.GetChild(0).transform.GetChild(2).GetComponent<LineRenderer>());
         defaultBeams.Add(transform.GetChild(0).transform.GetChild(3).GetComponent<LineRenderer>());
 
-        playerBeams.Add(transform.GetChild(1).transform.GetChild(0).GetComponent<LineRenderer>());
+        playerBeam = transform.GetChild(1).transform.GetChild(0).GetComponent<LineRenderer>();
 
         allSensors.Add(this);
     }
+
+    Vector3 riftPosToAnchorPos = Vector3.zero;
 
     private void FixedUpdate()
     {
@@ -108,29 +111,27 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             }
 
             //Beams to players
-            if (playersInReach.Count > 0)
+            if (playerInReach)
             {
-                for (int i = 0; i < playersInReach.Count; i++)
-                {
-                    playerBeams[i].SetPosition(0, transform.position);
 
-                    randomDirection = playersInReach[i].transform.position - transform.position;
+                playerBeam.SetPosition(0, transform.position);
 
-                    playerBeams[i].SetPosition(1, transform.position + (randomDirection / 2) +
-                    dummyObject.transform.up * (randomDirection.x /5) +
-                    dummyObject.transform.right * (randomDirection.y /5));
+                randomDirection = playerInReach.transform.position - transform.position;
 
-                    playerBeams[i].SetPosition(2, transform.position + randomDirection);
-                }
+                playerBeam.SetPosition(1, transform.position + (randomDirection / 2) +
+                dummyObject.transform.up * (randomDirection.x /5) +
+                dummyObject.transform.right * (randomDirection.y /5));
+
+                playerBeam.SetPosition(2, transform.position + randomDirection);
+                
             }
 
             else 
-                foreach (LineRenderer beam in playerBeams)
-                {
-                    beam.SetPosition(0, transform.position);
-                    beam.SetPosition(1, transform.position);
-                    beam.SetPosition(2, transform.position);
-                }
+            {
+                playerBeam.SetPosition(0, transform.position);
+                playerBeam.SetPosition(1, transform.position);
+                playerBeam.SetPosition(2, transform.position);
+            }
         }
 
         else
@@ -142,21 +143,14 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             }
 
             //Place playerBeams inside core when not used
-            if (playersInReach.Count < 1)
+            if (!playerInReach)
             {
-                foreach (LineRenderer beam in playerBeams)
-                {
-                    beam.SetPosition(0, transform.position);
-                    beam.SetPosition(1, transform.position);
-                    beam.SetPosition(2, transform.position);
-                }
+                playerBeam.SetPosition(0, transform.position);
+                playerBeam.SetPosition(1, transform.position);
+                playerBeam.SetPosition(2, transform.position);
             }
             
-            else
-            {
-                foreach (LineRenderer beam in playerBeams)
-                    beam.SetPosition(0, transform.position);
-            }
+            else playerBeam.SetPosition(0, transform.position);
         }
 
         if (!rtt.realtime.connected) return;
@@ -166,18 +160,15 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
         else if (rtt.isOwnedLocallySelf)
         {
-            attractionPointToRoot = anchor.transform.position - transform.position;
+            riftPosToAnchorPos = anchor.transform.position - transform.position;
 
             //if ((transform.position - anchor.transform.position).sqrMagnitude > 0.02)
-                rb.AddForce(attractionPointToRoot * autoForce);
+                rb.AddForce(riftPosToAnchorPos * autoForce);
         }
 
-        //Attract players
-        foreach (OVRPlayerController player in playersInReach)
-        {
-            if (player.HeadRealtimeView.isOwnedLocallySelf) 
-                player.Controller.Move((transform.position - player.transform.position).normalized * 0.04f);
-        }
+        //Attract player
+        if (playerInReach && !playerInReach.GrabbingAnything) 
+            playerInReach.Controller.Move((transform.position - playerInReach.transform.position).normalized * 0.04f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -189,7 +180,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             if (player)
             {
                 player.GravityModifier = 0.0f;
-                playersInReach.Add(player);
+                playerInReach = player;
             }
         }
     }
@@ -203,19 +194,34 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
             if (player)
             {
-                RemovePlayerFromInfluence(player);
+                RemovePlayerFromInfluence(player, false);
             }
         }
     }
     
 
-    void RemovePlayerFromInfluence(OVRPlayerController player)
+    void RemovePlayerFromInfluence(OVRPlayerController player, bool removeFromAll)
     {
-        player.GravityModifier = 0.04f;
+        if (removeFromAll)
+            foreach (AttractorRift_PlayerSensor playerSensor in allSensors)
+            {
+                if (playerSensor.playerInReach == player)
+                {
+                    playerSensor.playerInReach.GravityModifier = 0.04f;
+                    playerSensor.playerInReach = null;
+                }
+            }
 
-        foreach (AttractorRift_PlayerSensor ps in allSensors)
+        else if (playerInReach == player)
         {
-            if (ps.playersInReach.Contains(player)) ps.playersInReach.Remove(player);
+            bool playerInfluencedByOtherRift = false;
+
+            foreach (AttractorRift_PlayerSensor playerSensor in allSensors)
+                if (playerSensor != this && playerSensor.playerInReach == player) playerInfluencedByOtherRift = true;
+
+            if (!playerInfluencedByOtherRift) playerInReach.GravityModifier = 0.04f;
+
+            playerInReach = null;
         }
     }
 }

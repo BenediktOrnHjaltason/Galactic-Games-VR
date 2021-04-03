@@ -811,7 +811,7 @@ GameObject:
   - component: {fileID: 2064224171457554355}
   - component: {fileID: 8457304794577949174}
   - component: {fileID: 4820883681839133816}
-  m_Layer: 15
+  m_Layer: 18
   m_Name: PlayerSensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1194,7 +1194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1933438605732087271}
-  m_Layer: 15
+  m_Layer: 9
   m_Name: Base_PlayerLines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1225,7 +1225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 491336591488625290}
-  m_Layer: 15
+  m_Layer: 9
   m_Name: Base_DefaultLines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
