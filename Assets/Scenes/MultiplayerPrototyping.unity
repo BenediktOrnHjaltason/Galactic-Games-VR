@@ -1407,6 +1407,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_OmniDeviceDispenser
       objectReference: {fileID: 0}
+    - target: {fileID: 6877572582646553129, guid: badef1eb33a6fa64bafad9625831a49e,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9207758445120194106, guid: badef1eb33a6fa64bafad9625831a49e,
         type: 3}
       propertyPath: m_LocalPosition.x

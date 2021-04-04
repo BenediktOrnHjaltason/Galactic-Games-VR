@@ -9,9 +9,11 @@ public class StartAreaSetup : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(14))
         {
+            Debug.Log("StartAreaSetup: Head entered trigger");
+
             AudioSource audioSource = other.GetComponent<AudioSource>();
 
-            if (audioSource && audioSource.spatialize)
+            if (audioSource && audioSource.spatialBlend > 0)
             {
                 audioSource.spatialBlend = 0.0f;
             }
