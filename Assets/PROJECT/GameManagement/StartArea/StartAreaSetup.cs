@@ -13,8 +13,7 @@ public class StartAreaSetup : MonoBehaviour
 
             if (audioSource && audioSource.spatialize)
             {
-                audioSource.spatialize = false;
-                Debug.Log("spatialization turned off for player audio source");
+                audioSource.spatialBlend = 0.0f;
             }
         }
     }
