@@ -81,7 +81,7 @@ MonoBehaviour:
   _syncRotation: 1
   _syncScale: 1
   _syncVelocity: 1
-  _maintainOwnershipWhileSleeping: 1
+  _maintainOwnershipWhileSleeping: 0
 --- !u!23 &3222609371049777219
 MeshRenderer:
   m_ObjectHideFlags: 0
