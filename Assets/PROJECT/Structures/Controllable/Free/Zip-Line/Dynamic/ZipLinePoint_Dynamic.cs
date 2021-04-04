@@ -21,9 +21,7 @@ public class ZipLinePoint_Dynamic : ZipLinePoint
     {
         base.FixedUpdate();
 
-        if (!rtt.realtime.connected) return;
-        else if (rtt.ownerIDSelf == -1) rtt.RequestOwnership();
-        else if (rtt.isOwnedLocallySelf && otherPoint)
-            transform.root.rotation = Quaternion.LookRotation(selfToOther);
+        if (otherPoint)
+        transform.root.rotation = Quaternion.LookRotation(selfToOther);
     }
 }

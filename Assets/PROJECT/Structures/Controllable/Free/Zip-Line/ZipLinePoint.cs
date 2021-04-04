@@ -69,7 +69,6 @@ public class ZipLinePoint : MonoBehaviour
 
     public virtual void FixedUpdate()
     {
-
         if (otherPoint)
         {
             selfToOther = otherPoint.transform.position - transform.position;
@@ -85,13 +84,9 @@ public class ZipLinePoint : MonoBehaviour
             {
                 transportBeam.transform.SetPositionAndRotation(transform.position + (selfToOther / 2), Quaternion.LookRotation(selfToOther));
                 transportBeam.transform.localScale = new Vector3(0.25f, 0.25f, selfToOther.magnitude);
-
-                
             }
 
             else transportBeam.transform.position = transform.position;
-
-            
         }
     }
 
