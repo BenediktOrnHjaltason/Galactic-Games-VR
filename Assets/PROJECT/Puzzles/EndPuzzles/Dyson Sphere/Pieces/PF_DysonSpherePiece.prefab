@@ -456,7 +456,7 @@ MonoBehaviour:
     constrainRoll: 0
     constrainYaw: 1
     constrainPitch: 1
-  selfRotateMultiplier: 1
+  selfRotateMultiplier: 0.5
   mesh: {fileID: 6012814186943098605}
 --- !u!114 &3278652067852626127
 MonoBehaviour:

@@ -235,6 +235,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7890074538415451183}
     m_Modifications:
+    - target: {fileID: 3278652067852626127, guid: db42bfbac33d96e4d89df9825264f2d4,
+        type: 3}
+      propertyPath: otherPiece
+      value: 
+      objectReference: {fileID: 3836792896179463569}
+    - target: {fileID: 3278652067852626127, guid: db42bfbac33d96e4d89df9825264f2d4,
+        type: 3}
+      propertyPath: connectorBeamToOtherPiece
+      value: 
+      objectReference: {fileID: 1918751018121887267}
+    - target: {fileID: 3278652067852626127, guid: db42bfbac33d96e4d89df9825264f2d4,
+        type: 3}
+      propertyPath: otherPieceConnectionReceiver
+      value: 
+      objectReference: {fileID: 8485500814921181692}
     - target: {fileID: 6813717227074665369, guid: db42bfbac33d96e4d89df9825264f2d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -327,6 +342,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20babaa57d75ce246a64db29a7163da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!120 &1918751018121887267 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 638008392384436459, guid: db42bfbac33d96e4d89df9825264f2d4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1331496083558770376}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2430557134673292468 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3729401003962141308, guid: db42bfbac33d96e4d89df9825264f2d4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1331496083558770376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1783172980636929374
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -334,6 +361,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7890074538415451183}
     m_Modifications:
+    - target: {fileID: 3278652067852626127, guid: db42bfbac33d96e4d89df9825264f2d4,
+        type: 3}
+      propertyPath: otherPiece
+      value: 
+      objectReference: {fileID: 4610120371552423431}
+    - target: {fileID: 3278652067852626127, guid: db42bfbac33d96e4d89df9825264f2d4,
+        type: 3}
+      propertyPath: connectorBeamToOtherPiece
+      value: 
+      objectReference: {fileID: 7306623386642810141}
+    - target: {fileID: 3278652067852626127, guid: db42bfbac33d96e4d89df9825264f2d4,
+        type: 3}
+      propertyPath: otherPieceConnectionReceiver
+      value: 
+      objectReference: {fileID: 2430557134673292468}
     - target: {fileID: 6813717227074665369, guid: db42bfbac33d96e4d89df9825264f2d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -426,6 +468,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20babaa57d75ce246a64db29a7163da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8485500814921181692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7889625299394651298, guid: db42bfbac33d96e4d89df9825264f2d4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1783172980636929374}
+  m_PrefabAsset: {fileID: 0}
+--- !u!120 &7306623386642810141 stripped
+LineRenderer:
+  m_CorrespondingSourceObject: {fileID: 9068364136862730307, guid: db42bfbac33d96e4d89df9825264f2d4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1783172980636929374}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5605446847385403631
 PrefabInstance:
   m_ObjectHideFlags: 0
