@@ -5,8 +5,8 @@ using Normal.Realtime;
 using Unity.Profiling;
 
 /*
-    The player sensor is the large field detecting if players are in are of influence,
-    and pushing them to the core if they are
+    The player sensor is the large field detecting if players are in area of influence,
+    and pulling them towards the core if they are
  */
 
 
@@ -26,11 +26,16 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     Rigidbody rb;
 
     
-    //Only one instance of OVRPlayerController exists per client, only avatar parts parented to the anchors are network replicated.
-     
-    OVRPlayerController playerInReach = null;
+    //Only one instance of OVRPlayerController exists per client, which is used to apply pulling towards the core.
+    OVRPlayerController playerControllerInReach = null;
 
+
+    //Rifts need access to each other to cancel the pull from other rifts if in the influence of other rifts when
+    //player touches the core of this rift
     static List<AttractorRift_PlayerSensor> allSensors = new List<AttractorRift_PlayerSensor>();
+
+    //Since OVRPlayerController is local only, we need another way of displaying the beam that pulls them
+    List<GameObject> playerHeads = new List<GameObject>();
 
     //---- beams
     float changeInterval = 0.466f;
@@ -42,6 +47,9 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
     Vector3 pathToEdge;
     Vector3 randomDirection;
+    Vector3 directionToPlayerTorso;
+
+    Vector3 offsettToPlayerHead = new Vector3(0, -0.3f, 0);
 
     Vector3[] offsetRight = new Vector3[4];
     Vector3[] offsetUp = new Vector3[4];
@@ -50,7 +58,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     Vector3[] endPointsMoveTo = new Vector3[4];
 
     //--------- PlayerLines
-    LineRenderer playerBeam;
+    List<LineRenderer> playerBeams = new List<LineRenderer>();
     
 
 
@@ -74,7 +82,9 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         defaultBeams.Add(transform.GetChild(0).transform.GetChild(2).GetComponent<LineRenderer>());
         defaultBeams.Add(transform.GetChild(0).transform.GetChild(3).GetComponent<LineRenderer>());
 
-        playerBeam = transform.GetChild(1).transform.GetChild(0).GetComponent<LineRenderer>();
+        playerBeams.Add(transform.GetChild(1).transform.GetChild(0).GetComponent<LineRenderer>());
+        playerBeams.Add(transform.GetChild(1).transform.GetChild(1).GetComponent<LineRenderer>());
+        playerBeams.Add(transform.GetChild(1).transform.GetChild(2).GetComponent<LineRenderer>());
 
         allSensors.Add(this);
     }
@@ -111,27 +121,20 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             }
 
             //Beams to players
-            if (playerInReach)
+            for (int i = 0; i < playerHeads.Count; i++)
             {
+                playerBeams[i].SetPosition(0, transform.position);
 
-                playerBeam.SetPosition(0, transform.position);
+                directionToPlayerTorso = (playerHeads[i].transform.position - transform.position) + offsettToPlayerHead;
 
-                randomDirection = playerInReach.transform.position - transform.position;
+                playerBeams[i].SetPosition(1, transform.position + (directionToPlayerTorso / 2) +
+                dummyObject.transform.up * (directionToPlayerTorso.x /5) +
+                dummyObject.transform.right * (directionToPlayerTorso.y /5));
 
-                playerBeam.SetPosition(1, transform.position + (randomDirection / 2) +
-                dummyObject.transform.up * (randomDirection.x /5) +
-                dummyObject.transform.right * (randomDirection.y /5));
-
-                playerBeam.SetPosition(2, transform.position + randomDirection);
-                
+                playerBeams[i].SetPosition(2, transform.position + directionToPlayerTorso);
             }
 
-            else 
-            {
-                playerBeam.SetPosition(0, transform.position);
-                playerBeam.SetPosition(1, transform.position);
-                playerBeam.SetPosition(2, transform.position);
-            }
+            
         }
 
         else
@@ -143,14 +146,16 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             }
 
             //Place playerBeams inside core when not used
-            if (!playerInReach)
+            for (int i = 0; i < 3; i++)
             {
-                playerBeam.SetPosition(0, transform.position);
-                playerBeam.SetPosition(1, transform.position);
-                playerBeam.SetPosition(2, transform.position);
+                playerBeams[i].SetPosition(0, transform.position);
+
+                if (i > playerHeads.Count -1)
+                {
+                    playerBeams[i].SetPosition(1, transform.position);
+                    playerBeams[i].SetPosition(2, transform.position);
+                }
             }
-            
-            else playerBeam.SetPosition(0, transform.position);
         }
 
         if (!rtt.realtime.connected) return;
@@ -167,20 +172,25 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         }
 
         //Attract player
-        if (playerInReach && !playerInReach.GrabbingAnything) 
-            playerInReach.Controller.Move((transform.position - playerInReach.transform.position).normalized * 0.04f);
+        if (playerControllerInReach && !playerControllerInReach.GrabbingAnything)
+            playerControllerInReach.Controller.Move((transform.position - playerControllerInReach.transform.position).normalized * 0.04f);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer.Equals(14))
         {
-            OVRPlayerController player = other.GetComponent<OVRPlayerController>();
+            OVRPlayerController playerController = other.GetComponent<OVRPlayerController>();
 
-            if (player)
+            if (playerController)
             {
-                player.GravityModifier = 0.0f;
-                playerInReach = player;
+                playerController.GravityModifier = 0.0f;
+                playerControllerInReach = playerController;
+            }
+
+            else if (other.gameObject.name.Contains("Head"))
+            {
+                playerHeads.Add(other.gameObject);
             }
         }
     }
@@ -190,11 +200,16 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(14))
         {
-            OVRPlayerController player = other.GetComponent<OVRPlayerController>();
+            OVRPlayerController playerController = other.GetComponent<OVRPlayerController>();
 
-            if (player)
+            if (playerController)
             {
-                RemovePlayerFromInfluence(player, false);
+                RemovePlayerFromInfluence(playerController, false);
+            }
+
+            else if (other.gameObject.name.Contains("Head"))
+            {
+                playerHeads.Remove(other.gameObject);
             }
         }
     }
@@ -205,23 +220,23 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         if (removeFromAll)
             foreach (AttractorRift_PlayerSensor playerSensor in allSensors)
             {
-                if (playerSensor.playerInReach == player)
+                if (playerSensor.playerControllerInReach == player)
                 {
-                    playerSensor.playerInReach.GravityModifier = 0.04f;
-                    playerSensor.playerInReach = null;
+                    playerSensor.playerControllerInReach.GravityModifier = 0.04f;
+                    playerSensor.playerControllerInReach = null;
                 }
             }
 
-        else if (playerInReach == player)
+        else if (playerControllerInReach == player)
         {
             bool playerInfluencedByOtherRift = false;
 
             foreach (AttractorRift_PlayerSensor playerSensor in allSensors)
-                if (playerSensor != this && playerSensor.playerInReach == player) playerInfluencedByOtherRift = true;
+                if (playerSensor != this && playerSensor.playerControllerInReach == player) playerInfluencedByOtherRift = true;
 
-            if (!playerInfluencedByOtherRift) playerInReach.GravityModifier = 0.04f;
+            if (!playerInfluencedByOtherRift) playerControllerInReach.GravityModifier = 0.04f;
 
-            playerInReach = null;
+            playerControllerInReach = null;
         }
     }
 }
