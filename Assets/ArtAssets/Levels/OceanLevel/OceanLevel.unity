@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -767,6 +767,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_KeyCard (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 968017773337885219, guid: ae26bded8d32df84eb46987042df325a,
+        type: 3}
+      propertyPath: rotationAxis
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1486000037296225382, guid: ae26bded8d32df84eb46987042df325a,
         type: 3}
@@ -8539,17 +8544,17 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.92
+      value: 0.593
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.154
+      value: -8.188
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.55
+      value: 5.05
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -17544,6 +17549,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_KeyCard (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 968017773337885219, guid: ae26bded8d32df84eb46987042df325a,
+        type: 3}
+      propertyPath: rotationAxis
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1486000037296225382, guid: ae26bded8d32df84eb46987042df325a,
         type: 3}
       propertyPath: _realtime
@@ -21710,6 +21720,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_KeyCard
+      objectReference: {fileID: 0}
+    - target: {fileID: 968017773337885219, guid: ae26bded8d32df84eb46987042df325a,
+        type: 3}
+      propertyPath: rotationAxis
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1486000037296225382, guid: ae26bded8d32df84eb46987042df325a,
         type: 3}

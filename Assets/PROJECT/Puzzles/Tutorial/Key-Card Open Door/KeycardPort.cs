@@ -72,8 +72,13 @@ public class KeycardPort : RealtimeComponent<KeycardPort_Model>
             rb.transform.localPosition = snapPosition;
             rb.transform.localRotation = Quaternion.Euler(snapRotation);
 
-            rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
-                 RigidbodyConstraints.FreezeRotation;
+            if (transform.forward.x > 0.8f || transform.forward.x < -0.8f)
+                rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
+                    RigidbodyConstraints.FreezeRotation;
+
+            else if (transform.forward.z > 0.8f || transform.forward.z < -0.8f)
+                rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX |
+                    RigidbodyConstraints.FreezeRotation;
 
             ss.AllowRotationForces = false;
         }
