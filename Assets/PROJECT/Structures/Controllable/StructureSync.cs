@@ -17,26 +17,18 @@ struct SelfAxisToRotation
     public Vector3 Yaw;
     public Vector3 Pitch;
 }
-[System.Serializable]
-struct SelfAxisConstraints
-{
-    public bool constrainRoll;
-    public bool constrainYaw;
-    public bool constrainPitch;
-}
 
 public class StructureSync : RealtimeComponent<StructureSync_Model>
 {
-    //----Variables that are replicated on network clients but never change
     [SerializeField]
-    bool allowDuplicationByDevice;
+    bool allowDuplicationByPlayer;
 
-    public bool AllowDuplicationByDevice { get => allowDuplicationByDevice; set => allowDuplicationByDevice = value; }
+    public bool AllowDuplicationByPlayer { get => allowDuplicationByPlayer; set => allowDuplicationByPlayer = value; }
 
     [SerializeField]
-    bool allowGravityForceByDevice = true;
+    bool allowGravityForceByPlayer = true;
 
-    public bool AllowGravityForceByDevice { get => allowGravityForceByDevice; }
+    public bool AllowGravityForceByPlayer { get => allowGravityForceByPlayer; }
 
     protected Rigidbody rb;
 
@@ -46,8 +38,8 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     //----
 
     [SerializeField]
-    bool allowRotationForces = true;
-    public bool AllowRotationForces { get => allowRotationForces; set => allowRotationForces = value; }
+    bool allowRotationForceByPlayer = true;
+    public bool AllowRotationForceByPlayer { get => allowRotationForceByPlayer; set => allowRotationForceByPlayer = value; }
 
     [SerializeField]
     float pushPullMultiplier = 1;
@@ -57,40 +49,27 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     bool ownedByPlayer = false;
     public bool OwnedByPlayer { get => ownedByPlayer; set => ownedByPlayer = value; }
 
-
     GameObject mainStructure;
-
-    [SerializeField]
-    ERotationForceAxis rotationAxis = ERotationForceAxis.PLAYER;
-
-    /// <summary>
-    /// Settings for structures rotating in local space
-    /// </summary>
-    [Header("Define which world self direction represent which rotation")]
-    [SerializeField]
-    SelfAxisToRotation selfAxisToRotation;
-
-    [Header("Define which rotations to constrain")]
-    [SerializeField]
-    SelfAxisConstraints selfAxisConstraints;
-
-    [SerializeField]
-    float selfRotateMultiplier = 1;
 
     public event Action OnBreakControl;
 
-    protected Realtime worldRealtime;
+    /// <summary>
+    /// Used for structures with rotation restricted to one world axis to set correct rotation force independent of which side player is on
+    /// </summary>
+    /// <param name="controllingHandPosition"></param>
+    public virtual void CalculatePlayerAngleModifier(Vector3 controllingHandPosition)
+    {
+
+    }
 
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         mainStructure = transform.GetChild(0).gameObject;
 
         rb = GetComponent<Rigidbody>();
 
         rtt = GetComponent<RealtimeTransform>();
-
-        worldRealtime = GameObject.Find("Realtime").GetComponent<Realtime>();
     }
 
    
@@ -210,41 +189,18 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
 
     public event Action<float, float, float> OnExternalPiggybacking;
 
-    public void Rotate(Vector3 playerForward, float rollForce, float yawForce, Vector3 playerRight, float pitchForce)
+    public virtual void Rotate(Vector3 playerForward, float rollForce, float yawForce, Vector3 playerRight, float pitchForce)
     {
-        switch (rotationAxis)
-        {
-            case ERotationForceAxis.PLAYER:
-                {
+        OnExternalPiggybacking?.Invoke(rollForce, yawForce, pitchForce);
 
-                    OnExternalPiggybacking?.Invoke(rollForce, yawForce, pitchForce);
+        //Roll
+        rb.AddTorque(playerForward * rollForce, ForceMode.Acceleration);
 
-                    //Roll
-                    rb.AddTorque(playerForward * rollForce, ForceMode.Acceleration);
+        //Yaw
+        rb.AddTorque(Vector3.up * yawForce, ForceMode.Acceleration);
 
-                    //Yaw
-                    rb.AddTorque(Vector3.up * yawForce, ForceMode.Acceleration);
-
-                    //Pitch
-                    rb.AddTorque(playerRight * pitchForce, ForceMode.Acceleration);
-                    break;
-                }
-
-            case ERotationForceAxis.SELF:
-                {
-
-                    //Roll (Only use case for now)
-                    if (!selfAxisConstraints.constrainRoll)    rb.AddRelativeTorque(selfAxisToRotation.Roll * rollForce * selfRotateMultiplier, ForceMode.Acceleration);
-
-                    //Yaw
-                    if (!selfAxisConstraints.constrainYaw)     rb.AddRelativeTorque(selfAxisToRotation.Yaw * yawForce * selfRotateMultiplier, ForceMode.Acceleration);
-
-                    //Pitch
-                    //if (!localRotationConstraints.constrainPitch)   RB.AddRelativeTorque(transform.right * pitchForce);
-
-                    break;
-                }           
-        }
+        //Pitch
+        rb.AddTorque(playerRight * pitchForce, ForceMode.Acceleration);
     }
 
     public void AddGravityForce(Vector3 force)

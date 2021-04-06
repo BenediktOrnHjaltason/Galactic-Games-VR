@@ -119,23 +119,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d9fa8fe9ac8f84fa34dee8d3e4e6de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 0
-  allowGravityForceByDevice: 1
-  allowRotationForces: 1
+  allowDuplicationByPlayer: 0
+  allowGravityForceByPlayer: 0
+  allowRotationForceByPlayer: 1
   pushPullMultiplier: 1
-  rotationAxis: 1
-  selfAxisToRotation:
-    Roll: {x: 0, y: 0, z: 0}
-    Yaw: {x: 0, y: 0, z: 0}
-    Pitch: {x: 0, y: 0, z: 0}
-  selfAxisConstraints:
-    constrainRoll: 0
-    constrainYaw: 0
-    constrainPitch: 0
-  selfRotateMultiplier: 1
   mode: 1
-  autoForceAxis: 0
   autoForcePower: 70
+  exclusiveWorldRotation: 0
+  autoRotateDirection: 0
+  playerRotationAllowed: 0
+  playerForceMultiplier: 0.4
 --- !u!1 &7249895678838392443
 GameObject:
   m_ObjectHideFlags: 0

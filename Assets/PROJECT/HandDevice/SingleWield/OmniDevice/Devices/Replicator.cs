@@ -163,12 +163,12 @@ public class Replicator : HandDevice
         GetStateReferencesFromTarget(target);
 
         if (!structureSync || 
-            (structureSync && (!structureSync.AllowDuplicationByDevice || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0)))
+            (structureSync && (!structureSync.AllowDuplicationByPlayer || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0)))
         {
             Debug.Log("Replicator: Not allowed to replicate structure! Reason: ");
 
             if (!structureSync) Debug.Log("The is no StructureSync object");
-            if (structureSync && !structureSync.AllowDuplicationByDevice) Debug.Log("AllowDuplicationByDevice is false");
+            if (structureSync && !structureSync.AllowDuplicationByPlayer) Debug.Log("AllowDuplicationByDevice is false");
             if (structureSync && !structureSync.AvailableToManipulate) Debug.Log("AvailableToManipulate is false");
             if (structureSync && structureSync.PlayersOccupying > 0) Debug.Log("PlayersOccupying is more than 0");
 

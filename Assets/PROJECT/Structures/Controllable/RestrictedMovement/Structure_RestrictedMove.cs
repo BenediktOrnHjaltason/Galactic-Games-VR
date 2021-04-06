@@ -35,9 +35,9 @@ public class Structure_RestrictedMove : StructureSync
     RealtimeTransform realtimeTransform;
 
     // Start is called before the first frame update
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();
+        base.Awake();
 
         realtimeTransform = GetComponent<RealtimeTransform>();
 
@@ -96,7 +96,7 @@ public class Structure_RestrictedMove : StructureSync
         HandleSideGlow();
 
         //Platforms in Free mode is allowed to loose ownership when sleeping because they will be static 
-        if (worldRealtime.connected && mode == ERestrictedStructureMode.AutoForce)
+        if (rtt.realtime.connected && mode == ERestrictedStructureMode.AutoForce)
         {
             if (realtimeTransform.ownerIDSelf == -1) realtimeTransform.RequestOwnership();
 

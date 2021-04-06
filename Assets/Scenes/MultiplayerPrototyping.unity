@@ -554,6 +554,21 @@ PrefabInstance:
       propertyPath: selfRotateMultiplier
       value: 0.4
       objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: exclusiveRotation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: exclusiveWorldRotation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: playerRotationAllowed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8655029620735361827, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
       propertyPath: m_RootOrder
@@ -1089,17 +1104,17 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.056
+      value: -0.104
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.928
+      value: 0.919
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.706
+      value: -2.999
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -1109,7 +1124,7 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -1119,7 +1134,7 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.00000044330957
+      value: -0.0000002533197
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -1134,7 +1149,7 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -179.99998
+      value: -540
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -2065,6 +2080,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_RotateStructureBase
       objectReference: {fileID: 0}
+    - target: {fileID: 7224935484569365128, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
       propertyPath: selfAxisToRotation.Roll.z
@@ -2079,6 +2099,16 @@ PrefabInstance:
         type: 3}
       propertyPath: selfRotateMultiplier
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: exclusiveWorldRotation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: playerRotationAllowed
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30f03d6406838c84a8b1618c999f1996, type: 3}
@@ -7112,6 +7142,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7224935484569365128, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
         type: 3}
       propertyPath: autoForceAxis
@@ -7146,6 +7181,26 @@ PrefabInstance:
         type: 3}
       propertyPath: selfRotateMultiplier
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: exclusiveRotation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: exclusiveWorldRotation
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: autoRotateDirection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637424726155588359, guid: 30f03d6406838c84a8b1618c999f1996,
+        type: 3}
+      propertyPath: playerRotationAllowed
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30f03d6406838c84a8b1618c999f1996, type: 3}

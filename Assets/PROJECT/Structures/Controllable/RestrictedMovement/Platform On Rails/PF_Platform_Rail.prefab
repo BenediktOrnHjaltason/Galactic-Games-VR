@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3549846447632763711}
   - component: {fileID: 6769507660323456821}
   - component: {fileID: 7532189947145946181}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 3070406882513032882}
   - component: {fileID: 6779772967088752284}
   - component: {fileID: 719910065313290984}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6616676629349797149}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PF_Platform_Rail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 3417082703159680549}
   - component: {fileID: 2244360195817060460}
   - component: {fileID: 863735124779104809}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 7208209927214855498}
   - component: {fileID: 4688158069477746425}
   - component: {fileID: 9157723299113128415}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
