@@ -1733,6 +1733,16 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 32
       objectReference: {fileID: 0}
+    - target: {fileID: 988536331537079670, guid: c67b8702545ae084f91c01bac9a1a87d,
+        type: 3}
+      propertyPath: m_Name
+      value: Button - Level_Moon_3P
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976901262564212817, guid: c67b8702545ae084f91c01bac9a1a87d,
+        type: 3}
+      propertyPath: m_text
+      value: Moon (3P)
+      objectReference: {fileID: 0}
     - target: {fileID: 2552284517074242287, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
       propertyPath: m_Name

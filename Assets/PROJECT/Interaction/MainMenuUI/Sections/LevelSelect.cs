@@ -45,7 +45,7 @@ public class LevelSelect : MainMenuSection
         if (!makingNewSelection)
         {
             newIndicatorLocalPos = buttons[2].transform.localPosition + IndicatorOffsettToButton;
-            selectedLevel = "MultiplayerPrototyping";
+            selectedLevel = "MoonLevel";
             makingNewSelection = true;
         }
     }
