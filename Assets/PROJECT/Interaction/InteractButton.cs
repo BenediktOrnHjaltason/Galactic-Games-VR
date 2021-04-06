@@ -59,6 +59,7 @@ public class InteractButton : MonoBehaviour
 
 
     public event Action OnExecute;
+    public event Action<InteractButton> OnExecuteWithReference;
 
 
 
@@ -118,6 +119,7 @@ public class InteractButton : MonoBehaviour
     public void Execute()
     {
         OnExecute?.Invoke();
+        OnExecuteWithReference?.Invoke(this);
     }
 
     private void OnTriggerEnter(Collider other)

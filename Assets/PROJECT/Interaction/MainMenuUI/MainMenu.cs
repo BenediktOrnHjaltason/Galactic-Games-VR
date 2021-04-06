@@ -11,6 +11,9 @@ public class MainMenu : MonoBehaviour
     Animatic screenScaleOut;
 
     [SerializeField]
+    Animatic keyboardScaleOut;
+
+    [SerializeField]
     Animatic logoAnimatic;
 
     bool animaticHasRun = false;
@@ -19,6 +22,7 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         footRise.OnAnimaticEnds += screenScaleOut.Run;
+        screenScaleOut.OnAnimaticEnds += keyboardScaleOut.Run;
 
         logoAnimatic.Run();
     }
