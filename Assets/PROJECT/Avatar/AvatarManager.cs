@@ -98,6 +98,14 @@ public class AvatarManager : MonoBehaviour
         head.transform.GetChild(0).transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false;
 
 
+
+        PlayerSync ps = head.transform.GetComponent<PlayerSync>();
+
+        RealtimeTransform rtt = head.GetComponent<RealtimeTransform>();
+
+        rtt.realtime.didConnectToRoom += ps.SetPlayerNameFromPlayerPrefs;
+
+
         //3 - Torso
         GameObject.Destroy(torso);
         torso = head.transform.GetChild(1).gameObject;

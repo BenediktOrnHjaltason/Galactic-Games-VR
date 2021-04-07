@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelSelect : MainMenuSection
 {
+    [SerializeField]
+    MainMenuKeyboard keyboard;
 
     string selectedLevel = "TutorialLevelScene";
 
@@ -52,6 +54,7 @@ public class LevelSelect : MainMenuSection
 
     void OpenLevel()
     {
+        PlayerPrefs.SetString("playerName", keyboard.PlayerName);
         SceneManager.LoadScene(selectedLevel);
     }
 }
