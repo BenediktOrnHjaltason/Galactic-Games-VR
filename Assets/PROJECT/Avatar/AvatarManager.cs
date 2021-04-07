@@ -93,22 +93,23 @@ public class AvatarManager : MonoBehaviour
         head.transform.SetParent(eyeAnchor.transform);
         head.GetComponent<RealtimeTransform>().RequestOwnership();
 
-        head.transform.GetChild(0).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
-        head.transform.GetChild(0).transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
-        head.transform.GetChild(0).transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false;
+        //head.transform.GetChild(0).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+        //head.transform.GetChild(0).transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
+        //head.transform.GetChild(0).transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false;
 
 
-
+        /*
         PlayerSync ps = head.transform.GetComponent<PlayerSync>();
 
         RealtimeTransform rtt = head.GetComponent<RealtimeTransform>();
 
         rtt.realtime.didConnectToRoom += ps.SetPlayerNameFromPlayerPrefs;
-
+        rtt.realtime.didConnectToRoom += ps.SetHeadIndexFromPlayerPrefs;
+        */
 
         //3 - Torso
         GameObject.Destroy(torso);
-        torso = head.transform.GetChild(1).gameObject;
+        torso = head.transform.GetChild(0).gameObject;
         torso.GetComponent<RealtimeTransform>().RequestOwnership();
 
         OVRManager.display.RecenterPose();

@@ -8,6 +8,9 @@ public class LevelSelect : MainMenuSection
     [SerializeField]
     MainMenuKeyboard keyboard;
 
+    [SerializeField]
+    AvatarSelect avatarSelect;
+
     string selectedLevel = "TutorialLevelScene";
 
     // Start is called before the first frame update
@@ -54,7 +57,13 @@ public class LevelSelect : MainMenuSection
 
     void OpenLevel()
     {
-        PlayerPrefs.SetString("playerName", keyboard.PlayerName);
+        SavePlayerPreferences();
         SceneManager.LoadScene(selectedLevel);
+    }
+
+    void SavePlayerPreferences()
+    {
+        PlayerPrefs.SetString("playerName", keyboard.PlayerName);
+        PlayerPrefs.SetInt("currentHeadIndex", avatarSelect.CurrentHeadIndex);
     }
 }

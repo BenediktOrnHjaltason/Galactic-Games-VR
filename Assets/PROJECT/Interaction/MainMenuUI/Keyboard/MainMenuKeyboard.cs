@@ -33,8 +33,6 @@ public class MainMenuKeyboard : MonoBehaviour
         {
             allInteractButtons.Add(transform.GetChild(i).GetComponent<InteractButton>());
             allTMPro.Add(transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<TextMeshPro>());
-
-            
         }
 
         for (int i = 0; i < allTMPro.Count; i++)

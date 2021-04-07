@@ -22,8 +22,11 @@ public class MainMenuSection : MonoBehaviour
 
     protected virtual void Start()
     {
-        previousIndicatorLocalPos = buttons[0].transform.localPosition + IndicatorOffsettToButton;
-        SelectIndicator.transform.localPosition = previousIndicatorLocalPos;
+        if (SelectIndicator)
+        {
+            previousIndicatorLocalPos = buttons[0].transform.localPosition + IndicatorOffsettToButton;
+            SelectIndicator.transform.localPosition = previousIndicatorLocalPos;
+        }
     }
 
     private void FixedUpdate()
