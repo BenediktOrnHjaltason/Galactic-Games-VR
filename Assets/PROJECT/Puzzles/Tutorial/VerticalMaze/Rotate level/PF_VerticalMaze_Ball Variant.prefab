@@ -1,5 +1,28 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &6179174895078374885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8981355423140615333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5d9fa8fe9ac8f84fa34dee8d3e4e6de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowDuplicationByDevice: 0
+  allowGravityForceByDevice: 1
+  allowRotationForces: 1
+  pushPullMultiplier: 1
+  selfRotateMultiplier: 1
+  mode: 0
+  autoForcePower: 10
+  exclusiveWorldRotation: 0
+  autoRotateDirection: 0
+  playerRotationAllowed: 0
+  playerForceMultiplier: 0.4
 --- !u!1001 &3937479383168723736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15,6 +38,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 615988634889672326, guid: 9b64ff71dc9ea304fa002d78982cf918,
         type: 3}
+      propertyPath: _components.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 615988634889672326, guid: 9b64ff71dc9ea304fa002d78982cf918,
+        type: 3}
       propertyPath: _realtime
       value: 
       objectReference: {fileID: 0}
@@ -27,6 +55,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _isRootPrefabView
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 615988634889672326, guid: 9b64ff71dc9ea304fa002d78982cf918,
+        type: 3}
+      propertyPath: _components.Array.data[1].component
+      value: 
+      objectReference: {fileID: 6179174895078374885}
+    - target: {fileID: 615988634889672326, guid: 9b64ff71dc9ea304fa002d78982cf918,
+        type: 3}
+      propertyPath: _components.Array.data[2].componentID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 615988634889672326, guid: 9b64ff71dc9ea304fa002d78982cf918,
+        type: 3}
+      propertyPath: _components.Array.data[2].component
+      value: 
+      objectReference: {fileID: 6179174895078374885}
+    - target: {fileID: 615988634889672326, guid: 9b64ff71dc9ea304fa002d78982cf918,
+        type: 3}
+      propertyPath: _components.Array.data[1].componentID
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1497110118010213855, guid: 9b64ff71dc9ea304fa002d78982cf918,
         type: 3}
@@ -373,5 +421,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 13400000, guid: bf688c249848b6d498510e48b5f0b480,
         type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7738926399778215903, guid: 9b64ff71dc9ea304fa002d78982cf918, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9b64ff71dc9ea304fa002d78982cf918, type: 3}
+--- !u!1 &8981355423140615333 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5332424201831792573, guid: 9b64ff71dc9ea304fa002d78982cf918,
+    type: 3}
+  m_PrefabInstance: {fileID: 3937479383168723736}
+  m_PrefabAsset: {fileID: 0}

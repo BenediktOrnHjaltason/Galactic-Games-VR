@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 2594989773258117869}
   - component: {fileID: 1486000037296225382}
   - component: {fileID: 6492908023172817793}
-  - component: {fileID: 968017773337885219}
+  - component: {fileID: 897157408645200407}
   m_Layer: 9
   m_Name: PF_KeyCard
   m_TagString: Untagged
@@ -241,8 +241,8 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 6492908023172817793}
-  - componentID: 2
-    component: {fileID: 968017773337885219}
+  - componentID: 3
+    component: {fileID: 897157408645200407}
   _childViews: []
 --- !u!114 &6492908023172817793
 MonoBehaviour:
@@ -262,7 +262,7 @@ MonoBehaviour:
   _syncScale: 0
   _syncVelocity: 0
   _maintainOwnershipWhileSleeping: 1
---- !u!114 &968017773337885219
+--- !u!114 &897157408645200407
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -271,24 +271,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 911543542916939876}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92a4d58d15c51db408457285e2c45395, type: 3}
+  m_Script: {fileID: 11500000, guid: e5d9fa8fe9ac8f84fa34dee8d3e4e6de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 0
-  allowGravityForceByDevice: 1
-  allowRotationForces: 1
+  allowDuplicationByPlayer: 0
+  allowGravityForceByPlayer: 1
+  allowRotationForceByPlayer: 1
   pushPullMultiplier: 1
-  rotationAxis: 1
-  selfAxisToRotation:
-    Roll: {x: 0, y: 0, z: 0}
-    Yaw: {x: 0, y: 0, z: 0}
-    Pitch: {x: 0, y: 0, z: 0}
-  selfAxisConstraints:
-    constrainRoll: 0
-    constrainYaw: 1
-    constrainPitch: 1
-  selfRotateMultiplier: 1
-  mesh: {fileID: 7307314394503467885}
+  mode: 0
+  autoForcePower: 10
+  exclusiveWorldRotation: 0
+  autoRotateDirection: 0
+  playerRotationAllowed: 2
+  playerForceMultiplier: 0.4
 --- !u!1 &1245319301857692607
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,12 +567,6 @@ PrefabInstance:
 --- !u!4 &8440844549586528258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 88e626f8a6d236a4ca7c2277ea65c592,
-    type: 3}
-  m_PrefabInstance: {fileID: 8262238448708538345}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &7307314394503467885 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 88e626f8a6d236a4ca7c2277ea65c592,
     type: 3}
   m_PrefabInstance: {fileID: 8262238448708538345}
   m_PrefabAsset: {fileID: 0}

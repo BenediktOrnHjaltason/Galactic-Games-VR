@@ -85,4 +85,24 @@ namespace Types
         SCANNING,
         ALLIGNEDWITHSTAR
     }
+
+    public enum ERestrictedRotation
+    {
+        X,
+        Y,
+        Z
+    }
+
+    public enum EPlayerRotationAllowed
+    {
+        Pitch,
+        Yaw,
+        Roll
+    }
+
+    public enum EAutoRotateDirection
+    {
+        POSITIVE,
+        NEGATIVE
+    }
 }

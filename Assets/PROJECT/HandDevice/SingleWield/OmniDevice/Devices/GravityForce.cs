@@ -136,6 +136,8 @@ public class GravityForce : HandDevice
 
                     if (!replicating)
                     {
+                        structureSync.CalculatePlayerAngleModifier(transform.position);
+
                         structureSync.OwnedByPlayer = true;
 
                         structureSync.AvailableToManipulate = false;
@@ -143,7 +145,7 @@ public class GravityForce : HandDevice
 
                         
 
-                        handDeviceData.targetStructureAllowsRotation = structureSync.AllowRotationForces;
+                        handDeviceData.targetStructureAllowsRotation = structureSync.AllowRotationForceByPlayer;
                         targetTransform = targetStructure.transform;
 
                         //---- Networking
@@ -191,7 +193,7 @@ public class GravityForce : HandDevice
                         structureSync.AvailableToManipulate = false;
                         structureSync.CollisionEnabled = false;
 
-                        handDeviceData.targetStructureAllowsRotation = structureSync.AllowRotationForces;
+                        handDeviceData.targetStructureAllowsRotation = structureSync.AllowRotationForceByPlayer;
 
 
                         targetStructure = duplicate;
@@ -271,46 +273,11 @@ public class GravityForce : HandDevice
             }
             else rollMultiplier = 0;
 
-            if (structureSync.AllowRotationForces)
+            if (structureSync.AllowRotationForceByPlayer)
             {
-                /*
-                float atan = Mathf.Atan2(stickInput.y, stickInput.x) * Mathf.Rad2Deg;
-
-                if (atan > -45f && atan < 45f)
-                {
-                    //Debug.Log("RIGHT");
-                    structureSync.Rotate(RollplayerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
-                                     Yaw((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
-                                     Pitch Vector3.zero, 0);
-
-                }
-                else if (atan > 45f && atan < 135f)
-                {
-                    //Debug.Log("UP");
-                    structureSync.Rotate(Roll playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
-                                     Yaw 0,
-                                     Pitch playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
-                }
-                else if (atan > 135f || atan < -135)
-                {
-                    //Debug.Log("LEFT");
-                    structureSync.Rotate(Roll playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
-                                     Yaw((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
-                                     PitchVector3.zero, 0);
-                }
-                else if (atan > -135 && atan < -45)
-                {
-                    //Debug.Log("DOWN");
-                    structureSync.Rotate(Roll playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
-                                     Yaw 0,
-                                     Pitch playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
-                }
-            */
-
                 structureSync.Rotate(/*Roll*/playerRoot.transform.forward, rollMultiplier * rotationMultiplier * Time.deltaTime,
                                      /*Yaw*/((stickInput.x * -1) / 2) * rotationMultiplier * Time.deltaTime,
                                      /*Pitch*/playerRoot.transform.right, (stickInput.y / 2) * rotationMultiplier * Time.deltaTime);
-                
             }
         }
     }
@@ -347,11 +314,15 @@ public class GravityForce : HandDevice
                 return false;
             }
 
-            if (structureSync && (!structureSync.AllowGravityForceByDevice || structureSync.PlayersOccupying > 0 || !structureSync.AvailableToManipulate))
+            if (structureSync && 
+                (!structureSync.AllowGravityForceByPlayer && !structureSync.AllowRotationForceByPlayer) || 
+                structureSync.PlayersOccupying > 0 || 
+                !structureSync.AvailableToManipulate)
             {
                 
                 Debug.Log("GravityForce: Not allowed to control structure. Reason: ");
-                if (!structureSync.AllowGravityForceByDevice) Debug.Log("GravityForce: GravityForce not allowed ");
+                if (!structureSync.AllowGravityForceByPlayer && !structureSync.AllowRotationForceByPlayer) 
+                    Debug.Log("GravityForce: Neither GravityForce nor rotation forces are allowed ");
                 if (structureSync.PlayersOccupying > 0) Debug.Log("GravityForce: PlayersOccupying is more than 0 ");
                 if (!structureSync.AvailableToManipulate) Debug.Log("GravityForce: AvailableToManipulate is false");
                 
@@ -364,7 +335,7 @@ public class GravityForce : HandDevice
         else
         {
             if (!structureSync ||
-            (structureSync && (!structureSync.AllowDuplicationByDevice || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0)))
+            (structureSync && (!structureSync.AllowDuplicationByPlayer || !structureSync.AvailableToManipulate || structureSync.PlayersOccupying > 0)))
             {
                 /*
                 Debug.Log("Replicator: Not allowed to replicate structure! Reason: ");

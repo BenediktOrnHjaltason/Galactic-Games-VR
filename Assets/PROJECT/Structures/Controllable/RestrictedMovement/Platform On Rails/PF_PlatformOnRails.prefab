@@ -262,18 +262,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efae8eb49e73b2f4babe87629a98499f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 0
-  allowRotationForces: 0
-  rotationAxis: 0
-  selfAxisToRotation:
-    Roll: {x: 0, y: 0, z: 0}
-    Yaw: {x: 0, y: 0, z: 0}
-    Pitch: {x: 0, y: 0, z: 0}
-  selfAxisConstraints:
-    constrainRoll: 1
-    constrainYaw: 1
-    constrainPitch: 1
-  selfRotateMultiplier: 1
+  allowDuplicationByPlayer: 0
+  allowGravityForceByPlayer: 1
+  allowRotationForceByPlayer: 0
+  pushPullMultiplier: 1
   mode: 0
   moveDirection: 0
   autoForcePower: 4

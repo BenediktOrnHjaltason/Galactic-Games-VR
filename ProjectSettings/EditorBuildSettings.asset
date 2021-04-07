@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/ArtAssets/Levels/OceanLevel/OceanLevel.unity
     guid: 78fc31c785f7125408e387fb4249d110
   - enabled: 1
-    path: Assets/Scenes/MultiplayerPrototyping.unity
+    path: Assets/ArtAssets/Levels/MoonLevel/MoonLevel.unity
     guid: c555cc7b6d754d84c8e818a87e9e3650
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: ff8bbac473a7b3a48ae5c0d4cf36f91c,

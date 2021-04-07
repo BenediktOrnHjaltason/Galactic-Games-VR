@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using Normal.Realtime;
 
-
 public enum EKeycardPortSide
 {
     LEFT,
@@ -80,7 +79,7 @@ public class KeycardPort : RealtimeComponent<KeycardPort_Model>
                 rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionX |
                     RigidbodyConstraints.FreezeRotation;
 
-            ss.AllowRotationForces = false;
+            ss.AllowRotationForceByPlayer = false;
         }
     }
 
@@ -93,7 +92,7 @@ public class KeycardPort : RealtimeComponent<KeycardPort_Model>
         {
             rb.constraints = RigidbodyConstraints.FreezeRotation;
 
-            ss.AllowRotationForces = true;
+            ss.AllowRotationForceByPlayer = true;
         }
     }
 

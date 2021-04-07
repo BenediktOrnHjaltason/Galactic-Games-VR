@@ -770,20 +770,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a4d58d15c51db408457285e2c45395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 0
-  allowGravityForceByDevice: 1
-  allowRotationForces: 0
+  allowDuplicationByPlayer: 0
+  allowGravityForceByPlayer: 1
+  allowRotationForceByPlayer: 0
   pushPullMultiplier: 1
-  rotationAxis: 0
-  selfAxisToRotation:
-    Roll: {x: 0, y: 0, z: 0}
-    Yaw: {x: 0, y: 0, z: 0}
-    Pitch: {x: 0, y: 0, z: 0}
-  selfAxisConstraints:
-    constrainRoll: 0
-    constrainYaw: 0
-    constrainPitch: 0
-  selfRotateMultiplier: 1
   mesh: {fileID: 3227528121287578114}
 --- !u!135 &4460491118178599257
 SphereCollider:
