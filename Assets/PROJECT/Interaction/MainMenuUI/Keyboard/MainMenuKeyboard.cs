@@ -21,6 +21,8 @@ public class MainMenuKeyboard : MonoBehaviour
     [SerializeField]
     TextMeshPro playerName;
 
+    public string PlayerName { get => playerName.text; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,8 +33,6 @@ public class MainMenuKeyboard : MonoBehaviour
         {
             allInteractButtons.Add(transform.GetChild(i).GetComponent<InteractButton>());
             allTMPro.Add(transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<TextMeshPro>());
-
-            
         }
 
         for (int i = 0; i < allTMPro.Count; i++)
@@ -45,6 +45,8 @@ public class MainMenuKeyboard : MonoBehaviour
 
             allInteractButtons[i].OnExecuteWithReference += ExecuteKey;
         }
+
+        playerName.text = PlayerPrefs.GetString("playerName");
     }
 
     void ExecuteKey(InteractButton button)
@@ -66,7 +68,7 @@ public class MainMenuKeyboard : MonoBehaviour
                 TriggerShift();
         }
 
-        else
+        else //If button is char button
         {
             playerName.text += interactButtonToCharTMPro[button].text;
 

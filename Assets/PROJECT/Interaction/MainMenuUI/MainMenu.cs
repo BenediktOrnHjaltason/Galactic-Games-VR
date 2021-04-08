@@ -5,6 +5,9 @@ using UnityEngine;
 public class MainMenu : MonoBehaviour
 {
     [SerializeField]
+    AvatarSelect avatarSelect;
+
+    [SerializeField]
     Animatic footRise;
 
     [SerializeField]
@@ -23,6 +26,7 @@ public class MainMenu : MonoBehaviour
     {
         footRise.OnAnimaticEnds += screenScaleOut.Run;
         screenScaleOut.OnAnimaticEnds += keyboardScaleOut.Run;
+        screenScaleOut.OnAnimaticEnds += avatarSelect.MakeCurrentHeadVisible;
 
         logoAnimatic.Run();
     }
