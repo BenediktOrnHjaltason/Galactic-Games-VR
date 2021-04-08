@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
 
-public class GalacticGamesManager : MonoBehaviour
-{
-    /*
 
+public class GalacticGamesManager : Singleton<GalacticGamesManager>
+{
     Realtime realTime;
 
     GameObject bridgeTest;
 
     bool objectsSpawned = false;
+
+    List<TeamCreationPod> teamCreationPods = new List<TeamCreationPod>();
+
+    public List<TeamCreationPod> TeamCreationPods { get => teamCreationPods; }
 
 
     // Start is called before the first frame update
@@ -19,9 +22,6 @@ public class GalacticGamesManager : MonoBehaviour
     {
         realTime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
-        bridgeTest = GameObject.Find("PFR_RotateBridgeRight");
-
-        realTime.didConnectToRoom += SpawnTestBridge;
     }
 
     void SpawnTestBridge(Realtime realtime)
@@ -56,5 +56,4 @@ public class GalacticGamesManager : MonoBehaviour
     {
 
     }
-    */
 }

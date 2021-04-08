@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 4363013236202504488}
   m_Layer: 14
   m_Name: PF_Head
-  m_TagString: Untagged
+  m_TagString: PlayerHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
