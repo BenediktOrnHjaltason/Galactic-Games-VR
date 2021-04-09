@@ -56,4 +56,9 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     {
 
     }
+
+    public void StartGame()
+    {
+        Debug.Log("GameManager: StartGame called");
+    }
 }
