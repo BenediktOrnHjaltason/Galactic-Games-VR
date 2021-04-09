@@ -10092,7 +10092,7 @@ PrefabInstance:
     - target: {fileID: 5494090910338071487, guid: 067c1089f12fe7d4fbc1039ed4cf9b61,
         type: 3}
       propertyPath: m_Name
-      value: PFR_KeyCard_Big (1)
+      value: PFR_KeyCard_Big
       objectReference: {fileID: 0}
     - target: {fileID: 6055036639073830845, guid: 067c1089f12fe7d4fbc1039ed4cf9b61,
         type: 3}
@@ -18492,7 +18492,7 @@ PrefabInstance:
     - target: {fileID: 5494090910338071487, guid: 067c1089f12fe7d4fbc1039ed4cf9b61,
         type: 3}
       propertyPath: m_Name
-      value: PFR_KeyCard_Big (2)
+      value: PFR_KeyCard_Big
       objectReference: {fileID: 0}
     - target: {fileID: 6055036639073830845, guid: 067c1089f12fe7d4fbc1039ed4cf9b61,
         type: 3}

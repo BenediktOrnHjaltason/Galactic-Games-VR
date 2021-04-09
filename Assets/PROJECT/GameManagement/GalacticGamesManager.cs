@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using UnityEngine.SceneManagement;
 
 
 public class GalacticGamesManager : Singleton<GalacticGamesManager>
@@ -16,12 +17,13 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     public List<TeamCreationPod> TeamCreationPods { get => teamCreationPods; }
 
+    IEnumerator DisableNonTeamObjects_coroutine;
+
 
     // Start is called before the first frame update
     void Start()
     {
         realTime = GameObject.Find("Realtime").GetComponent<Realtime>();
-
     }
 
     void SpawnTestBridge(Realtime realtime)
@@ -59,6 +61,65 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     public void StartGame()
     {
-        Debug.Log("GameManager: StartGame called");
+        //Fetch all objects in scene
+        GameObject[] sceneObjects = GameObject.FindObjectsOfType<GameObject>();
+
+        
+
+
+
+        //Collect names and transforms of all PFR(PreFab Realtime)-objects except heads and hands
+        List<string> PFRNames = new List<string>();
+        List<Vector3> positions = new List<Vector3>();
+        List<Quaternion> rotations = new List<Quaternion>();
+
+        foreach (GameObject sceneObject in sceneObjects)
+            if (sceneObject.name.Contains("PFR") && (!sceneObject.name.Contains("Head") && !sceneObject.name.Contains("Hand")))
+            {
+                PFRNames.Add(sceneObject.name);
+                positions.Add(sceneObject.transform.position);
+                rotations.Add(sceneObject.transform.rotation);
+            }
+
+        int numberOfNonPFRSceneObjects = SceneManager.GetActiveScene().rootCount - PFRNames.Count;
+
+        //Disable the collected sceneObjects
+        foreach (GameObject sceneObject in sceneObjects)
+            sceneObject.SetActive(false);
+
+        //Network spawn objects if first member of the team
+        foreach(TeamCreationPod creationPod in teamCreationPods)
+        {
+            if (creationPod.TeamMembers[0] == realTime.clientID)
+            {
+                for(int i = 0; i < PFRNames.Count; i++)
+                {
+                    GameObject newObject = Realtime.Instantiate(PFRNames[i],
+                                                    ownedByClient: true,
+                                                    preventOwnershipTakeover: false,
+                                                    destroyWhenOwnerOrLastClientLeaves: true,
+                                                    useInstance: realTime);
+
+                    RealtimeTransform rtt = newObject.GetComponent<RealtimeTransform>();
+                    if (rtt)
+                    {
+                        rtt.SetOwnership(realTime.clientID);
+
+                        newObject.transform.position = positions[i];
+                        newObject.transform.rotation = rotations[i];
+                    }
+                    else Debug.Log("GGM spawning sequence: object did not have a RealtimeTransform");
+                }
+            }
+        }
+
+
     }
+
+    /*
+    IEnumerator DisableNonTeamObjects()
+    {
+
+    }
+    */
 }

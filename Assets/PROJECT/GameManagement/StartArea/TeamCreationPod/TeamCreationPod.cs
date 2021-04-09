@@ -38,6 +38,7 @@ public class TeamCreationPod : MonoBehaviour
 
 
     List<int> teamMembers = new List<int>();
+    public List<int> TeamMembers { get => teamMembers; }
 
     // Start is called before the first frame update
     void Start()
