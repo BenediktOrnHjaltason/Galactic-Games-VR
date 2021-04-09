@@ -30,6 +30,13 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     MeshRenderer floor;
 
+    [SerializeField]
+    MeshRenderer readyIndicator;
+
+    [SerializeField]
+    InteractButton readyButton;
+
+
     List<int> teamMembers = new List<int>();
 
     // Start is called before the first frame update
@@ -39,6 +46,8 @@ public class TeamCreationPod : MonoBehaviour
             teamMembers.Add(-1);
 
         floor.material.SetColor("_BaseColor",teamColor);
+
+        readyButton.OnExecute += HandleReadyness;
 
         GalacticGamesManager.Instance.TeamCreationPods.Add(this);
     }
@@ -85,4 +94,22 @@ public class TeamCreationPod : MonoBehaviour
             }
         }
     }
+
+    void HandleReadyness()
+    {
+        bool thisTeamReady = true;
+
+        foreach (int teamMember in teamMembers)
+            if (teamMember == -1) thisTeamReady = false;
+
+        if (thisTeamReady) readyIndicator.material = fullCapacityMaterial; //Just reusing materials for prototyping
+
+        bool allTeamsAreReady = true;
+
+        foreach (TeamCreationPod pod in GalacticGamesManager.Instance.TeamCreationPods)
+            if (pod.readyIndicator.material == availableCapacityMaterial) allTeamsAreReady = false;
+
+        if (allTeamsAreReady) GalacticGamesManager.Instance.StartGame();
+    }
+
 }
