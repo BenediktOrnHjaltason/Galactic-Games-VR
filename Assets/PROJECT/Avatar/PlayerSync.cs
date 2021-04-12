@@ -87,6 +87,10 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
         head.transform.localRotation = Quaternion.Euler(playerHeads[headIndex].rotation);
         head.transform.localScale = playerHeads[headIndex].scale;
 
-        if (isPlayerClient) head.SetActive(false);
+        if (isPlayerClient)
+        {
+            head.SetActive(false);
+            playerNameTMPro.GetComponent<MeshRenderer>().enabled = false;
+        }
     }
 }

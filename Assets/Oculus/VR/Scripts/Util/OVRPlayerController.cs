@@ -124,7 +124,7 @@ public class OVRPlayerController : MonoBehaviour
 	/// When true, user input will be applied to linear movement. Set this to false whenever the player controller needs to ignore input for
 	/// linear movement.
 	/// </summary>
-	public bool EnableLinearMovement = false;
+	public bool EnableLinearMovement = true;
 
 	/// <summary>
 	/// When true, user input will be applied to rotation. Set this to false whenever the player controller needs to ignore input for rotation.
@@ -443,10 +443,11 @@ public class OVRPlayerController : MonoBehaviour
 				OnUpdate_Fixed += OperateVignette;
 			}
 			else vignette.transform.gameObject.SetActive(false);
+
+			EnableLinearMovement = false;
 		}
 
 		OVRManager.display.RecenterPose();
-		EnableLinearMovement = false;
 
 	}
 
@@ -474,8 +475,6 @@ public class OVRPlayerController : MonoBehaviour
 			CameraRig = CameraRigs[0];
 
 		InitialYRotation = transform.rotation.eulerAngles.y;
-
-		//Controller.enabled = false;
 	}
 
 	void OnEnable()

@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 7249629797690173750}
   - component: {fileID: 6055036639073830845}
   - component: {fileID: 1910630036164401242}
-  - component: {fileID: 5542749715165249996}
+  - component: {fileID: 3372471112290339765}
   m_Layer: 9
   m_Name: KeyCard_Big
   m_TagString: TeamFiltered
@@ -241,8 +241,8 @@ MonoBehaviour:
   _components:
   - componentID: 1
     component: {fileID: 1910630036164401242}
-  - componentID: 3
-    component: {fileID: 5542749715165249996}
+  - componentID: 2
+    component: {fileID: 3372471112290339765}
   _childViews: []
 --- !u!114 &1910630036164401242
 MonoBehaviour:
@@ -262,7 +262,7 @@ MonoBehaviour:
   _syncScale: 0
   _syncVelocity: 0
   _maintainOwnershipWhileSleeping: 1
---- !u!114 &5542749715165249996
+--- !u!114 &3372471112290339765
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -271,19 +271,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5494090910338071487}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5d9fa8fe9ac8f84fa34dee8d3e4e6de, type: 3}
+  m_Script: {fileID: 11500000, guid: 92a4d58d15c51db408457285e2c45395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   allowDuplicationByPlayer: 0
   allowGravityForceByPlayer: 1
   allowRotationForceByPlayer: 1
   pushPullMultiplier: 1
-  mode: 0
-  autoForcePower: 10
-  exclusiveWorldRotation: 0
-  autoRotateDirection: 0
-  playerRotationAllowed: 2
-  playerForceMultiplier: 0.4
+  mesh: {fileID: 2733774235997628598}
 --- !u!1 &5895451441372393572
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,6 +467,12 @@ PrefabInstance:
 --- !u!4 &3871826784414536665 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 88e626f8a6d236a4ca7c2277ea65c592,
+    type: 3}
+  m_PrefabInstance: {fileID: 3616888094925681714}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2733774235997628598 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 88e626f8a6d236a4ca7c2277ea65c592,
     type: 3}
   m_PrefabInstance: {fileID: 3616888094925681714}
   m_PrefabAsset: {fileID: 0}
