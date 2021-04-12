@@ -3908,6 +3908,100 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 369445852}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &376256832
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: teamColor.r
+      value: 0.088113785
+      objectReference: {fileID: 0}
+    - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: teamColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: teamColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.78
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 10.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.0000029504295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -180.00002
+      objectReference: {fileID: 0}
+    - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7209538977056718189, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_Name
+      value: TeamCreationPod (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482438994278961672, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 8482438994278961672, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ca1a8aac0d6274a44b8183de2cc0a832, type: 3}
 --- !u!4 &382816850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3970175895456488663, guid: f110aac35ea127e4b86a949a61cabbd8,
@@ -23115,7 +23209,7 @@ PrefabInstance:
     - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.04
+      value: 4.81
       objectReference: {fileID: 0}
     - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}

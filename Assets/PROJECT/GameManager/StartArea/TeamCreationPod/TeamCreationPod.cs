@@ -36,6 +36,9 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     InteractButton readyButton;
 
+    Material teamNotReadyMaterial;
+    Material teamReadyMaterial;
+
 
     List<int> teamMembers = new List<int>();
     public List<int> TeamMembers { get => teamMembers; }
@@ -51,6 +54,9 @@ public class TeamCreationPod : MonoBehaviour
         readyButton.OnExecute += HandleReadyness;
 
         GalacticGamesManager.Instance.TeamCreationPods.Add(this);
+
+        Material teamNotReadyMaterial = availableCapacityMaterial;
+        Material teamReadyMaterial = fullCapacityMaterial;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -101,14 +107,18 @@ public class TeamCreationPod : MonoBehaviour
         bool thisTeamReady = true;
 
         foreach (int teamMember in teamMembers)
-            if (teamMember == -1) thisTeamReady = false;
+            if (teamMember == -1)
+            {
+                thisTeamReady = false;
+                return;
+            }
 
-        if (thisTeamReady) readyIndicator.material = fullCapacityMaterial; //Just reusing materials for prototyping
+        if (thisTeamReady) readyIndicator.material = teamReadyMaterial;
 
         bool allTeamsAreReady = true;
 
         foreach (TeamCreationPod pod in GalacticGamesManager.Instance.TeamCreationPods)
-            if (pod.readyIndicator.material == availableCapacityMaterial) allTeamsAreReady = false;
+            if (pod.readyIndicator.material == teamNotReadyMaterial) allTeamsAreReady = false;
 
         if (allTeamsAreReady) GalacticGamesManager.Instance.StartGame();
     }

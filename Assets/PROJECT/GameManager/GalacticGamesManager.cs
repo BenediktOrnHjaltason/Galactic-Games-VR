@@ -44,6 +44,12 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         GameObject[] teamFilteredObjects = GameObject.FindGameObjectsWithTag("TeamFiltered");
 
+        //Clones from other clients can sneak in
+        //List<GameObject> teamFilteredWOClones = new List<GameObject>();
+
+        //foreach (GameObject gameObject in teamFilteredObjects)
+            //if (!gameObject.name.Contains("Clone")) teamFilteredWOClones.Add(gameObject);
+
         
         List<RealtimeView> gameplayRealtimeViews = new List<RealtimeView>();
         List<RealtimeView> avatarRealtimeViews = new List<RealtimeView>();
@@ -111,7 +117,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         while (SceneManager.GetActiveScene().rootCount != 
             rootCountBeforeSpawningForTeams +
             namesOfGameplayPrefabs.Count * teamCreationPods.Count +
-            numberOfAttractorRifts * 2 * teamCreationPods.Count) //Accounting for anchor and dummy object that AttractorRift creates at start
+            numberOfAttractorRifts * 2 * teamCreationPods.Count) //Accounting for anchor and dummy object that AttractorRift creates on Start
         {
 
             Debug.Log("GGM: Expected result: " + (rootCountBeforeSpawningForTeams +
@@ -125,7 +131,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         Debug.Log("GGM: All spawning clients done spawning");
         
 
-        /*
+        
         //Disable objects not relevant to this team
 
         //Find this client's team
@@ -165,6 +171,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                     }
                 }
             }
-        }*/
+        }
     }
 }
