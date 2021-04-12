@@ -136,17 +136,17 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 80.58
+      value: -202.552
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.647
+      value: 24.701
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11
+      value: 8.41
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -216,7 +216,7 @@ PrefabInstance:
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: omniDeviceStartup
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -681,6 +681,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 539268504}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &58524519 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3497562772046263979, guid: 1f61f675aae964d49998a24682196f4b,
+    type: 3}
+  m_PrefabInstance: {fileID: 539268504}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 58524518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5c2e198d11806047abb931a7f0e932e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &80990736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2200,7 +2212,7 @@ MonoBehaviour:
   exclusiveWorldRotation: 0
   autoRotateDirection: 0
   playerRotationAllowed: 2
-  playerForceMultiplier: 1
+  playerForceMultiplier: 2
 --- !u!54 &174642226 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 7932790742095654768, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
@@ -5866,6 +5878,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3497562772046263979, guid: 1f61f675aae964d49998a24682196f4b,
+        type: 3}
+      propertyPath: otherPoint
+      value: 
+      objectReference: {fileID: 1128656291}
     - target: {fileID: 3522413166857965533, guid: 1f61f675aae964d49998a24682196f4b,
         type: 3}
       propertyPath: otherPoint
@@ -13411,6 +13428,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1352277862}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1128656291 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6051959997286598515, guid: f4684590b2c7c094b8f91a0c86840f9f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1352277862}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128656289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5c2e198d11806047abb931a7f0e932e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1136945387
 GameObject:
   m_ObjectHideFlags: 0
@@ -14885,6 +14914,16 @@ PrefabInstance:
         type: 3}
       propertyPath: playerRotationAllowed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6179174895078374885, guid: c0e9c18b98154ca40bb2ff72f0e51884,
+        type: 3}
+      propertyPath: allowGravityForceByPlayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6179174895078374885, guid: c0e9c18b98154ca40bb2ff72f0e51884,
+        type: 3}
+      propertyPath: playerForceMultiplier
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6756116519964277959, guid: c0e9c18b98154ca40bb2ff72f0e51884,
         type: 3}
@@ -16491,6 +16530,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6051959997286598515, guid: f4684590b2c7c094b8f91a0c86840f9f,
+        type: 3}
+      propertyPath: otherPoint
+      value: 
+      objectReference: {fileID: 58524519}
     - target: {fileID: 7587592308259376866, guid: f4684590b2c7c094b8f91a0c86840f9f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -18775,7 +18819,7 @@ PrefabInstance:
     - target: {fileID: 5094655642934820345, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
       propertyPath: m_Name
-      value: PF_SquarePlatform1 (2)
+      value: Platform_Free
       objectReference: {fileID: 0}
     - target: {fileID: 5150632930365507518, guid: 2f406ff9c4ab3af4db7cafeb5a905006,
         type: 3}
