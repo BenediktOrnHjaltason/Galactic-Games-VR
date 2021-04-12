@@ -124,7 +124,7 @@ public class OVRPlayerController : MonoBehaviour
 	/// When true, user input will be applied to linear movement. Set this to false whenever the player controller needs to ignore input for
 	/// linear movement.
 	/// </summary>
-	public bool EnableLinearMovement = true;
+	public bool EnableLinearMovement = false;
 
 	/// <summary>
 	/// When true, user input will be applied to rotation. Set this to false whenever the player controller needs to ignore input for rotation.
@@ -301,6 +301,11 @@ public class OVRPlayerController : MonoBehaviour
 		externalAvatarBase = baseGameObject;
     }
 
+	public void EnableController()
+    {
+		Controller.enabled = true;
+    }
+
 	float handleYRotationOnGrab;
 	Quaternion playerControllerRotationOnGrab;
 
@@ -441,8 +446,14 @@ public class OVRPlayerController : MonoBehaviour
 		}
 
 		OVRManager.display.RecenterPose();
+		EnableLinearMovement = false;
 
 	}
+
+	public void EnableMovement()
+    {
+		EnableLinearMovement = true;
+    }
 
 	void Awake()
 	{
@@ -463,6 +474,8 @@ public class OVRPlayerController : MonoBehaviour
 			CameraRig = CameraRigs[0];
 
 		InitialYRotation = transform.rotation.eulerAngles.y;
+
+		//Controller.enabled = false;
 	}
 
 	void OnEnable()
@@ -530,7 +543,7 @@ public class OVRPlayerController : MonoBehaviour
 		}
 
 		//Swing-jumping
-		if ((!grabbingAnything && OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
+		if ((!grabbingAnything && EnableLinearMovement && OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
 			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5)) 
 				Jump();
 

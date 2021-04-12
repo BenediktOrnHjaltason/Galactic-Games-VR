@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Normal.Realtime;
+using System;
 
 public class AvatarManager : MonoBehaviour
 {
@@ -29,6 +30,12 @@ public class AvatarManager : MonoBehaviour
     GameObject head;
     GameObject torso;
 
+    [SerializeField]
+    GameObject loadingScreenBox;
+
+    event Action OnAvatarSpawned;
+
+
     void Start()
     {
         playerController = GetComponent<OVRPlayerController>();
@@ -46,7 +53,28 @@ public class AvatarManager : MonoBehaviour
             head = eyeAnchor.transform.GetChild(1).gameObject;
             torso = head.transform.GetChild(1).gameObject;
         }
+
+        if (loadingScreenBox && realtime)
+        {
+            GameObject spawnedLoadingScreenBox = 
+                        Instantiate(loadingScreenBox,
+                                    playerController.transform.position + new Vector3(0,0.8f,0) + playerController.transform.forward * 0.4f,
+                                    Quaternion.LookRotation(playerController.transform.forward,
+                                    Vector3.up));
+
+            LoadingScreenBox lsb = spawnedLoadingScreenBox.GetComponent<LoadingScreenBox>();
+
+            
+            lsb.backScaleDown.OnAnimaticEnds += lsb.DisableSelf;
+            lsb.LogoGraphicScaleDown.OnAnimaticEnds += OVRManager.display.RecenterPose;
+
+            lsb.leftDoorOpen.OnAnimaticEnds += playerController.EnableMovement;
+
+            OnAvatarSpawned += lsb.StartAnimatics;
+            
+        }
     }
+
 
     void SpawnAvatar(Realtime realtime)
     {
@@ -93,26 +121,13 @@ public class AvatarManager : MonoBehaviour
         head.transform.SetParent(eyeAnchor.transform);
         head.GetComponent<RealtimeTransform>().RequestOwnership();
 
-        //head.transform.GetChild(0).transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
-        //head.transform.GetChild(0).transform.GetChild(1).GetComponent<MeshRenderer>().enabled = false;
-        //head.transform.GetChild(0).transform.GetChild(2).GetComponent<MeshRenderer>().enabled = false;
-
-
-        /*
-        PlayerSync ps = head.transform.GetComponent<PlayerSync>();
-
-        RealtimeTransform rtt = head.GetComponent<RealtimeTransform>();
-
-        rtt.realtime.didConnectToRoom += ps.SetPlayerNameFromPlayerPrefs;
-        rtt.realtime.didConnectToRoom += ps.SetHeadIndexFromPlayerPrefs;
-        */
 
         //3 - Torso
         GameObject.Destroy(torso);
         torso = head.transform.GetChild(0).gameObject;
         torso.GetComponent<RealtimeTransform>().RequestOwnership();
 
-        OVRManager.display.RecenterPose();
+        OnAvatarSpawned?.Invoke();
 
     }
 

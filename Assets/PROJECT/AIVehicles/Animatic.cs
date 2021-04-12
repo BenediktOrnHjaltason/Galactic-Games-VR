@@ -71,7 +71,7 @@ public class Animatic : MonoBehaviour
     }
 
     //Sets start values for sequences based on end values from previous sequences
-    //(To avoid the tediousness of copying end positions manually)
+    //(To avoid the tediousness of copying start positions manually)
     void InitializeTransforms()
     {
         if (movementSequences != null && movementSequences.Count > 0)
@@ -81,7 +81,7 @@ public class Animatic : MonoBehaviour
             movementSequences[0].fromScale = target.transform.localScale;
 
 
-            //Ensure correct start values for rest of sequences. If previous sequence not animated (to-value 0), 
+            //Ensures correct start values for rest of sequences. If previous sequence not animated (to-value 0), 
             //sample from-value instead of to-value. Correct values trickle down. 
             for (int i = 1; i < movementSequences.Count -1; i++)
             {
