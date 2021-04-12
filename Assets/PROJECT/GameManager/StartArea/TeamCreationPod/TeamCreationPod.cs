@@ -55,7 +55,7 @@ public class TeamCreationPod : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(14) && other.gameObject.tag == "PlayerHead")
+        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head"))
         {
             RealtimeView rv = other.GetComponent<RealtimeView>();
 

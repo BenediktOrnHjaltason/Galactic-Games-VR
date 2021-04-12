@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 751426827695282988}
   m_Layer: 0
   m_Name: PF_Door
-  m_TagString: Untagged
+  m_TagString: AvatarPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69,6 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 1
+  nextState: 0
   button: {fileID: 7370797571754663593}
   fastInEaseOut:
     serializedVersion: 2

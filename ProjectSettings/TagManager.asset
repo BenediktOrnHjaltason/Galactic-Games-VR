@@ -4,7 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - AvatarPart
   - PlayerHead
+  - SpawnOnStart
+  - TeamFiltered
   layers:
   - Default
   - TransparentFX

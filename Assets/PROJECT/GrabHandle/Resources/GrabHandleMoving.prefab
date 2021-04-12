@@ -17,8 +17,8 @@ GameObject:
   - component: {fileID: 2793282560320585510}
   - component: {fileID: 8202857600759352478}
   m_Layer: 8
-  m_Name: PF_GrabHandleMoving
-  m_TagString: Untagged
+  m_Name: GrabHandleMoving
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

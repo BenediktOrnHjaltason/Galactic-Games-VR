@@ -52,7 +52,7 @@ public class AvatarManager : MonoBehaviour
     {
 
         // 0 - Left hand
-        GameObject leftHand = Realtime.Instantiate("PFR_Hand_Left", ownedByClient: true,
+        GameObject leftHand = Realtime.Instantiate("Hand_Left", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: this.realtime);
@@ -66,7 +66,7 @@ public class AvatarManager : MonoBehaviour
 
         //1 - Right hand
 
-        GameObject rightHand = Realtime.Instantiate("PFR_Hand_Right", ownedByClient: true,
+        GameObject rightHand = Realtime.Instantiate("Hand_Right", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: this.realtime);
@@ -82,7 +82,7 @@ public class AvatarManager : MonoBehaviour
 
         //2 - Head
         GameObject.Destroy(head);
-        head = Realtime.Instantiate("PFR_Head", ownedByClient: true,
+        head = Realtime.Instantiate("Head_Torso", ownedByClient: true,
                                                       preventOwnershipTakeover: true,
                                                       destroyWhenOwnerOrLastClientLeaves: true,
                                                       useInstance: this.realtime);

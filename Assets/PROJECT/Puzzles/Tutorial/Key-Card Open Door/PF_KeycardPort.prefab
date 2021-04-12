@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4827957804913897251}
   m_Layer: 9
   m_Name: PF_KeycardPort
-  m_TagString: Untagged
+  m_TagString: AvatarPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: 3345119500540563940}
   m_Layer: 15
   m_Name: Trigger
-  m_TagString: Untagged
+  m_TagString: AvatarPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5145999236518757107}
   m_Layer: 9
   m_Name: PF_Torso
-  m_TagString: Untagged
+  m_TagString: AvatarPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

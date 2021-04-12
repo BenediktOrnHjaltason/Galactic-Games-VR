@@ -257,7 +257,7 @@ public class GhostPlatformPuzzle : RealtimeComponent<GhostPlatformPuzzle_Model>
         platformsGiven++;
 
 
-        GameObject platform = Realtime.Instantiate("PF_SquarePlatform1",
+        GameObject platform = Realtime.Instantiate("Platform_Free",
                                                     ownedByClient: false,
                                                     preventOwnershipTakeover: false,
                                                     destroyWhenOwnerOrLastClientLeaves: true,

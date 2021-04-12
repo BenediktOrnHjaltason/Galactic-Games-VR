@@ -17,8 +17,8 @@ GameObject:
   - component: {fileID: 1157107514533469724}
   - component: {fileID: 5150632930365507518}
   m_Layer: 9
-  m_Name: PF_SquarePlatform1
-  m_TagString: Untagged
+  m_Name: Platform_Free
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,20 +168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a4d58d15c51db408457285e2c45395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 1
-  allowGravityForceByDevice: 1
-  allowRotationForces: 1
+  allowDuplicationByPlayer: 0
+  allowGravityForceByPlayer: 1
+  allowRotationForceByPlayer: 1
   pushPullMultiplier: 1
-  rotationAxis: 0
-  selfAxisToRotation:
-    Roll: {x: 1, y: 0, z: 0}
-    Yaw: {x: 0, y: 0, z: 0}
-    Pitch: {x: 0, y: 0, z: 0}
-  selfAxisConstraints:
-    constrainRoll: 0
-    constrainYaw: 0
-    constrainPitch: 0
-  selfRotateMultiplier: 1
   mesh: {fileID: 3422003358317571824}
 --- !u!1 &5456900083476435942
 GameObject:

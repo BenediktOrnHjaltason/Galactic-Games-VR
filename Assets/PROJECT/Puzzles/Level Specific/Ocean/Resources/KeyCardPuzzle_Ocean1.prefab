@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2002619207361991457}
   - component: {fileID: 6209711460279112246}
   m_Layer: 9
-  m_Name: PFR_KeyCardPuzzle_Ocean1
-  m_TagString: Untagged
+  m_Name: KeyCardPuzzle_Ocean1
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

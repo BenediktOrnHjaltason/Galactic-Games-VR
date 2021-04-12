@@ -19,7 +19,6 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     [SerializeField]
     AttractorRift_Core core;
 
-    [SerializeField]
     GameObject anchor;
 
     RealtimeTransform rtt;
@@ -66,8 +65,10 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dummyObject = new GameObject();
+        dummyObject = new GameObject("ARiftBeamDirectionsReference");
         dummyObject.layer = 9; //Ignore
+
+        anchor = transform.root.gameObject;
 
         rtt = transform.GetComponentInParent<RealtimeTransform>();
         rb = GetComponentInParent<Rigidbody>();
@@ -87,6 +88,10 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         playerBeams.Add(transform.GetChild(1).transform.GetChild(2).GetComponent<LineRenderer>());
 
         allSensors.Add(this);
+
+        GameObject temp = new GameObject("ARiftAnchor");
+        temp.transform.position = transform.parent.position;
+        anchor = temp;
     }
 
     Vector3 riftPosToAnchorPos = Vector3.zero;

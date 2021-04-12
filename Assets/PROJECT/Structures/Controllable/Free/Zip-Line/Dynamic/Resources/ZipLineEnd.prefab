@@ -18,8 +18,8 @@ GameObject:
   - component: {fileID: 6051959997286598515}
   - component: {fileID: 991459981178234830}
   m_Layer: 9
-  m_Name: PF_ZipLineEnd
-  m_TagString: Untagged
+  m_Name: ZipLineEnd
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

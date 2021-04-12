@@ -630,8 +630,8 @@ GameObject:
   - component: {fileID: 8715368259585421809}
   - component: {fileID: 4460491118178599257}
   m_Layer: 9
-  m_Name: PF_AttractorRiftObject
-  m_TagString: Untagged
+  m_Name: AttractorRift
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1036,7 +1036,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoForce: 3
   core: {fileID: 3926205014963005392}
-  anchor: {fileID: 0}
 --- !u!1 &5471841209722467054
 GameObject:
   m_ObjectHideFlags: 0

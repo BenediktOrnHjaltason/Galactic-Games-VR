@@ -191,8 +191,8 @@ GameObject:
   - component: {fileID: 283769518075057957}
   - component: {fileID: 4363013236202504488}
   m_Layer: 14
-  m_Name: PF_Head
-  m_TagString: PlayerHead
+  m_Name: Head_Torso
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 1755560914194383418}
   m_Layer: 9
   m_Name: TorsoPivot
-  m_TagString: Untagged
+  m_TagString: AvatarPart
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
