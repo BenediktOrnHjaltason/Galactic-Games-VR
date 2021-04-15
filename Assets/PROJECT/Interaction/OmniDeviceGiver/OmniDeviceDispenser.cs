@@ -46,7 +46,6 @@ public class OmniDeviceDispenser : MonoBehaviour
     float timeAmplifier = 20;
 
     float yOffsett = 10f;
-    float zOffsett = 20f;
 
     float curveValue = 0;
 
@@ -78,17 +77,20 @@ public class OmniDeviceDispenser : MonoBehaviour
     {
         handTransform = hand.transform;
 
-        if (hand && !runDispenseSequence && !hand.HandSync.OmniDeviceActive)
+        if (hand && !hand.HandSync.OmniDeviceActive)
         {
-            if (hand.OtherHand.HandSync.OmniDeviceActive) hand.OtherHand.SetOmniDeviceActive(false);
+            if (hand.OtherHand.HandSync.OmniDeviceActive)
+                    hand.OtherHand.SetOmniDeviceActive(false);
 
+                
             hand.SetOmniDeviceActive(true);
 
-            runDispenseSequence = true;
             timeAtSequenceStart = Time.time;
 
             handSphere.transform.SetParent(handTransform);
             handSphere.transform.localPosition = new Vector3(0, 0, -0.1f);
+
+            runDispenseSequence = true;
         }
     }
 
