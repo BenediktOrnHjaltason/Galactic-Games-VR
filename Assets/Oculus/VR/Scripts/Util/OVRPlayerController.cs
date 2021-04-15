@@ -596,6 +596,8 @@ public class OVRPlayerController : MonoBehaviour
 
 		if (swingMoving)
 		{
+			if (vignetteIncrement < 1) vignetteIncrement += 0.025f;
+
 
 			if (timeSinceLastSwing > maxTimeForSwingMovement)
 			{
@@ -627,7 +629,7 @@ public class OVRPlayerController : MonoBehaviour
 				if ((EnableLinearMovement || grabbingAnything) && vignetteIncrement < 1) vignetteIncrement += 0.025f;
 			}
 
-			else if (!grabbingZipLine && vignetteIncrement > 0)
+			else if (!grabbingZipLine && !swingMoving && vignetteIncrement > 0)
 			{
 				vignetteIncrement -= 0.025f;
 			}
