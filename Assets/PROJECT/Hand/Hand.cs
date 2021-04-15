@@ -245,15 +245,6 @@ public class Hand : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (!grabbingZipLine) return;
-
-        if (grabbingZipLine && zipLineGrabbed && other.gameObject.layer.Equals(layer_ZipLineHandle) &&
-            (zipLineGrabbed.EndPointTransform.position - transform.position).magnitude < 2 || (zipLineGrabbed.StartPointTransform.position - transform.position).magnitude < 2)
-                ReleaseZipLine();
-    }
-
     void GrabClimbHandle(GameObject handle)
     {
         this.handle = handle;

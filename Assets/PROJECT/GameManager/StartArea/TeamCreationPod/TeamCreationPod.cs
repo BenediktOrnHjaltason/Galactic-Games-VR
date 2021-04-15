@@ -39,6 +39,10 @@ public class TeamCreationPod : MonoBehaviour
     Material teamNotReadyMaterial;
     Material teamReadyMaterial;
 
+    bool teamFilledUp;
+
+    bool readyToPlay;
+
 
     List<int> teamMembers = new List<int>();
     public List<int> TeamMembers { get => teamMembers; }
@@ -51,9 +55,11 @@ public class TeamCreationPod : MonoBehaviour
 
         floor.material.SetColor("_BaseColor",teamColor);
 
-        readyButton.OnExecute += HandleReadyness;
+        readyButton.OnExecute += SetReady;
 
         GalacticGamesManager.Instance.TeamCreationPods.Add(this);
+
+        Debug.Log("TCP: Added this to game managers collection");
 
         Material teamNotReadyMaterial = availableCapacityMaterial;
         Material teamReadyMaterial = fullCapacityMaterial;
@@ -74,7 +80,11 @@ public class TeamCreationPod : MonoBehaviour
                     {
                         teamMembers[i] = rv.ownerIDSelf;
 
-                        if (i == teamMembers.Count -1) capacityIndicator.material = fullCapacityMaterial;
+                        if (i == teamMembers.Count - 1)
+                        {
+                            capacityIndicator.material = fullCapacityMaterial;
+                            teamFilledUp = true;
+                        }
                     }
                 }
             }
@@ -96,31 +106,26 @@ public class TeamCreationPod : MonoBehaviour
                         teamMembers[i] = -1;
 
                         capacityIndicator.material = availableCapacityMaterial;
+
+                        teamFilledUp = readyToPlay = false;
                     }
                 }
             }
         }
     }
 
-    void HandleReadyness()
+    void SetReady()
     {
-        bool thisTeamReady = true;
+        readyToPlay = teamFilledUp;
 
-        foreach (int teamMember in teamMembers)
-            if (teamMember == -1)
-            {
-                thisTeamReady = false;
-                return;
-            }
-
-        if (thisTeamReady) readyIndicator.material = teamReadyMaterial;
+        if (readyToPlay) readyIndicator.material = teamReadyMaterial;
+        else return;
 
         bool allTeamsAreReady = true;
 
         foreach (TeamCreationPod pod in GalacticGamesManager.Instance.TeamCreationPods)
-            if (pod.readyIndicator.material == teamNotReadyMaterial) allTeamsAreReady = false;
+            if (!pod.readyToPlay) allTeamsAreReady = false;
 
         if (allTeamsAreReady) GalacticGamesManager.Instance.StartGame();
     }
-
 }
