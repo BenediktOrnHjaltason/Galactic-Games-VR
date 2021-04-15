@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LunarBaseCeiling
+  m_Name: M_CanyonCliff
   m_Shader: {fileID: -6465566751694194690, guid: b5c51a3c6c4bba84497e8f1760191f92,
     type: 3}
   m_ShaderKeywords: 
@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_D3D2930A:
-        m_Texture: {fileID: 2800000, guid: f19650300708a974c9cf9b3fd26cbea0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2c3abbfdbd68a4c45b89e8df54ed0e32, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
