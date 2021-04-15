@@ -92,5 +92,8 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
             head.SetActive(false);
             playerNameTMPro.GetComponent<MeshRenderer>().enabled = false;
         }
+
+        AudioSource auS = GetComponent<AudioSource>();
+        if (auS) auS.spatialBlend = 0.3f;
     }
 }
