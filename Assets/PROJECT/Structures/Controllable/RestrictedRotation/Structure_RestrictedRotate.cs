@@ -99,7 +99,7 @@ public class Structure_RestrictedRotate : StructureSync
             if (rtt.ownerIDSelf == -1) rtt.RequestOwnership();
 
             else if (rtt.ownerIDSelf == realtime.clientID) 
-                rb.AddTorque(autoRotateVector);
+                rb.AddTorque(autoRotateVector, ForceMode.Acceleration);
         }
     }
 
