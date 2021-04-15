@@ -16,19 +16,7 @@ public class AttractorRift_Core : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(14))
-        {
-            OVRPlayerController player = other.GetComponent<OVRPlayerController>();
-
-            if (player)
-            {
-                OnPlayerReachedCore?.Invoke(player, true);
-                player.RespondToEncounteredHazard();
-                player.ResetToRespawnPoint();
-            }
-        }
-
-        if (other.gameObject.layer.Equals(11))
+        if (other.gameObject.layer.Equals(14) || other.gameObject.layer.Equals(11))
         {
             OVRPlayerController player = other.transform.root.GetComponent<OVRPlayerController>();
 

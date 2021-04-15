@@ -16,7 +16,9 @@ public class PlayerFriction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (player)
+        //Was an issue with triggering swing jump in playercontroller while calling Move here, because controller velocities was
+        //being picked up in many passes of FixedUpdate, hence checking for IsSwingJumping
+        if (player && !player.IsSwingJumping)
         {
             player.Controller.Move(platformRB.velocity / 50);
         }

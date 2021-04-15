@@ -531,6 +531,10 @@ public class OVRPlayerController : MonoBehaviour
 	bool leftUpRightDownSwung = false;
 	bool rightUpLeftDownSwung = false;
 
+	bool isSwingJumping = false;
+
+	public bool IsSwingJumping { get => isSwingJumping; }
+
 	//It's a long function with different stuff, but since we're doing this every fixed update, 
 	//there could be a small performance gain having them gathered rather than calling a bunch of different functions 
 	void GameplayFunctionsFixedUpdate()
@@ -541,11 +545,22 @@ public class OVRPlayerController : MonoBehaviour
 			transform.position = respawnPoint;
 		}
 
-		//Swing-jumping
-		if ((!grabbingAnything && EnableLinearMovement && OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
-			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5)) 
-				Jump();
 
+		if (Controller.isGrounded && isSwingJumping) isSwingJumping = false;
+
+		
+		//Swing-jumping
+		if ((!grabbingAnything && EnableLinearMovement && !isSwingJumping && OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
+			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5))
+        {
+			Debug.Log("OVRPC: Calling from swing jump");
+
+			if (!isSwingJumping)
+            {
+				isSwingJumping = true;
+				Jump();
+			}			
+		}
 
 		//Swing-moving
 		if (OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 0.6 &&
