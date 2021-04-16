@@ -18,6 +18,9 @@ public class UIMainHUD : MonoBehaviour
     [SerializeField]
     InteractButton mainMenuButton;
 
+    InteractButton go;
+    InteractButton cancel;
+
     [SerializeField]
     InteractButton spawnPointButton;
 
@@ -48,7 +51,15 @@ public class UIMainHUD : MonoBehaviour
         {
             allButtonsColliders.Add(mainMenuButton.GetComponent<BoxCollider>());
 
-            mainMenuButton.OnExecute += BackToMainMenu;
+            mainMenuButton.OnExecute += ShowMainMenuDialogue;
+
+            go = mainMenuButton.transform.GetChild(1).GetComponent<InteractButton>();
+            go.OnExecute += LoadMainMenu;
+            go.gameObject.SetActive(false);
+
+            cancel = mainMenuButton.transform.GetChild(2).GetComponent<InteractButton>();
+            cancel.OnExecute += HideMainMenuDialogue;
+            cancel.gameObject.SetActive(false);
         }
 
         if (spawnPointButton)
@@ -91,6 +102,7 @@ public class UIMainHUD : MonoBehaviour
             if (scaleMultiplier < 0.1f && allButtonsColliders[0].enabled == true)
             {
                 SetMenuActive(false);
+                HideMainMenuDialogue();
             }
         }
 
@@ -110,7 +122,7 @@ public class UIMainHUD : MonoBehaviour
         return minutes + ":" + seconds;
     }
 
-    void BackToMainMenu()
+    void LoadMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
@@ -124,6 +136,23 @@ public class UIMainHUD : MonoBehaviour
             button.enabled = active;
             button.gameObject.SetActive(active);
         }
+
+        if (active == false)
+        {
+            HideMainMenuDialogue();
+        }
             
+    }
+
+    void ShowMainMenuDialogue()
+    {
+        go.gameObject.SetActive(true);
+        cancel.gameObject.SetActive(true);
+    }
+
+    void HideMainMenuDialogue()
+    {
+        go.gameObject.SetActive(false);
+        cancel.gameObject.SetActive(false);
     }
 }
