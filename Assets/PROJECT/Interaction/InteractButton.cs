@@ -124,6 +124,8 @@ public class InteractButton : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("InteractButton: " + other.name + " is colliding with " + name);
+
         if (other.gameObject.layer.Equals(11)) Execute();
     }
 
