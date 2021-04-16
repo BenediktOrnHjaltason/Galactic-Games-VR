@@ -209,7 +209,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
             if (playerController)
             {
-                RemovePlayerFromInfluence(playerController, false);
+                RemovePlayerFromInfluence(false);
             }
 
             else if (other.gameObject.name.Contains("Head"))
@@ -220,24 +220,26 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     }
     
 
-    void RemovePlayerFromInfluence(OVRPlayerController player, bool removeFromAll)
+    void RemovePlayerFromInfluence(bool removeFromAll)
     {
         if (removeFromAll)
+        {
             foreach (AttractorRift_PlayerSensor playerSensor in allSensors)
             {
-                if (playerSensor.playerControllerInReach == player)
+                if (playerSensor.playerControllerInReach)
                 {
                     playerSensor.playerControllerInReach.GravityModifier = 0.04f;
                     playerSensor.playerControllerInReach = null;
                 }
             }
+        }
 
-        else if (playerControllerInReach == player)
+        else
         {
             bool playerInfluencedByOtherRift = false;
 
             foreach (AttractorRift_PlayerSensor playerSensor in allSensors)
-                if (playerSensor != this && playerSensor.playerControllerInReach == player) playerInfluencedByOtherRift = true;
+                if (playerSensor != this && playerSensor.playerControllerInReach) playerInfluencedByOtherRift = true;
 
             if (!playerInfluencedByOtherRift) playerControllerInReach.GravityModifier = 0.04f;
 

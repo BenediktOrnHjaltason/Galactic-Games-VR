@@ -12,7 +12,7 @@ using System;
 public class AttractorRift_Core : MonoBehaviour
 {
                                     //bool for deciding to remove from influence of all rifts
-    public event Action<OVRPlayerController, bool> OnPlayerReachedCore;
+    public event Action<bool> OnPlayerReachedCore;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -22,7 +22,7 @@ public class AttractorRift_Core : MonoBehaviour
 
             if (player)
             {
-                OnPlayerReachedCore?.Invoke(player, true);
+                OnPlayerReachedCore?.Invoke(true);
                 player.RespondToEncounteredHazard();
                 player.ResetToRespawnPoint();
             }

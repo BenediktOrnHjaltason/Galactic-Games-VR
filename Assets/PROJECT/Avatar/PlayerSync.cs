@@ -81,6 +81,9 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
     {
         int headIndex = model.playerHeadIndex;
         GameObject head = Instantiate<GameObject>(playerHeads[headIndex].headMesh);
+
+        head.layer = 9;
+
         head.transform.SetParent(this.transform);
 
         head.transform.localPosition = playerHeads[headIndex].position;
