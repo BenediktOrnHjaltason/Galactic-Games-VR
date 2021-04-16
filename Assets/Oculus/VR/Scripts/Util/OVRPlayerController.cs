@@ -456,6 +456,23 @@ public class OVRPlayerController : MonoBehaviour
 		EnableLinearMovement = true;
     }
 
+	public void ActivateBlinders()
+    {
+		vignetteIncrement = 0;
+		OnUpdate_Fixed += OperateVignette;
+
+		PlayerPrefs.SetInt("blinders", 1);
+	}
+
+	public void DeactivateBlinders()
+    {
+		vignetteIncrement = 0;
+		vignetteMaterial.SetFloat(vignetteOpacityPropertyName, 0);
+		OnUpdate_Fixed -= OperateVignette;
+
+		PlayerPrefs.SetInt("blinders", 0);
+	}
+
 	void Awake()
 	{
 		Controller = gameObject.GetComponent<CharacterController>();

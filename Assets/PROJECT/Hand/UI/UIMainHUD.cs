@@ -26,6 +26,15 @@ public class UIMainHUD : MonoBehaviour
 
     List<BoxCollider> allButtonsColliders = new List<BoxCollider>();
 
+
+    [SerializeField]
+    InteractButton blindersButton;
+
+    InteractButton blindersOn;
+    InteractButton blindersOff;
+
+
+
     [SerializeField]
     MeshRenderer UIBackground;
 
@@ -51,7 +60,8 @@ public class UIMainHUD : MonoBehaviour
         {
             allButtonsColliders.Add(mainMenuButton.GetComponent<BoxCollider>());
 
-            mainMenuButton.OnExecute += ShowMainMenuDialogue;
+            mainMenuButton.OnExecute += ToggleMainMenuDialogueVisibility;
+            mainMenuButton.OnExecute += HideBlindersDialogue;
 
             go = mainMenuButton.transform.GetChild(1).GetComponent<InteractButton>();
             go.OnExecute += LoadMainMenu;
@@ -67,6 +77,25 @@ public class UIMainHUD : MonoBehaviour
             allButtonsColliders.Add(spawnPointButton.GetComponent<BoxCollider>());
 
             spawnPointButton.OnExecute += playerController.ResetToRespawnPoint;
+            spawnPointButton.OnExecute += playerController.RespondToEncounteredHazard;
+
+        }
+
+        if (blindersButton)
+        {
+            allButtonsColliders.Add(blindersButton.GetComponent<BoxCollider>());
+
+            blindersButton.OnExecute += ToggleBlindersDialogueVisibility;
+            blindersButton.OnExecute += HideMainMenuDialogue;
+            
+            blindersOn = blindersButton.transform.GetChild(1).GetComponent<InteractButton>();
+            blindersOn.OnExecute += playerController.ActivateBlinders;
+            blindersOn.gameObject.SetActive(false);
+
+            blindersOff = blindersButton.transform.GetChild(2).GetComponent<InteractButton>();
+            blindersOff.OnExecute += playerController.DeactivateBlinders;
+            blindersOff.gameObject.SetActive(false);
+
         }
     }
 
@@ -103,6 +132,7 @@ public class UIMainHUD : MonoBehaviour
             {
                 SetMenuActive(false);
                 HideMainMenuDialogue();
+                HideBlindersDialogue();
             }
         }
 
@@ -154,5 +184,33 @@ public class UIMainHUD : MonoBehaviour
     {
         go.gameObject.SetActive(false);
         cancel.gameObject.SetActive(false);
+    }
+
+    void ToggleMainMenuDialogueVisibility()
+    {
+        if (go.gameObject.activeInHierarchy)
+            HideMainMenuDialogue();
+
+        else ShowMainMenuDialogue();
+    }
+
+    void ShowBlindersDialogue()
+    {
+        blindersOn.gameObject.SetActive(true);
+        blindersOff.gameObject.SetActive(true);
+    }
+
+    void HideBlindersDialogue()
+    {
+        blindersOn.gameObject.SetActive(false);
+        blindersOff.gameObject.SetActive(false);
+    }
+
+    void ToggleBlindersDialogueVisibility()
+    {
+        if (blindersOn.gameObject.activeInHierarchy)
+            HideBlindersDialogue();
+
+        else ShowBlindersDialogue();
     }
 }
