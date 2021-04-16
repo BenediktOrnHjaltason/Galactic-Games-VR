@@ -29,7 +29,7 @@ TagManager:
   - StructureBlock
   - AttractorRiftPlayerSensor
   - PlayerTrigger
-  - 
+  - ButtonExecutor
   - 
   - 
   - 

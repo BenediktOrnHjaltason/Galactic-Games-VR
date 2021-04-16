@@ -124,14 +124,12 @@ public class InteractButton : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("InteractButton: " + other.name + " is colliding with " + name);
-
-        if (other.gameObject.layer.Equals(11)) Execute();
+        if (other.gameObject.layer.Equals(20)) Execute();
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.layer.Equals(11)) beingHighlighted = true;
+        if (other.gameObject.layer.Equals(20)) beingHighlighted = true;
     }
 
     public void ToggleMeshes()

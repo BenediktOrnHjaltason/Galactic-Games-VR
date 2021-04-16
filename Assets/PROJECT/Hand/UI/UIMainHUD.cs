@@ -18,6 +18,9 @@ public class UIMainHUD : MonoBehaviour
     [SerializeField]
     InteractButton mainMenuButton;
 
+    [SerializeField]
+    InteractButton spawnPointButton;
+
     List<BoxCollider> allButtonsColliders = new List<BoxCollider>();
 
     [SerializeField]
@@ -31,17 +34,28 @@ public class UIMainHUD : MonoBehaviour
     bool playerWatching = false;
     float scaleMultiplier = 0;
 
+    OVRPlayerController playerController;
+
     // Start is called before the first frame update
     void Start()
     {
         //UITime = GetComponentInChildren<TextMeshPro>();
         transform.localScale = Vector3.zero;
 
+        playerController = transform.root.GetComponent<OVRPlayerController>();
+
         if (mainMenuButton)
         {
             allButtonsColliders.Add(mainMenuButton.GetComponent<BoxCollider>());
 
             mainMenuButton.OnExecute += BackToMainMenu;
+        }
+
+        if (spawnPointButton)
+        {
+            allButtonsColliders.Add(spawnPointButton.GetComponent<BoxCollider>());
+
+            spawnPointButton.OnExecute += playerController.ResetToRespawnPoint;
         }
     }
 
@@ -66,6 +80,8 @@ public class UIMainHUD : MonoBehaviour
                 SetMenuActive(true);
 
             scaleMultiplier += 0.1f;
+
+            
         }
 
         else if (!playerWatching && scaleMultiplier > 0)
