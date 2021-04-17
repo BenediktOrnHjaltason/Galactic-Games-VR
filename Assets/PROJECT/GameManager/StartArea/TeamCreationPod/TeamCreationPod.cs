@@ -40,6 +40,9 @@ public class TeamCreationPod : MonoBehaviour
     Material teamReadyMaterial;
 
     bool teamFilledUp = false;
+
+    public bool TeamFilledUp { get => teamFilledUp; }
+
     bool teamEmpty = true;
 
     bool readyToPlay;
@@ -145,10 +148,17 @@ public class TeamCreationPod : MonoBehaviour
             if (pod.teamEmpty) allTeamsReadyOrEmpty = true;
         }
 
-        if (allTeamsReadyOrEmpty)
+        bool allPlayersAccountedFor = GalacticGamesManager.Instance.AllPlayersAccountedFor();
+
+        if (allTeamsReadyOrEmpty && allPlayersAccountedFor)
         {
-            Debug.Log("TCP: All pods have ready teams or is empty and we're calling GameManager::StartGame()");
+            Debug.Log("TCP: All pods have ready teams or is empty and all players accouted for. Calling GameManager::StartGame()");
             GalacticGamesManager.Instance.StartGame();
+        }
+        else
+        {
+            if (!allTeamsReadyOrEmpty) Debug.Log("GGM: Cannot start game because all teams are not filled or empty");
+            if (!allPlayersAccountedFor) Debug.Log("GGM: Cannot start game because not all players are accounted for");
         }
     }
 }

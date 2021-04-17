@@ -19,8 +19,41 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     bool competitionStarted = false;
 
+    public bool CompetitionStarted { get => competitionStarted; }
+
     int rootCountBeforeSpawningForTeams;
 
+    int numberOfActiveTeams = 0;
+
+    List<int> clientsInRoom = new List<int>();
+
+
+    public void RegisterClientID(int clientID)
+    {
+        Debug.Log("GGM: Registering client ID " + clientID + " in GameManager");
+        clientsInRoom.Add(clientID);
+    }
+
+    public bool AllPlayersAccountedFor()
+    {
+        foreach (int clientID in clientsInRoom)
+        {
+            bool playerAccountedFor = false;
+
+            foreach (TeamCreationPod pod in teamCreationPods)
+            {
+                if (pod.TeamMembers.Contains(clientID))
+                {
+                    playerAccountedFor = true;
+                    break;
+                }
+            }
+
+            if (!playerAccountedFor) return false;
+        }
+
+        return true;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,9 +70,12 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     {
         if (competitionStarted) return;
 
-        competitionStarted = true;
+        
 
         rootCountBeforeSpawningForTeams = SceneManager.GetActiveScene().rootCount;
+
+
+        foreach (TeamCreationPod pod in teamCreationPods) if (pod.TeamFilledUp) numberOfActiveTeams++;
 
 
         GameObject[] teamFilteredObjects = GameObject.FindGameObjectsWithTag("TeamFiltered");
@@ -93,7 +129,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                     RealtimeTransform rtt = newObject.GetComponent<RealtimeTransform>();
                     if (rtt) rtt.SetOwnership(realTime.clientID);
 
-                    newObject.transform.position = positions[i];
+                    newObject.transform.localPosition = positions[i];
                     newObject.transform.rotation = rotations[i];
                 }
             }
@@ -109,13 +145,13 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         //Wait for all clients to be done spawning
         while (SceneManager.GetActiveScene().rootCount != 
             rootCountBeforeSpawningForTeams +
-            namesOfGameplayPrefabs.Count * teamCreationPods.Count +
-            numberOfAttractorRifts * 2 * teamCreationPods.Count) //Accounting for anchor and dummy object that AttractorRift creates on Start
+            namesOfGameplayPrefabs.Count * numberOfActiveTeams +
+            numberOfAttractorRifts * 2 * numberOfActiveTeams) //Accounting for anchor and dummy object that AttractorRift creates on Start
         {
 
             Debug.Log("GGM: Expected result: " + (rootCountBeforeSpawningForTeams +
-            namesOfGameplayPrefabs.Count * teamCreationPods.Count +
-            numberOfAttractorRifts * teamCreationPods.Count));
+            namesOfGameplayPrefabs.Count * numberOfActiveTeams +
+            numberOfAttractorRifts * numberOfActiveTeams));
 
             yield return null;
         }
@@ -172,11 +208,17 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                                 if (rtv.ownerIDSelf == teamCreationPods[i].TeamMembers[k])
                                     partOfTeam = true;
 
-                            if (!partOfTeam) rtv.gameObject.SetActive(false);
+                            if (!partOfTeam)
+                            {
+                                Debug.Log("Setting " + rtv.gameObject.name + " inactive");
+                                rtv.gameObject.SetActive(false);
+                            }
                         }
                     }
                 }
             }
         }
+
+        competitionStarted = true;
     }
 }

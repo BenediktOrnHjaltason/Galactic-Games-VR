@@ -23,7 +23,7 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
 
     bool isPlayerClient = false;
 
-    
+
     protected override void OnRealtimeModelReplaced(PlayerSync_Model previousModel, PlayerSync_Model currentModel)
     {
         if (previousModel != null)
@@ -98,5 +98,9 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
 
         AudioSource auS = GetComponent<AudioSource>();
         if (auS) auS.spatialBlend = 0.3f;
+
+        RealtimeView rtv = GetComponent<RealtimeView>();
+        if (rtv) GalacticGamesManager.Instance.RegisterClientID(rtv.ownerIDSelf);
+
     }
 }

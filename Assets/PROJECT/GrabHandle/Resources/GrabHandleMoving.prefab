@@ -11,14 +11,14 @@ GameObject:
   - component: {fileID: 3970175895456488663}
   - component: {fileID: 1522215277797069881}
   - component: {fileID: 1730248385187369550}
+  - component: {fileID: 3488974096734819762}
   - component: {fileID: 6794120199372436031}
   - component: {fileID: 275407476846754807}
-  - component: {fileID: 3488974096734819762}
   - component: {fileID: 2793282560320585510}
   - component: {fileID: 8202857600759352478}
   m_Layer: 8
   m_Name: GrabHandleMoving
-  m_TagString: TeamFiltered
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,6 +85,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &3488974096734819762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5012231199776833198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 450efc5a526da5249bf3b717d7436481, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPosition: {x: 0, y: 0, z: 0}
+  endPosition: {x: 0, y: 0, z: 0}
+  speed: 1
 --- !u!135 &6794120199372436031
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -114,21 +129,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!114 &3488974096734819762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5012231199776833198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 450efc5a526da5249bf3b717d7436481, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPosition: {x: 0, y: 0, z: 0}
-  endPosition: {x: 0, y: 0, z: 0}
-  speed: 1
 --- !u!114 &2793282560320585510
 MonoBehaviour:
   m_ObjectHideFlags: 0
