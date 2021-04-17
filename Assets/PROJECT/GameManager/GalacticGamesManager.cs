@@ -44,39 +44,32 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         GameObject[] teamFilteredObjects = GameObject.FindGameObjectsWithTag("TeamFiltered");
 
-        //Clones from other clients can sneak in
-        //List<GameObject> teamFilteredWOClones = new List<GameObject>();
+        //Filter out clones spawned by other clients
+        List<GameObject> teamFilteredWOClones = new List<GameObject>();
 
-        //foreach (GameObject gameObject in teamFilteredObjects)
-            //if (!gameObject.name.Contains("Clone")) teamFilteredWOClones.Add(gameObject);
 
-        
-        List<RealtimeView> gameplayRealtimeViews = new List<RealtimeView>();
-        List<RealtimeView> avatarRealtimeViews = new List<RealtimeView>();
+        foreach (GameObject gameObject in teamFilteredObjects)
+            if (!gameObject.name.Contains("Clone")) teamFilteredWOClones.Add(gameObject);
+
 
         List<Vector3> positions = new List<Vector3>();
         List<Quaternion> rotations = new List<Quaternion>();
 
 
         //Separate gameplay objects and avatar objects
-        foreach (GameObject gameObject in teamFilteredObjects)
+        foreach (GameObject gameObject in teamFilteredWOClones)
         {
             RealtimeView rtv = gameObject.GetComponent<RealtimeView>();
-            if (rtv)
+            if (rtv && !rtv.name.Contains("Head") && !rtv.name.Contains("Hand_"))
             {
-                if (rtv.name.Contains("Head") || rtv.name.Contains("Hand_")) avatarRealtimeViews.Add(rtv);
-                else
-                {
-                    gameplayRealtimeViews.Add(rtv);
+                //Attractor Rifts spawn two objects on start to help with functionality. Needed for calculating correct root count
+                if (rtv.gameObject.name.Contains("AttractorRift")) numberOfAttractorRifts++;
 
-                    if (rtv.gameObject.name.Contains("AttractorRift")) numberOfAttractorRifts++;
+                namesOfGameplayPrefabs.Add(rtv.gameObject.name);
+                positions.Add(rtv.gameObject.transform.position);
+                rotations.Add(rtv.gameObject.transform.rotation);
 
-                    namesOfGameplayPrefabs.Add(rtv.gameObject.name);
-                    positions.Add(rtv.gameObject.transform.position);
-                    rotations.Add(rtv.gameObject.transform.rotation);
-
-                    rtv.gameObject.SetActive(false);
-                }
+                rtv.gameObject.SetActive(false);
             }
         }
 
@@ -132,7 +125,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         
 
         
-        //Disable objects not relevant to this team
+        //Disable gameplay objects not relevant to this team
 
         //Find this client's team
         for (int i = 0; i < teamCreationPods.Count; i++)
@@ -141,32 +134,45 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             {
                 if (realTime.clientID == teamCreationPods[i].TeamMembers[j])
                 {
-                    //Found team (i) and spawning client for this team is index 0
+                    //Found team (i) and spawning client for this team is index 0 of teamMembers
 
                     int teamSize = teamCreationPods[i].TeamMembers.Count;
                     int spawningClient = teamCreationPods[i].TeamMembers[0];
 
                     //Get all active root objects in scene after all spawning is done
-                    GameObject[] teamFilteredObjects = GameObject.FindGameObjectsWithTag("TeamFiltered");
+                    GameObject[] teamFiltered = GameObject.FindGameObjectsWithTag("TeamFiltered");
+
+                    List<GameObject> gameplayObjects = new List<GameObject>();
+                    List<GameObject> avatars = new List<GameObject>();
+
+                    foreach (GameObject gameObject in teamFiltered)
+                        if (!gameObject.name.Contains("Head") && !gameObject.name.Contains("Hand_")) //GrabHandle contains "Hand"
+                            gameplayObjects.Add(gameObject);
+
+                        else avatars.Add(gameObject);
 
 
-                    //Disable all objects not relevant for this team
 
-                    foreach(GameObject teamFilteredObject in teamFilteredObjects)
+                    //Disable all gameplay objects not spawned by the first member of this team
+                    foreach (GameObject gameplayObject in gameplayObjects)
                     {
-                        RealtimeView rtv = teamFilteredObject.GetComponent<RealtimeView>();
+                        RealtimeView rtv = gameplayObject.GetComponent<RealtimeView>();
+                        if (rtv && rtv.ownerIDSelf != spawningClient)
+                             rtv.gameObject.SetActive(false);
+                    }
+
+                    //Disable all avatar objects not part of this team
+                    foreach (GameObject avatarObject in avatars)
+                    {
+                        RealtimeView rtv = avatarObject.GetComponent<RealtimeView>();
                         if (rtv)
                         {
-                            if (teamFilteredObject.name.Contains("Head") || gameObject.name.Contains("AvatarPart"))
-                            {
-                                bool partOfTeam = false;
-                                for (int k = 0; k < teamSize; k++)
-                                    if (rtv.ownerIDSelf == teamCreationPods[i].TeamMembers[k])
-                                        partOfTeam = true;
+                            bool partOfTeam = false;
+                            for (int k = 0; k < teamSize; k++)
+                                if (rtv.ownerIDSelf == teamCreationPods[i].TeamMembers[k])
+                                    partOfTeam = true;
 
-                                if (!partOfTeam) rtv.gameObject.SetActive(false);
-                            }
-                            else if (rtv.ownerIDSelf != spawningClient) rtv.gameObject.SetActive(false);
+                            if (!partOfTeam) rtv.gameObject.SetActive(false);
                         }
                     }
                 }

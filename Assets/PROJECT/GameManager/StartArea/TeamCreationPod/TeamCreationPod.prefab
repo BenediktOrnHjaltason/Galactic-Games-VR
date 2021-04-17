@@ -278,7 +278,7 @@ GameObject:
   - component: {fileID: 5911528918138404366}
   - component: {fileID: 4983848241409598861}
   m_Layer: 15
-  m_Name: PF_TeamCreationPod
+  m_Name: TeamCreationPod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,6 +363,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: Ready?
+      objectReference: {fileID: 0}
+    - target: {fileID: 704979758276649153, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1446008589730145259, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
         type: 3}

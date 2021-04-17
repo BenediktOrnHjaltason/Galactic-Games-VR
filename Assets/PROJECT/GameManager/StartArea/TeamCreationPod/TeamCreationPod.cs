@@ -39,7 +39,8 @@ public class TeamCreationPod : MonoBehaviour
     Material teamNotReadyMaterial;
     Material teamReadyMaterial;
 
-    bool teamFilledUp;
+    bool teamFilledUp = false;
+    bool teamEmpty = true;
 
     bool readyToPlay;
 
@@ -79,12 +80,15 @@ public class TeamCreationPod : MonoBehaviour
                     if (teamMembers[i] == -1)
                     {
                         teamMembers[i] = rv.ownerIDSelf;
+                        teamEmpty = false;
 
-                        if (i == teamMembers.Count - 1)
-                        {
-                            capacityIndicator.material = fullCapacityMaterial;
-                            teamFilledUp = true;
-                        }
+                        teamFilledUp = true;
+                        for (int j = 0; j < teamMembers.Count; j++)
+                            if (teamMembers[j] == -1) teamFilledUp = false;
+
+                        if (teamFilledUp) capacityIndicator.material = fullCapacityMaterial;
+                        
+                        break;
                     }
                 }
             }
@@ -108,6 +112,12 @@ public class TeamCreationPod : MonoBehaviour
                         capacityIndicator.material = availableCapacityMaterial;
 
                         teamFilledUp = readyToPlay = false;
+
+                        teamEmpty = true;
+                        for (int j = 0; j < teamMembers.Count; j++)
+                            if (teamMembers[j] != -1) teamEmpty = false;
+
+                            break;
                     }
                 }
             }
@@ -116,16 +126,29 @@ public class TeamCreationPod : MonoBehaviour
 
     void SetReady()
     {
+        Debug.Log("TCP: SetReady() called");
+
         readyToPlay = teamFilledUp;
 
         if (readyToPlay) readyIndicator.material = teamReadyMaterial;
-        else return;
+        else
+        {
+            Debug.Log("TCP: Team in " + name + " is not ready to play. Aborting");
+            return;
+        }
 
-        bool allTeamsAreReady = true;
+        bool allTeamsReadyOrEmpty = true;
 
         foreach (TeamCreationPod pod in GalacticGamesManager.Instance.TeamCreationPods)
-            if (!pod.readyToPlay) allTeamsAreReady = false;
+        {
+            if (!pod.readyToPlay) allTeamsReadyOrEmpty = false;
+            if (pod.teamEmpty) allTeamsReadyOrEmpty = true;
+        }
 
-        if (allTeamsAreReady) GalacticGamesManager.Instance.StartGame();
+        if (allTeamsReadyOrEmpty)
+        {
+            Debug.Log("TCP: All pods have ready teams or is empty and we're calling GameManager::StartGame()");
+            GalacticGamesManager.Instance.StartGame();
+        }
     }
 }
