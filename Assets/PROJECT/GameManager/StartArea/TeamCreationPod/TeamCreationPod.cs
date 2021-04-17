@@ -115,6 +115,7 @@ public class TeamCreationPod : MonoBehaviour
                         capacityIndicator.material = availableCapacityMaterial;
 
                         teamFilledUp = readyToPlay = false;
+                        readyIndicator.material = teamNotReadyMaterial;
 
                         teamEmpty = true;
                         for (int j = 0; j < teamMembers.Count; j++)
@@ -157,7 +158,7 @@ public class TeamCreationPod : MonoBehaviour
         }
         else
         {
-            if (!allTeamsReadyOrEmpty) Debug.Log("GGM: Cannot start game because all teams are not filled or empty");
+            if (!allTeamsReadyOrEmpty) Debug.Log("GGM: Cannot start game because all teams are not ready or empty");
             if (!allPlayersAccountedFor) Debug.Log("GGM: Cannot start game because not all players are accounted for");
         }
     }

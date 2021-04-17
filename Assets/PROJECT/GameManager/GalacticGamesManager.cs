@@ -32,6 +32,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     {
         Debug.Log("GGM: Registering client ID " + clientID + " in GameManager");
         clientsInRoom.Add(clientID);
+
+        //Placed here because new objects will sneak into the count after first client spawns gameplay objects and 
+        //other clients experience delay before they start the process
+        rootCountBeforeSpawningForTeams = SceneManager.GetActiveScene().rootCount;
     }
 
     public bool AllPlayersAccountedFor()
@@ -70,10 +74,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     {
         if (competitionStarted) return;
 
-        
-
-        rootCountBeforeSpawningForTeams = SceneManager.GetActiveScene().rootCount;
-
 
         foreach (TeamCreationPod pod in teamCreationPods) if (pod.TeamFilledUp) numberOfActiveTeams++;
 
@@ -109,6 +109,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             }
         }
 
+        Debug.Log("GGM: Done collecting names. Gameplay objects without 'Clone': " + namesOfGameplayPrefabs.Count);
+
         Debug.Log("GGM: Root count before spawning team objects: " + SceneManager.GetActiveScene().rootCount);
         Debug.Log("GGM: Number of attractor rifts counted: " + numberOfAttractorRifts);
 
@@ -117,6 +119,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         {
             if (realTime.clientID == creationPod.TeamMembers[0])
             {
+                Debug.Log("GGM: Spawning new gameplay objects");
+
+                int newSpawns = 0;
+
                 //Instantiate objects on network for this team
                 for (int i = 0; i < namesOfGameplayPrefabs.Count; i++)
                 {
@@ -126,12 +132,16 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                                                     destroyWhenOwnerOrLastClientLeaves: true,
                                                     useInstance: realTime);
 
+                    newSpawns++;
+
                     RealtimeTransform rtt = newObject.GetComponent<RealtimeTransform>();
                     if (rtt) rtt.SetOwnership(realTime.clientID);
 
                     newObject.transform.localPosition = positions[i];
                     newObject.transform.rotation = rotations[i];
                 }
+
+                Debug.Log("GGM: Spawned " + newSpawns + " gameplay objects. New root count: " + SceneManager.GetActiveScene().rootCount);
             }
         }
 
@@ -142,16 +152,20 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     IEnumerator DisableNonTeamObjects()
     {
+        Debug.Log("GGM: waiting to disable objects. Number of active teams: " + numberOfActiveTeams);
+        Debug.Log("GGM: member zero of existing teams: " + teamCreationPods[0].TeamMembers[0] + " & " + teamCreationPods[1].TeamMembers[0]);
+
         //Wait for all clients to be done spawning
         while (SceneManager.GetActiveScene().rootCount != 
             rootCountBeforeSpawningForTeams +
-            namesOfGameplayPrefabs.Count * numberOfActiveTeams +
-            numberOfAttractorRifts * 2 * numberOfActiveTeams) //Accounting for anchor and dummy object that AttractorRift creates on Start
+            (namesOfGameplayPrefabs.Count * numberOfActiveTeams) +
+            (numberOfAttractorRifts * 2 * numberOfActiveTeams)) //Accounting for anchor and dummy object that AttractorRift creates on Start
         {
 
-            Debug.Log("GGM: Expected result: " + (rootCountBeforeSpawningForTeams +
-            namesOfGameplayPrefabs.Count * numberOfActiveTeams +
-            numberOfAttractorRifts * numberOfActiveTeams));
+            Debug.Log("GGM: Expected result: " + 
+                (rootCountBeforeSpawningForTeams +
+                 (namesOfGameplayPrefabs.Count * numberOfActiveTeams) +
+                 (numberOfAttractorRifts * 2 * numberOfActiveTeams)) + ". Current root count: " + SceneManager.GetActiveScene().rootCount);
 
             yield return null;
         }
