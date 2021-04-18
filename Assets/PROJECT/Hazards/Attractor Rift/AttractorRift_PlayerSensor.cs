@@ -63,7 +63,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         dummyObject = new GameObject("ARiftBeamDirectionsReference");
         dummyObject.layer = 9; //Ignore
@@ -71,6 +71,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         anchor = transform.root.gameObject;
 
         rtt = transform.GetComponentInParent<RealtimeTransform>();
+
         rb = GetComponentInParent<Rigidbody>();
 
         if (core)
@@ -90,16 +91,18 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         allSensors.Add(this);
 
         GameObject temp = new GameObject("ARiftAnchor");
-        temp.transform.position = transform.parent.position;
+        temp.transform.position = rb.position;
         anchor = temp;
-
-        //GalacticGamesManager.Instance.AddToNonFilteredRootCount(2);
     }
+
 
     Vector3 riftPosToAnchorPos = Vector3.zero;
 
     private void FixedUpdate()
     {
+        //Debug.Log("AttractorRift: Root position: " + transform.root.position);
+
+
         //Handle beams
         
         if (Time.time > nextTimeToChange)
@@ -170,7 +173,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         //Place self
         if (rtt.ownerIDSelf == -1) rtt.RequestOwnership();
 
-        else if (rtt.isOwnedLocallySelf)
+        else if (rtt.isOwnedLocallySelf && anchor)
         {
             riftPosToAnchorPos = anchor.transform.position - transform.position;
 

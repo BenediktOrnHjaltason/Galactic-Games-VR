@@ -21,8 +21,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     public bool CompetitionStarted { get => competitionStarted; }
 
-    int rootCountBeforeSpawningForTeams;
-
     int numberOfActiveTeams = 0;
 
     List<int> clientsInRoom = new List<int>();
@@ -61,12 +59,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     {
         //Debug.Log("GGM: Registering client ID " + clientID + " in GameManager");
         clientsInRoom.Add(clientID);
-
-        //Placed here because new objects will sneak into the count after first client spawns gameplay objects and 
-        //other clients experience delay before they start the process.
-        rootCountBeforeSpawningForTeams = SceneManager.GetActiveScene().rootCount;
-
-        GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
     }
 
     public bool AllPlayersAccountedFor()
@@ -131,7 +123,11 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             if (rtv && !rtv.name.Contains("Head") && !rtv.name.Contains("Hand_"))
             {
                 //Attractor Rifts spawn two objects on start to help with functionality. Needed for calculating correct root count
-                if (rtv.gameObject.name.Contains("AttractorRift")) numberOfAttractorRifts++;
+                if (rtv.gameObject.name.Contains("AttractorRift"))
+                {
+                    Debug.Log("GGM: Collected attractorRift object " + rtv.gameObject.name + " with position: " + rtv.gameObject.transform.position);
+                    numberOfAttractorRifts++;
+                }
 
                 namesOfGameplayPrefabs.Add(rtv.gameObject.name);
                 positions.Add(rtv.gameObject.transform.position);
@@ -159,18 +155,22 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 for (int i = 0; i < namesOfGameplayPrefabs.Count; i++)
                 {
                     GameObject newObject = Realtime.Instantiate(namesOfGameplayPrefabs[i],
+                                                    positions[i],
+                                                    rotations[i],
                                                     ownedByClient: true,
                                                     preventOwnershipTakeover: false,
                                                     destroyWhenOwnerOrLastClientLeaves: true,
                                                     useInstance: realTime);
+
+                    Debug.Log("GGM: Spawned " + newObject.name + " with position " + positions[i]);
 
                     newSpawns++;
 
                     RealtimeTransform rtt = newObject.GetComponent<RealtimeTransform>();
                     if (rtt) rtt.SetOwnership(realTime.clientID);
 
-                    newObject.transform.localPosition = positions[i];
-                    newObject.transform.rotation = rotations[i];
+                    //newObject.transform.localPosition = positions[i];
+                    //newObject.transform.rotation = rotations[i];
                 }
 
                 if (!gameManagerSync) Debug.Log("GGM: After Spawning: gameManagerSync is not set to an instance of an object in" + name);
