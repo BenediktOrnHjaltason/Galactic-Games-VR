@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using TMPro;
 
 enum ETeamCreationPod
 {
@@ -36,6 +37,9 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     InteractButton readyButton;
 
+    [SerializeField]
+    TextMeshPro teamSizeText;
+
     Material teamNotReadyMaterial;
     Material teamReadyMaterial;
 
@@ -54,8 +58,12 @@ public class TeamCreationPod : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < (int)teamSize + 1; i++)
+        int teamSizeInt = (int)teamSize + 1;
+
+        for (int i = 0; i < teamSizeInt; i++)
             teamMembers.Add(-1);
+
+        teamSizeText.text = teamSizeInt.ToString() + "\nPlayer" + (teamSizeInt > 1 ? "s" : "");
 
         floor.material.SetColor("_BaseColor",teamColor);
 
