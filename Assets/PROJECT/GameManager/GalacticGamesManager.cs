@@ -27,19 +27,15 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     List<int> clientsInRoom = new List<int>();
 
-    int nonTeamFilteredRootCountInScene = 0;
+    int nonTeamFilteredRootCountInSceneOnStart = 0;
 
     GameManagerSync gameManagerSync;
 
-    public void AddToNonFilteredRootCount(int addition)
-    {
-        nonTeamFilteredRootCountInScene += addition;
-    }
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        Debug.Log("GGM: Awake called");
+        Debug.Log("GGM: Start() called");
 
         realTime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
@@ -51,7 +47,13 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         GameObject[] rootObjectsAtStart = SceneManager.GetActiveScene().GetRootGameObjects();
 
         foreach (GameObject rootObject in rootObjectsAtStart)
-            if (!rootObject.CompareTag("TeamFiltered")) nonTeamFilteredRootCountInScene++;
+        {
+            if (!rootObject.CompareTag("TeamFiltered"))
+            {
+                nonTeamFilteredRootCountInSceneOnStart++;
+            }
+        }
+            
     }
 
 
@@ -189,11 +191,14 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     {
         Debug.Log("GGM: waiting to disable objects. Number of active teams: " + numberOfActiveTeams);
         Debug.Log("GGM: member zero of existing teams: " + teamCreationPods[0].TeamMembers[0] + " & " + teamCreationPods[1].TeamMembers[0]);
-        Debug.Log("GGM: nonFilteredRootCount in scene: " + nonTeamFilteredRootCountInScene);
+        Debug.Log("GGM: nonFilteredRootCount in scene: " + nonTeamFilteredRootCountInSceneOnStart);
+        Debug.Log("GGM: clients done spawning: " + gameManagerSync.ClientsDoneSpawning);
 
         //Wait for all clients to be done spawning
-        while (gameManagerSync.ClientsDoneSpawning < numberOfActiveTeams &&
-               SceneManager.GetActiveScene().rootCount < namesOfGameplayPrefabs.Count * numberOfActiveTeams)
+        while (gameManagerSync.ClientsDoneSpawning < numberOfActiveTeams ||
+               SceneManager.GetActiveScene().rootCount < ((namesOfGameplayPrefabs.Count * numberOfActiveTeams) + 
+                                                           nonTeamFilteredRootCountInSceneOnStart +
+                                                           (numberOfAttractorRifts * numberOfActiveTeams * 2)))
         {
             Debug.Log("GGM: ClientsDoneSpawning is less than number of active teams & rootcount is less than gameplay objects * numberOfActiveTeams");
 
@@ -202,6 +207,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             
 
         Debug.Log("GGM: All spawning clients done spawning");
+        Debug.Log("GGM: RootCount at this point: " + SceneManager.GetActiveScene().rootCount);
 
         //Disable gameplay objects not relevant to this team
 

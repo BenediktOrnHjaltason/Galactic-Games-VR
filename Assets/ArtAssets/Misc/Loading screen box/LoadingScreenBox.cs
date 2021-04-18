@@ -60,6 +60,7 @@ public class LoadingScreenBox : MonoBehaviour
 
     public void DisableSelf()
     {
-        enabled = false;
+        Debug.Log("LSB: DestroySelf() called");
+        this.gameObject.SetActive(false);
     }
 }

@@ -63,7 +63,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         dummyObject = new GameObject("ARiftBeamDirectionsReference");
         dummyObject.layer = 9; //Ignore
@@ -93,7 +93,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         temp.transform.position = transform.parent.position;
         anchor = temp;
 
-        GalacticGamesManager.Instance.AddToNonFilteredRootCount(2);
+        //GalacticGamesManager.Instance.AddToNonFilteredRootCount(2);
     }
 
     Vector3 riftPosToAnchorPos = Vector3.zero;
