@@ -5,12 +5,15 @@ using Normal.Realtime;
 
 public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
 {
+    List<int> finishedPlayers = new List<int>();
+
     protected override void OnRealtimeModelReplaced(GameManagerSync_Model previousModel, GameManagerSync_Model currentModel)
     {
         if (previousModel != null)
         {
             // Unregister from events
             previousModel.clientsDoneSpawningDidChange -= ClientsDoneSpawningDidChange;
+            previousModel.clientCrossedFinishLineDidChange -= RegisterFinishedPlayer;
         }
 
         if (currentModel != null)
@@ -27,6 +30,7 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
 
             //Register for events so we'll know if data changes later
             currentModel.clientsDoneSpawningDidChange += ClientsDoneSpawningDidChange;
+            currentModel.clientCrossedFinishLineDidChange += RegisterFinishedPlayer;
         }
     }
 
@@ -42,5 +46,16 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
     void UpdateClientsDoneSpawning()
     {
         clientsDoneSpawning = model.clientsDoneSpawning;
+    }
+
+    public int PlayerCrossedFinishLine { set => model.clientCrossedFinishLine = value; }
+
+    void RegisterFinishedPlayer(GameManagerSync_Model Model, int clientID)
+    {
+        if (!finishedPlayers.Contains(model.clientCrossedFinishLine))
+        {
+            finishedPlayers.Add(model.clientCrossedFinishLine);
+            GalacticGamesManager.Instance.ReactivateFinishedPlayer(model.clientCrossedFinishLine);
+        }
     }
 }

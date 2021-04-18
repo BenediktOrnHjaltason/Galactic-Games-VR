@@ -65,8 +65,8 @@ public class TeamCreationPod : MonoBehaviour
 
         Debug.Log("TCP: Added this to game managers collection");
 
-        Material teamNotReadyMaterial = availableCapacityMaterial;
-        Material teamReadyMaterial = fullCapacityMaterial;
+        teamNotReadyMaterial = availableCapacityMaterial;
+        teamReadyMaterial = fullCapacityMaterial;
     }
 
     private void OnTriggerEnter(Collider other)

@@ -29,6 +29,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     GameManagerSync gameManagerSync;
 
+    List<RealtimeView> avatarRtvs = new List<RealtimeView>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -233,7 +235,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                         if (!gameObject.name.Contains("Head") && !gameObject.name.Contains("Hand_")) //GrabHandle contains "Hand"
                             gameplayObjects.Add(gameObject);
 
-                        else avatars.Add(gameObject);
+                        else avatarRtvs.Add(gameObject.GetComponent<RealtimeView>());
 
 
 
@@ -246,25 +248,34 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                     }
 
                     //Disable all avatar objects not part of this team
-                    foreach (GameObject avatarObject in avatars)
+                    foreach (RealtimeView avatarRtv in avatarRtvs)
                     {
-                        RealtimeView rtv = avatarObject.GetComponent<RealtimeView>();
-                        if (rtv)
-                        {
                             bool partOfTeam = false;
                             for (int k = 0; k < teamSize; k++)
-                                if (rtv.ownerIDSelf == teamCreationPods[i].TeamMembers[k])
+                                if (avatarRtv.ownerIDSelf == teamCreationPods[i].TeamMembers[k])
                                     partOfTeam = true;
 
                             if (!partOfTeam)
                             {
-                                Debug.Log("Setting " + rtv.gameObject.name + " inactive");
-                                rtv.gameObject.SetActive(false);
+                                Debug.Log("Setting " + avatarRtv.gameObject.name + " inactive");
+                                avatarRtv.gameObject.SetActive(false);
                             }
-                        }
+                        
                     }
                 }
             }
         }
+    }
+
+    public void RegisterFinishedPlayer(int clientID)
+    {
+        gameManagerSync.PlayerCrossedFinishLine = clientID;
+    }
+
+    public void ReactivateFinishedPlayer(int clientID)
+    {
+        foreach (RealtimeView avatarRtv in avatarRtvs)
+            if (avatarRtv.ownerIDSelf == clientID && !avatarRtv.gameObject.activeInHierarchy)
+                avatarRtv.gameObject.SetActive(true);
     }
 }
