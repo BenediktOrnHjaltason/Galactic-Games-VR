@@ -8187,7 +8187,7 @@ PrefabInstance:
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: omniDeviceStartup
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -17051,6 +17051,21 @@ PrefabInstance:
     - target: {fileID: 7647952001488588939, guid: 879632cfb5da685489c58a976c6258c2,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669105110079176504, guid: 879632cfb5da685489c58a976c6258c2,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 1937303015}
+    - target: {fileID: 8669105110079176504, guid: 879632cfb5da685489c58a976c6258c2,
+        type: 3}
+      propertyPath: _viewUUID
+      value: df6acb9e-7fe9-44fe-9120-ce48055f5422
+      objectReference: {fileID: 0}
+    - target: {fileID: 8669105110079176504, guid: 879632cfb5da685489c58a976c6258c2,
+        type: 3}
+      propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -92,6 +92,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         GameObject temp = new GameObject("ARiftAnchor");
         temp.transform.position = transform.parent.position;
         anchor = temp;
+
+        GalacticGamesManager.Instance.AddToNonFilteredRootCount(2);
     }
 
     Vector3 riftPosToAnchorPos = Vector3.zero;
