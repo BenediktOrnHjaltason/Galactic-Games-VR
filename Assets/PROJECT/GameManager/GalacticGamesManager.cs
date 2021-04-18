@@ -98,7 +98,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         if (competitionStarted) return;
 
-        competitionStarted = true;
+        
 
 
         foreach (TeamCreationPod pod in teamCreationPods) if (pod.TeamFilledUp) numberOfActiveTeams++;
@@ -265,6 +265,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 }
             }
         }
+
+        competitionStarted = true;
     }
 
     public void RegisterFinishedPlayer(int clientID)

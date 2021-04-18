@@ -58,8 +58,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
     //--------- PlayerLines
     List<LineRenderer> playerBeams = new List<LineRenderer>();
-    
 
+    //GalacticGamesManager gm;
 
 
     // Start is called before the first frame update
@@ -93,6 +93,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
         GameObject temp = new GameObject("ARiftAnchor");
         temp.transform.position = rb.position;
         anchor = temp;
+
+        //gm = GalacticGamesManager.Instance;
     }
 
 
@@ -170,16 +172,19 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
         if (!rtt.realtime.connected) return;
 
+
         //Place self
-        if (rtt.ownerIDSelf == -1) rtt.RequestOwnership();
+        if (GalacticGamesManager.Instance.CompetitionStarted && rtt.ownerIDSelf == -1) rtt.RequestOwnership();
 
         else if (rtt.isOwnedLocallySelf && anchor)
         {
             riftPosToAnchorPos = anchor.transform.position - transform.position;
 
             //if ((transform.position - anchor.transform.position).sqrMagnitude > 0.02)
-                rb.AddForce(riftPosToAnchorPos * autoForce);
+            rb.AddForce(riftPosToAnchorPos * autoForce);
         }
+
+        
 
         //Attract player
         if (playerControllerInReach && !playerControllerInReach.GrabbingAnything)
