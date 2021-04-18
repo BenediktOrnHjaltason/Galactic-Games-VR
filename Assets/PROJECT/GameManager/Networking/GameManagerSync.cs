@@ -22,6 +22,7 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
             if (currentModel.isFreshModel)
             {
                 currentModel.clientsDoneSpawning = 0;
+                currentModel.clientCrossedFinishLine = -1;
             }
 
             // Update data to match the new model
@@ -52,10 +53,16 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
 
     void RegisterFinishedPlayer(GameManagerSync_Model Model, int clientID)
     {
-        if (!finishedPlayers.Contains(model.clientCrossedFinishLine))
+        Debug.Log("GMSync: Player " + clientID + " crossed finish line");
+
+        if (model.clientCrossedFinishLine != -1 && !finishedPlayers.Contains(model.clientCrossedFinishLine))
         {
+            Debug.Log("GMSync: Player " + clientID + " WAS NOT registered before");
+
             finishedPlayers.Add(model.clientCrossedFinishLine);
             GalacticGamesManager.Instance.ReactivateFinishedPlayer(model.clientCrossedFinishLine);
         }
+
+        else Debug.Log("GMSync: Player " + clientID + " WAS registered before. Aborting");
     }
 }

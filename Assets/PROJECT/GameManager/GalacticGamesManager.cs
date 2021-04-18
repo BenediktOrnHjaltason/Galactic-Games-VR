@@ -271,13 +271,21 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     public void RegisterFinishedPlayer(int clientID)
     {
+        Debug.Log("GMSync: RegisterFinishedPlayer called in game manager");
+
         gameManagerSync.PlayerCrossedFinishLine = clientID;
     }
 
     public void ReactivateFinishedPlayer(int clientID)
     {
+        Debug.Log("GMSync: ReactivatePlayer called in game manager");
+
         foreach (RealtimeView avatarRtv in avatarRtvs)
             if (avatarRtv.ownerIDSelf == clientID && !avatarRtv.gameObject.activeInHierarchy)
+            {
+                Debug.Log("GMSync: Reactivating " + avatarRtv.name);
                 avatarRtv.gameObject.SetActive(true);
+            }
+                
     }
 }

@@ -9,9 +9,17 @@ public class FinishLine : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head"))
         {
+            Debug.Log("GMSync: Player head entered trigger");
+
             RealtimeView rtv = other.gameObject.GetComponent<RealtimeView>();
 
-            if (rtv) GalacticGamesManager.Instance.RegisterFinishedPlayer(rtv.ownerIDSelf);
+            if (rtv)
+            {
+                Debug.Log("GMSync: RealtimeView found on player. Calling registerFinishedPlayer in GameManager");
+                GalacticGamesManager.Instance.RegisterFinishedPlayer(rtv.ownerIDSelf);
+            }
+
+            else Debug.Log("GMSync: No RealtimeView found on object");
         }
     }
 }
