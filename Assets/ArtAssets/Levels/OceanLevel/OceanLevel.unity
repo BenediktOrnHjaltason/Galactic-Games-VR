@@ -20186,6 +20186,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4044272343277651487, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: _sceneViewPreventOwnershipTakeover
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4820883681839133816, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
       propertyPath: anchor
