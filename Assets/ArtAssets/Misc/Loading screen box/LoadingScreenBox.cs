@@ -58,9 +58,9 @@ public class LoadingScreenBox : MonoBehaviour
         logoGraphicsPivot.transform.localRotation = Quaternion.Euler(graphicsRotationX, 90.0f, -90.0f);
     }
 
-    public void DisableSelf()
+    public void DestroySelf()
     {
         Debug.Log("LSB: DestroySelf() called");
-        this.gameObject.SetActive(false);
+        GameObject.Destroy(this.gameObject);
     }
 }

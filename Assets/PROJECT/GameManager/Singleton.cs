@@ -14,6 +14,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         var ownerObject = new GameObject($"{typeof(T).Name} (singleton)");
         var instance = ownerObject.AddComponent<T>();
         DontDestroyOnLoad(ownerObject);
+
         return instance;
     }
 }

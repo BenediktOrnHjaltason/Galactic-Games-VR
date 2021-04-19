@@ -65,10 +65,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dummyObject = new GameObject("ARiftBeamDirectionsReference");
-        dummyObject.layer = 9; //Ignore
-
-        anchor = transform.root.gameObject;
+        //anchor = transform.root.gameObject;
 
         rtt = transform.GetComponentInParent<RealtimeTransform>();
 
@@ -90,9 +87,19 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
         allSensors.Add(this);
 
-        GameObject temp = new GameObject("ARiftAnchor");
-        temp.transform.position = rb.position;
-        anchor = temp;
+        RealtimeView rtv = transform.root.GetComponent<RealtimeView>();
+
+        if (rtv)
+        {
+            //For managing complications with book keeping of root objects when game manager spawns and filters objects based on teams
+
+            GameObject temp = new GameObject("ARiftAnchor" + (rtv.preventOwnershipTakeover == false ? "Clone" : ""));
+            temp.transform.position = rb.position;
+            anchor = temp;
+
+            dummyObject = new GameObject("ARiftBeamDirectionsReference" + (rtv.preventOwnershipTakeover == false ? "Clone" : ""));
+            dummyObject.layer = 9; //Ignore
+        }
 
         //gm = GalacticGamesManager.Instance;
     }
@@ -174,7 +181,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
 
 
         //Place self
-        if (GalacticGamesManager.Instance.CompetitionStarted && rtt.ownerIDSelf == -1) rtt.RequestOwnership();
+        if (rtt.ownerIDSelf == -1 && GalacticGamesManager.Instance.CompetitionStarted) rtt.RequestOwnership();
 
         else if (rtt.isOwnedLocallySelf && anchor)
         {

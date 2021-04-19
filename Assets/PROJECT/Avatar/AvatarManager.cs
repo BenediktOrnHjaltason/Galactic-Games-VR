@@ -36,7 +36,7 @@ public class AvatarManager : MonoBehaviour
     event Action OnAvatarSpawned;
 
 
-    void Start()
+    void Awake()
     {
         playerController = GetComponent<OVRPlayerController>();
         
@@ -65,7 +65,7 @@ public class AvatarManager : MonoBehaviour
             LoadingScreenBox lsb = spawnedLoadingScreenBox.GetComponent<LoadingScreenBox>();
 
             
-            lsb.backScaleDown.OnAnimaticEnds += lsb.DisableSelf;
+            lsb.backScaleDown.OnAnimaticEnds += lsb.DestroySelf;
             lsb.LogoGraphicScaleDown.OnAnimaticEnds += OVRManager.display.RecenterPose;
 
             lsb.leftDoorOpen.OnAnimaticEnds += playerController.EnableMovement;

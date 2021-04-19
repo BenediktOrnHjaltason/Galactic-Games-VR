@@ -23,6 +23,8 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
 
     bool isPlayerClient = false;
 
+    int clientID;
+
 
     protected override void OnRealtimeModelReplaced(PlayerSync_Model previousModel, PlayerSync_Model currentModel)
     {
@@ -100,7 +102,21 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
         if (auS) auS.spatialBlend = 0.3f;
 
         RealtimeView rtv = GetComponent<RealtimeView>();
-        if (rtv) GalacticGamesManager.Instance.RegisterClientID(rtv.ownerIDSelf);
 
+        if (rtv)
+        {
+            clientID = rtv.ownerIDSelf;
+
+            if (rtv) GalacticGamesManager.Instance.RegisterClientArrival(clientID);
+        }
+
+
+        realtime.didDisconnectFromRoom += NotifyGameManagerOnLeavingRoom;
+
+    }
+
+    void NotifyGameManagerOnLeavingRoom(Realtime realtime)
+    {
+        GalacticGamesManager.Instance.RegisterClientLeftRoom(clientID);
     }
 }

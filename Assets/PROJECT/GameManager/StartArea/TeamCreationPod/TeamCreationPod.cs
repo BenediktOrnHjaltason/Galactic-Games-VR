@@ -55,6 +55,11 @@ public class TeamCreationPod : MonoBehaviour
     List<int> teamMembers = new List<int>();
     public List<int> TeamMembers { get => teamMembers; }
 
+    private void Awake()
+    {
+        GalacticGamesManager.Instance.Initialize();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,9 +74,10 @@ public class TeamCreationPod : MonoBehaviour
 
         readyButton.OnExecute += SetReady;
 
+
         GalacticGamesManager.Instance.TeamCreationPods.Add(this);
 
-        Debug.Log("TCP: Added this to game managers collection");
+        Debug.Log("TCP: Added pod to game manager. Count: " + GalacticGamesManager.Instance.TeamCreationPods.Count);
 
         teamNotReadyMaterial = availableCapacityMaterial;
         teamReadyMaterial = fullCapacityMaterial;
@@ -161,7 +167,7 @@ public class TeamCreationPod : MonoBehaviour
 
         if (allTeamsReadyOrEmpty && allPlayersAccountedFor)
         {
-            Debug.Log("TCP: All pods have ready teams or is empty and all players accouted for. Calling GameManager::StartGame()");
+            Debug.Log("TCP: All pods have ready teams or is empty and all players accounted for. Calling GameManager::StartGame()");
             GalacticGamesManager.Instance.StartGame();
         }
         else
