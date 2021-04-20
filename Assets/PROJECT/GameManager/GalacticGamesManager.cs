@@ -9,10 +9,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 {
     Realtime realTime;
 
-    List<TeamCreationPod> teamCreationPods = new List<TeamCreationPod>();
-
-    public List<TeamCreationPod> TeamCreationPods { get => teamCreationPods; }
-
     List<string> namesOfGameplayPrefabs = new List<string>();
 
     int numberOfAttractorRifts = 0;
@@ -31,45 +27,15 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     List<RealtimeView> avatarRtvs = new List<RealtimeView>();
 
-    public void Initialize()
+    public void Initialize(GameManagerSync GMSync)
     {
-        teamCreationPods.Clear();
+        Debug.Log("GGM: Initialized called");
 
+        gameManagerSync = GMSync;
         realTime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
-        gameManagerSync = GameObject.Find("GAME MANAGER").GetComponent<GameManagerSync>();
+        competitionStarted = false;
     }
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log("GGM: Start() called in" + name);
-
-        realTime = GameObject.Find("Realtime").GetComponent<Realtime>();
-
-        gameManagerSync = GameObject.Find("GAME MANAGER").GetComponent<GameManagerSync>();
-
-        if (!gameManagerSync) Debug.Log("GGM: gameManagerSync reference is still null in " + name);
-        else Debug.Log("GGM: gameManagerSync reference is valid in " + name);
-
-        /*
-        GameObject[] rootObjectsAtStart = SceneManager.GetActiveScene().GetRootGameObjects();
-
-
-        foreach (GameObject rootObject in rootObjectsAtStart)
-        {
-            if (!rootObject.CompareTag("TeamFiltered"))
-            {
-
-
-                nonTeamFilteredRootCountInSceneOnStart++;
-            }
-        }
-        */
-
-    }
-
 
     public void RegisterClientArrival(int clientID)
     {
@@ -80,7 +46,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     {
         clientsInRoom.Remove(clientID);
 
-        foreach (TeamCreationPod pod in teamCreationPods)
+        foreach (TeamCreationPod pod in TeamCreationPod.instances)
         {
             for (int i = 0; i < pod.TeamMembers.Count; i++)
                 if (pod.TeamMembers[i] == clientID) pod.TeamMembers[i] = -1;
@@ -93,7 +59,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         {
             bool playerAccountedFor = false;
 
-            foreach (TeamCreationPod pod in teamCreationPods)
+            foreach (TeamCreationPod pod in TeamCreationPod.instances)
             {
                 if (pod.TeamMembers.Contains(clientID))
                 {
@@ -108,21 +74,18 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         return true;
     }
 
-    
+    void InitializeCheckpoints()
+    { 
+        foreach (Checkpoint checkPoint in Checkpoint.instances)
+        {
 
-    private void OnLevelWasLoaded(int level)
-    {
-
-
-        competitionStarted = false;
-
+        }
     }
 
-    
 
     public void StartGame()
     {
-        Debug.Log("GGM: StartGame() called in " + name);
+        Debug.Log("GGMStart: StartGame() called in " + name);
 
 
         if (competitionStarted) return;
@@ -146,9 +109,9 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         Debug.Log("GGM: number of root objects on game start: " + originalRootCountOnGameStart);
 
-        Debug.Log("GGM: On start game: number of team creation pods: " + teamCreationPods.Count);
+        Debug.Log("GGM: On start game: number of team creation pods: " + TeamCreationPod.instances.Count);
 
-        foreach (TeamCreationPod pod in teamCreationPods) if (pod.TeamFilledUp) numberOfActiveTeams++;
+        foreach (TeamCreationPod pod in TeamCreationPod.instances) if (pod.TeamFilledUp) numberOfActiveTeams++;
 
         Debug.Log("GGM: On start game: numberOfActiveTeams: " + numberOfActiveTeams);
 
@@ -196,7 +159,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         bool didSpawnObjects = false;
 
         //Network spawn objects if first member of a team
-        foreach (TeamCreationPod creationPod in teamCreationPods)
+        foreach (TeamCreationPod creationPod in TeamCreationPod.instances)
         {
             if (realTime.clientID == creationPod.TeamMembers[0])
             {
@@ -236,7 +199,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         if (!didSpawnObjects)
         {
-            Debug.Log("GGM: Did not spawn objects. ClientID is " + realTime.clientID + " and index 0 of creationpods were: " + teamCreationPods[0].TeamMembers[0] + " and " + teamCreationPods[1].TeamMembers[0] );
+            Debug.Log("GGM: Did not spawn objects. ClientID is " + realTime.clientID + " and index 0 of creationpods were: " + TeamCreationPod.instances[0].TeamMembers[0] + " and " + TeamCreationPod.instances[1].TeamMembers[0] );
         }
 
         Debug.Log("GGM: Root count after spawning team objects: " + SceneManager.GetActiveScene().rootCount);
@@ -247,7 +210,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     IEnumerator DisableNonTeamObjects()
     {
         Debug.Log("GGM: waiting to disable objects. Number of active teams: " + numberOfActiveTeams);
-        Debug.Log("GGM: member zero of existing teams: " + teamCreationPods[0].TeamMembers[0] + " & " + teamCreationPods[1].TeamMembers[0]);
+        Debug.Log("GGM: member zero of existing teams: " + TeamCreationPod.instances[0].TeamMembers[0] + " & " + TeamCreationPod.instances[1].TeamMembers[0]);
         Debug.Log("GGM: originalRootCountOnGameStart: " + originalRootCountOnGameStart);
         Debug.Log("GGM: clients done spawning: " + gameManagerSync.ClientsDoneSpawning);
 
@@ -307,16 +270,16 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         //Disable gameplay objects not relevant to this team
 
         //Find this client's team
-        for (int i = 0; i < teamCreationPods.Count; i++)
+        for (int i = 0; i < TeamCreationPod.instances.Count; i++)
         {
-            for (int j = 0; j < teamCreationPods[i].TeamMembers.Count; j++)
+            for (int j = 0; j < TeamCreationPod.instances[i].TeamMembers.Count; j++)
             {
-                if (realTime.clientID == teamCreationPods[i].TeamMembers[j])
+                if (realTime.clientID == TeamCreationPod.instances[i].TeamMembers[j])
                 {
                     //Found team (i) and spawning client for this team is index 0 of teamMembers
 
-                    int teamSize = teamCreationPods[i].TeamMembers.Count;
-                    int spawningClient = teamCreationPods[i].TeamMembers[0];
+                    int teamSize = TeamCreationPod.instances[i].TeamMembers.Count;
+                    int spawningClient = TeamCreationPod.instances[i].TeamMembers[0];
 
                     //Get all active root objects in scene after all spawning is done
                     GameObject[] teamFiltered = GameObject.FindGameObjectsWithTag("TeamFiltered");
@@ -345,7 +308,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                     {
                             bool partOfTeam = false;
                             for (int k = 0; k < teamSize; k++)
-                                if (avatarRtv.ownerIDSelf == teamCreationPods[i].TeamMembers[k])
+                                if (avatarRtv.ownerIDSelf == TeamCreationPod.instances[i].TeamMembers[k])
                                     partOfTeam = true;
 
                             if (!partOfTeam)

@@ -16,6 +16,8 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     ETeamCreationPod teamSize;
 
+    public static int teamSizeInt = 0;
+
     [SerializeField]
     Color teamColor;
 
@@ -55,19 +57,26 @@ public class TeamCreationPod : MonoBehaviour
 
     bool readyToPlay;
 
+    public static List<TeamCreationPod> instances = new List<TeamCreationPod>();
+
+    
+
 
     List<int> teamMembers = new List<int>();
     public List<int> TeamMembers { get => teamMembers; }
 
     private void Awake()
     {
-        GalacticGamesManager.Instance.Initialize();
+        if (instances.Count > 0) instances.Clear();
+        if (teamSizeInt != 0) teamSizeInt = 0;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        int teamSizeInt = (int)teamSize + 1;
+        instances.Add(this);
+
+        teamSizeInt = (int)teamSize + 1;
 
         for (int i = 0; i < teamSizeInt; i++)
             teamMembers.Add(-1);
@@ -78,10 +87,6 @@ public class TeamCreationPod : MonoBehaviour
 
         readyButton.OnExecute += SetReady;
 
-
-        GalacticGamesManager.Instance.TeamCreationPods.Add(this);
-
-        Debug.Log("TCP: Added pod to game manager. Count: " + GalacticGamesManager.Instance.TeamCreationPods.Count);
 
         teamNotReadyMaterial = availableCapacityMaterial;
         teamReadyMaterial = fullCapacityMaterial;
@@ -104,8 +109,7 @@ public class TeamCreationPod : MonoBehaviour
                         teamEmpty = false;
 
                         PlayerSync ps = other.GetComponent<PlayerSync>();
-
-                        if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", floor.material.GetColor("_BaseColor"));
+                        if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", teamColor);
 
                         teamFilledUp = true;
                         for (int j = 0; j < teamMembers.Count; j++)
@@ -122,7 +126,7 @@ public class TeamCreationPod : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head"))
+        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head") && !GalacticGamesManager.Instance.CompetitionStarted)
         {
             RealtimeView rv = other.GetComponent<RealtimeView>();
 
@@ -133,6 +137,9 @@ public class TeamCreationPod : MonoBehaviour
                     if (teamMembers[i] == rv.ownerIDSelf)
                     {
                         teamMembers[i] = -1;
+
+                        PlayerSync ps = other.GetComponent<PlayerSync>();
+                        if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", AvatarTorsoDefault);
 
                         capacityIndicator.material = availableCapacityMaterial;
 
@@ -165,7 +172,7 @@ public class TeamCreationPod : MonoBehaviour
 
         bool allTeamsReadyOrEmpty = true;
 
-        foreach (TeamCreationPod pod in GalacticGamesManager.Instance.TeamCreationPods)
+        foreach (TeamCreationPod pod in instances)
         {
             if (!pod.readyToPlay) allTeamsReadyOrEmpty = false;
             if (pod.teamEmpty) allTeamsReadyOrEmpty = true;

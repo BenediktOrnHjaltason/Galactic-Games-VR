@@ -7,6 +7,13 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
 {
     List<int> finishedPlayers = new List<int>();
 
+    private void Awake()
+    {
+        GalacticGamesManager.Instance.Initialize(this);
+    }
+
+
+
     protected override void OnRealtimeModelReplaced(GameManagerSync_Model previousModel, GameManagerSync_Model currentModel)
     {
         if (previousModel != null)
