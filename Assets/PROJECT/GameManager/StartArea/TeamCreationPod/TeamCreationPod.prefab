@@ -514,6 +514,7 @@ MonoBehaviour:
   readyIndicator: {fileID: 6397152222667002269}
   readyButton: {fileID: 7486984300507544452}
   teamSizeText: {fileID: 3605142585694048909}
+  AvatarTorsoDefault: {r: 0.94509804, g: 0.4627451, b: 0, a: 0}
 --- !u!1001 &7336376966869364219
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -40,8 +40,12 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     TextMeshPro teamSizeText;
 
+    [SerializeField]
+    Color AvatarTorsoDefault;
+
     Material teamNotReadyMaterial;
     Material teamReadyMaterial;
+
 
     bool teamFilledUp = false;
 
@@ -98,6 +102,10 @@ public class TeamCreationPod : MonoBehaviour
                     {
                         teamMembers[i] = rv.ownerIDSelf;
                         teamEmpty = false;
+
+                        PlayerSync ps = other.GetComponent<PlayerSync>();
+
+                        if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", floor.material.GetColor("_BaseColor"));
 
                         teamFilledUp = true;
                         for (int j = 0; j < teamMembers.Count; j++)

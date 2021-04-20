@@ -328,6 +328,7 @@ MonoBehaviour:
     position: {x: 0, y: -0.041, z: -0.0162}
     rotation: {x: 0, y: 90.00001, z: 0}
     scale: {x: 0.08470115, y: 0.08470115, z: 0.08470115}
+  playerTorso: {fileID: 3175053348938104996}
 --- !u!1 &7765302161742215881
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,6 +495,12 @@ Transform:
 --- !u!4 &3798918154907753696 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8263324189666079634, guid: 895cc40487acad742901e3a43a23adec,
+    type: 3}
+  m_PrefabInstance: {fileID: 5050028864516878194}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3175053348938104996 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7639583038613073878, guid: 895cc40487acad742901e3a43a23adec,
     type: 3}
   m_PrefabInstance: {fileID: 5050028864516878194}
   m_PrefabAsset: {fileID: 0}

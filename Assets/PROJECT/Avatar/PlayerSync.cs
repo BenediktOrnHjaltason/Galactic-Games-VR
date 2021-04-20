@@ -21,6 +21,11 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
     [SerializeField]
     List<PlayerHeads> playerHeads;
 
+    [SerializeField]
+    MeshRenderer playerTorso;
+
+    public MeshRenderer PlayerTorso { get => playerTorso; }
+
     bool isPlayerClient = false;
 
     int clientID;
