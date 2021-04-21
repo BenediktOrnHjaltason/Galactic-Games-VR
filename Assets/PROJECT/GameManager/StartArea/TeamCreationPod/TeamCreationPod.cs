@@ -16,7 +16,7 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     ETeamCreationPod teamSize;
 
-    public static int teamSizeInt = 0;
+    //public static int teamSizeInt = 0;
 
     [SerializeField]
     Color teamColor;
@@ -61,6 +61,8 @@ public class TeamCreationPod : MonoBehaviour
 
     public static List<TeamCreationPod> instances = new List<TeamCreationPod>();
 
+    public static Dictionary<Color, int> ColorToTeamSize = new Dictionary<Color, int>();
+
     
 
 
@@ -70,7 +72,7 @@ public class TeamCreationPod : MonoBehaviour
     private void Awake()
     {
         if (instances.Count > 0) instances.Clear();
-        if (teamSizeInt != 0) teamSizeInt = 0;
+        //if (teamSizeInt != 0) teamSizeInt = 0;
     }
 
     // Start is called before the first frame update
@@ -78,7 +80,11 @@ public class TeamCreationPod : MonoBehaviour
     {
         instances.Add(this);
 
-        teamSizeInt = (int)teamSize + 1;
+        int teamSizeInt = (int)teamSize + 1;
+
+        ColorToTeamSize.Add(teamColor, teamSizeInt);
+
+        //teamSizeInt = (int)teamSize + 1;
 
         for (int i = 0; i < teamSizeInt; i++)
             teamMembers.Add(-1);
@@ -98,7 +104,7 @@ public class TeamCreationPod : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head"))
+        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head") && !GalacticGamesManager.Instance.CompetitionStarted)
         {
             RealtimeView rv = other.GetComponent<RealtimeView>();
 

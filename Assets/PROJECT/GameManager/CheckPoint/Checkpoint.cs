@@ -57,10 +57,12 @@ public class Checkpoint : RealtimeComponent<Checkpoint_Model>
                 {
                     teamMembers.Add(rv.ownerIDSelf);
 
-                    if (teamMembers.Count == TeamCreationPod.teamSizeInt)
+                    if (teamMembers.Count == TeamCreationPod.ColorToTeamSize[teamColor]/*TeamCreationPod.teamSizeInt*/)
                         TeamPassedThrough = teamColor;
                 }
             }
+
+            
         }
     }
 

@@ -255,9 +255,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         Debug.Log("GGM: Expected root count: " + ((namesOfGameplayPrefabs.Count * numberOfActiveTeams) +
                                                        originalRootCountOnGameStart +
                                                        (numberOfAttractorRifts * numberOfActiveTeams * 2)).ToString());
-        /*
-        Debug.Log("GGM: Actual root count" + SceneManager.GetActiveScene().rootCount);
+        
+        Debug.Log("GGM: Actual root count: " + SceneManager.GetActiveScene().rootCount);
 
+        /*
         GameObject[] rootObjectsAfterConditionMet = SceneManager.GetActiveScene().GetRootGameObjects();
 
         Debug.Log("GGM: root count after counting array: " + rootObjectsAfterConditionMet.Length);
