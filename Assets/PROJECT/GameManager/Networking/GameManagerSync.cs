@@ -21,6 +21,7 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
             // Unregister from events
             previousModel.clientsDoneSpawningDidChange -= ClientsDoneSpawningDidChange;
             previousModel.clientCrossedFinishLineDidChange -= RegisterFinishedPlayer;
+            previousModel.clientLeftRoomDidChange -= ClientLeftRoomDidChange;
         }
 
         if (currentModel != null)
@@ -30,15 +31,18 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
             {
                 currentModel.clientsDoneSpawning = 0;
                 currentModel.clientCrossedFinishLine = -1;
+                currentModel.clientLeftRoom = -1;
             }
 
             // Update data to match the new model
             UpdateClientsDoneSpawning();
+            UpdateClientLeftRoom();
 
 
             //Register for events so we'll know if data changes later
             currentModel.clientsDoneSpawningDidChange += ClientsDoneSpawningDidChange;
             currentModel.clientCrossedFinishLineDidChange += RegisterFinishedPlayer;
+            currentModel.clientLeftRoomDidChange += ClientLeftRoomDidChange;
         }
     }
 
@@ -71,5 +75,21 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
         }
 
         else Debug.Log("GMSync: Player " + clientID + " WAS registered before. Aborting");
+    }
+
+    public int ClientLeftRoom { set => model.clientLeftRoom = value; }
+
+    void ClientLeftRoomDidChange(GameManagerSync_Model model, int clientID)
+    {
+        UpdateClientLeftRoom();
+    }
+
+    void UpdateClientLeftRoom()
+    {
+        if (model.clientLeftRoom == -1) return;
+
+        GalacticGamesManager.Instance.RegisterClientLeftRoom(model.clientLeftRoom);
+
+        model.clientLeftRoom = -1;
     }
 }

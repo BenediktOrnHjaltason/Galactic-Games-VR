@@ -115,13 +115,12 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
             if (rtv) GalacticGamesManager.Instance.RegisterClientArrival(clientID);
         }
 
-
+        
         realtime.didDisconnectFromRoom += NotifyGameManagerOnLeavingRoom;
-
     }
 
     void NotifyGameManagerOnLeavingRoom(Realtime realtime)
     {
-        GalacticGamesManager.Instance.RegisterClientLeftRoom(clientID);
+        GalacticGamesManager.Instance.NetworkNotifyClientLeftRoom(clientID);
     }
 }
