@@ -53,11 +53,13 @@ public class TeamCreationPod : MonoBehaviour
 
     bool teamFilledUp = false;
 
-    public bool TeamFilledUp { get => teamFilledUp; }
+    public bool TeamFilledUp { get => teamFilledUp; set => teamFilledUp = value; }
 
     bool teamEmpty = true;
 
     bool readyToPlay;
+
+    public bool ReadyToPlay { get => readyToPlay; set => readyToPlay = value; }
 
     public static List<TeamCreationPod> instances = new List<TeamCreationPod>();
 
@@ -72,6 +74,8 @@ public class TeamCreationPod : MonoBehaviour
     private void Awake()
     {
         if (instances.Count > 0) instances.Clear();
+        if (ColorToTeamSize.Count > 0) ColorToTeamSize.Clear();
+
         //if (teamSizeInt != 0) teamSizeInt = 0;
     }
 
@@ -204,5 +208,13 @@ public class TeamCreationPod : MonoBehaviour
             if (!allTeamsReadyOrEmpty) Debug.Log("GGM: Cannot start game because all teams are not ready or empty");
             if (!allPlayersAccountedFor) Debug.Log("GGM: Cannot start game because not all players are accounted for");
         }
+    }
+
+    public void OnTeamMemberLeftRoom(int teamMemberIndex)
+    {
+        teamMembers[teamMemberIndex] = -1;
+        teamFilledUp = readyToPlay = false;
+
+        readyIndicator.material = teamNotReadyMaterial;
     }
 }

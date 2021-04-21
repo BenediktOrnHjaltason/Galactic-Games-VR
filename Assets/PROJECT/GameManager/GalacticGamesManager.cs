@@ -42,14 +42,26 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         clientsInRoom.Add(clientID);
     }
 
+    public void NetworkNotifyClientLeftRoom(int clientID)
+    {
+        gameManagerSync.ClientLeftRoom = clientID;
+    }
+
     public void RegisterClientLeftRoom(int clientID)
     {
+        Debug.Log("GGM: RegisterClientLeftRoom called with clientID: " + clientID );
+
         clientsInRoom.Remove(clientID);
 
         foreach (TeamCreationPod pod in TeamCreationPod.instances)
         {
             for (int i = 0; i < pod.TeamMembers.Count; i++)
-                if (pod.TeamMembers[i] == clientID) pod.TeamMembers[i] = -1;
+                if (pod.TeamMembers[i] == clientID)
+                {
+                    Debug.Log("GGM: RegisterClientLeftRoom: clientID found in pod");
+
+                    pod.OnTeamMemberLeftRoom(i);
+                }
         }
     }
 
