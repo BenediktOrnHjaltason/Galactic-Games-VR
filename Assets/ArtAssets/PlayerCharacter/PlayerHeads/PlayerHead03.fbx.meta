@@ -19,6 +19,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: PlayerHead03mat02.001
     second: {fileID: 2100000, guid: 4310b8b5fbfa7d948bd24ddc28482d36, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SkinTexture
+    second: {fileID: 2100000, guid: 1c65b5735dbe503458574acd6d02bb58, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
