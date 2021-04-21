@@ -39,6 +39,8 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     InteractButton readyButton;
 
+    TextMeshPro readyText;
+
     [SerializeField]
     TextMeshPro teamSizeText;
 
@@ -90,6 +92,8 @@ public class TeamCreationPod : MonoBehaviour
 
         teamNotReadyMaterial = availableCapacityMaterial;
         teamReadyMaterial = fullCapacityMaterial;
+
+        readyText = readyButton.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -182,6 +186,10 @@ public class TeamCreationPod : MonoBehaviour
 
         if (allTeamsReadyOrEmpty && allPlayersAccountedFor)
         {
+            foreach (TeamCreationPod pod in instances)
+                if (pod.readyToPlay) pod.readyText.text = "GO!";
+
+
             Debug.Log("TCP: All pods have ready teams or is empty and all players accounted for. Calling GameManager::StartGame()");
             GalacticGamesManager.Instance.StartGame();
         }

@@ -7,7 +7,7 @@ public class FinishLine : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head"))
+        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head") && GalacticGamesManager.Instance.CompetitionStarted)
         {
             Debug.Log("GMSync: Player head entered trigger");
 

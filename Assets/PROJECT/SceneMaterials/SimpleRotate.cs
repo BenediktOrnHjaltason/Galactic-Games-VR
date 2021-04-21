@@ -10,9 +10,8 @@ public class SimpleRotate : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0.1f, 0, 0));
     }
 }

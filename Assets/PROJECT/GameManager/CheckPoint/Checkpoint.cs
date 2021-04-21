@@ -44,7 +44,7 @@ public class Checkpoint : RealtimeComponent<Checkpoint_Model>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head"))
+        if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head") && GalacticGamesManager.Instance.CompetitionStarted)
         {
             RealtimeView rv = other.GetComponent<RealtimeView>();
             PlayerSync ps = other.GetComponent<PlayerSync>();

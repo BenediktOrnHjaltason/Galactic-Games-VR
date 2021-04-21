@@ -111,6 +111,7 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
     {
         //Debug.Log("AttractorRift: Root position: " + transform.root.position);
 
+        if (playerControllerInReach && !playerControllerInReach.Controller.enabled) RemovePlayerFromInfluence(false);
 
         //Handle beams
         

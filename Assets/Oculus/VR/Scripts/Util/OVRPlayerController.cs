@@ -458,6 +458,9 @@ public class OVRPlayerController : MonoBehaviour
 
 	public void ActivateBlinders()
     {
+		vignetteMaterial.SetFloat(vignetteOpacityPropertyName, 0);
+		vignette.transform.gameObject.SetActive(true);
+
 		vignetteIncrement = 0;
 		OnUpdate_Fixed += OperateVignette;
 
