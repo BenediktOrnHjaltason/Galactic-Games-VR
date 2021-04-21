@@ -123,7 +123,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         Debug.Log("GGM: On start game: number of team creation pods: " + TeamCreationPod.instances.Count);
 
-        foreach (TeamCreationPod pod in TeamCreationPod.instances) if (pod.TeamFilledUp) numberOfActiveTeams++;
+        foreach (TeamCreationPod pod in TeamCreationPod.instances) if (pod.ReadyToPlay) numberOfActiveTeams++;
 
         Debug.Log("GGM: On start game: numberOfActiveTeams: " + numberOfActiveTeams);
 
