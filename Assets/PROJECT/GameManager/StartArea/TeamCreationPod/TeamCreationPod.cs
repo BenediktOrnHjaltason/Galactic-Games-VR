@@ -65,6 +65,13 @@ public class TeamCreationPod : MonoBehaviour
 
     public static Dictionary<Color, int> ColorToTeamSize = new Dictionary<Color, int>();
 
+    //For when players enter a pod when it's already full of members, and a member leaves
+    List<RealtimeView> excessPlayersInCollider = new List<RealtimeView>();
+
+    
+
+
+
     
 
 
@@ -114,29 +121,7 @@ public class TeamCreationPod : MonoBehaviour
         {
             RealtimeView rv = other.GetComponent<RealtimeView>();
 
-            if (rv)
-            {
-                for (int i = 0; i < teamMembers.Count; i++)
-                {
-                    //Add player to team
-                    if (teamMembers[i] == -1)
-                    {
-                        teamMembers[i] = rv.ownerIDSelf;
-                        teamEmpty = false;
-
-                        PlayerSync ps = other.GetComponent<PlayerSync>();
-                        if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", teamColor);
-
-                        teamFilledUp = true;
-                        for (int j = 0; j < teamMembers.Count; j++)
-                            if (teamMembers[j] == -1) teamFilledUp = false;
-
-                        if (teamFilledUp) capacityIndicator.material = fullCapacityMaterial;
-                        
-                        break;
-                    }
-                }
-            }
+            if (rv) AttemptEnterPlayerInTeam(rv);
         }
     }
 
@@ -148,6 +133,14 @@ public class TeamCreationPod : MonoBehaviour
 
             if (rv)
             {
+                //Remove excess player if he didn't become part of team
+                if (excessPlayersInCollider.Contains(rv))
+                {
+                    excessPlayersInCollider.Remove(rv);
+                    Debug.Log("TCP1: Removed non team player from queue");
+                    return;
+                }
+
                 for (int i = 0; i < teamMembers.Count; i++)
                 {
                     if (teamMembers[i] == rv.ownerIDSelf)
@@ -162,13 +155,80 @@ public class TeamCreationPod : MonoBehaviour
                         teamFilledUp = readyToPlay = false;
                         readyIndicator.material = teamNotReadyMaterial;
 
+
+                        //Insert potential place holders in team
+                        if (excessPlayersInCollider.Count != 0)
+                        {
+                            RealtimeView temp = excessPlayersInCollider[0];
+                            excessPlayersInCollider.RemoveAt(0);
+                            Debug.Log("TCP1: Tranfering excess player from queue to team");
+
+                            AttemptEnterPlayerInTeam(temp);
+                            
+                        }
+
+
                         teamEmpty = true;
                         for (int j = 0; j < teamMembers.Count; j++)
                             if (teamMembers[j] != -1) teamEmpty = false;
 
-                            break;
+
+                        //Check if non-team member is standing there while someone exits. When they entered while team is full they
+                        //will not be registered in team. When player leaves they will be registered.
+                        /*
+                        RaycastHit[] playersHit = Physics.SphereCastAll(transform.position + new Vector3(0, 0.4571f, 0), 1.4f, Vector3.zero, 0, 14);
+
+                        foreach(RaycastHit playerObjectHit in playersHit)
+                        {
+                            Debug.Log("TCP1: Player standing in collider while other player exited");
+
+                            if (playerObjectHit.collider.gameObject.name.Contains("Head"))
+                            {
+                                RealtimeView rtV = playerObjectHit.collider.GetComponent<RealtimeView>();
+
+                                if (rtV) AttemptEnterPlayerInTeam(rtV, playerObjectHit.collider);
+                            }
+                        }*/
+
+
+
+                        break;
                     }
                 }
+            }
+        }
+    }
+
+    void AttemptEnterPlayerInTeam(RealtimeView rtv)
+    {
+        if (teamFilledUp)
+        {
+            excessPlayersInCollider.Add(rtv);
+            Debug.Log("TCP1: Added excess player to queue");
+            return;
+        }
+
+        for (int i = 0; i < teamMembers.Count; i++)
+        {
+            //Add player to team
+            if (teamMembers[i] == -1 && !teamMembers.Contains(rtv.ownerIDSelf))
+            {
+                teamMembers[i] = rtv.ownerIDSelf;
+
+                Debug.Log("TCP1: Entered player " + rtv.ownerIDSelf + " to team in " + transform.root.name);
+
+                teamEmpty = false;
+
+                PlayerSync ps = rtv.GetComponent<PlayerSync>();
+                if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", teamColor);
+
+                teamFilledUp = true;
+                for (int j = 0; j < teamMembers.Count; j++)
+                    if (teamMembers[j] == -1) teamFilledUp = false;
+
+                if (teamFilledUp) capacityIndicator.material = fullCapacityMaterial;
+
+                break;
             }
         }
     }

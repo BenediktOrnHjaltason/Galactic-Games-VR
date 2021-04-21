@@ -573,8 +573,6 @@ public class OVRPlayerController : MonoBehaviour
 		if ((!grabbingAnything && EnableLinearMovement && !isSwingJumping && OVRInput.GetLocalControllerVelocity(OVRInput.Controller.LTouch).y > 1.5 &&
 			OVRInput.GetLocalControllerVelocity(OVRInput.Controller.RTouch).y > 1.5))
         {
-			Debug.Log("OVRPC: Calling from swing jump");
-
 			if (!isSwingJumping)
             {
 				isSwingJumping = true;
