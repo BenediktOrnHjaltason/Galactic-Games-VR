@@ -84,6 +84,8 @@ public class TeamCreationPod : MonoBehaviour
     {
         instances.Add(this);
 
+        Debug.Log("TCP: Added this to instances. Count is now: " + instances.Count);
+
         int teamSizeInt = (int)teamSize + 1;
 
         ColorToTeamSize.Add(teamColor, teamSizeInt);
@@ -184,17 +186,20 @@ public class TeamCreationPod : MonoBehaviour
             return;
         }
 
-        bool allTeamsReadyOrEmpty = true;
+        int readyTeams = 0;
+        int emptyPods = 0;
 
         foreach (TeamCreationPod pod in instances)
         {
-            if (!pod.readyToPlay) allTeamsReadyOrEmpty = false;
-            if (pod.teamEmpty) allTeamsReadyOrEmpty = true;
+            if (pod.readyToPlay) readyTeams++;
+            else if (pod.teamEmpty) emptyPods++;
         }
+
+        bool allPodsReadyTeamsOrEmpty = (readyTeams + emptyPods) == instances.Count;
 
         bool allPlayersAccountedFor = GalacticGamesManager.Instance.AllPlayersAccountedFor();
 
-        if (allTeamsReadyOrEmpty && allPlayersAccountedFor)
+        if (allPodsReadyTeamsOrEmpty && allPlayersAccountedFor)
         {
             foreach (TeamCreationPod pod in instances)
                 if (pod.readyToPlay) pod.readyText.text = "GO!";
@@ -205,7 +210,7 @@ public class TeamCreationPod : MonoBehaviour
         }
         else
         {
-            if (!allTeamsReadyOrEmpty) Debug.Log("GGM: Cannot start game because all teams are not ready or empty");
+            if (!allPodsReadyTeamsOrEmpty) Debug.Log("GGM: Cannot start game because all pods do not have ready teams or are empty");
             if (!allPlayersAccountedFor) Debug.Log("GGM: Cannot start game because not all players are accounted for");
         }
     }
