@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 1157107514533469724}
   - component: {fileID: 2863845079957883963}
   m_Layer: 9
-  m_Name: PF_PlatformOnRails
+  m_Name: PFR_Platform_OnRails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 8783194406678233791}
   - component: {fileID: 5167297052297541492}
   - component: {fileID: 8882424220514194665}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -193,9 +193,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 //Instantiate objects on network for this team
                 for (int i = 0; i < namesOfGameplayPrefabs.Count; i++)
                 {
-                    if (i < 0 || i >= namesOfGameplayPrefabs.Count)
-                        Debug.Log("GGM: Instantiating: i is not in range of namesOfGameplayPrefabs: i = " + i + ". Count: " + namesOfGameplayPrefabs.Count);
-
                     GameObject newObject = Realtime.Instantiate(namesOfGameplayPrefabs[i], //How can this index ever be out of range?
                                                     positions[i],
                                                     rotations[i],
@@ -224,7 +221,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         if (!didSpawnObjects)
         {
-            Debug.Log("GGM: Did not spawn objects. ClientID is " + realTime.clientID + " and index 0 of creationpods were: " + TeamCreationPod.instances[0].TeamMembers[0] + " and " + TeamCreationPod.instances[1].TeamMembers[0] );
+            //Debug.Log("GGM: Did not spawn objects. ClientID is " + realTime.clientID + " and index 0 of creationpods were: " + TeamCreationPod.instances[0].TeamMembers[0] + " and " + TeamCreationPod.instances[1].TeamMembers[0] );
         }
 
         Debug.Log("GGM: Root count after spawning team objects: " + SceneManager.GetActiveScene().rootCount);
@@ -235,7 +232,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     IEnumerator DisableNonTeamObjects()
     {
         Debug.Log("GGM: waiting to disable objects. Number of active teams: " + numberOfActiveTeams);
-        Debug.Log("GGM: member zero of existing teams: " + TeamCreationPod.instances[0].TeamMembers[0] + " & " + TeamCreationPod.instances[1].TeamMembers[0]);
+        //Debug.Log("GGM: member zero of existing teams: " + TeamCreationPod.instances[0].TeamMembers[0] + " & " + TeamCreationPod.instances[1].TeamMembers[0]);
         Debug.Log("GGM: originalRootCountOnGameStart: " + originalRootCountOnGameStart);
         //Debug.Log("GGM: clients done spawning: " + gameManagerSync.ClientsDoneSpawning);
 
@@ -323,14 +320,44 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                         else avatarRtvs.Add(gameObject.GetComponent<RealtimeView>());
 
-
+                    List<RealtimeView> teamGameplayRtvs = new List<RealtimeView>();
 
                     //Disable all gameplay objects not spawned by the first member of this team
+                    //and set team objects to controllable by all members
                     foreach (GameObject gameplayObject in gameplayObjects)
                     {
                         RealtimeView rtv = gameplayObject.GetComponent<RealtimeView>();
-                        if (rtv && rtv.ownerIDSelf != spawningClient)
-                             rtv.gameObject.SetActive(false);
+
+                        if (rtv)
+                        {
+                            if (rtv.ownerIDSelf != spawningClient)
+                                rtv.gameObject.SetActive(false);
+
+                            else
+                            {
+                                rtv.preventOwnershipTakeover = false;
+                                rtv.SetOwnership(-1);
+                                teamGameplayRtvs.Add(rtv);
+                            }
+                        }
+                    }
+
+                    //After all non team objects disabled, turn on collisions (else they bounce all over the place when they are spawned in the same place)
+                    foreach (RealtimeView teamGameplayRtv in teamGameplayRtvs)
+                    {
+                        StructureSync ss = teamGameplayRtv.GetComponent<StructureSync>();
+
+                        if (ss && teamGameplayRtv.transform.childCount > 0)
+                            teamGameplayRtv.transform.GetChild(0).gameObject.layer = 10;
+
+                        else
+                        {
+                            if (teamGameplayRtv.transform.childCount == 0)
+                                Debug.Log("GGM: " + name + " has no children. Not setting layer to ControllableStructureFree");
+
+                            if (!ss)
+                                Debug.Log("GMM: " + name + " does not have a StructureSync component. Not setting layer to ControllableStructureFree");
+                        }
                     }
 
                     //Disable all avatar objects not part of this team

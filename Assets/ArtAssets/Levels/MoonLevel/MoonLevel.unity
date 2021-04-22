@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -970,6 +970,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6980998400429675533, guid: 1f61f675aae964d49998a24682196f4b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7587592308259376866, guid: 1f61f675aae964d49998a24682196f4b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1836,6 +1841,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 877721967091602144, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3527385434265920258, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
       propertyPath: m_Name
@@ -2271,6 +2281,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_PlatformOnRails (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583678933758539298, guid: 480bed2710e2a8543b989ed3f8e62082,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6812533898452271611, guid: 480bed2710e2a8543b989ed3f8e62082,
         type: 3}
@@ -3127,6 +3142,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 877721967091602144, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3527385434265920258, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
       propertyPath: m_Name
@@ -7759,6 +7779,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_PlatformOnRails (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6583678933758539298, guid: 480bed2710e2a8543b989ed3f8e62082,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6812533898452271611, guid: 480bed2710e2a8543b989ed3f8e62082,
         type: 3}
       propertyPath: _realtime
@@ -11552,6 +11577,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6583678933758539298, guid: 480bed2710e2a8543b989ed3f8e62082,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6812533898452271611, guid: 480bed2710e2a8543b989ed3f8e62082,
         type: 3}
       propertyPath: _realtime
@@ -12147,6 +12177,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 877721967091602144, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2064224171457554355, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
       propertyPath: m_Enabled
@@ -12443,6 +12478,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6980998400429675533, guid: f4684590b2c7c094b8f91a0c86840f9f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7587592308259376866, guid: f4684590b2c7c094b8f91a0c86840f9f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12601,6 +12641,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 877721967091602144, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3527385434265920258, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
       propertyPath: m_Name
@@ -12920,6 +12965,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _isRootPrefabView
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6980998400429675533, guid: 1f61f675aae964d49998a24682196f4b,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7587592308259376866, guid: 1f61f675aae964d49998a24682196f4b,
         type: 3}
@@ -13926,6 +13976,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_PlatformOnRails (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6583678933758539298, guid: 480bed2710e2a8543b989ed3f8e62082,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6812533898452271611, guid: 480bed2710e2a8543b989ed3f8e62082,
         type: 3}
       propertyPath: _realtime
@@ -14657,6 +14712,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _isRootPrefabView
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6980998400429675533, guid: f4684590b2c7c094b8f91a0c86840f9f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7587592308259376866, guid: f4684590b2c7c094b8f91a0c86840f9f,
         type: 3}
@@ -15712,6 +15772,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 877721967091602144, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2064224171457554355, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
       propertyPath: m_Enabled
@@ -15816,6 +15881,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 877721967091602144, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2064224171457554355, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
       propertyPath: m_Enabled
@@ -16419,6 +16489,11 @@ PrefabInstance:
       propertyPath: autoForcePower
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5868614543156695445, guid: a49a6b24bad06364191efba0d9fce090,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8474002559328525915, guid: a49a6b24bad06364191efba0d9fce090,
         type: 3}
       propertyPath: m_Name
@@ -16488,6 +16563,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7114928631043666991, guid: 94b6a8cdf119fa240aabf63c393511ec,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7451869151837373430, guid: 94b6a8cdf119fa240aabf63c393511ec,
         type: 3}
       propertyPath: _realtime
@@ -16517,6 +16597,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 512016771516576678, guid: d33ddce557d076d4aa5d47608eb84057,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1466358432493274842, guid: d33ddce557d076d4aa5d47608eb84057,
         type: 3}
       propertyPath: autoForcePower
@@ -16606,6 +16691,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 37809986658790835, guid: dca2fa3a284b0d34bb6c289e0cea0730,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1424494590255356111, guid: dca2fa3a284b0d34bb6c289e0cea0730,
         type: 3}
       propertyPath: playerForceMultiplier
@@ -16709,6 +16799,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _isRootPrefabView
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3258534617476464792, guid: 144355b470e1be849b6ce148ea450543,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3519163655642434371, guid: 144355b470e1be849b6ce148ea450543,
         type: 3}
