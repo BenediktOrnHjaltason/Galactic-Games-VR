@@ -94,13 +94,17 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         }
     }
 
-
+    bool gameStartSequenceStarted = false;
     public void StartGame()
     {
         Debug.Log("GGMStart: StartGame() called in " + name);
 
-
-        if (competitionStarted) return;
+        if (gameStartSequenceStarted)
+        {
+            Debug.Log("GGM: StartGame() called for the second time. Aborting");
+            return;
+        }
+        gameStartSequenceStarted = true;
 
         //Count non TeamFiltered root objects in scene
         GameObject[] rootObjectsOnGameStart = SceneManager.GetActiveScene().GetRootGameObjects();
@@ -121,9 +125,15 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         Debug.Log("GGM: number of root objects on game start: " + originalRootCountOnGameStart);
 
-        Debug.Log("GGM: On start game: number of team creation pods: " + TeamCreationPod.instances.Count);
+        Debug.Log("GGM: On start game: number of team creation pods: " + TeamCreationPod.instances.Count + ". Finding numberOfActiveTeams");
 
-        foreach (TeamCreationPod pod in TeamCreationPod.instances) if (pod.ReadyToPlay) numberOfActiveTeams++;
+        foreach (TeamCreationPod pod in TeamCreationPod.instances)
+            if (pod.ReadyToPlay)
+            {
+                numberOfActiveTeams++;
+
+                Debug.Log("GGM: Incremented numberOfActiveTeams to " + numberOfActiveTeams);
+            }
 
         Debug.Log("GGM: On start game: numberOfActiveTeams: " + numberOfActiveTeams);
 
@@ -183,7 +193,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 //Instantiate objects on network for this team
                 for (int i = 0; i < namesOfGameplayPrefabs.Count; i++)
                 {
-                    GameObject newObject = Realtime.Instantiate(namesOfGameplayPrefabs[i],
+                    if (i < 0 || i >= namesOfGameplayPrefabs.Count)
+                        Debug.Log("GGM: Instantiating: i is not in range of namesOfGameplayPrefabs: i = " + i + ". Count: " + namesOfGameplayPrefabs.Count);
+
+                    GameObject newObject = Realtime.Instantiate(namesOfGameplayPrefabs[i], //How can this index ever be out of range?
                                                     positions[i],
                                                     rotations[i],
                                                     ownedByClient: true,
@@ -282,6 +295,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         //Disable gameplay objects not relevant to this team
 
+        TeamCreationPod thisPlayersPod = null;
+
         //Find this client's team
         for (int i = 0; i < TeamCreationPod.instances.Count; i++)
         {
@@ -293,6 +308,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                     int teamSize = TeamCreationPod.instances[i].TeamMembers.Count;
                     int spawningClient = TeamCreationPod.instances[i].TeamMembers[0];
+
+                    thisPlayersPod = TeamCreationPod.instances[i];
 
                     //Get all active root objects in scene after all spawning is done
                     GameObject[] teamFiltered = GameObject.FindGameObjectsWithTag("TeamFiltered");
@@ -334,6 +351,16 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 }
             }
         }
+
+        //Start disappear animatics for non team pods
+        foreach (TeamCreationPod pod in TeamCreationPod.instances)
+        {
+            pod.DisableReadyButton();
+
+            if (pod != thisPlayersPod && !pod.TeamEmpty) pod.StartDisappearAnimatic();
+            else if (pod.TeamEmpty) pod.transform.root.gameObject.SetActive(false);
+        }
+            
 
         competitionStarted = true;
     }

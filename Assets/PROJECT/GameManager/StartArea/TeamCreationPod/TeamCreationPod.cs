@@ -50,12 +50,19 @@ public class TeamCreationPod : MonoBehaviour
     Material teamNotReadyMaterial;
     Material teamReadyMaterial;
 
+    [SerializeField]
+    Animatic disappearAnimatic;
+
+    [SerializeField]
+    Material disappearMaterial;
+
 
     bool teamFilledUp = false;
 
     public bool TeamFilledUp { get => teamFilledUp; set => teamFilledUp = value; }
 
     bool teamEmpty = true;
+    public bool TeamEmpty { get => teamEmpty; }
 
     bool readyToPlay;
 
@@ -67,13 +74,6 @@ public class TeamCreationPod : MonoBehaviour
 
     //For when players enter a pod when it's already full of members, and a member leaves
     List<RealtimeView> excessPlayersInCollider = new List<RealtimeView>();
-
-    
-
-
-
-    
-
 
     List<int> teamMembers = new List<int>();
     public List<int> TeamMembers { get => teamMembers; }
@@ -113,6 +113,10 @@ public class TeamCreationPod : MonoBehaviour
         teamReadyMaterial = fullCapacityMaterial;
 
         readyText = readyButton.transform.GetChild(0).GetChild(0).GetComponent<TextMeshPro>();
+
+        disappearAnimatic.InitializeSequenceDelegates();
+
+        disappearAnimatic.onSequenceStart[1] = MakePodInvisible;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -146,6 +150,8 @@ public class TeamCreationPod : MonoBehaviour
                     if (teamMembers[i] == rv.ownerIDSelf)
                     {
                         teamMembers[i] = -1;
+
+                        Debug.Log("TCP: removed " + rv.ownerIDSelf + " from " + transform.root.name);
 
                         PlayerSync ps = other.GetComponent<PlayerSync>();
                         if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", AvatarTorsoDefault);
@@ -281,5 +287,25 @@ public class TeamCreationPod : MonoBehaviour
         teamFilledUp = readyToPlay = false;
 
         readyIndicator.material = teamNotReadyMaterial;
+    }
+
+    public void DisableReadyButton()
+    {
+        readyButton.gameObject.layer = 9; //Ignore
+    }
+
+    //Disappear animatic
+
+    public void StartDisappearAnimatic()
+    {
+        capacityIndicator.material = disappearMaterial;
+        disappearAnimatic.Run();
+    }
+
+    void MakePodInvisible()
+    {
+        teamSizeText.gameObject.SetActive(false);
+        floor.gameObject.SetActive(false);
+        readyButton.gameObject.SetActive(false);
     }
 }
