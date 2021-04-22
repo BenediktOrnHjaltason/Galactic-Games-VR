@@ -315,19 +315,19 @@ MonoBehaviour:
   playerHeads:
   - headMesh: {fileID: 919132149155446097, guid: c7dc4874dea9d25498d7ac18699d88fe,
       type: 3}
-    position: {x: 0, y: -0.655, z: 0.021}
+    position: {x: 0, y: -0.75, z: 0.059}
     rotation: {x: 0, y: 90.00001, z: -11.14}
-    scale: {x: 0.2899035, y: 0.2899035, z: 0.2899035}
+    scale: {x: 0.3303972, y: 0.3303972, z: 0.3303972}
   - headMesh: {fileID: 919132149155446097, guid: 75572fdd399ecf946a0697580e9f5ae7,
       type: 3}
-    position: {x: 0, y: -0.014, z: 0}
-    rotation: {x: 0, y: 0, z: 0}
-    scale: {x: 0.07269142, y: 0.07269142, z: 0.07269142}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: -75, y: 0, z: 30}
+    scale: {x: 2.452667, y: 2.452667, z: 2.452667}
   - headMesh: {fileID: 919132149155446097, guid: 911d83ecf90e4fd4893b29ae8c1e92fe,
       type: 3}
     position: {x: 0, y: -0.041, z: -0.0162}
-    rotation: {x: 0, y: 90.00001, z: 0}
-    scale: {x: 0.08470115, y: 0.08470115, z: 0.08470115}
+    rotation: {x: -90, y: 180, z: -90}
+    scale: {x: 12.7361, y: 12.7361, z: 12.7361}
   playerTorso: {fileID: 3175053348938104996}
 --- !u!1 &7765302161742215881
 GameObject:
