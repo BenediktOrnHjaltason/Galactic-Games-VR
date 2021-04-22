@@ -56,6 +56,9 @@ public class TeamCreationPod : MonoBehaviour
     [SerializeField]
     Material disappearMaterial;
 
+    [SerializeField]
+    TextMeshPro teamList;
+
 
     bool teamFilledUp = false;
 
@@ -103,6 +106,8 @@ public class TeamCreationPod : MonoBehaviour
             teamMembers.Add(-1);
 
         teamSizeText.text = teamSizeInt.ToString() + "\nPlayer" + (teamSizeInt > 1 ? "s" : "");
+
+        teamList.color = teamColor;
 
         floor.material.SetColor("_BaseColor",teamColor);
 
@@ -178,9 +183,6 @@ public class TeamCreationPod : MonoBehaviour
                         for (int j = 0; j < teamMembers.Count; j++)
                             if (teamMembers[j] != -1) teamEmpty = false;
 
-
-                        //Check if non-team member is standing there while someone exits. When they entered while team is full they
-                        //will not be registered in team. When player leaves they will be registered.
                         /*
                         RaycastHit[] playersHit = Physics.SphereCastAll(transform.position + new Vector3(0, 0.4571f, 0), 1.4f, Vector3.zero, 0, 14);
 
@@ -195,8 +197,6 @@ public class TeamCreationPod : MonoBehaviour
                                 if (rtV) AttemptEnterPlayerInTeam(rtV, playerObjectHit.collider);
                             }
                         }*/
-
-
 
                         break;
                     }

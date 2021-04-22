@@ -18,6 +18,8 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
     [SerializeField]
     TextMeshPro playerNameTMPro;
 
+    public TextMeshPro PlayerName { get => playerNameTMPro; }
+
     [SerializeField]
     List<PlayerHeads> playerHeads;
 
@@ -61,9 +63,6 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
             currentModel.playerHeadIndexDidChange += PlayerHeadIndexDidChange;
         }
     }
-    
-
-    public string PlayerName { set => model.playerName = value; }
 
     void PlayerNameDidChange(PlayerSync_Model model, string name)
     {
