@@ -320,9 +320,9 @@ MonoBehaviour:
     scale: {x: 0.3303972, y: 0.3303972, z: 0.3303972}
   - headMesh: {fileID: 919132149155446097, guid: 75572fdd399ecf946a0697580e9f5ae7,
       type: 3}
-    position: {x: 0, y: 0, z: 0}
+    position: {x: 0.0065284, y: 0.00044998, z: -0.011499}
     rotation: {x: -75, y: 0, z: 30}
-    scale: {x: 2.452667, y: 2.452667, z: 2.452667}
+    scale: {x: 2.423296, y: 3.841416, z: 2.160032}
   - headMesh: {fileID: 919132149155446097, guid: 911d83ecf90e4fd4893b29ae8c1e92fe,
       type: 3}
     position: {x: 0, y: -0.041, z: -0.0162}
