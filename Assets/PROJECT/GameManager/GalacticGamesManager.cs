@@ -216,7 +216,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 if (!gameManagerSync) Debug.Log("GGM: After Spawning: gameManagerSync is not set to an instance of an object in" + name);
                 else Debug.Log("GGM: After Spawning: gameManagerSync is valid in " + name);
 
-                gameManagerSync.ClientsDoneSpawning++;
+                //gameManagerSync.ClientsDoneSpawning++;
 
                 //Debug.Log("GGM: Spawned " + newSpawns + " gameplay objects. New root count: " + SceneManager.GetActiveScene().rootCount);
             }
@@ -237,16 +237,16 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         Debug.Log("GGM: waiting to disable objects. Number of active teams: " + numberOfActiveTeams);
         Debug.Log("GGM: member zero of existing teams: " + TeamCreationPod.instances[0].TeamMembers[0] + " & " + TeamCreationPod.instances[1].TeamMembers[0]);
         Debug.Log("GGM: originalRootCountOnGameStart: " + originalRootCountOnGameStart);
-        Debug.Log("GGM: clients done spawning: " + gameManagerSync.ClientsDoneSpawning);
+        //Debug.Log("GGM: clients done spawning: " + gameManagerSync.ClientsDoneSpawning);
 
         //Wait for all clients to be done spawning
-        while (gameManagerSync.ClientsDoneSpawning < numberOfActiveTeams ||
+        while (/*gameManagerSync.ClientsDoneSpawning < numberOfActiveTeams ||*/
                SceneManager.GetActiveScene().rootCount < ((originalRootCountOnGameStart +
                                                            namesOfGameplayPrefabs.Count * numberOfActiveTeams) + 
                                                           (numberOfAttractorRifts * numberOfActiveTeams * 2)))
         {
             Debug.Log("GGM: Condition FAILED");
-            Debug.Log("GGM: ClientsDoneSpawning: " + gameManagerSync.ClientsDoneSpawning);
+            //Debug.Log("GGM: ClientsDoneSpawning: " + gameManagerSync.ClientsDoneSpawning);
             Debug.Log("GGM: originalRootCountOnGameStart: " + originalRootCountOnGameStart);
             Debug.Log("GGM: numberOfActiveTeams: " + numberOfActiveTeams);
             Debug.Log("GGM: namesOfGameplayPrefabs.Count: " + namesOfGameplayPrefabs.Count);
