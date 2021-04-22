@@ -81,6 +81,8 @@ public class TeamCreationPod : MonoBehaviour
     List<int> teamMembers = new List<int>();
     public List<int> TeamMembers { get => teamMembers; }
 
+    Dictionary<int, string> memberClientIDToName = new Dictionary<int, string>();
+
     private void Awake()
     {
         if (instances.Count > 0) instances.Clear();
@@ -107,7 +109,7 @@ public class TeamCreationPod : MonoBehaviour
 
         teamSizeText.text = teamSizeInt.ToString() + "\nPlayer" + (teamSizeInt > 1 ? "s" : "");
 
-        teamList.color = teamColor;
+        teamList.text = "";
 
         floor.material.SetColor("_BaseColor",teamColor);
 
@@ -159,7 +161,12 @@ public class TeamCreationPod : MonoBehaviour
                         Debug.Log("TCP: removed " + rv.ownerIDSelf + " from " + transform.root.name);
 
                         PlayerSync ps = other.GetComponent<PlayerSync>();
-                        if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", AvatarTorsoDefault);
+                        if (ps)
+                        {
+                            ps.PlayerTorso.material.SetColor("_BaseColor", AvatarTorsoDefault);
+                            memberClientIDToName.Remove(i);
+                            ConstructTeamList();
+                        }
 
                         capacityIndicator.material = availableCapacityMaterial;
 
@@ -175,7 +182,6 @@ public class TeamCreationPod : MonoBehaviour
                             Debug.Log("TCP1: Tranfering excess player from queue to team");
 
                             AttemptEnterPlayerInTeam(temp);
-                            
                         }
 
 
@@ -221,12 +227,18 @@ public class TeamCreationPod : MonoBehaviour
             {
                 teamMembers[i] = rtv.ownerIDSelf;
 
+
                 Debug.Log("TCP1: Entered player " + rtv.ownerIDSelf + " to team in " + transform.root.name);
 
                 teamEmpty = false;
 
                 PlayerSync ps = rtv.GetComponent<PlayerSync>();
-                if (ps) ps.PlayerTorso.material.SetColor("_BaseColor", teamColor);
+                if (ps)
+                {
+                    ps.PlayerTorso.material.SetColor("_BaseColor", teamColor);
+                    memberClientIDToName.Add(i, ps.PlayerName.text);
+                    ConstructTeamList();
+                }
 
                 teamFilledUp = true;
                 for (int j = 0; j < teamMembers.Count; j++)
@@ -307,5 +319,17 @@ public class TeamCreationPod : MonoBehaviour
         teamSizeText.gameObject.SetActive(false);
         floor.gameObject.SetActive(false);
         readyButton.gameObject.SetActive(false);
+    }
+
+    void ConstructTeamList()
+    {
+        string temp = "";
+
+        foreach (KeyValuePair<int,string> pair in memberClientIDToName)
+        {
+            temp += '\n' + pair.Value; 
+        }
+
+        teamList.text = temp;
     }
 }
