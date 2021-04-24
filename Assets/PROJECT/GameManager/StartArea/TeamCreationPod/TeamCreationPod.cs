@@ -174,6 +174,7 @@ public class TeamCreationPod : MonoBehaviour
 
                         teamFilledUp = readyToPlay = false;
                         readyIndicator.material = teamNotReadyMaterial;
+                        readyText.text = "Ready?";
 
 
                         //Insert potential place holders in team
@@ -259,7 +260,11 @@ public class TeamCreationPod : MonoBehaviour
 
         readyToPlay = teamFilledUp;
 
-        if (readyToPlay) readyIndicator.material = teamReadyMaterial;
+        if (readyToPlay)
+        {
+            readyIndicator.material = teamReadyMaterial;
+            readyText.text = "Ready!";
+        }
         else
         {
             Debug.Log("TCP: Team in " + name + " is not ready to play. Aborting");
