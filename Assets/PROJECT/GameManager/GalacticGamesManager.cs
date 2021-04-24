@@ -39,7 +39,13 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     public void RegisterClientArrival(int clientID)
     {
+        Debug.Log("GGM: RegisterClientArrival called with clientID " + clientID);
+
         clientsInRoom.Add(clientID);
+
+        Debug.Log("GGM: clientsInRoom now contains");
+
+        foreach (int client in clientsInRoom) Debug.Log(client);
     }
 
     public void NetworkNotifyClientLeftRoom(int clientID)
@@ -59,6 +65,11 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 if (pod.TeamMembers[i] == clientID)
                 {
                     Debug.Log("GGM: RegisterClientLeftRoom: clientID found in pod");
+
+                    if (pod.MemberClientIDToName.ContainsKey(pod.TeamMembers[i]))
+                        Debug.Log("GGM: pod memberClientIDToName contains clientID as key");
+
+                    else Debug.Log("GGM: pod memberClientIDToName DOES NOT contain clientID as key");
 
                     pod.OnTeamMemberLeftRoom(i);
                 }
@@ -86,13 +97,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         return true;
     }
 
-    void InitializeCheckpoints()
-    { 
-        foreach (Checkpoint checkPoint in Checkpoint.instances)
-        {
-
-        }
-    }
 
     bool gameStartSequenceStarted = false;
     public void StartGame()
@@ -353,10 +357,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                         else
                         {
                             if (teamGameplayRtv.transform.childCount == 0)
-                                Debug.Log("GGM: " + name + " has no children. Not setting layer to ControllableStructureFree");
+                                Debug.Log("GGM: " + teamGameplayRtv.name + " has no children. Not setting layer to ControllableStructureFree");
 
                             if (!ss)
-                                Debug.Log("GMM: " + name + " does not have a StructureSync component. Not setting layer to ControllableStructureFree");
+                                Debug.Log("GMM: " + teamGameplayRtv.name + " does not have a StructureSync component. Not setting layer to ControllableStructureFree");
                         }
                     }
 

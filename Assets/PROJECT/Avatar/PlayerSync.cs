@@ -103,7 +103,7 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
         }
 
         AudioSource auS = GetComponent<AudioSource>();
-        if (auS) auS.spatialBlend = 0.3f;
+        if (auS) auS.spatialBlend = 0.1f;
 
         RealtimeView rtv = GetComponent<RealtimeView>();
 
@@ -115,11 +115,17 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
         }
 
         
-        realtime.didDisconnectFromRoom += NotifyGameManagerOnLeavingRoom;
+        //realtime.didDisconnectFromRoom += NotifyGameManagerOnLeavingRoom;
     }
 
     void NotifyGameManagerOnLeavingRoom(Realtime realtime)
     {
+        //GalacticGamesManager.Instance.NetworkNotifyClientLeftRoom(clientID);
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("PS: OnDisable called when player quit game");
         GalacticGamesManager.Instance.NetworkNotifyClientLeftRoom(clientID);
     }
 }
