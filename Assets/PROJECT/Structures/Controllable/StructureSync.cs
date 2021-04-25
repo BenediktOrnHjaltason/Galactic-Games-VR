@@ -216,12 +216,13 @@ public class StructureSync : RealtimeComponent<StructureSync_Model>
     protected virtual void FixedUpdate()
     {
         if (playersOccupying > 0) BreakControl();
+
+        //Prevent structure becoming unavailable forever if game loses input focus of controller
+        if (!availableToManipulate && rb.velocity == Vector3.zero) AvailableToManipulate = true;
     }
 
     public void ResetLinearVelocity()
     {
         rb.velocity = Vector3.zero;
     }
-
-    
 }
