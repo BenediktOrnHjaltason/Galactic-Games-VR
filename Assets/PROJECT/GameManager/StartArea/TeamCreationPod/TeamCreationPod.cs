@@ -83,6 +83,8 @@ public class TeamCreationPod : MonoBehaviour
 
     Dictionary<int, string> memberClientIDToName = new Dictionary<int, string>();
 
+    public Dictionary<int, string> MemberClientIDToName { get => memberClientIDToName; }
+
     private void Awake()
     {
         if (instances.Count > 0) instances.Clear();
@@ -172,6 +174,7 @@ public class TeamCreationPod : MonoBehaviour
 
                         teamFilledUp = readyToPlay = false;
                         readyIndicator.material = teamNotReadyMaterial;
+                        readyText.text = "Ready?";
 
 
                         //Insert potential place holders in team
@@ -236,7 +239,7 @@ public class TeamCreationPod : MonoBehaviour
                 if (ps)
                 {
                     ps.PlayerTorso.material.SetColor("_BaseColor", teamColor);
-                    memberClientIDToName.Add(i, ps.PlayerName.text);
+                    memberClientIDToName.Add(rtv.ownerIDSelf, ps.PlayerName.text);
                     ConstructTeamList();
                 }
 
@@ -257,7 +260,11 @@ public class TeamCreationPod : MonoBehaviour
 
         readyToPlay = teamFilledUp;
 
-        if (readyToPlay) readyIndicator.material = teamReadyMaterial;
+        if (readyToPlay)
+        {
+            readyIndicator.material = teamReadyMaterial;
+            readyText.text = "Ready!";
+        }
         else
         {
             Debug.Log("TCP: Team in " + name + " is not ready to play. Aborting");
@@ -295,6 +302,25 @@ public class TeamCreationPod : MonoBehaviour
 
     public void OnTeamMemberLeftRoom(int teamMemberIndex)
     {
+        Debug.Log("TCP: OnTeamMemberLeftRoom called with team member index " + teamMemberIndex);
+
+        if (memberClientIDToName.ContainsKey(teamMembers[teamMemberIndex]))
+            Debug.Log("TCP: ClientID was found as key in dictionary and points to " + memberClientIDToName[teamMembers[teamMemberIndex]]);
+
+        else
+        {
+            Debug.Log("TCP: ClientID was NOT found in dictionary. teamMembers[teamMemberIndex] contains clientID " + teamMembers[teamMemberIndex] + 
+                " and memberClientIDToName contains clientID");
+
+            foreach (KeyValuePair<int, string> pair in memberClientIDToName)
+            {
+                Debug.Log(pair.Key);
+            }
+        }
+
+        memberClientIDToName.Remove(teamMembers[teamMemberIndex]);
+        ConstructTeamList();
+
         teamMembers[teamMemberIndex] = -1;
         teamFilledUp = readyToPlay = false;
 
