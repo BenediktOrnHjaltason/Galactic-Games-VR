@@ -316,8 +316,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                     GameObject[] teamFiltered = GameObject.FindGameObjectsWithTag("TeamFiltered");
 
                     List<GameObject> gameplayObjects = new List<GameObject>();
-                    List<GameObject> avatars = new List<GameObject>();
 
+                    //Get all spawned gameplay objects
                     foreach (GameObject gameObject in teamFiltered)
                         if (!gameObject.name.Contains("Head") && !gameObject.name.Contains("Hand_")) //GrabHandle contains "Hand"
                             gameplayObjects.Add(gameObject);
@@ -339,8 +339,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                             else
                             {
-                                rtv.preventOwnershipTakeover = false;
-                                rtv.SetOwnership(-1);
+                                if (realTime.clientID == rtv.ownerIDSelf) rtv.ClearOwnership();
+
                                 teamGameplayRtvs.Add(rtv);
                             }
                         }
@@ -377,7 +377,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                                 Debug.Log("Setting " + avatarRtv.gameObject.name + " inactive");
                                 avatarRtv.gameObject.SetActive(false);
                             }
-                        
                     }
                 }
             }
