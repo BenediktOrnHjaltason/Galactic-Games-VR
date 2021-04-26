@@ -18,9 +18,17 @@ public class PlayerFriction : MonoBehaviour
     {
         //Was an issue with triggering swing jump in playercontroller while calling Move here, because controller velocities was
         //being picked up in many passes of FixedUpdate, hence checking for IsSwingJumping
-        if (player && !player.IsSwingJumping)
+
+        if (player)
         {
-            player.Controller.Move(platformRB.velocity / 50);
+            if (!player.Controller.enabled)
+            {
+                Debug.Log("PlayerFriction: Player started climbing from playform. Setting reference to null");
+                player = null;
+            }
+
+            else if (!player.IsSwingJumping)
+                player.Controller.Move(platformRB.velocity / 50);
         }
     }
 
@@ -38,7 +46,14 @@ public class PlayerFriction : MonoBehaviour
         {
             OVRPlayerController ovrpc = other.GetComponent<OVRPlayerController>();
 
-            if (ovrpc = player) player = null;
+            if (ovrpc = player)
+            {
+                player = null;
+                Debug.Log("PlayerFriction: Releasing player from friction");
+
+            }
+
+            
         }
     }
 }

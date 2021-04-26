@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3126886745510021946}
   - component: {fileID: 2796688837776017607}
   - component: {fileID: 4534874078886305358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TextBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 3057548719409264411}
   - component: {fileID: 7211048970392505456}
   - component: {fileID: 7801323148641403566}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,8 +298,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4310864422240393571}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.7, z: 0}
-  m_LocalScale: {x: 13.555, y: 4.5279, z: 0.6209062}
+  m_LocalPosition: {x: 0, y: 3.25, z: -0.47}
+  m_LocalScale: {x: 24.61066, y: 6.665069, z: 1.1707807}
   m_Children: []
   m_Father: {fileID: 4740471331743180079}
   m_RootOrder: 3
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 3996273192925198718}
   - component: {fileID: 4632624275207658065}
   - component: {fileID: 6241665192142547400}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TextFront
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 3990923055365299944}
   - component: {fileID: 6059910300017484968}
   - component: {fileID: 26507011158340929}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Banner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4740471331743180079}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Checkpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -719,7 +719,7 @@ GameObject:
   - component: {fileID: 8475428237012828527}
   - component: {fileID: 580036523215967530}
   - component: {fileID: 630432501500852996}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
