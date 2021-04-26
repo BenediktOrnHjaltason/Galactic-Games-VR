@@ -8,6 +8,8 @@ public class ZipPointPlayerSensor : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(11))
         {
+            Debug.Log("ZipPointPlayerSensor: Hand collided with sensor.");
+
             Hand hand = other.GetComponent<Hand>();
 
             if (hand) hand.ReleaseZipLine();
