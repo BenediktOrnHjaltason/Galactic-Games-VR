@@ -2,7 +2,10 @@ fileFormatVersion: 2
 guid: b557199658929274285a7dc0289d732f
 ModelImporter:
   serializedVersion: 19301
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 4740556481215247871
+    second: Clouds|Plane.001Action
   externalObjects: {}
   materials:
     materialImportMode: 1
