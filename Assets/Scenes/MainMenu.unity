@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1907,7 +1907,22 @@ PrefabInstance:
     - target: {fileID: 1976901262564212817, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
       propertyPath: m_text
-      value: Moon (3P)
+      value: Moon (3P min)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976901262564212817, guid: c67b8702545ae084f91c01bac9a1a87d,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976901262564212817, guid: c67b8702545ae084f91c01bac9a1a87d,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1976901262564212817, guid: c67b8702545ae084f91c01bac9a1a87d,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2552284517074242287, guid: c67b8702545ae084f91c01bac9a1a87d,
         type: 3}
@@ -2023,6 +2038,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192150051089693337, guid: c67b8702545ae084f91c01bac9a1a87d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4557994487639838390, guid: c67b8702545ae084f91c01bac9a1a87d, type: 3}
