@@ -25281,7 +25281,7 @@ PrefabInstance:
     - target: {fileID: 1858307728929169090, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: startMode
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
@@ -25291,7 +25291,7 @@ PrefabInstance:
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
       propertyPath: frameSizeMultiplier
-      value: 0.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5394805669760359195, guid: aaa2cc400a5d73940af46985195c254e,
         type: 3}
