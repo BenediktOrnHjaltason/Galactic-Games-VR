@@ -73,6 +73,8 @@ public class GravityForce : HandDevice
 
         if (OVRInput.GetDown(indexTrigger))
         {
+            if (structureSync) ReleaseStructureFromControl();
+
             //Update state locally and on networked deviceSync
             owner.OperationState = EHandDeviceState.SCANNING;
         }

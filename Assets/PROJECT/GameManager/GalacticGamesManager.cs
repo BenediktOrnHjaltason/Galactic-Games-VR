@@ -120,7 +120,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         {
             if (rootObject.name.Contains("Clone") && (!rootObject.name.Contains("Head") && !rootObject.name.Contains("Hand_"))) continue;
 
-            Debug.Log("GGM: root object gathered on game start: " + rootObject.name);
+            //Debug.Log("GGM: root object gathered on game start: " + rootObject.name);
             originalRootCountOnGameStart++;
         }
 
