@@ -163,10 +163,11 @@ public class TeamCreationPod : MonoBehaviour
                         Debug.Log("TCP: removed " + rv.ownerIDSelf + " from " + transform.root.name);
 
                         PlayerSync ps = other.GetComponent<PlayerSync>();
-                        if (ps)
+                        RealtimeView rtv = other.GetComponent<RealtimeView>();
+                        if (ps && rtv)
                         {
                             ps.PlayerTorso.material.SetColor("_BaseColor", AvatarTorsoDefault);
-                            memberClientIDToName.Remove(i);
+                            memberClientIDToName.Remove(rtv.ownerIDSelf);
                             ConstructTeamList();
                         }
 
