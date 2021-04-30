@@ -929,7 +929,7 @@ PrefabInstance:
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: omniDeviceStartup
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8846773500257968800, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -1477,6 +1477,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PF_OmniDeviceDispenser
+      objectReference: {fileID: 0}
+    - target: {fileID: 131097904361078273, guid: badef1eb33a6fa64bafad9625831a49e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6877572582646553129, guid: badef1eb33a6fa64bafad9625831a49e,
         type: 3}
@@ -14143,7 +14148,7 @@ PrefabInstance:
     - target: {fileID: 386573995798895876, guid: 480bed2710e2a8543b989ed3f8e62082,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -121.51
+      value: -127.497
       objectReference: {fileID: 0}
     - target: {fileID: 386573995798895876, guid: 480bed2710e2a8543b989ed3f8e62082,
         type: 3}
@@ -16783,6 +16788,11 @@ PrefabInstance:
       propertyPath: autoForcePower
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4770156871152264425, guid: a49a6b24bad06364191efba0d9fce090,
+        type: 3}
+      propertyPath: mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5868614543156695445, guid: a49a6b24bad06364191efba0d9fce090,
         type: 3}
       propertyPath: m_Layer
@@ -16900,6 +16910,11 @@ PrefabInstance:
         type: 3}
       propertyPath: autoForcePower
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1466358432493274842, guid: d33ddce557d076d4aa5d47608eb84057,
+        type: 3}
+      propertyPath: mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2590477094345866344, guid: d33ddce557d076d4aa5d47608eb84057,
         type: 3}

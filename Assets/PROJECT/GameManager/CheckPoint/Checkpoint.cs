@@ -23,7 +23,7 @@ public class Checkpoint : RealtimeComponent<Checkpoint_Model>
     Color teamIndicatorNullColor;
 
     [SerializeField]
-    float teamIndicatorXOffsett;
+    float teamIndicatorYOffsett;
 
     int numberOfTeamsPassedThrough = 0;
 
@@ -105,7 +105,7 @@ public class Checkpoint : RealtimeComponent<Checkpoint_Model>
 
         newIndicator.transform.SetParent(transform.root);
 
-        newIndicator.transform.localPosition = teamIndicatorBasePos + new Vector3(teamIndicatorXOffsett * numberOfTeamsPassedThrough, 0, 0);
+        newIndicator.transform.localPosition = teamIndicatorBasePos + new Vector3(0, teamIndicatorYOffsett * numberOfTeamsPassedThrough, 0);
 
         numberOfTeamsPassedThrough++;
     }
