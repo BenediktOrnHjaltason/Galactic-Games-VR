@@ -36,6 +36,9 @@ public class Puzzle_DysonSphere : MonoBehaviour
     [SerializeField]
     GameObject portal;
 
+    [SerializeField]
+    Transform playerTeleportTo;
+
     Vector3 portalEndScale = new Vector3(2.015517f, 6.777942f, 2.015517f);
 
 
@@ -69,7 +72,7 @@ public class Puzzle_DysonSphere : MonoBehaviour
 
         if (portalTrigger)
         {
-            portalTrigger.OnEnteredTrigger += SendPlayerToMainMenu;
+            portalTrigger.OnEnteredTrigger += TeleportPlayer;
         }
     }
 
@@ -150,10 +153,15 @@ public class Puzzle_DysonSphere : MonoBehaviour
         }
     }
 
-    void SendPlayerToMainMenu(Collider other)
+    void TeleportPlayer(Collider other)
     {
         OVRPlayerController pc = other.GetComponent<OVRPlayerController>();
-        
-        if (pc) SceneManager.LoadScene("MainMenu");
+
+        if (pc)
+        {
+            pc.Controller.enabled = false;
+            pc.transform.position = playerTeleportTo.position;
+            pc.Controller.enabled = true;
+        }
     }
 }

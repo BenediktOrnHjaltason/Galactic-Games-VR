@@ -163,11 +163,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             if (rtv && !rtv.name.Contains("Head") && !rtv.name.Contains("Hand_"))
             {
                 //Attractor Rifts spawn two objects on start to help with functionality. Needed for calculating correct root count
-                if (rtv.gameObject.name.Contains("AttractorRift"))
-                {
-                    Debug.Log("GGM: Collected attractorRift object " + rtv.gameObject.name + " with position: " + rtv.gameObject.transform.position);
-                    numberOfAttractorRifts++;
-                }
+                if (rtv.gameObject.name.Contains("AttractorRift")) numberOfAttractorRifts++;
 
                 namesOfGameplayPrefabs.Add(rtv.gameObject.name);
                 positions.Add(rtv.gameObject.transform.position);
@@ -312,6 +308,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                     thisPlayersPod = TeamCreationPod.instances[i];
 
+                    thisPlayersPod.GameManagerMessage = "Conditions MET and found team";
+
                     //Get all active root objects in scene after all spawning is done
                     GameObject[] teamFiltered = GameObject.FindGameObjectsWithTag("TeamFiltered");
 
@@ -378,6 +376,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                                 avatarRtv.gameObject.SetActive(false);
                             }
                     }
+
+                    break;
                 }
             }
         }

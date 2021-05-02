@@ -150,7 +150,7 @@ public class TeamCreationPod : MonoBehaviour
                 if (excessPlayersInCollider.Contains(rv))
                 {
                     excessPlayersInCollider.Remove(rv);
-                    Debug.Log("TCP1: Removed non team player from queue");
+                    Debug.Log("TCP: Removed non team player from queue");
                     return;
                 }
 
@@ -159,6 +159,9 @@ public class TeamCreationPod : MonoBehaviour
                     if (teamMembers[i] == rv.ownerIDSelf)
                     {
                         teamMembers[i] = -1;
+
+                        teamMembers.Sort();
+                        teamMembers.Reverse();
 
                         Debug.Log("TCP: removed " + rv.ownerIDSelf + " from " + transform.root.name);
 
@@ -183,7 +186,7 @@ public class TeamCreationPod : MonoBehaviour
                         {
                             RealtimeView temp = excessPlayersInCollider[0];
                             excessPlayersInCollider.RemoveAt(0);
-                            Debug.Log("TCP1: Tranfering excess player from queue to team");
+                            Debug.Log("TCP: Tranfering excess player from queue to team");
 
                             AttemptEnterPlayerInTeam(temp);
                         }
@@ -220,7 +223,7 @@ public class TeamCreationPod : MonoBehaviour
         if (teamFilledUp)
         {
             excessPlayersInCollider.Add(rtv);
-            Debug.Log("TCP1: Added excess player to queue");
+            Debug.Log("TCP: Added excess player to queue");
             return;
         }
 
@@ -231,8 +234,11 @@ public class TeamCreationPod : MonoBehaviour
             {
                 teamMembers[i] = rtv.ownerIDSelf;
 
+                teamMembers.Sort();
+                teamMembers.Reverse();
 
-                Debug.Log("TCP1: Entered player " + rtv.ownerIDSelf + " to team in " + transform.root.name);
+
+                Debug.Log("TCP: Entered player " + rtv.ownerIDSelf + " to team in " + transform.root.name);
 
                 teamEmpty = false;
 
@@ -291,6 +297,8 @@ public class TeamCreationPod : MonoBehaviour
                 if (pod.readyToPlay) pod.readyText.text = "GO!";
 
 
+            
+
             Debug.Log("TCP: All pods have ready teams or is empty and all players accounted for. Calling GameManager::StartGame()");
             GalacticGamesManager.Instance.StartGame();
         }
@@ -348,14 +356,27 @@ public class TeamCreationPod : MonoBehaviour
         readyButton.gameObject.SetActive(false);
     }
 
-    void ConstructTeamList()
+    public string GameManagerMessage;
+
+    public void ConstructTeamList()
     {
         string temp = "";
 
+        /*
         foreach (KeyValuePair<int,string> pair in memberClientIDToName)
         {
             temp += '\n' + pair.Value; 
         }
+        */
+
+        Debug.Log("TCP1: teamMembers count: " + teamMembers.Count);
+
+
+        for (int i = 0; i < teamMembers.Count; i++)
+            if (teamMembers[i] != -1 && MemberClientIDToName.ContainsKey(teamMembers[i]))
+                temp += ("index: " + i + ", clientID: " + teamMembers[i] + ", " + MemberClientIDToName[teamMembers[i]] + '\n');
+
+        temp += GameManagerMessage;
 
         teamList.text = temp;
     }

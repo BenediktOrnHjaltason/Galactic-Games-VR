@@ -347,8 +347,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7004867384841052252}
-  m_LocalRotation: {x: -0, y: -0.7071065, z: 0, w: 0.7071071}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.49914682, y: 0.5008524, z: 0.4991466, w: 0.50085133}
+  m_LocalPosition: {x: -13.96, y: 9.55, z: 113.16}
   m_LocalScale: {x: 1.8109, y: 1.8109, z: 1.8109}
   m_Children:
   - {fileID: 4844433362757342594}
@@ -443,20 +443,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a4d58d15c51db408457285e2c45395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowDuplicationByDevice: 0
-  allowGravityForceByDevice: 1
-  allowRotationForces: 1
+  allowDuplicationByPlayer: 0
+  allowGravityForceByPlayer: 1
+  allowRotationForceByPlayer: 1
   pushPullMultiplier: 2
-  rotationAxis: 1
-  selfAxisToRotation:
-    Roll: {x: 0, y: 0, z: 0}
-    Yaw: {x: 0, y: 0, z: 0}
-    Pitch: {x: 0, y: 0, z: 0}
-  selfAxisConstraints:
-    constrainRoll: 0
-    constrainYaw: 1
-    constrainPitch: 1
-  selfRotateMultiplier: 0.5
   mesh: {fileID: 6012814186943098605}
 --- !u!114 &3278652067852626127
 MonoBehaviour:
