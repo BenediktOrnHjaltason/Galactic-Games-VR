@@ -54,6 +54,8 @@ public class Structure_RestrictedRotate : StructureSync
     {
         base.Awake();
 
+        Debug.Log("RotateBridge: position on Awake: " + transform.position);
+
         rtt = GetComponent<RealtimeTransform>();
         rootPositionOnStart = transform.root.position;
         forwardOnStart = transform.forward;

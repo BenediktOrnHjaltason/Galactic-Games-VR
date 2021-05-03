@@ -94,14 +94,19 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             //For managing complications with book keeping of root objects when game manager spawns and filters objects based on teams
 
             GameObject temp = new GameObject("ARiftAnchor" + (rtv.preventOwnershipTakeover == false ? "Clone" : ""));
-            temp.transform.position = rb.position;
+
+            //Instances that where spawned when players pressed ready
+            if (!rtv.preventOwnershipTakeover && GalacticGamesManager.Instance.AttractorRiftPositions.Count > 0)
+                transform.position = temp.transform.position = GalacticGamesManager.Instance.AttractorRiftPositions.Dequeue();
+                
+            //Instances that where in the scene before players pressed ready
+            else temp.transform.position = transform.root.position;
+
             anchor = temp;
 
             dummyObject = new GameObject("ARiftBeamDirectionsReference" + (rtv.preventOwnershipTakeover == false ? "Clone" : ""));
             dummyObject.layer = 9; //Ignore
         }
-
-        //gm = GalacticGamesManager.Instance;
     }
 
 

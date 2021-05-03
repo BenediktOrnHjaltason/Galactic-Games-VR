@@ -112,8 +112,8 @@ GameObject:
   - component: {fileID: 7380152689564985510}
   - component: {fileID: 5898348882550209153}
   m_Layer: 9
-  m_Name: PFR_PlatformOnColumn_Small
-  m_TagString: Untagged
+  m_Name: PlatformOnColumn_Small
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

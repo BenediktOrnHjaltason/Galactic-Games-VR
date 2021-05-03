@@ -300,7 +300,7 @@ public class TeamCreationPod : MonoBehaviour
             
 
             Debug.Log("TCP: All pods have ready teams or is empty and all players accounted for. Calling GameManager::StartGame()");
-            GalacticGamesManager.Instance.StartGame();
+            GalacticGamesManager.Instance.StartCompetition();
         }
         else
         {
