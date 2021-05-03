@@ -27,6 +27,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     List<RealtimeView> avatarRtvs = new List<RealtimeView>();
 
+    Queue<Vector3> attractorRiftPositions = new Queue<Vector3>();
+
+    public Queue<Vector3> AttractorRiftPositions { get => attractorRiftPositions; }
+
     public void Initialize(GameManagerSync GMSync)
     {
         Debug.Log("GGM: Initialized called");
@@ -99,7 +103,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
 
     bool gameStartSequenceStarted = false;
-    public void StartGame()
+    public void StartCompetition()
     {
         Debug.Log("GGMStart: StartGame() called in " + name);
 
@@ -123,9 +127,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             //Debug.Log("GGM: root object gathered on game start: " + rootObject.name);
             originalRootCountOnGameStart++;
         }
-
-            
-
 
         Debug.Log("GGM: number of root objects on game start: " + originalRootCountOnGameStart);
 
@@ -165,13 +166,13 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 //Attractor Rifts spawn two objects on start to help with functionality. Needed for calculating correct root count
                 if (rtv.gameObject.name.Contains("AttractorRift"))
                 {
-                    Debug.Log("GGM: Collected attractorRift object " + rtv.gameObject.name + " with position: " + rtv.gameObject.transform.position);
+                    attractorRiftPositions.Enqueue(rtv.transform.position);
                     numberOfAttractorRifts++;
                 }
 
                 namesOfGameplayPrefabs.Add(rtv.gameObject.name);
-                positions.Add(rtv.gameObject.transform.position);
-                rotations.Add(rtv.gameObject.transform.rotation);
+                positions.Add(rtv.transform.position);
+                rotations.Add(rtv.transform.rotation);
 
                 rtv.gameObject.SetActive(false);
             }
@@ -312,6 +313,9 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                     thisPlayersPod = TeamCreationPod.instances[i];
 
+                    thisPlayersPod.GameManagerMessage = "Conditions MET and found team";
+                    thisPlayersPod.ConstructTeamList();
+
                     //Get all active root objects in scene after all spawning is done
                     GameObject[] teamFiltered = GameObject.FindGameObjectsWithTag("TeamFiltered");
 
@@ -378,6 +382,8 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                                 avatarRtv.gameObject.SetActive(false);
                             }
                     }
+
+                    break;
                 }
             }
         }

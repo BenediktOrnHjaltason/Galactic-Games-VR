@@ -110,8 +110,8 @@ GameObject:
   - component: {fileID: 1128354171582394610}
   - component: {fileID: 4770156871152264425}
   m_Layer: 9
-  m_Name: PFR_RotateBridgeLeft
-  m_TagString: Untagged
+  m_Name: RotateBridge_Left
+  m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,7 +124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8474002559328525915}
   m_LocalRotation: {x: -0, y: -0, z: -0.6755171, w: 0.7373444}
-  m_LocalPosition: {x: 8.16, y: -47.2, z: -22.429998}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5872, y: 1.5872, z: 1.5872}
   m_Children:
   - {fileID: 4174611920758168077}
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolate: 0
-  _syncPosition: 0
+  _syncPosition: 1
   _syncRotation: 1
   _syncScale: 0
   _syncVelocity: 0
@@ -219,7 +219,7 @@ MonoBehaviour:
   allowRotationForceByPlayer: 1
   pushPullMultiplier: 1
   mode: 1
-  autoForcePower: 200
+  autoForcePower: 10
   exclusiveWorldRotation: 2
   autoRotateDirection: 1
   playerRotationAllowed: 2
