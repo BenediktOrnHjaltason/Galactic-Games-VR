@@ -82,7 +82,7 @@ public class Structure_RestrictedMove : StructureSync
                     break;
 
             case EAutoForceAxis.Z_Negative:
-                autoMoveVector = new Vector3(0, 0, autoForcePower);
+                autoMoveVector = new Vector3(0, 0, -autoForcePower);
                 rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY |
                    RigidbodyConstraints.FreezeRotation;
                 break;
