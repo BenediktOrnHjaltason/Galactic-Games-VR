@@ -20,8 +20,9 @@ public class LevelSelect : MainMenuSection
 
         buttons[0].OnExecute += SelectTutorialLevel;
         buttons[1].OnExecute += SelectOceanLevel;
-        buttons[2].OnExecute += Select3PProtoLevel;
-        buttons[3].OnExecute += OpenLevel;
+        buttons[2].OnExecute += SelectCanyonLevel;
+        buttons[3].OnExecute += Select3PProtoLevel;
+        buttons[4].OnExecute += OpenLevel;
     }
 
     void SelectTutorialLevel()
@@ -45,11 +46,21 @@ public class LevelSelect : MainMenuSection
         }
     }
 
-    void Select3PProtoLevel()
+    void SelectCanyonLevel()
     {
         if (!makingNewSelection)
         {
             newIndicatorLocalPos = buttons[2].transform.localPosition + IndicatorOffsettToButton;
+            selectedLevel = "CanyonLevel";
+            makingNewSelection = true;
+        }
+    }
+
+    void Select3PProtoLevel()
+    {
+        if (!makingNewSelection)
+        {
+            newIndicatorLocalPos = buttons[3].transform.localPosition + IndicatorOffsettToButton;
             selectedLevel = "MoonLevel";
             makingNewSelection = true;
         }
