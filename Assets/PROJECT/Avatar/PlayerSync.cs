@@ -103,7 +103,11 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
         }
 
         AudioSource auS = GetComponent<AudioSource>();
-        if (auS) auS.spatialBlend = 0.1f;
+        if (auS)
+        {
+            auS.spatialBlend = 0.2f;
+            auS.maxDistance = 1000.0f;
+        }
 
         RealtimeView rtv = GetComponent<RealtimeView>();
 
