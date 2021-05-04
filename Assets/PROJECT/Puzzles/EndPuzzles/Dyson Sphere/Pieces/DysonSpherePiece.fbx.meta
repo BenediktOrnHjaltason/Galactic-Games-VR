@@ -3,7 +3,17 @@ guid: 4844d1229378ed14887f1759badf5396
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sphere
+    second: {fileID: 2100000, guid: ad0ffce5d297a4e40a49db8a71181eca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: SteelFrame
+    second: {fileID: 2100000, guid: ad0ffce5d297a4e40a49db8a71181eca, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
