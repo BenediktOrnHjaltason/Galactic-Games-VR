@@ -543,6 +543,8 @@ public class OVRPlayerController : MonoBehaviour
 		OnUpdate_PerFrame?.Invoke();
 	}
 
+	RaycastHit rcHit;
+
 	private void FixedUpdate()
     {
 		OnUpdate_Fixed?.Invoke();
