@@ -1,6 +1,9 @@
 # High-Altitude
-Bachelor project
 
-Demo (16/3):
+Galactic Games VR
 
-https://youtu.be/tWRAO6Bdh0Q
+Bachelor project by one Game Technology and Simulation student, and three Animation and Digital Art students, at Inland Norway University of Applied Sciences
+
+Demo (26/4):
+
+https://youtu.be/JgACDQ3PJjE
