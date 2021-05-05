@@ -27,9 +27,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     List<RealtimeView> avatarRtvs = new List<RealtimeView>();
 
-    Queue<Vector3> attractorRiftPositions = new Queue<Vector3>();
-
-    public Queue<Vector3> AttractorRiftPositions { get => attractorRiftPositions; }
+    
 
     public void Initialize(GameManagerSync GMSync)
     {
@@ -101,7 +99,9 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         return true;
     }
 
+    Dictionary<string, Vector3> attractorRiftToPosition = new Dictionary<string, Vector3>();
 
+    public Dictionary<string, Vector3> AttractorRiftToPosition { get => attractorRiftToPosition; }
     bool gameStartSequenceStarted = false;
     public void StartCompetition()
     {
@@ -166,7 +166,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 //Attractor Rifts spawn two objects on start to help with functionality. Needed for calculating correct root count
                 if (rtv.gameObject.name.Contains("AttractorRift"))
                 {
-                    attractorRiftPositions.Enqueue(rtv.transform.position);
+                    attractorRiftToPosition.Add(rtv.gameObject.name + "(Clone)", rtv.transform.position);
                     numberOfAttractorRifts++;
                 }
 

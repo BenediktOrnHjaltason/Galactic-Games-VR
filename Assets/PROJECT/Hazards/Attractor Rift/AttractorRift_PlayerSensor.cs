@@ -96,8 +96,8 @@ public class AttractorRift_PlayerSensor : MonoBehaviour
             GameObject temp = new GameObject("ARiftAnchor" + (rtv.preventOwnershipTakeover == false ? "Clone" : ""));
 
             //Instances that where spawned when players pressed ready
-            if (!rtv.preventOwnershipTakeover && GalacticGamesManager.Instance.AttractorRiftPositions.Count > 0)
-                transform.position = temp.transform.position = GalacticGamesManager.Instance.AttractorRiftPositions.Dequeue();
+            if (!rtv.preventOwnershipTakeover && GalacticGamesManager.Instance.AttractorRiftToPosition.ContainsKey(name))
+                transform.position = temp.transform.position = GalacticGamesManager.Instance.AttractorRiftToPosition[name];
                 
             //Instances that where in the scene before players pressed ready
             else temp.transform.position = transform.root.position;
