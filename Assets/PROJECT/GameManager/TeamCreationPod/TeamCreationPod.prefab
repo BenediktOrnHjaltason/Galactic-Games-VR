@@ -629,6 +629,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6963354691837222236}
   - component: {fileID: 5911528918138404366}
+  - component: {fileID: 2397583631148554684}
   - component: {fileID: 4983848241409598861}
   - component: {fileID: 8350086507406495168}
   - component: {fileID: 8242789605219932945}
@@ -672,6 +673,28 @@ CapsuleCollider:
   m_Height: 20
   m_Direction: 1
   m_Center: {x: 0, y: 5, z: 0}
+--- !u!114 &2397583631148554684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7209538977056718189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -363599832, guid: 30f4fd177e1fad742be136a8237ab587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _realtime: {fileID: 0}
+  _sceneViewUUID: 
+  _viewUUID: 
+  _sceneViewPreventOwnershipTakeover: 0
+  _sceneViewDestroyWhenOwnerOrLastClientLeaves: 1
+  _isRootPrefabView: 1
+  _components:
+  - componentID: 1
+    component: {fileID: 4983848241409598861}
+  _childViews: []
 --- !u!114 &4983848241409598861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -699,6 +722,7 @@ MonoBehaviour:
   disappearAnimatic: {fileID: 8242789605219932945}
   disappearMaterial: {fileID: 2100000, guid: b78c22ec67f738d4d908c351b8fa62a3, type: 2}
   teamList: {fileID: 8065719992453092083}
+  GameManagerMessage: 
 --- !u!54 &8350086507406495168
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -980,6 +1004,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fed3ca0d93c72d044b0fc5056f9a05b1, type: 3}
+--- !u!23 &3960171125296942465 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5991284297780060282, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
+    type: 3}
+  m_PrefabInstance: {fileID: 7336376966869364219}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8196915113691467280 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1446008589730145259, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
@@ -998,9 +1028,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 866a421ff2888574594053cc372ef04c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!23 &3960171125296942465 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 5991284297780060282, guid: fed3ca0d93c72d044b0fc5056f9a05b1,
-    type: 3}
-  m_PrefabInstance: {fileID: 7336376966869364219}
-  m_PrefabAsset: {fileID: 0}

@@ -11,7 +11,7 @@ enum ETeamCreationPod
     ThreePlayers
 }
 
-public class TeamCreationPod : MonoBehaviour
+public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 {
     [SerializeField]
     ETeamCreationPod teamSize;
@@ -379,5 +379,51 @@ public class TeamCreationPod : MonoBehaviour
         temp += GameManagerMessage;
 
         teamList.text = temp;
+    }
+
+    //Networking
+
+    protected override void OnRealtimeModelReplaced(TeamCreationPod_Model previousModel, TeamCreationPod_Model currentModel)
+    {
+        if (previousModel != null)
+        {
+            // Unregister from events
+            previousModel.clientDoneDisablingNonTeamGameplayObjectsDidChange -= ClientDoneDisablingNonTeamGameplayObjectsDidChange;
+        }
+
+        if (currentModel != null)
+        {
+            // If this is a model that has no data set on it, populate it with the current value.
+            if (currentModel.isFreshModel)
+            {
+                currentModel.clientDoneDisablingNonTeamGameplayObjects = -1;
+            }
+
+            // Update data to match the new model
+            UpdateClientDoneDisablingNonTeamGameplayObjects();
+
+
+            //Register for events so we'll know if data changes later
+            currentModel.clientDoneDisablingNonTeamGameplayObjectsDidChange += ClientDoneDisablingNonTeamGameplayObjectsDidChange;
+        }
+    }
+
+    List<int> clientsDoneDisablingGameplayObjects = new List<int>();
+
+    public int ClientsDoneFiltering { get => clientsDoneDisablingGameplayObjects.Count; }
+
+    public int ClientDoneDisablingGameplayObject { set => model.clientDoneDisablingNonTeamGameplayObjects = value; }
+
+    void ClientDoneDisablingNonTeamGameplayObjectsDidChange(TeamCreationPod_Model model, int client)
+    {
+        UpdateClientDoneDisablingNonTeamGameplayObjects();
+    }
+
+    void UpdateClientDoneDisablingNonTeamGameplayObjects()
+    {
+        int client = model.clientDoneDisablingNonTeamGameplayObjects;
+
+        if (client != -1 && !clientsDoneDisablingGameplayObjects.Contains(client))
+            clientsDoneDisablingGameplayObjects.Add(client);
     }
 }

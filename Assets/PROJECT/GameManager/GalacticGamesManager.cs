@@ -27,7 +27,11 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     List<RealtimeView> avatarRtvs = new List<RealtimeView>();
 
-    
+    TeamCreationPod thisPlayersPod = null;
+
+    List<RealtimeView> teamGameplayRtvs = new List<RealtimeView>();
+
+
 
     public void Initialize(GameManagerSync GMSync)
     {
@@ -261,18 +265,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
             Debug.Log("GGM: Actual root count: " + SceneManager.GetActiveScene().rootCount);
 
-            /*
-            GameObject[] rootObjectsWhileconditionFailed = SceneManager.GetActiveScene().GetRootGameObjects();
-
-            foreach (GameObject gameobject in rootObjectsWhileconditionFailed)
-                Debug.Log("GGM: sceneObjects while condition failed: " + gameobject.name);
-            */
-
             yield return null;
         }
 
         Debug.Log("GGM: Condition MET");
-        Debug.Log("GGM: ClientsDoneSpawning: " + gameManagerSync.ClientsDoneSpawning);
         Debug.Log("GGM: numberOfActiveTeams: " + numberOfActiveTeams);
 
         Debug.Log("GGM: namesOfGameplayPrefabs.Count: " + namesOfGameplayPrefabs.Count);
@@ -297,7 +293,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         //Disable gameplay objects not relevant to this team
 
-        TeamCreationPod thisPlayersPod = null;
+        
 
         //Find this client's team
         for (int i = 0; i < TeamCreationPod.instances.Count; i++)
@@ -313,7 +309,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                     thisPlayersPod = TeamCreationPod.instances[i];
 
-                    thisPlayersPod.GameManagerMessage = "Conditions MET and found team";
+                    thisPlayersPod.GameManagerMessage = "Conditions MET and found team. Spawning client: " + spawningClient;
                     thisPlayersPod.ConstructTeamList();
 
                     //Get all active root objects in scene after all spawning is done
@@ -328,7 +324,9 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                         else avatarRtvs.Add(gameObject.GetComponent<RealtimeView>());
 
-                    List<RealtimeView> teamGameplayRtvs = new List<RealtimeView>();
+                    
+
+                    int disabledNonTeamGameplayObjects = 0;
 
                     //Disable all gameplay objects not spawned by the first member of this team
                     //and set team objects to controllable by all members
@@ -339,18 +337,25 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                         if (rtv)
                         {
                             if (rtv.ownerIDSelf != spawningClient)
+                            {
+                                Debug.Log("GGM: Disabling non team object " + rtv.name + " . ownerID: " + rtv.ownerIDSelf + ". Spawning client: " + spawningClient);
                                 rtv.gameObject.SetActive(false);
+
+                                disabledNonTeamGameplayObjects++;
+                            }
+                                
 
                             else
                             {
-                                if (realTime.clientID == rtv.ownerIDSelf) rtv.ClearOwnership();
+                                //if (realTime.clientID == rtv.ownerIDSelf) rtv.ClearOwnership();
 
                                 teamGameplayRtvs.Add(rtv);
                             }
                         }
                     }
 
-                    //After all non team objects disabled, turn on collisions (else they bounce all over the place when they are spawned in the same place)
+                    //After all non team objects disabled, turn on collisions (turned off in prefab so they don't bounce all over the place when they are  
+                    //spawned in the same place)
                     foreach (RealtimeView teamGameplayRtv in teamGameplayRtvs)
                     {
                         StructureSync ss = teamGameplayRtv.GetComponent<StructureSync>();
@@ -396,9 +401,11 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             if (pod != thisPlayersPod && !pod.TeamEmpty) pod.StartDisappearAnimatic();
             else if (pod.TeamEmpty) pod.transform.root.gameObject.SetActive(false);
         }
-            
 
-        competitionStarted = true;
+
+
+        thisPlayersPod.ClientDoneDisablingGameplayObject = realTime.clientID;
+        StartCoroutine(ReleaseTeamObjectsFromOwnership());
     }
 
     public void RegisterFinishedPlayer(int clientID)
@@ -419,5 +426,21 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 avatarRtv.gameObject.SetActive(true);
             }
                 
+    }
+
+    //Everything depends on that the spawning clients sets the objects RealtimeViews ownership to itself, so the other teams can filter accordingly
+    //but in the end the ownership must be given up so that other team members can take control of RealtimeTransforms
+    IEnumerator ReleaseTeamObjectsFromOwnership()
+    {
+        while (thisPlayersPod.ClientsDoneFiltering < thisPlayersPod.TeamMembers.Count)
+            yield return null;
+
+        Debug.Log("GGM: All team members done filtering gameplay objects");
+
+        if (teamGameplayRtvs[0].ownerIDSelf == realTime.clientID)
+            foreach (RealtimeView rtv in teamGameplayRtvs)
+                rtv.ClearOwnership();
+
+        competitionStarted = true;
     }
 }
