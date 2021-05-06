@@ -303,6 +303,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4044272343277651487, guid: 30d1ba732d5d21b4b8ba1051a5ab00ce,
+        type: 3}
+      propertyPath: _sceneViewPreventOwnershipTakeover
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 30d1ba732d5d21b4b8ba1051a5ab00ce, type: 3}
 --- !u!1 &37784174 stripped
@@ -1326,6 +1331,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4044272343277651487, guid: 451d22004d9079648a82d36afed317c8,
+        type: 3}
+      propertyPath: _sceneViewPreventOwnershipTakeover
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 451d22004d9079648a82d36afed317c8, type: 3}
 --- !u!1 &146097510 stripped
@@ -2056,6 +2066,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 155978821}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 27d09b68-c447-471e-857b-a0eb83997971
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
@@ -3854,6 +3879,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.28
       objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 155978821}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _viewUUID
+      value: e00e8dce-9c18-48f1-8f2a-ffe385d5cdb1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
       propertyPath: teamSize
@@ -4264,6 +4304,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 155978821}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _viewUUID
+      value: f464f9ff-1e1c-4148-8e22-b86e91ac2dc2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
@@ -6733,6 +6788,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4044272343277651487, guid: cabfbce510566a04486e969bcde2c3fb,
+        type: 3}
+      propertyPath: _sceneViewPreventOwnershipTakeover
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cabfbce510566a04486e969bcde2c3fb, type: 3}
 --- !u!4 &875204660 stripped
@@ -7483,6 +7543,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 155978821}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 6144df84-6cb8-42aa-9cd6-2a801ee3ee1d
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
@@ -9436,6 +9511,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4044272343277651487, guid: 407b90dbc208c97488c61046347ec748,
+        type: 3}
+      propertyPath: _sceneViewPreventOwnershipTakeover
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 407b90dbc208c97488c61046347ec748, type: 3}
 --- !u!1001 &1214475872
@@ -11140,6 +11220,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.28
       objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 155978821}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _viewUUID
+      value: c708e254-e270-491d-ad5b-1418461a2ffe
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
       propertyPath: teamSize
@@ -12680,6 +12775,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.28
       objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 155978821}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 46a57030-65b6-4909-99e0-d8251fecb4e1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
       propertyPath: teamSize
@@ -13265,6 +13375,11 @@ PrefabInstance:
       propertyPath: _isRootPrefabView
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4044272343277651487, guid: e4179d1a531a56c48af0261a223db8c4,
+        type: 3}
+      propertyPath: _sceneViewPreventOwnershipTakeover
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e4179d1a531a56c48af0261a223db8c4, type: 3}
 --- !u!1001 &1673279825
@@ -13543,6 +13658,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _isRootPrefabView
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4044272343277651487, guid: 06d3da43739051d45b089fdaf75d159f,
+        type: 3}
+      propertyPath: _sceneViewPreventOwnershipTakeover
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4820883681839133816, guid: 06d3da43739051d45b089fdaf75d159f,
         type: 3}
@@ -15924,6 +16044,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 155978821}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _viewUUID
+      value: 5ce5a1b7-9e3f-4930-a44b-339d4e6aeff5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2397583631148554684, guid: ca1a8aac0d6274a44b8183de2cc0a832,
+        type: 3}
+      propertyPath: _isRootPrefabView
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4983848241409598861, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
