@@ -170,13 +170,18 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 //Attractor Rifts spawn two objects on start to help with functionality. Needed for calculating correct root count
                 if (rtv.gameObject.name.Contains("AttractorRift"))
                 {
-                    attractorRiftToPosition.Add(rtv.gameObject.name + "(Clone)", rtv.transform.position);
+                    attractorRiftToPosition.Add(rtv.gameObject.name + "(Clone)", rtv.gameObject.transform.position);
                     numberOfAttractorRifts++;
                 }
 
                 namesOfGameplayPrefabs.Add(rtv.gameObject.name);
-                positions.Add(rtv.transform.position);
-                rotations.Add(rtv.transform.rotation);
+
+                Structure_RestrictedMove srm = rtv.GetComponent<Structure_RestrictedMove>();
+
+                if (srm) positions.Add(srm.StartPos);
+                else positions.Add(rtv.gameObject.transform.position);
+
+                rotations.Add(rtv.gameObject.transform.rotation);
 
                 rtv.gameObject.SetActive(false);
             }
@@ -202,7 +207,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 //Instantiate objects on network for this team
                 for (int i = 0; i < namesOfGameplayPrefabs.Count; i++)
                 {
-                    GameObject newObject = Realtime.Instantiate(namesOfGameplayPrefabs[i], //How can this index ever be out of range?
+                    GameObject newObject = Realtime.Instantiate(namesOfGameplayPrefabs[i],
                                                     positions[i],
                                                     rotations[i],
                                                     ownedByClient: true,

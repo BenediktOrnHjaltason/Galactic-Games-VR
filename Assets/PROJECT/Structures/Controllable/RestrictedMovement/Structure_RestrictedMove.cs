@@ -34,6 +34,9 @@ public class Structure_RestrictedMove : StructureSync
     //Realtime realtime;
     RealtimeTransform realtimeTransform;
 
+    Vector3 startPos;
+    public Vector3 StartPos { get => startPos; }
+
     // Start is called before the first frame update
     protected override void Awake()
     {
@@ -44,6 +47,8 @@ public class Structure_RestrictedMove : StructureSync
         materials = mesh.materials;
 
         scrollGlowId = materials[1].shader.FindPropertyIndex(graphVariableScrollGlow);
+
+        startPos = transform.position;
 
         switch (moveDirection)
         {
