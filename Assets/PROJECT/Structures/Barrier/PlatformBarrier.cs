@@ -9,6 +9,9 @@ public class PlatformBarrier : MonoBehaviour
     MeshRenderer effectPlane;
 
     [SerializeField]
+    ParticleSystem particles;
+
+    [SerializeField]
     float pushForce;
 
     Realtime realtime;
@@ -77,6 +80,9 @@ public class PlatformBarrier : MonoBehaviour
 
                     effectPlane.transform.position = hitPoint + hitNormal * 0.1f;
                     effectPlane.transform.rotation = Quaternion.LookRotation(hitNormal) * Quaternion.Euler(90, 0, 0);
+
+                    particles.transform.position = hitPoint;
+                    particles.Play();
 
                     //effectPlane.enabled = true;
                     showEffectPlane = true;
