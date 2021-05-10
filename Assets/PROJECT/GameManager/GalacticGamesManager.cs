@@ -430,7 +430,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
                 Debug.Log("GMSync: Reactivating " + avatarRtv.name);
                 avatarRtv.gameObject.SetActive(true);
             }
-                
     }
 
     //Everything depends on that the spawning clients sets the objects RealtimeViews ownership to itself, so the other teams can filter accordingly

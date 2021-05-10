@@ -7,6 +7,8 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
 {
     List<int> finishedPlayers = new List<int>();
 
+    public List<int> FinishedPlayers { get => finishedPlayers; }
+
     private void Awake()
     {
         GalacticGamesManager.Instance.Initialize(this);
@@ -71,7 +73,13 @@ public class GameManagerSync : RealtimeComponent<GameManagerSync_Model>
             Debug.Log("GMSync: Player " + clientID + " WAS NOT registered before");
 
             finishedPlayers.Add(model.clientCrossedFinishLine);
-            GalacticGamesManager.Instance.ReactivateFinishedPlayer(model.clientCrossedFinishLine);
+
+
+            if (finishedPlayers.Contains(realtime.clientID))
+            {
+                foreach (int finishedPlayer in finishedPlayers)
+                    GalacticGamesManager.Instance.ReactivateFinishedPlayer(finishedPlayer);
+            }
         }
 
         else Debug.Log("GMSync: Player " + clientID + " WAS registered before. Aborting");
