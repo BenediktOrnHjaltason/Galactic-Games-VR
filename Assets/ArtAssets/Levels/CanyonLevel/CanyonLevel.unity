@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -12073,6 +12073,16 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 700f73eeb93817e41bc8a5f4a3ac59fb, type: 2}
+    - target: {fileID: -1461304994638716399, guid: b557199658929274285a7dc0289d732f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 700f73eeb93817e41bc8a5f4a3ac59fb, type: 2}
+    - target: {fileID: -1461304994638716399, guid: b557199658929274285a7dc0289d732f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: adbdb2397a46fb440817e1ad82312d4d, type: 2}
     - target: {fileID: -1255605710908113952, guid: b557199658929274285a7dc0289d732f,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -19462,8 +19472,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206347091}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.61, y: -54.29, z: 58.4}
-  m_LocalScale: {x: 39.103592, y: 2.20414, z: 13.745247}
+  m_LocalPosition: {x: 25.61, y: -54.29, z: 66.09}
+  m_LocalScale: {x: 39.103592, y: 2.20414, z: 29.45782}
   m_Children: []
   m_Father: {fileID: 1815855817}
   m_RootOrder: 9
