@@ -274,6 +274,8 @@ public class Hand : MonoBehaviour
     {
         otherHand.ReleaseZipLine();
 
+        if (otherHand.handle) otherHand.ReleaseClimbHandle();
+
 
         playerController.SetGrabbingZipLine(true, transform, (int)handSide, zipLineGrabbed.StartPointTransform, transportSpeed);
 
