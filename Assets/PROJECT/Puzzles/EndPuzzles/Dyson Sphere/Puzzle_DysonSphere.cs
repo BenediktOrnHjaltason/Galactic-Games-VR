@@ -16,13 +16,13 @@ public class Puzzle_DysonSphere : MonoBehaviour
     [SerializeField]
     DysonSpherePiece leftDysonPiece;
 
-    Vector3 leftPieceStartLocalPos;
+    Vector3 leftPieceStartWorldPos;
     Quaternion leftPieceStartLocalRot;
 
     [SerializeField]
     DysonSpherePiece rightDysonPiece;
 
-    Vector3 rightPieceStartLocalPos;
+    Vector3 rightPieceStartWorldPos;
     Quaternion rightPieceStartLocalRot;
 
     [SerializeField]
@@ -47,10 +47,10 @@ public class Puzzle_DysonSphere : MonoBehaviour
     {
         if (leftDysonPiece && rightDysonPiece)
         {
-            leftPieceStartLocalPos = leftDysonPiece.transform.localPosition;
+            leftPieceStartWorldPos = new Vector3(-26.3f, -74.35f, -458.2f);
             leftPieceStartLocalRot = leftDysonPiece.transform.localRotation;
 
-            rightPieceStartLocalPos = rightDysonPiece.transform.localPosition;
+            rightPieceStartWorldPos = new Vector3(-61.7f, -74.19f, -455.2f);
             rightPieceStartLocalRot = rightDysonPiece.transform.localRotation;
 
             leftDysonPiece.OnEnergyExtractionComplete += ReleaseLevelEndPortal;
@@ -107,7 +107,7 @@ public class Puzzle_DysonSphere : MonoBehaviour
             {
                 ss.ResetLinearVelocity();
                 ss.BreakControl();
-                dysonPiece.transform.localPosition = (dysonPiece == leftDysonPiece) ? leftPieceStartLocalPos : rightPieceStartLocalPos;
+                dysonPiece.transform.position = (dysonPiece == leftDysonPiece) ? leftPieceStartWorldPos : rightPieceStartWorldPos;
                 dysonPiece.transform.localRotation = (dysonPiece == leftDysonPiece) ? leftPieceStartLocalRot : rightPieceStartLocalRot; 
             }
         }
