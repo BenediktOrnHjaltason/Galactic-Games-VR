@@ -7063,6 +7063,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 42
       objectReference: {fileID: 0}
+    - target: {fileID: 3428569476815402225, guid: b60940a981306be42a482091ea4e5664,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -107
+      objectReference: {fileID: 0}
     - target: {fileID: 4109864686714747769, guid: b60940a981306be42a482091ea4e5664,
         type: 3}
       propertyPath: m_RootOrder
