@@ -27,36 +27,42 @@ public class KeycardPort : RealtimeComponent<KeycardPort_Model>
     [SerializeField]
     Vector3 snapRotation;
 
+    [SerializeField]
+    bool snapKeycards = true;
+
 
     public event Action<KeycardPort, EKeycardAction> OnKeycardAction;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(10))
+        if (other.gameObject.layer.Equals(10) || other.gameObject.layer.Equals(16))
         {
+            Debug.Log("KeycardPort: Keycard entered trigger");
+
+
             if (statusIndicator.material != m_StatusOccupied) statusIndicator.material = m_StatusOccupied;
 
-            SnapKeyCard(other);
+            if (snapKeycards) SnapKeyCard(other);
 
 
             RealtimeTransform rt = other.GetComponentInParent<RealtimeTransform>();
 
-            if (rt && rt.ownerIDSelf == rt.realtime.clientID)
+            if ((rt && rt.ownerIDSelf == rt.realtime.clientID) || !snapKeycards)
                 OnKeycardAction?.Invoke(this, EKeycardAction.INSERT);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer.Equals(10))
+        if (other.gameObject.layer.Equals(10) || other.gameObject.layer.Equals(16))
         {
             if (statusIndicator.material != m_statusIdle) statusIndicator.material = m_statusIdle;
 
-            UnSnapKeyCard(other);
+            if (snapKeycards) UnSnapKeyCard(other);
 
             RealtimeTransform rt = other.GetComponentInParent<RealtimeTransform>();
 
-            if (rt && rt.ownerIDSelf == rt.realtime.clientID)
+            if ((rt && rt.ownerIDSelf == rt.realtime.clientID) || !snapKeycards)
                 OnKeycardAction?.Invoke(this, EKeycardAction.REMOVE);
         }
     }

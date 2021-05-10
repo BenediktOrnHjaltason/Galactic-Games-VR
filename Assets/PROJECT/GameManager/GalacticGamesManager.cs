@@ -439,11 +439,18 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         while (thisPlayersPod.ClientsDoneFiltering < thisPlayersPod.TeamMembers.Count)
             yield return null;
 
+        //thisPlayersPod.GameManagerMessage += "\nAll team members done filtering gameplay objects";
+
         Debug.Log("GGM: All team members done filtering gameplay objects");
 
-        if (teamGameplayRtvs[0].ownerIDSelf == realTime.clientID)
-            foreach (RealtimeView rtv in teamGameplayRtvs)
-                rtv.ClearOwnership();
+        
+        foreach (RealtimeView rtv in teamGameplayRtvs)
+            rtv.ClearOwnership();
+
+       //if (teamGameplayRtvs[0].ownerIDSelf == -1)
+            //thisPlayersPod.GameManagerMessage += "\nTeam gameplay objects cleared ownership";
+
+        thisPlayersPod.ConstructTeamList();
 
         competitionStarted = true;
     }
