@@ -16,7 +16,7 @@ public class ZipPointEndSensor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer.Equals(10) || other.gameObject.layer.Equals(0))
+        if (other.gameObject.layer.Equals(10) || other.gameObject.layer.Equals(0) || other.gameObject.layer.Equals(15))
         {
             ZipLinePoint pointEnteringTrigger = other.transform.root.GetComponent<ZipLinePoint>();
             if (!pointEnteringTrigger) pointEnteringTrigger = other.transform.root.GetComponentInChildren<ZipLinePoint>();

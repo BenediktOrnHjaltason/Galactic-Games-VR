@@ -40,7 +40,7 @@ public class ZipLinePoint : MonoBehaviour
             {
                 transportLineActive = (value == null) ? false : true;
 
-                if (value == null) transportBeam.transform.localScale = Vector3.zero; 
+                if (value == null) transportBeam.transform.parent.localScale = Vector3.one; 
             }
         }
 
@@ -53,7 +53,7 @@ public class ZipLinePoint : MonoBehaviour
         if (startOrEnd == EZipLinePoint.START)
         {
 
-            transportBeam = transform.root.Find("PF_TransportBeam").GetComponent<ZipLineTransport>();
+            transportBeam = transform.root.Find("PF_TransportBeam").GetChild(0).GetComponent<ZipLineTransport>();
 
             transportBeam.OnBeamTouchesObstacle += BreakConnection;
 
@@ -82,11 +82,11 @@ public class ZipLinePoint : MonoBehaviour
         {
             if (transportLineActive)
             {
-                transportBeam.transform.SetPositionAndRotation(transform.position + (selfToOther / 2), Quaternion.LookRotation(selfToOther));
-                transportBeam.transform.localScale = new Vector3(0.25f, 0.25f, selfToOther.magnitude);
+                transportBeam.transform.parent.SetPositionAndRotation(transform.position + (selfToOther / 2), Quaternion.LookRotation(selfToOther));
+                transportBeam.transform.parent.localScale = new Vector3(1f, 1f, selfToOther.magnitude * 4);
             }
 
-            else transportBeam.transform.position = transform.position;
+            else transportBeam.transform.parent.position = transform.position;
         }
     }
 

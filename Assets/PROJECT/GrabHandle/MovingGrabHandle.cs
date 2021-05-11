@@ -26,7 +26,7 @@ public class MovingGrabHandle : GrabHandle
     {
         if (!rtt.realtime.connected) return;
 
-        if (rtt.ownerIDSelf == -1) rtt.RequestOwnership();
+        if (rtt.ownerIDSelf == -1) rtt.SetOwnership(rtt.realtime.clientID);
         else if (rtt.ownerIDSelf == rtt.realtime.clientID)
         {
             transform.position = Vector3.Lerp(startPosition, endPosition, (Mathf.Sin(Time.time * speed) +1) /2);

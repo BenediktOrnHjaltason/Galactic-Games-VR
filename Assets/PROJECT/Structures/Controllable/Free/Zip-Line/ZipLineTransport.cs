@@ -23,6 +23,8 @@ public class ZipLineTransport : MonoBehaviour
     {
         if (other.gameObject.layer.Equals(16) || other.gameObject.layer.Equals(10))
         {
+            Debug.Log("ZipLineTransport: Structure touched beam");
+
             OnBeamTouchesObstacle?.Invoke();
         }
     }
