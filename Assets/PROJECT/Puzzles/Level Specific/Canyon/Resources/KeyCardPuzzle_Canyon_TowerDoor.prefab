@@ -185,7 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interpolate: 1
-  _syncPosition: 0
+  _syncPosition: 1
   _syncRotation: 0
   _syncScale: 0
   _syncVelocity: 1

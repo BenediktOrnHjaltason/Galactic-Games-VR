@@ -274,6 +274,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         }
 
         Debug.Log("GGM: Condition MET");
+
         Debug.Log("GGM: numberOfActiveTeams: " + numberOfActiveTeams);
 
         Debug.Log("GGM: namesOfGameplayPrefabs.Count: " + namesOfGameplayPrefabs.Count);
@@ -314,7 +315,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                     thisPlayersPod = TeamCreationPod.instances[i];
 
-                    thisPlayersPod.GameManagerMessage = "Conditions MET and found team. Spawning client: " + spawningClient;
+                    thisPlayersPod.GameManagerMessage = "Condition MET and found team. Spawning client: " + spawningClient;
                     thisPlayersPod.ConstructTeamList();
 
                     //Get all active root objects in scene after all spawning is done
@@ -404,7 +405,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             pod.DisableReadyButton();
 
             if (pod != thisPlayersPod && !pod.TeamEmpty) pod.StartDisappearAnimatic();
-            else if (pod.TeamEmpty) pod.transform.root.gameObject.SetActive(false);
+            else if (pod.TeamEmpty)
+            {
+                pod.transform.root.gameObject.SetActive(false);
+            }
         }
 
 
@@ -415,19 +419,19 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
     public void RegisterFinishedPlayer(int clientID)
     {
-        Debug.Log("GMSync: RegisterFinishedPlayer called in game manager");
+        Debug.Log("GMM: RegisterFinishedPlayer called");
 
         gameManagerSync.PlayerCrossedFinishLine = clientID;
     }
 
     public void ReactivateFinishedPlayer(int clientID)
     {
-        Debug.Log("GMSync: ReactivatePlayer called in game manager");
+        Debug.Log("GMM: ReactivatePlayer called in game manager");
 
         foreach (RealtimeView avatarRtv in avatarRtvs)
             if (avatarRtv.ownerIDSelf == clientID && !avatarRtv.gameObject.activeInHierarchy)
             {
-                Debug.Log("GMSync: Reactivating " + avatarRtv.name);
+                Debug.Log("GMM: Reactivating " + avatarRtv.name);
                 avatarRtv.gameObject.SetActive(true);
             }
     }
@@ -436,10 +440,12 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     //but in the end the ownership must be given up so that other team members can take control of RealtimeTransforms
     IEnumerator ReleaseTeamObjectsFromOwnership()
     {
+        thisPlayersPod.GameManagerMessage += "\nReleaseOwnership called";
+
         while (thisPlayersPod.ClientsDoneFiltering < thisPlayersPod.TeamMembers.Count)
             yield return null;
 
-        //thisPlayersPod.GameManagerMessage += "\nAll team members done filtering gameplay objects";
+        thisPlayersPod.GameManagerMessage += "\nAll team members done filtering gameplay objects";
 
         Debug.Log("GGM: All team members done filtering gameplay objects");
 
@@ -447,8 +453,10 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         foreach (RealtimeView rtv in teamGameplayRtvs)
             rtv.ClearOwnership();
 
-       //if (teamGameplayRtvs[0].ownerIDSelf == -1)
-            //thisPlayersPod.GameManagerMessage += "\nTeam gameplay objects cleared ownership";
+       if (teamGameplayRtvs[0].ownerIDSelf == -1)
+            thisPlayersPod.GameManagerMessage += "\nTeam gameplay objects cleared ownership.";
+
+        thisPlayersPod.GameManagerMessage += "\nCompetition started";
 
         thisPlayersPod.ConstructTeamList();
 
