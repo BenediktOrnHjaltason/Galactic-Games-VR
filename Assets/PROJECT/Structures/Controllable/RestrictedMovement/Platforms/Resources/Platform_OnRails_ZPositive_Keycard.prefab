@@ -563,6 +563,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 3.937197
       objectReference: {fileID: 0}
+    - target: {fileID: 2106474772471501475, guid: e96a242dcfe03bd49a6d30c2c68f807a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4159255551082405612, guid: e96a242dcfe03bd49a6d30c2c68f807a,
         type: 3}
       propertyPath: m_Enabled
@@ -613,6 +618,11 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9036944661317791838, guid: e96a242dcfe03bd49a6d30c2c68f807a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9214031001221080586, guid: e96a242dcfe03bd49a6d30c2c68f807a,
         type: 3}
       propertyPath: m_Size.y
@@ -643,7 +653,8 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 0.30350235
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8353635923303038063, guid: e96a242dcfe03bd49a6d30c2c68f807a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e96a242dcfe03bd49a6d30c2c68f807a, type: 3}
 --- !u!4 &6220123919364257254 stripped
 Transform:

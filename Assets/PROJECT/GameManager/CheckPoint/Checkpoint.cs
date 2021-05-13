@@ -20,6 +20,9 @@ public class Checkpoint : RealtimeComponent<Checkpoint_Model>
     GameObject teamIndicatorPrefab;
 
     [SerializeField]
+    Transform firstIndicatorPos;
+
+    [SerializeField]
     Color teamIndicatorNullColor;
 
     [SerializeField]
@@ -105,7 +108,7 @@ public class Checkpoint : RealtimeComponent<Checkpoint_Model>
 
         newIndicator.transform.SetParent(transform.root);
 
-        newIndicator.transform.localPosition = teamIndicatorBasePos + new Vector3(0, teamIndicatorYOffsett * numberOfTeamsPassedThrough, 0);
+        newIndicator.transform.position = firstIndicatorPos.position + new Vector3(0, teamIndicatorYOffsett * numberOfTeamsPassedThrough, 0);
 
         numberOfTeamsPassedThrough++;
     }
