@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5251257045801369096}
   - component: {fileID: 2850603048418758682}
   - component: {fileID: 751426827695282988}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PF_Door
   m_TagString: AvatarPart
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 8976739278346164625}
   - component: {fileID: 8566096233380753406}
   - component: {fileID: 8957415196272291232}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: decoration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 480406024426851597}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DoorPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}

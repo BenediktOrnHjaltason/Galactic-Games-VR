@@ -54,12 +54,8 @@ public class Puzzle_KeyCards : RealtimeComponent<KeycardPuzzle_Model>
 
     void VerifyCondition()
     {
-
-        Debug.Log("Puzzle_KeyCards: VerifyCondition called");
-
         if (InsertedKeys == ports.Count && door.State == EDoorState.Closed)
         {
-            Debug.Log("Puzzle_KeyCards: Door is closed and should open");
             door.Operate();
         }
         else if (InsertedKeys < ports.Count && door.State == EDoorState.Open)
