@@ -52,7 +52,7 @@ public class OmniDeviceDispenser : MonoBehaviour
     [SerializeField]
     AnimationCurve dispenseSequenceCurve;
 
-    float planeMaxScale = 0.002093048f;
+    float planeMaxScale = 0.002331865f;
     float planeMinScale = 0.001132486f;
 
     Vector3 handSphereMaxScale = new Vector3(0.1804088f, 0.1804088f, 0.1804088f);
