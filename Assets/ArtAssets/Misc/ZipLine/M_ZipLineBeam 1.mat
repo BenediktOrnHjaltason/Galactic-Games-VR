@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_ZipLineBeam
+  m_Name: M_ZipLineBeam 1
   m_Shader: {fileID: -6465566751694194690, guid: c95baf9927d04b449bacf92f93b66ba8,
     type: 3}
   m_ShaderKeywords: 
