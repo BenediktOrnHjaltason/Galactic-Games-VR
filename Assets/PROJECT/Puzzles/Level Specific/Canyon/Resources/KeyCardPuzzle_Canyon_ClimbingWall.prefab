@@ -445,6 +445,11 @@ PrefabInstance:
       propertyPath: snapRotation.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 3345119500540563940, guid: 3def4a230e299fe408ddc3ab892cb679,
+        type: 3}
+      propertyPath: snapKeycards
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4020487399958955090, guid: 3def4a230e299fe408ddc3ab892cb679,
         type: 3}
       propertyPath: m_Enabled
@@ -773,6 +778,11 @@ PrefabInstance:
         type: 3}
       propertyPath: snapRotation.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345119500540563940, guid: 3def4a230e299fe408ddc3ab892cb679,
+        type: 3}
+      propertyPath: snapKeycards
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4020487399958955090, guid: 3def4a230e299fe408ddc3ab892cb679,
         type: 3}
