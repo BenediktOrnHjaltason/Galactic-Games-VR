@@ -403,15 +403,14 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         foreach (TeamCreationPod pod in TeamCreationPod.instances)
         {
             pod.DisableReadyButton();
+            pod.gameObject.layer = 9;
 
-            if (pod != thisPlayersPod && !pod.TeamEmpty) pod.StartDisappearAnimatic();
+            if (pod != thisPlayersPod && !pod.TeamEmpty)
+                pod.StartDisappearAnimatic();
+
             else if (pod.TeamEmpty)
-            {
-                pod.transform.root.gameObject.SetActive(false);
-            }
+                pod.gameObject.SetActive(false);
         }
-
-
 
         thisPlayersPod.ClientDoneDisablingGameplayObject = realTime.clientID;
         StartCoroutine(ReleaseTeamObjectsFromOwnership());

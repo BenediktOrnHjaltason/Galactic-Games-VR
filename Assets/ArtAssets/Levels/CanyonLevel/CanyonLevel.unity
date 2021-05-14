@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3106,7 +3106,7 @@ GameObject:
   - component: {fileID: 140248752}
   - component: {fileID: 140248751}
   m_Layer: 0
-  m_Name: Cube (60)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3752,7 +3752,7 @@ GameObject:
   - component: {fileID: 158203171}
   - component: {fileID: 158203170}
   m_Layer: 0
-  m_Name: Cube (44)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5478,7 +5478,7 @@ GameObject:
   - component: {fileID: 236188835}
   - component: {fileID: 236188834}
   m_Layer: 0
-  m_Name: Cube (38)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6230,7 +6230,7 @@ GameObject:
   - component: {fileID: 272279323}
   - component: {fileID: 272279322}
   m_Layer: 0
-  m_Name: Cube (40)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6895,7 +6895,7 @@ GameObject:
   - component: {fileID: 296937801}
   - component: {fileID: 296937800}
   m_Layer: 0
-  m_Name: Cube (55)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7166,7 +7166,7 @@ GameObject:
   - component: {fileID: 319941497}
   - component: {fileID: 319941496}
   m_Layer: 0
-  m_Name: Cube (56)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8365,7 +8365,7 @@ GameObject:
   - component: {fileID: 373219930}
   - component: {fileID: 373219929}
   m_Layer: 16
-  m_Name: Cube (72)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10323,7 +10323,7 @@ GameObject:
   - component: {fileID: 447400545}
   - component: {fileID: 447400544}
   m_Layer: 0
-  m_Name: Cube (52)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10509,7 +10509,7 @@ GameObject:
   - component: {fileID: 457959058}
   - component: {fileID: 457959057}
   m_Layer: 16
-  m_Name: Cube (85)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11565,7 +11565,7 @@ GameObject:
   - component: {fileID: 504433662}
   - component: {fileID: 504433661}
   m_Layer: 0
-  m_Name: Cube (42)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13070,7 +13070,7 @@ GameObject:
   - component: {fileID: 556404295}
   - component: {fileID: 556404294}
   m_Layer: 0
-  m_Name: Cube (54)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13818,7 +13818,7 @@ GameObject:
   - component: {fileID: 574447063}
   - component: {fileID: 574447062}
   m_Layer: 0
-  m_Name: Cube (33)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14890,7 +14890,7 @@ GameObject:
   - component: {fileID: 615465536}
   - component: {fileID: 615465535}
   m_Layer: 0
-  m_Name: Cube (59)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15113,7 +15113,7 @@ GameObject:
   - component: {fileID: 625363956}
   - component: {fileID: 625363955}
   m_Layer: 0
-  m_Name: Cube (53)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15611,7 +15611,7 @@ GameObject:
   - component: {fileID: 671684821}
   - component: {fileID: 671684820}
   m_Layer: 16
-  m_Name: Cube (77)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17132,7 +17132,7 @@ GameObject:
   - component: {fileID: 725744557}
   - component: {fileID: 725744556}
   m_Layer: 16
-  m_Name: Cube (81)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17310,7 +17310,7 @@ GameObject:
   - component: {fileID: 731450216}
   - component: {fileID: 731450215}
   m_Layer: 16
-  m_Name: Cube (78)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17545,22 +17545,22 @@ PrefabInstance:
     - target: {fileID: -8907693254129854704, guid: b557199658929274285a7dc0289d732f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.898
+      value: 4.19
       objectReference: {fileID: 0}
     - target: {fileID: -8907693254129854704, guid: b557199658929274285a7dc0289d732f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.9483
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: -8907693254129854704, guid: b557199658929274285a7dc0289d732f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.4286
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: -8907693254129854704, guid: b557199658929274285a7dc0289d732f,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 15.178283
+      value: 83.273155
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b557199658929274285a7dc0289d732f,
         type: 3}
@@ -18258,7 +18258,7 @@ GameObject:
   - component: {fileID: 766907939}
   - component: {fileID: 766907938}
   m_Layer: 0
-  m_Name: Cube (58)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18873,7 +18873,7 @@ GameObject:
   - component: {fileID: 781912046}
   - component: {fileID: 781912045}
   m_Layer: 0
-  m_Name: Cube (39)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19364,7 +19364,7 @@ GameObject:
   - component: {fileID: 793261619}
   - component: {fileID: 793261618}
   m_Layer: 16
-  m_Name: Cube (74)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19556,7 +19556,7 @@ GameObject:
   - component: {fileID: 801409741}
   - component: {fileID: 801409740}
   m_Layer: 16
-  m_Name: Cube (84)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19805,7 +19805,7 @@ GameObject:
   - component: {fileID: 808093700}
   - component: {fileID: 808093699}
   m_Layer: 0
-  m_Name: Cube (63)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20800,7 +20800,7 @@ GameObject:
   - component: {fileID: 855985834}
   - component: {fileID: 855985833}
   m_Layer: 0
-  m_Name: Cube (37)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21696,7 +21696,7 @@ GameObject:
   - component: {fileID: 895791483}
   - component: {fileID: 895791482}
   m_Layer: 16
-  m_Name: Cube (73)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22124,7 +22124,7 @@ GameObject:
   - component: {fileID: 914578280}
   - component: {fileID: 914578279}
   m_Layer: 0
-  m_Name: Cube (49)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23160,7 +23160,7 @@ GameObject:
   - component: {fileID: 971964869}
   - component: {fileID: 971964868}
   m_Layer: 0
-  m_Name: Cube (36)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23304,7 +23304,7 @@ GameObject:
   - component: {fileID: 976922756}
   - component: {fileID: 976922755}
   m_Layer: 16
-  m_Name: Cube (67)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23928,7 +23928,7 @@ GameObject:
   - component: {fileID: 1026435162}
   - component: {fileID: 1026435161}
   m_Layer: 16
-  m_Name: Cube (68)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24196,7 +24196,7 @@ GameObject:
   - component: {fileID: 1031655903}
   - component: {fileID: 1031655902}
   m_Layer: 16
-  m_Name: Cube (80)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25097,7 +25097,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1111127534}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -25342,7 +25342,7 @@ GameObject:
   - component: {fileID: 1122518350}
   - component: {fileID: 1122518349}
   m_Layer: 16
-  m_Name: Cube (70)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25478,17 +25478,17 @@ PrefabInstance:
     - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12.33
+      value: 21.25
       objectReference: {fileID: 0}
     - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.3369994
+      value: -53.004
       objectReference: {fileID: 0}
     - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -266.32098
+      value: 70.39902
       objectReference: {fileID: 0}
     - target: {fileID: 6963354691837222236, guid: ca1a8aac0d6274a44b8183de2cc0a832,
         type: 3}
@@ -25918,7 +25918,7 @@ GameObject:
   - component: {fileID: 1133604926}
   - component: {fileID: 1133604925}
   m_Layer: 16
-  m_Name: Cube (75)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26080,7 +26080,7 @@ GameObject:
   - component: {fileID: 1141789938}
   - component: {fileID: 1141789937}
   m_Layer: 16
-  m_Name: Cube (66)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27328,7 +27328,7 @@ PrefabInstance:
     - target: {fileID: 7587592308259376866, guid: 6f47d25c741bc224785dfbb4ed7bfbf3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.42
+      value: 1.85
       objectReference: {fileID: 0}
     - target: {fileID: 7587592308259376866, guid: 6f47d25c741bc224785dfbb4ed7bfbf3,
         type: 3}
@@ -28152,7 +28152,7 @@ GameObject:
   - component: {fileID: 1230626039}
   - component: {fileID: 1230626038}
   m_Layer: 16
-  m_Name: Cube (69)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30274,7 +30274,7 @@ GameObject:
   - component: {fileID: 1334091869}
   - component: {fileID: 1334091868}
   m_Layer: 16
-  m_Name: Cube (71)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30367,7 +30367,7 @@ GameObject:
   - component: {fileID: 1336149798}
   - component: {fileID: 1336149797}
   m_Layer: 0
-  m_Name: Cube (43)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30628,7 +30628,7 @@ GameObject:
   - component: {fileID: 1343571231}
   - component: {fileID: 1343571230}
   m_Layer: 0
-  m_Name: Cube (47)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30967,17 +30967,17 @@ PrefabInstance:
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.81
+      value: 24.63
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.3
+      value: -52.56
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -242.17
+      value: 76.81
       objectReference: {fileID: 0}
     - target: {fileID: 434376374121400329, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -31022,7 +31022,7 @@ PrefabInstance:
     - target: {fileID: 434376374132662725, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
       propertyPath: omniDeviceStartup
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8846773500257968800, guid: 44d0c0eb097264d47a9c65867699a3ae,
         type: 3}
@@ -32740,7 +32740,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407657998}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -32975,7 +32975,7 @@ GameObject:
   - component: {fileID: 1414477638}
   - component: {fileID: 1414477637}
   m_Layer: 0
-  m_Name: Cube (62)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33838,7 +33838,7 @@ GameObject:
   - component: {fileID: 1472706235}
   - component: {fileID: 1472706234}
   m_Layer: 0
-  m_Name: Cube (50)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34024,7 +34024,7 @@ GameObject:
   - component: {fileID: 1481178735}
   - component: {fileID: 1481178734}
   m_Layer: 16
-  m_Name: Cube (79)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34186,7 +34186,7 @@ GameObject:
   - component: {fileID: 1489262538}
   - component: {fileID: 1489262537}
   m_Layer: 0
-  m_Name: Cube (35)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34857,7 +34857,7 @@ GameObject:
   - component: {fileID: 1521225276}
   - component: {fileID: 1521225275}
   m_Layer: 0
-  m_Name: Cube (61)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35019,7 +35019,7 @@ GameObject:
   - component: {fileID: 1525340514}
   - component: {fileID: 1525340513}
   m_Layer: 0
-  m_Name: Cube (57)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35665,7 +35665,7 @@ GameObject:
   - component: {fileID: 1549133546}
   - component: {fileID: 1549133545}
   m_Layer: 0
-  m_Name: Cube (48)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37507,7 +37507,7 @@ GameObject:
   - component: {fileID: 1626000220}
   - component: {fileID: 1626000219}
   m_Layer: 0
-  m_Name: Cube (29)
+  m_Name: PuzzleHouseFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39304,7 +39304,7 @@ GameObject:
   - component: {fileID: 1704657373}
   - component: {fileID: 1704657372}
   m_Layer: 0
-  m_Name: Cube (41)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39634,7 +39634,7 @@ GameObject:
   - component: {fileID: 1727927163}
   - component: {fileID: 1727927162}
   m_Layer: 0
-  m_Name: Cube (30)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39945,7 +39945,7 @@ GameObject:
   - component: {fileID: 1751064568}
   - component: {fileID: 1751064567}
   m_Layer: 16
-  m_Name: Cube (86)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42769,7 +42769,7 @@ GameObject:
   - component: {fileID: 1837916761}
   - component: {fileID: 1837916760}
   m_Layer: 0
-  m_Name: Cube (51)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44595,7 +44595,7 @@ PrefabInstance:
     - target: {fileID: 7587592308259376866, guid: 6f47d25c741bc224785dfbb4ed7bfbf3,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.18
+      value: -5.236
       objectReference: {fileID: 0}
     - target: {fileID: 7587592308259376866, guid: 6f47d25c741bc224785dfbb4ed7bfbf3,
         type: 3}
@@ -45388,7 +45388,7 @@ GameObject:
   - component: {fileID: 1936877690}
   - component: {fileID: 1936877689}
   m_Layer: 0
-  m_Name: Cube (34)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45925,7 +45925,7 @@ GameObject:
   - component: {fileID: 1952506804}
   - component: {fileID: 1952506803}
   m_Layer: 16
-  m_Name: Cube (82)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47029,7 +47029,7 @@ GameObject:
   - component: {fileID: 2003490317}
   - component: {fileID: 2003490316}
   m_Layer: 0
-  m_Name: Cube (45)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47998,7 +47998,7 @@ GameObject:
   - component: {fileID: 2035976260}
   - component: {fileID: 2035976259}
   m_Layer: 16
-  m_Name: Cube (65)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48770,7 +48770,7 @@ GameObject:
   - component: {fileID: 2058845322}
   - component: {fileID: 2058845321}
   m_Layer: 0
-  m_Name: Cube (46)
+  m_Name: PuzzleHouseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49976,7 +49976,7 @@ GameObject:
   - component: {fileID: 2106809589}
   - component: {fileID: 2106809588}
   m_Layer: 16
-  m_Name: Cube (76)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50319,7 +50319,7 @@ GameObject:
   - component: {fileID: 2128432805}
   - component: {fileID: 2128432804}
   m_Layer: 16
-  m_Name: Cube (83)
+  m_Name: StaticPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
