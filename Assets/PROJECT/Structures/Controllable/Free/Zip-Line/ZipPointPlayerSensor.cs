@@ -12,7 +12,7 @@ public class ZipPointPlayerSensor : MonoBehaviour
 
             Hand hand = other.GetComponent<Hand>();
 
-            if (hand) hand.ReleaseZipLine();
+            if (hand && hand.GrabbingZipLine) hand.ReleaseZipLine();
         }
     }
 }

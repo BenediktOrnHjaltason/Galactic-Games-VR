@@ -73,6 +73,8 @@ public class Hand : MonoBehaviour
     static ZipLineTransport zipLineGrabbed;
 
     bool grabbingZipLine = false;
+
+    public bool GrabbingZipLine { get => grabbingZipLine; }
     
 
     /// <summary>
