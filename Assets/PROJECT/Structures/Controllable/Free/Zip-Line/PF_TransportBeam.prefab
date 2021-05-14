@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 4635668660510513011}
   - component: {fileID: 6779341618194715406}
   m_Layer: 13
-  m_Name: Cube
+  m_Name: BeamCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 5102486803722409669}
   m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.7071079}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.4660926, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 2353851564176257548}
   m_RootOrder: 0
