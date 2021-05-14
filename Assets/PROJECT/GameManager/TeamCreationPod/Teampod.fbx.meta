@@ -12,8 +12,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Fencestripetex
+    second: {fileID: 2100000, guid: b5fc63c57e31c8947a418d521ddf846c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Fencetex
     second: {fileID: 2100000, guid: 9b3b947a70d985a429f2b00abd3b9e02, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mainplatringtex
+    second: {fileID: 2100000, guid: 7b2047df7203ea746bd82c09b669037f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
