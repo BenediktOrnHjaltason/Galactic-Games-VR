@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c7dc4874dea9d25498d7ac18699d88fe
+guid: c6b04a703ddbe0b44b98a19b76d17a8a
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
@@ -7,33 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Eyes
-    second: {fileID: 2100000, guid: ed28cd463aa7f2f48877af5af4fc5b2f, type: 2}
+      name: Checkpoint
+    second: {fileID: 2100000, guid: 1661905c76ae51948a79f24d5bbac59b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: HeadOrnament
-    second: {fileID: 2100000, guid: ed28cd463aa7f2f48877af5af4fc5b2f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.001
-    second: {fileID: 2100000, guid: f469d28f0fd3bad46b778b583a0104a6, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Skin
-    second: {fileID: 2100000, guid: ed28cd463aa7f2f48877af5af4fc5b2f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: alienmat.green
-    second: {fileID: 2100000, guid: abca64b9c76ad2f498a5b7ba6878fe71, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: alienmat.pink
-    second: {fileID: 2100000, guid: 8c78c9a98f7bf4d40adb6c61be841468, type: 2}
+      name: WhiteText
+    second: {fileID: 2100000, guid: 1661905c76ae51948a79f24d5bbac59b, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
