@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
 using TMPro;
+using System;
 
 [System.Serializable]
 public struct PlayerHeads
@@ -86,27 +87,23 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
     void InstantiatePlayerHead()
     {
         int headIndex = model.playerHeadIndex;
-        GameObject head = Instantiate<GameObject>(playerHeads[headIndex].headMesh);
+        GameObject headMesh = Instantiate<GameObject>(playerHeads[headIndex].headMesh);
 
-        head.layer = 9;
+        headMesh.layer = 9;
 
-        head.transform.SetParent(this.transform);
+        headMesh.transform.SetParent(this.transform);
 
-        head.transform.localPosition = playerHeads[headIndex].position;
-        head.transform.localRotation = Quaternion.Euler(playerHeads[headIndex].rotation);
-        head.transform.localScale = playerHeads[headIndex].scale;
+        headMesh.transform.localPosition = playerHeads[headIndex].position;
+        headMesh.transform.localRotation = Quaternion.Euler(playerHeads[headIndex].rotation);
+        headMesh.transform.localScale = playerHeads[headIndex].scale;
 
         if (isPlayerClient)
         {
-            head.SetActive(false);
+            headMesh.SetActive(false);
             playerNameTMPro.GetComponent<MeshRenderer>().enabled = false;
         }
+        else StartCoroutine(SetVoiceAudioAttenuation());
 
-        AudioSource auS = GetComponent<AudioSource>();
-        if (auS)
-        {
-            auS.spatialBlend = 0.1f;
-        }
 
         RealtimeView rtv = GetComponent<RealtimeView>();
 
@@ -116,6 +113,8 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
 
             if (rtv) GalacticGamesManager.Instance.RegisterClientArrival(clientID);
         }
+
+        
 
         
         //realtime.didDisconnectFromRoom += NotifyGameManagerOnLeavingRoom;
@@ -130,5 +129,26 @@ public class PlayerSync : RealtimeComponent<PlayerSync_Model>
     {
         Debug.Log("PS: OnDisable called when player quit game");
         GalacticGamesManager.Instance.NetworkNotifyClientLeftRoom(clientID);
+    }
+
+    IEnumerator SetVoiceAudioAttenuation()
+    {
+        while (GetComponent<AudioSource>() == null)
+        {
+            //Debug.Log("PlayerSync: Did NOT find AudioSource this iteration");
+            yield return null;
+        }
+
+        AudioSource auS = GetComponent<AudioSource>();
+
+        if (auS)
+        {
+            //Debug.Log("PlayerSync: Found audio source in coroutine. Setting attenuation settings");
+
+            auS.spatialBlend = 1f;
+            auS.volume = 0.6f;
+            auS.rolloffMode = AudioRolloffMode.Linear;
+            auS.maxDistance = 10000;
+        }
     }
 }
