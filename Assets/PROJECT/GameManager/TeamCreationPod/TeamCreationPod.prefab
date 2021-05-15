@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8669826746692898776}
   - component: {fileID: 4496098995739208165}
   - component: {fileID: 8065719992453092083}
-  m_Layer: 15
+  m_Layer: 9
   m_Name: TeamList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -459,7 +459,7 @@ GameObject:
   - component: {fileID: 6243639989441289120}
   - component: {fileID: 5878197338237381002}
   - component: {fileID: 3602681703365007663}
-  m_Layer: 15
+  m_Layer: 9
   m_Name: Capacity Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -722,7 +722,8 @@ MonoBehaviour:
   disappearAnimatic: {fileID: 8242789605219932945}
   disappearMaterial: {fileID: 2100000, guid: b78c22ec67f738d4d908c351b8fa62a3, type: 2}
   teamList: {fileID: 8065719992453092083}
-  GameManagerMessage: 
+  ScreenDebugMessage: 
+  numClientsNotifyingDoneFiltering: 0
 --- !u!54 &8350086507406495168
 Rigidbody:
   m_ObjectHideFlags: 0

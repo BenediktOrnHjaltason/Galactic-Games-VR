@@ -40,7 +40,12 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         gameManagerSync = GMSync;
         realTime = GameObject.Find("Realtime").GetComponent<Realtime>();
 
+        avatarRtvs = new List<RealtimeView>();
+        teamGameplayRtvs = new List<RealtimeView>();
+        thisPlayersPod = null;
         competitionStarted = false;
+        numberOfActiveTeams = 0;
+        originalRootCountOnGameStart = 0;
     }
 
     public void RegisterClientArrival(int clientID)
@@ -299,7 +304,7 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
         //Disable gameplay objects not relevant to this team
 
-        
+        int thisClientIndex = -1;
 
         //Find this client's team
         for (int i = 0; i < TeamCreationPod.instances.Count; i++)
@@ -312,11 +317,12 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
 
                     int teamSize = TeamCreationPod.instances[i].TeamMembers.Count;
                     int spawningClient = TeamCreationPod.instances[i].TeamMembers[0];
+                    thisClientIndex = j;
 
                     thisPlayersPod = TeamCreationPod.instances[i];
 
-                    thisPlayersPod.GameManagerMessage = "Condition MET and found team. Spawning client: " + spawningClient;
-                    thisPlayersPod.ConstructTeamList();
+                    //thisPlayersPod.ScreenDebugMessage = "Condition MET and found team. Spawning client: " + spawningClient;
+                    //thisPlayersPod.ConstructScreenText();
 
                     //Get all active root objects in scene after all spawning is done
                     GameObject[] teamFiltered = GameObject.FindGameObjectsWithTag("TeamFiltered");
@@ -403,7 +409,6 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         foreach (TeamCreationPod pod in TeamCreationPod.instances)
         {
             pod.DisableReadyButton();
-            pod.gameObject.layer = 9;
 
             if (pod != thisPlayersPod && !pod.TeamEmpty)
                 pod.StartDisappearAnimatic();
@@ -411,6 +416,14 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
             else if (pod.TeamEmpty)
                 pod.gameObject.SetActive(false);
         }
+
+        switch(thisClientIndex)
+        {
+            case 0: thisPlayersPod.Index0DoneFiltering = true; break;
+            case 1: thisPlayersPod.Index1DoneFiltering = true; break;
+            case 2: thisPlayersPod.Index2DoneFiltering = true; break;
+        }
+
 
         thisPlayersPod.ClientDoneDisablingGameplayObject = realTime.clientID;
         StartCoroutine(ReleaseTeamObjectsFromOwnership());
@@ -439,12 +452,26 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
     //but in the end the ownership must be given up so that other team members can take control of RealtimeTransforms
     IEnumerator ReleaseTeamObjectsFromOwnership()
     {
-        thisPlayersPod.GameManagerMessage += "\nReleaseOwnership called";
+        thisPlayersPod.ScreenDebugMessage = "";
 
-        while (thisPlayersPod.ClientsDoneFiltering < thisPlayersPod.TeamMembers.Count)
+        while (!AllMembersDoneFiltering())
+        {
+            thisPlayersPod.ScreenDebugMessage = ("\nClients done filtering not less than team members count. \nClients done filtering: " + thisPlayersPod.ClientsDoneFiltering.Count + ". \nTeam count: " + thisPlayersPod.TeamMembers.Count);
+
+            thisPlayersPod.ScreenDebugMessage += ("\nNum clients notified done filtering" + thisPlayersPod.numClientsNotifyingDoneFiltering);
+
+            thisPlayersPod.ScreenDebugMessage += "\nClients done filtering:";
+
+            foreach (int clientDoneFiltering in thisPlayersPod.ClientsDoneFiltering)
+                thisPlayersPod.ScreenDebugMessage += ("\n " + clientDoneFiltering);
+
+            thisPlayersPod.ConstructScreenText();
+
             yield return null;
+        }
 
-        thisPlayersPod.GameManagerMessage += "\nAll team members done filtering gameplay objects";
+        thisPlayersPod.ScreenDebugMessage = ("pod: " + thisPlayersPod.name + ". clients done filtering: " + thisPlayersPod.ClientsDoneFiltering.Count + ". team members count: " + thisPlayersPod.TeamMembers.Count); 
+        thisPlayersPod.ScreenDebugMessage += "\nAll team members done filtering gameplay objects";
 
         Debug.Log("GGM: All team members done filtering gameplay objects");
 
@@ -452,13 +479,24 @@ public class GalacticGamesManager : Singleton<GalacticGamesManager>
         foreach (RealtimeView rtv in teamGameplayRtvs)
             rtv.ClearOwnership();
 
-       if (teamGameplayRtvs[0].ownerIDSelf == -1)
-            thisPlayersPod.GameManagerMessage += "\nTeam gameplay objects cleared ownership.";
+        //if (teamGameplayRtvs[0].ownerIDSelf == -1)
+        //thisPlayersPod.ScreenDebugMessage += "\nTeam gameplay objects cleared ownership.";
 
-        thisPlayersPod.GameManagerMessage += "\nCompetition started";
+        thisPlayersPod.ScreenDebugMessage += "\nCompetition started";
 
-        thisPlayersPod.ConstructTeamList();
+        thisPlayersPod.ConstructScreenText();
 
         competitionStarted = true;
+    }
+
+    bool AllMembersDoneFiltering()
+    {
+        switch(thisPlayersPod.TeamMembers.Count)
+        {
+            case 1: return (thisPlayersPod.Index0DoneFiltering);
+            case 2: return (thisPlayersPod.Index0DoneFiltering && thisPlayersPod.Index1DoneFiltering);
+            case 3: return (thisPlayersPod.Index0DoneFiltering && thisPlayersPod.Index1DoneFiltering && thisPlayersPod.Index2DoneFiltering);
+            default: { Debug.LogError("Team members count is not in 1 - 3 range"); return false; };
+        }
     }
 }

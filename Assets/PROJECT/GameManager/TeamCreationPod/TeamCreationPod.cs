@@ -142,6 +142,9 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
     {
         if (other.gameObject.layer.Equals(14) && other.gameObject.name.Contains("Head") && !GalacticGamesManager.Instance.CompetitionStarted)
         {
+            Debug.Log("TCP: OnTriggerExit triggered. Competition started is false");
+
+
             RealtimeView rv = other.GetComponent<RealtimeView>();
 
             if (rv)
@@ -171,7 +174,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
                         {
                             ps.PlayerTorso.material.SetColor("_BaseColor", AvatarTorsoDefault);
                             memberClientIDToName.Remove(rtv.ownerIDSelf);
-                            ConstructTeamList();
+                            ConstructScreenText();
                         }
 
                         capacityIndicator.material = availableCapacityMaterial;
@@ -247,7 +250,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
                 {
                     ps.PlayerTorso.material.SetColor("_BaseColor", teamColor);
                     memberClientIDToName.Add(rtv.ownerIDSelf, ps.PlayerName.text);
-                    ConstructTeamList();
+                    ConstructScreenText();
                 }
 
                 teamFilledUp = true;
@@ -296,6 +299,12 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
             foreach (TeamCreationPod pod in instances)
                 if (pod.readyToPlay) pod.readyText.text = "GO!";
 
+            ScreenDebugMessage += "\n All pods ready or empty \nand all players accounted for \nChanged button text to GO!";
+
+            if (readyToPlay) ScreenDebugMessage += "\n This pod readyToPlay";
+            else ScreenDebugMessage += "\n This pod NOT readyToPlay";
+            ConstructScreenText();
+
 
             
 
@@ -328,7 +337,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         }
 
         memberClientIDToName.Remove(teamMembers[teamMemberIndex]);
-        ConstructTeamList();
+        ConstructScreenText();
 
         teamMembers[teamMemberIndex] = -1;
         teamFilledUp = readyToPlay = false;
@@ -356,27 +365,31 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         readyButton.gameObject.SetActive(false);
     }
 
-    public string GameManagerMessage;
+    public string ScreenDebugMessage;
 
-    public void ConstructTeamList()
+    public void ConstructScreenText()
     {
         string temp = "";
 
-        /*
-        foreach (KeyValuePair<int,string> pair in memberClientIDToName)
-        {
-            temp += '\n' + pair.Value; 
-        }
-        */
+        //temp += "\nTeam Members: ";
+        //foreach (int teamMember in TeamMembers) temp += (teamMember.ToString() + ", "); 
+        
 
         Debug.Log("TCP1: teamMembers count: " + teamMembers.Count);
 
 
         for (int i = 0; i < teamMembers.Count; i++)
             if (teamMembers[i] != -1 && MemberClientIDToName.ContainsKey(teamMembers[i]))
-                temp += ("index: " + i + ", clientID: " + teamMembers[i] + ", " + MemberClientIDToName[teamMembers[i]] + '\n');
+                temp += ('\n' + "index: " + i + ", clientID: " + teamMembers[i] + ", " + MemberClientIDToName[teamMembers[i]]);
 
-        temp += GameManagerMessage;
+            else
+            {
+                //if (teamMembers[i] == -1) temp += ("\nteamMembers[i] is -1");
+                //if (!MemberClientIDToName.ContainsKey(teamMembers[i])) temp += "\n MemberClientIDToName does not contain it";
+            }
+
+
+        temp += ScreenDebugMessage;
 
         teamList.text = temp;
     }
@@ -389,6 +402,9 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         {
             // Unregister from events
             previousModel.clientDoneDisablingNonTeamGameplayObjectsDidChange -= ClientDoneDisablingNonTeamGameplayObjectsDidChange;
+            previousModel.index0DoneFilteringDidChange -= Index0DoneFilteringDidChange;
+            previousModel.index1DoneFilteringDidChange -= Index1DoneFilteringDidChange;
+            previousModel.index2DoneFilteringDidChange -= Index2DoneFilteringDidChange;
         }
 
         if (currentModel != null)
@@ -397,22 +413,36 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
             if (currentModel.isFreshModel)
             {
                 currentModel.clientDoneDisablingNonTeamGameplayObjects = -1;
+                currentModel.index0DoneFiltering = false;
+                currentModel.index1DoneFiltering = false;
+                currentModel.index2DoneFiltering = false;
             }
 
             // Update data to match the new model
             UpdateClientDoneDisablingNonTeamGameplayObjects();
+            UpdateIndex0DoneFiltering();
+            UpdateIndex1DoneFiltering();
+            UpdateIndex2DoneFiltering();
 
 
             //Register for events so we'll know if data changes later
             currentModel.clientDoneDisablingNonTeamGameplayObjectsDidChange += ClientDoneDisablingNonTeamGameplayObjectsDidChange;
+            currentModel.index0DoneFilteringDidChange += Index0DoneFilteringDidChange;
+            currentModel.index1DoneFilteringDidChange += Index1DoneFilteringDidChange;
+            currentModel.index2DoneFilteringDidChange += Index2DoneFilteringDidChange;
         }
     }
 
+    
+
     List<int> clientsDoneDisablingGameplayObjects = new List<int>();
 
-    public int ClientsDoneFiltering { get => clientsDoneDisablingGameplayObjects.Count; }
+    public List<int> ClientsDoneFiltering { get => clientsDoneDisablingGameplayObjects; }
 
-    public int ClientDoneDisablingGameplayObject { set => model.clientDoneDisablingNonTeamGameplayObjects = value; }
+    public int ClientDoneDisablingGameplayObject 
+    { 
+        set { model.clientDoneDisablingNonTeamGameplayObjects = value; } 
+    }
 
     void ClientDoneDisablingNonTeamGameplayObjectsDidChange(TeamCreationPod_Model model, int client)
     {
@@ -423,7 +453,58 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
     {
         int client = model.clientDoneDisablingNonTeamGameplayObjects;
 
+        if (model.clientDoneDisablingNonTeamGameplayObjects != -1) ;
+
         if (client != -1 && !clientsDoneDisablingGameplayObjects.Contains(client))
             clientsDoneDisablingGameplayObjects.Add(client);
+    }
+
+    //---Filtering
+
+    public int numClientsNotifyingDoneFiltering = 0;
+
+    //Index 0
+    bool index0DoneFiltering = false;
+    public bool Index0DoneFiltering { get => index0DoneFiltering; set => model.index0DoneFiltering = value; }
+    
+    void Index0DoneFilteringDidChange(TeamCreationPod_Model model, bool done)
+    {
+        UpdateIndex0DoneFiltering();
+    }
+
+    void UpdateIndex0DoneFiltering()
+    {
+        if (model.index0DoneFiltering == true) numClientsNotifyingDoneFiltering++;
+        index0DoneFiltering = model.index0DoneFiltering;
+    }
+
+    //Index 1
+    bool index1DoneFiltering = false;
+    public bool Index1DoneFiltering { get => index1DoneFiltering; set => model.index1DoneFiltering = value; }
+    
+    void Index1DoneFilteringDidChange(TeamCreationPod_Model model, bool done)
+    {
+        UpdateIndex1DoneFiltering();
+    }
+
+    void UpdateIndex1DoneFiltering()
+    {
+        if (model.index1DoneFiltering == true) numClientsNotifyingDoneFiltering++;
+        index1DoneFiltering = model.index1DoneFiltering;
+    }
+
+    //Index 2
+    bool index2DoneFiltering = false;
+    public bool Index2DoneFiltering { get => index2DoneFiltering; set => model.index2DoneFiltering = value; }
+    
+    void Index2DoneFilteringDidChange(TeamCreationPod_Model model, bool done)
+    {
+        UpdateIndex2DoneFiltering();
+    }
+
+    void UpdateIndex2DoneFiltering()
+    {
+        if (model.index2DoneFiltering == true) numClientsNotifyingDoneFiltering++;
+        index2DoneFiltering = model.index2DoneFiltering;
     }
 }
