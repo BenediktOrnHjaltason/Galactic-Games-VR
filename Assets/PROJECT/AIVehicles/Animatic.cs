@@ -83,7 +83,7 @@ public class Animatic : MonoBehaviour
 
             //Ensures correct start values for rest of sequences. If previous sequence not animated (to-value 0), 
             //sample from-value instead of to-value. Correct values trickle down. 
-            for (int i = 1; i < movementSequences.Count -1; i++)
+            for (int i = 1; i < movementSequences.Count /*-1*/; i++)
             {
                 movementSequences[i].fromPosition =
                     (movementSequences[i - 1].animatePosition) ? movementSequences[i - 1].toPosition

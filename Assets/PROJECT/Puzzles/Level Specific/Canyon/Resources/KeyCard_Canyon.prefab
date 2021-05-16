@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 1006030727365971203}
   - component: {fileID: 4159255551082405612}
   m_Layer: 9
-  m_Name: KeyCard_Big
+  m_Name: KeyCard_Canyon
   m_TagString: TeamFiltered
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -314,7 +314,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!114 &4859955498477884132
 MonoBehaviour:
