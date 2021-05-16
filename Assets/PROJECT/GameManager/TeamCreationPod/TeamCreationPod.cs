@@ -59,6 +59,9 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
     [SerializeField]
     TextMeshPro teamList;
 
+    [SerializeField]
+    GameObject[] meshChildrenToDisable;
+
 
     bool teamFilledUp = false;
 
@@ -114,7 +117,9 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         teamList.text = "";
 
         foreach (MeshRenderer colorIndicator in colorIndicators)
-        colorIndicator.material.SetColor("_BaseColor",teamColor);
+            colorIndicator.material.SetColor("_BaseColor",teamColor);
+
+        disappearMaterial.SetColor("Color_1FB81EC4", teamColor);
 
 
         readyButton.OnExecute += SetReady;
@@ -175,7 +180,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
                         capacityIndicator.material.SetColor("_BaseColor", Color.white);// = availableCapacityMaterial;
 
                         teamFilledUp = readyToPlay = false;
-                        readyIndicator.material.SetColor("_BaseColor", Color.white); // = teamNotReadyMaterial;
+                        readyIndicator.material = teamNotReadyMaterial; // = teamNotReadyMaterial;
                         readyText.text = "Ready?";
 
                         PlayerSync ps = other.GetComponent<PlayerSync>();
@@ -278,7 +283,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
         if (readyToPlay)
         {
-            readyIndicator.material.SetColor("_BaseColor", teamColor);// = teamReadyMaterial;
+            readyIndicator.material = teamReadyMaterial;
             readyText.text = "Ready!";
         }
         else
@@ -368,14 +373,12 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
     void Hide()
     {
-        gameObject.SetActive(false);
-
-        /*
         teamSizeText.gameObject.SetActive(false);
-        floor.gameObject.SetActive(false);
         readyButton.gameObject.SetActive(false);
         teamList.gameObject.SetActive(false);
-        */
+
+        foreach (GameObject meshChild in meshChildrenToDisable)
+            meshChild.SetActive(false);
     }
 
     public string ScreenDebugMessage;
@@ -393,10 +396,10 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
         for (int i = 0; i < teamMembers.Count; i++)
             if (teamMembers[i] != -1 && MemberClientIDToName.ContainsKey(teamMembers[i]))
-                temp += (/*'\n' + "index: " + i + ", clientID: " + teamMembers[i] + ", " + */MemberClientIDToName[teamMembers[i]]);
+                temp += (/*'\n' + "index: " + i + ", clientID: " + teamMembers[i] + ", " + */MemberClientIDToName[teamMembers[i]] + "\n");
 
 
-        if (teamFilledUp) temp += "\n- Team full -";
+        if (teamFilledUp) temp += "- Team full -";
 
         //temp += ScreenDebugMessage;
 
@@ -461,8 +464,6 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
     void UpdateClientDoneDisablingNonTeamGameplayObjects()
     {
         int client = model.clientDoneDisablingNonTeamGameplayObjects;
-
-        if (model.clientDoneDisablingNonTeamGameplayObjects != -1) ;
 
         if (client != -1 && !clientsDoneDisablingGameplayObjects.Contains(client))
             clientsDoneDisablingGameplayObjects.Add(client);
