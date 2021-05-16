@@ -119,8 +119,6 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         foreach (MeshRenderer colorIndicator in colorIndicators)
             colorIndicator.material.SetColor("_BaseColor",teamColor);
 
-        disappearMaterial.SetColor("Color_1FB81EC4", teamColor);
-
 
         readyButton.OnExecute += SetReady;
 
