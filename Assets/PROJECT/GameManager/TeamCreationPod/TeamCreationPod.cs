@@ -31,7 +31,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
     Material fullCapacityMaterial;
 
     [SerializeField]
-    MeshRenderer floor;
+    List<MeshRenderer> colorIndicators;
 
     [SerializeField]
     MeshRenderer readyIndicator;
@@ -109,11 +109,13 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         for (int i = 0; i < teamSizeInt; i++)
             teamMembers.Add(-1);
 
-        teamSizeText.text = teamSizeInt.ToString() + "\nPlayer" + (teamSizeInt > 1 ? "s" : "");
+        teamSizeText.text = teamSizeInt.ToString()/* + "\nPlayer" + (teamSizeInt > 1 ? "s" : "")*/;
 
         teamList.text = "";
 
-        floor.material.SetColor("_BaseColor",teamColor);
+        foreach (MeshRenderer colorIndicator in colorIndicators)
+        colorIndicator.material.SetColor("_BaseColor",teamColor);
+
 
         readyButton.OnExecute += SetReady;
 
@@ -125,7 +127,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
         disappearAnimatic.InitializeSequenceDelegates();
 
-        disappearAnimatic.onSequenceStart[1] = MakePodInvisible;
+        disappearAnimatic.onSequenceStart[1] = Hide;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -168,6 +170,14 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
                         Debug.Log("TCP: removed " + rv.ownerIDSelf + " from " + transform.root.name);
 
+
+
+                        capacityIndicator.material.SetColor("_BaseColor", Color.white);// = availableCapacityMaterial;
+
+                        teamFilledUp = readyToPlay = false;
+                        readyIndicator.material.SetColor("_BaseColor", Color.white); // = teamNotReadyMaterial;
+                        readyText.text = "Ready?";
+
                         PlayerSync ps = other.GetComponent<PlayerSync>();
                         RealtimeView rtv = other.GetComponent<RealtimeView>();
                         if (ps && rtv)
@@ -176,12 +186,6 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
                             memberClientIDToName.Remove(rtv.ownerIDSelf);
                             ConstructScreenText();
                         }
-
-                        capacityIndicator.material = availableCapacityMaterial;
-
-                        teamFilledUp = readyToPlay = false;
-                        readyIndicator.material = teamNotReadyMaterial;
-                        readyText.text = "Ready?";
 
 
                         //Insert potential place holders in team
@@ -245,6 +249,14 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
                 teamEmpty = false;
 
+                
+
+                teamFilledUp = true;
+                for (int j = 0; j < teamMembers.Count; j++)
+                    if (teamMembers[j] == -1) teamFilledUp = false;
+
+                if (teamFilledUp) capacityIndicator.material.SetColor("_BaseColor", teamColor);// = fullCapacityMaterial;
+
                 PlayerSync ps = rtv.GetComponent<PlayerSync>();
                 if (ps)
                 {
@@ -252,12 +264,6 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
                     memberClientIDToName.Add(rtv.ownerIDSelf, ps.PlayerName.text);
                     ConstructScreenText();
                 }
-
-                teamFilledUp = true;
-                for (int j = 0; j < teamMembers.Count; j++)
-                    if (teamMembers[j] == -1) teamFilledUp = false;
-
-                if (teamFilledUp) capacityIndicator.material = fullCapacityMaterial;
 
                 break;
             }
@@ -272,7 +278,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
         if (readyToPlay)
         {
-            readyIndicator.material = teamReadyMaterial;
+            readyIndicator.material.SetColor("_BaseColor", teamColor);// = teamReadyMaterial;
             readyText.text = "Ready!";
         }
         else
@@ -301,9 +307,11 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
             ScreenDebugMessage += "\n All pods ready or empty \nand all players accounted for \nChanged button text to GO!";
 
+            /*
             if (readyToPlay) ScreenDebugMessage += "\n This pod readyToPlay";
             else ScreenDebugMessage += "\n This pod NOT readyToPlay";
             ConstructScreenText();
+            */
 
 
             
@@ -342,7 +350,7 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         teamMembers[teamMemberIndex] = -1;
         teamFilledUp = readyToPlay = false;
 
-        readyIndicator.material = teamNotReadyMaterial;
+        readyIndicator.material.SetColor("_BaseColor", Color.white); // = teamNotReadyMaterial;
     }
 
     public void DisableReadyButton()
@@ -358,11 +366,16 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
         disappearAnimatic.Run();
     }
 
-    void MakePodInvisible()
+    void Hide()
     {
+        gameObject.SetActive(false);
+
+        /*
         teamSizeText.gameObject.SetActive(false);
         floor.gameObject.SetActive(false);
         readyButton.gameObject.SetActive(false);
+        teamList.gameObject.SetActive(false);
+        */
     }
 
     public string ScreenDebugMessage;
@@ -380,16 +393,12 @@ public class TeamCreationPod : RealtimeComponent<TeamCreationPod_Model>
 
         for (int i = 0; i < teamMembers.Count; i++)
             if (teamMembers[i] != -1 && MemberClientIDToName.ContainsKey(teamMembers[i]))
-                temp += ('\n' + "index: " + i + ", clientID: " + teamMembers[i] + ", " + MemberClientIDToName[teamMembers[i]]);
-
-            else
-            {
-                //if (teamMembers[i] == -1) temp += ("\nteamMembers[i] is -1");
-                //if (!MemberClientIDToName.ContainsKey(teamMembers[i])) temp += "\n MemberClientIDToName does not contain it";
-            }
+                temp += (/*'\n' + "index: " + i + ", clientID: " + teamMembers[i] + ", " + */MemberClientIDToName[teamMembers[i]]);
 
 
-        temp += ScreenDebugMessage;
+        if (teamFilledUp) temp += "\n- Team full -";
+
+        //temp += ScreenDebugMessage;
 
         teamList.text = temp;
     }
