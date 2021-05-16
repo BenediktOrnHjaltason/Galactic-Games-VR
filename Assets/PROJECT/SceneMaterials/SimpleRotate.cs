@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SimpleRotate : MonoBehaviour
 {
+    float rotateIncrement = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -12,6 +14,10 @@ public class SimpleRotate : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0.1f, 0, 0));
+        rotateIncrement += 19.4f;
+
+        if (rotateIncrement > 1940) rotateIncrement = 0;
+
+        transform.localRotation = Quaternion.Euler(new Vector3(rotateIncrement, 0, 0));
     }
 }
