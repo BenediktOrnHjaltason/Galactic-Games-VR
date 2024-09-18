@@ -1,4 +1,4 @@
-# High-Altitude
+# Galactic-Games-VR
 
 Galactic Games VR
 
